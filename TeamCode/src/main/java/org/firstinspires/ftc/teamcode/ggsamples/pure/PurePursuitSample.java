@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pure;
+package org.firstinspires.ftc.teamcode.ggsamples.pure;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;

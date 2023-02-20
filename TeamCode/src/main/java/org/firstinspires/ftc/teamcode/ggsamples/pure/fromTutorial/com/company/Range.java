@@ -28,7 +28,7 @@
  * THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company;
 
 /**
  * Utility class for performing range operations

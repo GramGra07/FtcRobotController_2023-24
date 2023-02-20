@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company;
 
 import java.text.DecimalFormat;
-
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.UdpServer;
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.Robot;
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.FloatPoint;
 public class ComputerDebugging {
     //this is what actually sends our messages
     private static UdpServer udpServer;

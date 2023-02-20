@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pure;
+package org.firstinspires.ftc.teamcode.ggsamples.pure;
 
 import com.arcrobotics.ftclib.geometry.Rotation2d;
 import com.arcrobotics.ftclib.hardware.GyroEx;

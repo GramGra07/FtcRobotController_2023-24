@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial.org.opencv.core;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.org.opencv.core;
 
 //javadoc:Point_
 public class Point {

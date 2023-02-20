@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial;
 
-import org.firstinspires.ftc.teamcode.pure.fromTutorial.org.opencv.core.Point;
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.org.opencv.core.Point;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial.RobotUtilities;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.RobotUtilities;
 
 public class MovementVars {
     public static double movement_x = 0;

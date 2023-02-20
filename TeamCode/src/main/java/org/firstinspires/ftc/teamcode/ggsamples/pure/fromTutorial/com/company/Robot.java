@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company;
 
 
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.pure.fromTutorial.RobotUtilities.MovementVars;
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.RobotUtilities.MovementVars;
 
 public class Robot {
     public static boolean usingComputer = true;

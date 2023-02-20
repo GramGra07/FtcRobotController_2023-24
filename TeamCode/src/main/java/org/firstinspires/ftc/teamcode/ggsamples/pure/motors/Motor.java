@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pure.motors;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.motors;
 
 import androidx.annotation.NonNull;
 

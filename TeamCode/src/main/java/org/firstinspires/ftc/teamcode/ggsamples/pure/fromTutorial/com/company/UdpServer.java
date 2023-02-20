@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company;
 
 
 import java.io.IOException;

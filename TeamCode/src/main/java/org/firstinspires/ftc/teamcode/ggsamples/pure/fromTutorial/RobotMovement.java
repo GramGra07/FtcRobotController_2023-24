@@ -1,16 +1,16 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial;
 
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.MathFunctions.AngleWrap;
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.RobotUtilities.MovementVars.movement_turn;
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.RobotUtilities.MovementVars.movement_x;
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.RobotUtilities.MovementVars.movement_y;
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company.Robot.worldAngle_rad;
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company.Robot.worldXPosition;
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company.Robot.worldYPosition;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.MathFunctions.AngleWrap;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.RobotUtilities.MovementVars.movement_turn;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.RobotUtilities.MovementVars.movement_x;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.RobotUtilities.MovementVars.movement_y;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.Robot.worldAngle_rad;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.Robot.worldXPosition;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.Robot.worldYPosition;
 
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.pure.fromTutorial.org.opencv.core.Point;
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.org.opencv.core.Point;
 
 import java.util.ArrayList;
 

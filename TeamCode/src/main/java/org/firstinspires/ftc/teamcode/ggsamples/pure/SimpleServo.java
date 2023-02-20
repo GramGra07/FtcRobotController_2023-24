@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.pure;
+package org.firstinspires.ftc.teamcode.ggsamples.pure;
 
 import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;

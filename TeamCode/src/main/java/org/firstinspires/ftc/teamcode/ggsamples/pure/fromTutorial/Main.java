@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company.ComputerDebugging;
-import org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company.FloatPoint;
-import org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company.Robot;
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.ComputerDebugging;
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.FloatPoint;
+import org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.Robot;
 
 
 public class Main {

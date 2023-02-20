@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial;
 
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.RobotMovement.followCurve;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.RobotMovement.followCurve;
 
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;

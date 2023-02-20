@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.pure.fromTutorial.RobotUtilities;
+package org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.RobotUtilities;
 
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.MathFunctions.AngleWrap;
-import static org.firstinspires.ftc.teamcode.pure.fromTutorial.com.company.Robot.worldAngle_rad;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.com.company.Robot.worldAngle_rad;
+import static org.firstinspires.ftc.teamcode.ggsamples.pure.fromTutorial.MathFunctions.AngleWrap;
 
 
 public class SpeedOmeter {
