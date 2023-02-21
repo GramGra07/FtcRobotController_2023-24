@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.externalHardware.teleOpX;
 
+import static org.firstinspires.ftc.teamcode.Constants.countsPerInchTape;
+import static org.firstinspires.ftc.teamcode.Constants.tmPose;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -30,8 +33,8 @@ public class maintenanceV2 extends LinearOpMode {
             }
             if (robot.touchSensorEject.isPressed()) {
                 robot.greenRed();
-                robot.tmPose += 2;
-                robot.tmServo.setPosition(robot.setServo(robot.tmPose));
+                tmPose += 2;
+                robot.tmServo.setPosition(robot.setServo(tmPose));
                 robot.runtime.reset();
             }
             if (robot.touchSensorL.isPressed()) {
@@ -49,7 +52,7 @@ public class maintenanceV2 extends LinearOpMode {
                 robot.red1.setState(true);
             }
             if (robot.tapeOut) {
-                robot.tapeEncoder((int) (robot.countsPerInchTape * 10 * 18), 1, 6, false);//go out
+                robot.tapeEncoder((int) (countsPerInchTape * 10 * 18), 1, 6, false);//go out
                 robot.green3.setState(true);
                 robot.red3.setState(false);
             } else {
@@ -70,7 +73,7 @@ public class maintenanceV2 extends LinearOpMode {
             telemetry.addData("clawOpen", robot.clawOpen);
             telemetry.addData("color", robot.color);
             telemetry.addData("tapeOut", robot.tapeOut);
-            telemetry.addData("tmPose", robot.tmPose);
+            telemetry.addData("tmPose", tmPose);
             telemetry.addData("tmEncoder", robot.tapeMeasure.getCurrentPosition());
             telemetry.update();
         }

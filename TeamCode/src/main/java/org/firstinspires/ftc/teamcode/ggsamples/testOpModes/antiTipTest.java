@@ -1,8 +1,11 @@
-package org.firstinspires.ftc.teamcode.externalHardware;
+package org.firstinspires.ftc.teamcode.ggsamples.testOpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
+import org.firstinspires.ftc.teamcode.MathFunctions;
 
 @TeleOp(name = "antiTipTest", group = "Robot")
 @Disabled
@@ -18,7 +21,7 @@ public class antiTipTest extends LinearOpMode {
         telemetry.update();
         waitForStart();
         while (opModeIsActive()) {//while the op mode is active
-            robot.antiTip();
+            MathFunctions.antiTip();
             telemetry.addData("heading", robot.angles.firstAngle);
             telemetry.addData("roll", robot.angles.secondAngle);
             telemetry.addData("pitch", robot.angles.thirdAngle + 180);

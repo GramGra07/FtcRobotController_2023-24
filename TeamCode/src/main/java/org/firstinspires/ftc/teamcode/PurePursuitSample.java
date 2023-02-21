@@ -1,4 +1,6 @@
-package org.firstinspires.ftc.teamcode.ggsamples.pure;
+package org.firstinspires.ftc.teamcode;
+
+import static org.firstinspires.ftc.teamcode.Constants.topPoleVal;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
@@ -110,6 +112,6 @@ public class PurePursuitSample extends CommandOpMode {
     }
 
     public void runArmTop() {
-        robot.yArmEncoder(HardwareConfig.topPoleVal, 1, 2, false);
+        robot.yArmEncoder(topPoleVal, 1, 2, false);
     }
 }

@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.ggsamples.testOpModes;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
+import static org.firstinspires.ftc.teamcode.Constants.armLimit;
+
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -17,7 +19,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.teleOp.robotCentric;
+import org.firstinspires.ftc.teamcode.ggsamples.nonx.teleOp.robotCentric;
 
 @Autonomous(name = "hardWareClassTest", group = "Robot")
 @Disabled
@@ -42,9 +44,6 @@ public class hardWareClassTest extends robotCentric {
     static final double ROBOT_DIAMETER = 13.05;
     //arm
     final int baseArmPosition = 0;
-    public final int armLimit = robotCentric.armLimit;
-    public final int lowPoleVal = robotCentric.lowPoleVal;//should be about 1/3 of arm limit
-    public final int midPoleVal = robotCentric.midPoleVal;//should be about 2/3 of arm limit
     public final int topPoleVal = armLimit;//should be close to armLimit
     static final double COUNTS_PER_MOTOR_REV_arm = 28;
     static final double DRIVE_GEAR_REDUCTION_arm = 40;

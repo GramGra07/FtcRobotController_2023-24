@@ -1,9 +1,7 @@
-package org.firstinspires.ftc.teamcode.ggsamples.testOpModes;
+package org.firstinspires.ftc.teamcode.ggsamples.nonx.teleOp;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -16,24 +14,12 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.teleOp.robotCentric;
-
-import java.util.Locale;
-
-@TeleOp(name = "imuTest", group = "Robot")
+@TeleOp(name = "systemsCheck", group = "Robot")
 @Disabled
-public class imuTest extends robotCentric {
+public class systemsCheck extends robotCentric {
     public int turn = 77;
 
 
@@ -89,6 +75,15 @@ public class imuTest extends robotCentric {
     public double IN_distanceR = 0;//in distance for distance sensor 1
     public double IN_distanceL = 0;
     public double myMagic = 7;
+    private DigitalChannel red1;
+    private DigitalChannel green1;
+    private DigitalChannel red2;
+    private DigitalChannel green2;
+    private DigitalChannel red3;
+    private DigitalChannel green3;
+    private DigitalChannel red4;
+    private DigitalChannel green4;
+
     //color
     final float[] hsvValues = new float[3];//gets values for color sensor
     private final int redVal = 0;//the red value in rgb
@@ -98,20 +93,11 @@ public class imuTest extends robotCentric {
     NormalizedColorSensor colorSensorR;//declaring the colorSensor variable
     NormalizedColorSensor colorSensorL;//declaring the colorSensor variable
     public TouchSensor touchSensor;
+    public TouchSensor touchSensorL;
+    public TouchSensor touchSensorClaw;
+    public TouchSensor touchSensorEject;
     public RevBlinkinLedDriver lights;
-    private DigitalChannel red1;
-    private DigitalChannel green1;
-    private DigitalChannel red2;
-    private DigitalChannel green2;
-    private DigitalChannel red3;
-    private DigitalChannel green3;
-    private DigitalChannel red4;
-    private DigitalChannel green4;
-    //!added
-    //imu ( inside expansion hub )
-    public BNO055IMU imu;    //imu module inside expansion hub
-    public Orientation angles;     //imu uses these to find angles and classify them
-    public Acceleration gravity;    //Imu uses to get acceleration
+
 
     @Override
     public void runOpMode() {
@@ -130,6 +116,9 @@ public class imuTest extends robotCentric {
         colorSensorR = hardwareMap.get(NormalizedColorSensor.class, "colorSensorR");
         colorSensorL = hardwareMap.get(NormalizedColorSensor.class, "colorSensorL");
         touchSensor = hardwareMap.get(TouchSensor.class, ("touchSensor"));
+        touchSensorL = hardwareMap.get(TouchSensor.class, ("touchSensorL"));
+        touchSensorClaw = hardwareMap.get(TouchSensor.class, ("touchSensorClaw"));
+        touchSensorEject = hardwareMap.get(TouchSensor.class, ("touchSensorEject"));
 
         motorFrontLeft = hardwareMap.get(DcMotor.class, "motorFrontLeft");
         motorBackLeft = hardwareMap.get(DcMotor.class, "motorBackLeft");
@@ -140,21 +129,6 @@ public class imuTest extends robotCentric {
         //deadWheelR = hardwareMap.get(DcMotor.class, "deadWheelR");
         clawServo = hardwareMap.get(Servo.class, "clawServo");
         sparkLong = hardwareMap.get(DcMotor.class, "sparkLong");
-        //!added
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        gravity = imu.getGravity();
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        composeTelemetry();
-        //end
 
         //onInit();
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
@@ -176,10 +150,10 @@ public class imuTest extends robotCentric {
         motorBackLeft.setZeroPowerBehavior(BRAKE);
         motorFrontRight.setZeroPowerBehavior(BRAKE);
         motorFrontLeft.setZeroPowerBehavior(BRAKE);
-        red2.setMode(DigitalChannel.Mode.OUTPUT);
-        green2.setMode(DigitalChannel.Mode.OUTPUT);
         red1.setMode(DigitalChannel.Mode.OUTPUT);
         green1.setMode(DigitalChannel.Mode.OUTPUT);
+        red2.setMode(DigitalChannel.Mode.OUTPUT);
+        green2.setMode(DigitalChannel.Mode.OUTPUT);
         red3.setMode(DigitalChannel.Mode.OUTPUT);
         green3.setMode(DigitalChannel.Mode.OUTPUT);
         red4.setMode(DigitalChannel.Mode.OUTPUT);
@@ -190,93 +164,120 @@ public class imuTest extends robotCentric {
                 motorBackLeft.getCurrentPosition(),
                 motorFrontLeft.getCurrentPosition());
         closeClaw();
+        initVuforia();
+        initTfod();
+
+        if (tfod != null) {
+            tfod.activate();
+            tfod.setZoom(1.0, 16.0 / 9.0);
+        }
+        runVu(6, true);
         telemetry.update();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         closeClaw();
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        while (opModeIsActive()) {
-            telemetry.addData("heading", angles.firstAngle);
+        if (isStopRequested()) return;
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+        if (opModeIsActive()) {
+            //check touchSensors
+            while (!touchSensor.isPressed()) {
+                telemetry.addData("Hit the touch sensor", "Arm Touch Sensor");
+                telemetry.update();
+            }
+            boolean armFinished = false;
+            while (!armFinished) {
+                armEncoder(fiveTallConeVal, 1, 1, false);
+                armEncoder(0, 1, 1, true);
+                armFinished = true;
+            }
+            while (!touchSensorEject.isPressed()) {
+                telemetry.addData("Hit the touch sensor", "Eject Touch Sensor");
+                telemetry.update();
+            }
+            while (!touchSensorL.isPressed()) {
+                telemetry.addData("Hit the touch sensor", "Front Left Touch Sensor");
+                telemetry.update();
+            }
+            while (!touchSensorClaw.isPressed()) {
+                telemetry.addData("Hit the touch sensor", "Claw Touch Sensor");
+                telemetry.update();
+            }
+            boolean clawFinished = false;
+            while (!clawFinished) {
+                openClaw();
+                sleep(1000);
+                closeClaw();
+                clawFinished = true;
+            }
+            //check systems
+            telemetry.addData("Press eject touch sensor to start", "Wheels test");
+            telemetry.update();
+            while (!touchSensorEject.isPressed()) {
+                telemetry.addData("Hit the touch sensor", "Eject Touch Sensor");
+                telemetry.update();
+            }
+            boolean ran = false;
+            while (!ran) {
+                lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+                telemetry.addData("Running Wheels", "Clear");
+                sleep(2000);
+                lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+                encoderDrive(1, 4, 4, 1);
+                telemetry.update();
+                sleep(500);
+                turn(90);
+                telemetry.update();
+                sleep(500);
+                turn(-90);
+                telemetry.update();
+                sleep(500);
+                encoderDrive(1, -4, -4, 1);
+                telemetry.update();
+                sleep(500);
+                motorBackLeft.setPower(0);
+                motorBackRight.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                ran = true;
+            }
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+            sleep(1000);
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+            sleep(1000);
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+            sleep(1000);
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+            red1.setState(true);
+            green1.setState(false);
+            red2.setState(true);
+            green2.setState(false);
+            red3.setState(true);
+            green3.setState(false);
+            red4.setState(true);
+            green4.setState(false);
+            sleep(3000);
+            red1.setState(false);
+            green1.setState(true);
+            red2.setState(false);
+            green2.setState(true);
+            red3.setState(false);
+            green3.setState(true);
+            red4.setState(false);
+            green4.setState(true);
+            sleep(3000);
+
+            while (spot == 0) {
+                runVu(6, true);
+                telemetry.update();
+            }
+            telemetry.addData("Spot", spot);
+            sleep(3000);
+            telemetry.addData("all systems go", " ");
             telemetry.update();
         }
     }
 
-    //!added
-    public int refreshHeading(float usedAngle, double alterHeading) {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        int trueHeading = (int) ((int) usedAngle - alterHeading);
-        if (trueHeading < 0) {
-            trueHeading = 360 + trueHeading;
-        }
-        telemetry.addData("heading", trueHeading);
-        telemetry.addData("usedAngle", usedAngle);
-        telemetry.addData("alterHeading", alterHeading);
-        telemetry.update();
-        return -trueHeading;
-    }
-
-    public void correctByImu(float currentAngle, int targetAngle) {
-        int angle = (int) (targetAngle - currentAngle);
-        turn(angle);
-    }
-
-    void composeTelemetry() {
-        // At the beginning of each telemetry update, grab a bunch of data
-        // from the IMU that we will then display in separate lines.
-        telemetry.addAction(new Runnable() {
-            @Override
-            public void run() {
-                // Acquiring the angles is relatively expensive; we don't want
-                // to do that in each of the three items that need that info, as that's
-                // three times the necessary expense.
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                gravity = imu.getGravity();
-            }
-        });
-
-        telemetry.addLine()
-                .addData("status", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return imu.getSystemStatus().toShortString();
-                    }
-                })
-                .addData("calib", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return imu.getCalibrationStatus().toString();
-                    }
-                });
-        telemetry.addLine()
-                .addData("heading", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return formatAngle(angles.angleUnit, angles.firstAngle);
-                    }
-                })
-                .addData("roll", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return formatAngle(angles.angleUnit, angles.secondAngle);
-                    }
-                })
-                .addData("pitch", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return formatAngle(angles.angleUnit, angles.thirdAngle);
-                    }
-                });
-    }
-
-    String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
-    }
-
-    String formatDegrees(double degrees) {
-        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
-    }
-
-    //end
     //precise if exact 180, if not, then use the following
     //final int actualF=50;
     //final int actualR=100;

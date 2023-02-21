@@ -7,9 +7,9 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGR
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
+import static org.firstinspires.ftc.teamcode.Constants.*;
 
 import android.graphics.Color;
-
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -50,95 +50,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-//  |------
-//  |
-//  |------
-//  |
-//  |------
-//
-// \     /
-//  \   /
-//   \ /
-//    *
-//   / \
-//  /   \
-// /     \
-//
-//  |-------
-//  |
-//  |
-//  |
-//  |
-//  |-------
-//
-//  |------
-//  |
-//  |------
-//  |
-//  |------
-//
-//  |
-//  |
-//  |
-//  |
-//  |______
-//
-//  |-----
-//  |
-//  |-----|
-//        |
-//   _____|
-//
-//      *
-//      |
-//      |
-//      |
-//      |
-//
-//  |------|
-//  |      |
-//  |      |
-//  |      |
-//  |------|
-//
-//  |-------|
-//  |       |
-//  |-------/
-//  |      \
-//  |       \
 public class HardwareConfig {
-    //auto
-    public int turn = 77;
-    public double yMult = 24;
-    public double xMult = 10;
-    public double ovrCurrX = 0;
-    public double ovrCurrY = 0;
-    public double ovrTurn = 0;
-    public static final double COUNTS_PER_INCH_Side_dead = -665.08;
-    public static final double COUNTS_PER_INCH_Side = -100;
-    //offset
-    public double rOffset = distanceSensorCalibrator.rOffset;
-    public double lOffset = distanceSensorCalibrator.lOffset;//-5.1;
-    public double fOffset = distanceSensorCalibrator.fOffset;
-    public double bOffset = distanceSensorCalibrator.bOffset;
+
+
+    public static final String TFOD_MODEL_ASSET = "custom.tflite";
+    public static final String[] LABELS = {
+            "capacitor",//3
+            "led",//1
+            "resistor"//2
+    };
+    public static final String VUFORIA_KEY =
+            "AXmzBcj/////AAABme5HSJ/H3Ucup73WSIaV87tx/sFHYaWfor9OZVg6afr2Bw7kNolHd+mF5Ps91SlQpgBHulieI0jcd86kqJSwx46BZ8v8DS5S5x//eQWMEGjMDnvco4/oTcDwuSOLIVZG2UtLmJXPS1L3CipjabePFlqAL2JtBlN78p6ZZbRFSHW680hWEMSimZuQy/cMudD7J/MjMjMs7b925b8BkijlnTQYr7CbSlXrpDh5K+9fLlk2OyEZ4w7tm7e4UJDInJ/T3oi8PqqKCqkUaTkJWlQsvoELbDu5L2FgzsuDhBLe2rHtJRqfORd7n+6M30UdFSsxqq5TaZztkWgzRUr1GC3yBSTS6iFqEuL3g06GrfwOJF0F";
+    public VuforiaLocalizer vuforia;
+    public TFObjectDetector tfod;
     //arm
-    public static final double COUNTS_PER_MOTOR_REV_arm = 28;
-    public static final double DRIVE_GEAR_REDUCTION_arm = 40;
-    public static final double WHEEL_DIAMETER_INCHES_arm = 1.102;     // For figuring circumference
-    public static final double COUNTS_PER_INCH_arm = (COUNTS_PER_MOTOR_REV_arm * DRIVE_GEAR_REDUCTION_arm) /
-            (WHEEL_DIAMETER_INCHES_arm * 3.1415);
-    //wheels
-    public static final double COUNTS_PER_MOTOR_REV = 28;
-    public static final double WHEEL_DIAMETER_MM = 96;
-    public static final double DRIVE_GEAR_REDUCTION = 15;
-    public static final double WHEEL_DIAMETER_INCHES = WHEEL_DIAMETER_MM * 0.0393701;     // For figuring circumference
-    public static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
-    public static final double COUNTS_PER_MOTOR_REV_dead = 8192;
-    public static final double WHEEL_DIAMETER_MM_dead = 96;
-    public static final double WHEEL_DIAMETER_INCHES_dead = WHEEL_DIAMETER_MM_dead * 0.0393701;     // For figuring circumference
-    public static final double COUNTS_PER_INCH_dead = (COUNTS_PER_MOTOR_REV_dead) /
-            (WHEEL_DIAMETER_INCHES_dead * Math.PI);
     //other variables
     public boolean slowModeIsOn = false;//declaring the slowModeIsOn variable
     public boolean slowModeIsOn2 = false;//declaring the slowModeIsOn variable
@@ -152,16 +77,10 @@ public class HardwareConfig {
     public boolean clawOpen = false;//declaring the clawOpen variable
 
     //arm labels
-    public final int baseArmPosition = 0;
-    public static final int armLimit = 4250;//declaring the armLimit variable
-    public final int baseArm = 0;//declaring the baseArm variable
-    public static final int lowPoleVal = 1570;//should be about 1/3 of arm limit
-    public static final int midPoleVal = 290;//should be about 2/3 of arm limit
-    public static final int fiveTallConeVal = 300;
-    public static final int topPoleVal = armLimit;//should be close to armLimit
+
     //public boolean limiter = false;//declaring the limiter variable, is on or off
     //public boolean limiting = false;//declaring the limiting variable
-    public final ElapsedTime runtime = new ElapsedTime();
+    public static final ElapsedTime runtime = new ElapsedTime();
 
     //rumble
     public Gamepad.RumbleEffect customRumbleEffect;//declaring the customRumbleEffect variable
@@ -173,21 +92,18 @@ public class HardwareConfig {
     public boolean isEnd = false;//declaring the isEnd variable
 
     //rake
-    public final int baseFlip = -90;//declaring the baseFlip variable
-    public final int magicFlip = baseFlip + 50;//declaring the magicFlip variable
-    public final int baseUnCone = 0;
-    public final int magicUnCone = baseUnCone + 90;
+
     double yAxisPower;
     double zAxisPower;
     //motors
-    public DcMotor motorFrontLeft = null;
-    public DcMotor motorBackLeft = null;
-    public DcMotor motorFrontRight = null;
-    public DcMotor motorBackRight = null;
+    public static DcMotor motorFrontLeft = null;
+    public static DcMotor motorBackLeft = null;
+    public static DcMotor motorFrontRight = null;
+    public static DcMotor motorBackRight = null;
     //public DcMotor deadWheel = null;//declaring the deadWheel motor
     public DcMotor tapeMeasure = null;
-    public DcMotor yArmMotor = null;
-    public DcMotor zArmMotor = null;
+    public static DcMotor yArmMotor = null;
+    public static DcMotor zArmMotor = null;
     public TouchSensor touchSensor;
     public NormalizedColorSensor colorSensorR;//declaring the colorSensor variable
     public NormalizedColorSensor colorSensorL;//declaring the colorSensor variable
@@ -204,18 +120,9 @@ public class HardwareConfig {
     public DistanceSensor fDistance;//declaring the fDistance sensor
     public RevBlinkinLedDriver lights;
     public Servo clawServo = null;
-    public DcMotor pitchMotor = null;
+    public static DcMotor pitchMotor = null;
     public Servo tmServo = null;
-    public static final String TFOD_MODEL_ASSET = "custom.tflite";
-    public static final String[] LABELS = {
-            "capacitor",//3
-            "led",//1
-            "resistor"//2
-    };
-    public static final String VUFORIA_KEY =
-            "AXmzBcj/////AAABme5HSJ/H3Ucup73WSIaV87tx/sFHYaWfor9OZVg6afr2Bw7kNolHd+mF5Ps91SlQpgBHulieI0jcd86kqJSwx46BZ8v8DS5S5x//eQWMEGjMDnvco4/oTcDwuSOLIVZG2UtLmJXPS1L3CipjabePFlqAL2JtBlN78p6ZZbRFSHW680hWEMSimZuQy/cMudD7J/MjMjMs7b925b8BkijlnTQYr7CbSlXrpDh5K+9fLlk2OyEZ4w7tm7e4UJDInJ/T3oi8PqqKCqkUaTkJWlQsvoELbDu5L2FgzsuDhBLe2rHtJRqfORd7n+6M30UdFSsxqq5TaZztkWgzRUr1GC3yBSTS6iFqEuL3g06GrfwOJF0F";
-    public VuforiaLocalizer vuforia;
-    public TFObjectDetector tfod;
+
     public int spot = 0;
     //color
     final float[] hsvValues = new float[3];//gets values for color sensor
@@ -262,16 +169,10 @@ public class HardwareConfig {
     double movementDegree;
     double offSet = 0;
     //
-    //tape measure
-    double tapePower;
-    public double tapeMeasureDiameter = 7.5;
-    public int tapeMeasureLength = 15 * 12;
-    public double countsPerInchTape = 10;
-    public double tickPerTapeMeasure = countsPerInchTape * tapeMeasureLength;
     //
     //imu
-    public BNO055IMU imu;
-    public Orientation angles;     //imu uses these to find angles and classify them
+    public static BNO055IMU imu;
+    public static Orientation angles;     //imu uses these to find angles and classify them
     public Acceleration gravity;    //Imu uses to get acceleration
     //
     //maintenance mode
@@ -290,8 +191,6 @@ public class HardwareConfig {
     public int pitchBase = 0;
     public int pitchMagic = pitchBase + 90;
     //
-    //tmServo
-    public int tmPose = 68;
     //
     private static final float mmPerInch = 25.4f;
     private static final float mmTargetHeight = 6 * mmPerInch;          // the height of the center of the target image above the floor
@@ -310,7 +209,7 @@ public class HardwareConfig {
     //external
     HardwareMap hardwareMap = null;
 
-    private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
+    private static LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
 
     public HardwareConfig(LinearOpMode opmode) {
         myOpMode = opmode;
@@ -564,30 +463,6 @@ public class HardwareConfig {
         //yAxisPower = myOpMode.gamepad2.left_stick_y;
         zAxisPower = myOpMode.gamepad2.right_stick_y;
         pitchPower = -myOpMode.gamepad2.left_stick_y;
-    }
-
-    public void antiTip() {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//get and initialize the IMU
-        double roll = angles.secondAngle;
-        double maxRoll = 10;
-        double minRoll = -10;
-        if (roll > maxRoll) {
-            //tipped to right
-            sideWaysEncoderDrive(1, -Math.toRadians(roll), 1);
-        } else if (roll < minRoll) {
-            //tipped to left
-            sideWaysEncoderDrive(1, Math.toRadians(roll), 1);
-        }
-        double pitch = angles.thirdAngle + 180;
-        double maxPitch = 10;
-        double minPitch = -10;
-        if (pitch > maxPitch) {
-            //tipped to front
-            encoderDrive(1, Math.toRadians(pitch), Math.toRadians(pitch), 1);
-        } else if (pitch < minPitch) {
-            //tipped to back
-            encoderDrive(1, -Math.toRadians(pitch), -Math.toRadians(pitch), 1);
-        }
     }
 
     public void tapeMeasure() {
@@ -940,9 +815,7 @@ public class HardwareConfig {
         statusVal = status;
     }//set a new controller/game status
 
-    public int getAverage(double firstVal, double secondVal) {
-        return (int) ((firstVal + secondVal) / 2);
-    }
+
 
 
     //
@@ -1059,9 +932,9 @@ public class HardwareConfig {
     //    myOpMode.telemetry.update();
     //}
 
-    public void encoderDrive(double speed,
-                             double leftInches, double rightInches,
-                             double timeoutS) {
+    public static void encoderDrive(double speed,
+                                    double leftInches, double rightInches,
+                                    double timeoutS) {
         int newLeftTarget;
         int newRightTarget;
         int newDLeftTarget;
@@ -1120,9 +993,9 @@ public class HardwareConfig {
         }
     }
 
-    public void sideWaysEncoderDrive(double speed,
-                                     double inches,
-                                     double timeoutS) {//+=right //-=left
+    public static void sideWaysEncoderDrive(double speed,
+                                            double inches,
+                                            double timeoutS) {//+=right //-=left
         int newFRTarget;
         int newFLTarget;
         int newBRTarget;
@@ -1281,7 +1154,7 @@ public class HardwareConfig {
         myOpMode.telemetry.update();
     }
 
-    public void resetEncoders() {
+    public static void resetEncoders() {
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -1289,137 +1162,10 @@ public class HardwareConfig {
         pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         yArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         zArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //deadWheelL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //deadWheelR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //sparkLong.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     //
 //distance
-    public void updateDistance() {
-        fDistanceVal = (fDistance.getDistance(DistanceUnit.CM) + fOffset);
-        lDistanceVal = (lDistance.getDistance(DistanceUnit.CM) + lOffset);
-        rDistanceVal = (rDistance.getDistance(DistanceUnit.CM) + rOffset);
-    }
-
-    public void adjustWDist(String sensor, double dist, double power, boolean closerThanDist) {//less than goes opposite way
-        updateDistance();
-        if (Objects.equals(sensor, "f")) {
-            if (!closerThanDist) {
-                while (fDistanceVal > dist) {
-                    updateDistance();
-                    fDistanceVal = (fDistance.getDistance(DistanceUnit.CM) + fOffset);
-                    myOpMode.telemetry.addData("Distance", fDistanceVal);
-                    myOpMode.telemetry.update();
-                    motorFrontLeft.setPower(-power);
-                    motorFrontRight.setPower(-power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(-power);
-                    if (fDistanceVal <= dist) {
-                        motorFrontLeft.setPower(0);
-                        motorFrontRight.setPower(0);
-                        motorBackLeft.setPower(0);
-                        motorBackRight.setPower(0);
-                    }
-                }
-            }
-            if (closerThanDist) {
-                power = -power;
-                while (fDistanceVal < dist) {
-                    updateDistance();
-                    fDistanceVal = (fDistance.getDistance(DistanceUnit.CM) + fOffset);
-                    myOpMode.telemetry.addData("Distance", fDistanceVal);
-                    myOpMode.telemetry.update();
-                    motorFrontLeft.setPower(-power);
-                    motorFrontRight.setPower(-power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(-power);
-                    if (fDistanceVal >= dist) {
-                        motorFrontLeft.setPower(0);
-                        motorFrontRight.setPower(0);
-                        motorBackLeft.setPower(0);
-                        motorBackRight.setPower(0);
-                    }
-                }
-            }
-        }
-        if (Objects.equals(sensor, "r")) {//shift right
-            if (!closerThanDist) {
-                while (rDistanceVal > dist) {
-                    updateDistance();
-                    myOpMode.telemetry.addData("Distance", rDistanceVal);
-                    myOpMode.telemetry.update();
-                    rDistanceVal = (rDistance.getDistance(DistanceUnit.CM) + rOffset);
-                    motorFrontLeft.setPower(-power);
-                    motorFrontRight.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(-power);
-                    if (rDistanceVal <= dist) {
-                        motorFrontLeft.setPower(0);
-                        motorFrontRight.setPower(0);
-                        motorBackLeft.setPower(0);
-                        motorBackRight.setPower(0);
-                    }
-                }
-            }
-            if (closerThanDist) {
-                while (rDistanceVal < dist) {
-                    updateDistance();
-                    myOpMode.telemetry.addData("Distance", rDistanceVal);
-                    myOpMode.telemetry.update();
-                    rDistanceVal = (rDistance.getDistance(DistanceUnit.CM) + rOffset);
-                    motorFrontLeft.setPower(power);
-                    motorFrontRight.setPower(-power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(power);
-                    if (rDistanceVal >= dist) {
-                        motorFrontLeft.setPower(0);
-                        motorFrontRight.setPower(0);
-                        motorBackLeft.setPower(0);
-                        motorBackRight.setPower(0);
-                    }
-                }
-            }
-        }
-        if (Objects.equals(sensor, "l")) {//shift left
-            if (!closerThanDist) {
-                while (lDistanceVal > dist) {
-                    updateDistance();
-                    myOpMode.telemetry.addData("Distance", lDistanceVal);
-                    myOpMode.telemetry.update();
-                    lDistanceVal = (lDistance.getDistance(DistanceUnit.CM) + lOffset);
-                    motorFrontLeft.setPower(power);
-                    motorFrontRight.setPower(-power);
-                    motorBackLeft.setPower(-power);
-                    motorBackRight.setPower(power);
-                    if (lDistanceVal <= dist) {
-                        motorFrontLeft.setPower(0);
-                        motorFrontRight.setPower(0);
-                        motorBackLeft.setPower(0);
-                        motorBackRight.setPower(0);
-                    }
-                }
-            }
-            if (closerThanDist) {
-                while (lDistanceVal < dist) {
-                    updateDistance();
-                    myOpMode.telemetry.addData("Distance", lDistanceVal);
-                    myOpMode.telemetry.update();
-                    lDistanceVal = (lDistance.getDistance(DistanceUnit.CM) + lOffset);
-                    motorFrontLeft.setPower(-power);
-                    motorFrontRight.setPower(power);
-                    motorBackLeft.setPower(power);
-                    motorBackRight.setPower(-power);
-                    if (lDistanceVal >= dist) {
-                        motorFrontLeft.setPower(0);
-                        motorFrontRight.setPower(0);
-                        motorBackLeft.setPower(0);
-                        motorBackRight.setPower(0);
-                    }
-                }
-            }
-        }
-    }
 
     //
 //walmart odo
@@ -1437,15 +1183,8 @@ public class HardwareConfig {
         resetEncoders();
     }
 
-    public void setOvr(double x, double y) {
-        ovrCurrX = x;
-        ovrCurrY = y;
-    }
-
     public void advGoSpot(double currX, double currY, double targetX, double targetY, double power, boolean combo, int pose
-            , boolean isUp, String orientation, double orientationVal, boolean endTurn, int turn,
-                          boolean checkDistanceX, boolean checkDistanceY, String xSensor, double xDist, boolean lessThanX,
-                          String ySensor, double yDist, boolean lessThanY) {
+            , boolean isUp, String orientation, double orientationVal, boolean endTurn, int turn) {
         if (ovrTurn % 180 == 0) {
             double mult = ovrTurn / 180;
             orientationVal *= (Math.pow(-1, mult));
@@ -1478,17 +1217,9 @@ public class HardwareConfig {
                 }
             }
         }
-
-        if (checkDistanceX) {
-            adjustWDist(xSensor, xDist, power, lessThanX);
-        }
-        if (checkDistanceY) {
-            adjustWDist(ySensor, yDist, power, lessThanY);
-        }
         if (endTurn) {
             turn(turn);
         }
-        setOvr(targetX, targetY);
         ovrTurn += turn;
         //telemetry.addData("orientation", orientation);
         myOpMode.telemetry.update();
