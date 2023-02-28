@@ -2,12 +2,7 @@ package org.firstinspires.ftc.teamcode.externalHardware;
 
 import static android.os.SystemClock.sleep;
 
-import static org.firstinspires.ftc.teamcode.Constants.ovrCurrX;
-import static org.firstinspires.ftc.teamcode.Constants.ovrCurrY;
-import static org.firstinspires.ftc.teamcode.Constants.tmPose;
-import static org.firstinspires.ftc.teamcode.Constants.topPoleVal;
-import static org.firstinspires.ftc.teamcode.Constants.xMult;
-import static org.firstinspires.ftc.teamcode.Constants.yMult;
+import static org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig.*;
 import static org.firstinspires.ftc.teamcode.MathFunctions.setOvr;
 
 import android.graphics.Color;

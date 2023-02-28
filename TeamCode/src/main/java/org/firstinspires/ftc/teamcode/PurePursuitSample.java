@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.Constants.topPoleVal;
+import static org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig.*;
 
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
@@ -91,9 +91,9 @@ public class PurePursuitSample extends CommandOpMode {
         Waypoint p6 = new PointTurnWaypoint(
                 3, 3, 90, moveSpeed,
                 turnSpeed, followRadius, 2, rotationBuffer);
-        Waypoint p7 = new InterruptWaypoint(
-                3, 2, moveSpeed,
-                turnSpeed, followRadius, 2, rotationBuffer, this::runArmTop);//, robot.armEncoder(robot.topPoleVal,1,2,false));
+        //Waypoint p7 = new InterruptWaypoint(
+        //        3, 2, moveSpeed,
+        //        turnSpeed, followRadius, 2, rotationBuffer, this::runArmTop);//, robot.armEncoder(robot.topPoleVal,1,2,false));
         Waypoint p8 = new PointTurnWaypoint(
                 3, 2, -90, moveSpeed,
                 turnSpeed, followRadius,
@@ -109,9 +109,5 @@ public class PurePursuitSample extends CommandOpMode {
         //        p1, p2, p3, p4, p5, p6, p8, p9
         //);
         //ppCommand.schedule();
-    }
-
-    public void runArmTop() {
-        robot.yArmEncoder(topPoleVal, 1, 2, false);
     }
 }

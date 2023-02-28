@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.externalHardware.autoX;
 
+import static org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig.*;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 import org.firstinspires.ftc.teamcode.externalHardware.autoHardware;
-import static org.firstinspires.ftc.teamcode.Constants.*;
 @Autonomous(name = "advAutoRX", group = "Robot")
 @Disabled
 public class advAutoRX extends LinearOpMode {

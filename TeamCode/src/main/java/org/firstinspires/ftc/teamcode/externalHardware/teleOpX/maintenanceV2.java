@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.externalHardware.teleOpX;
 
-import static org.firstinspires.ftc.teamcode.Constants.countsPerInchTape;
-import static org.firstinspires.ftc.teamcode.Constants.tmPose;
+import static org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
