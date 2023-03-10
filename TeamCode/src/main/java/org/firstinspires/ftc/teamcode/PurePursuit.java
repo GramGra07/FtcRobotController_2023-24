@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig.*;
-
 import com.arcrobotics.ftclib.command.CommandOpMode;
 import com.arcrobotics.ftclib.command.OdometrySubsystem;
 import com.arcrobotics.ftclib.command.PurePursuitCommand;
@@ -14,7 +12,6 @@ import com.arcrobotics.ftclib.purepursuit.Path;
 import com.arcrobotics.ftclib.purepursuit.Waypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.EndWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.GeneralWaypoint;
-import com.arcrobotics.ftclib.purepursuit.waypoints.InterruptWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.PointTurnWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.StartWaypoint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -22,9 +19,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 
-@Autonomous(name = "PurePursuitSample", group = "Robot")
-@Disabled
-public class PurePursuitSample extends CommandOpMode {
+@Autonomous(name = "PurePursuit", group = "Robot")
+//@Disabled
+public class PurePursuit extends CommandOpMode {
 
     // define our constants
     static final double TRACKWIDTH = 13;
@@ -82,9 +79,10 @@ public class PurePursuitSample extends CommandOpMode {
         double moveSpeed = 0.8;
         double rotationBuffer = 10;
         double followRadius = 10;
+
         Waypoint p1 = new StartWaypoint(pose2d);
         Waypoint p2 = new GeneralWaypoint(1, 0, moveSpeed, turnSpeed, 10);
-        Waypoint p3 = new GeneralWaypoint(1, 3);
+        Waypoint p3 = new GeneralWaypoint(0, 2);
         Waypoint p4 = new GeneralWaypoint(2, 3);
         Waypoint p5 = new GeneralWaypoint(2, 3.6, 90,
                 moveSpeed, turnSpeed, followRadius);
@@ -100,7 +98,7 @@ public class PurePursuitSample extends CommandOpMode {
                 2, rotationBuffer
         );
         Waypoint p9 = new EndWaypoint();
-        Path m_path = new Path(p1, p2, p3, p4, p5, p6, p8, p9);
+        Path m_path = new Path(p1, p2);//, p3, p4, p5, p6, p8, p9);
         m_path.init();
         m_path.followPath(m_robotDrive, m_robotOdometry);
         // create our pure pursuit command
