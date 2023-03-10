@@ -21,7 +21,7 @@ import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.teleOp.robotCentric;
+import org.firstinspires.ftc.teamcode.ggsamples.nonx.teleOp.robotCentric;
 
 
 @TeleOp(name = "driverAssistedTest", group = "Robot")//declaring the name and group of the opmode

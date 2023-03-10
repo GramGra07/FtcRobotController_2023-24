@@ -19,7 +19,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 
-@Autonomous(name = "PurePursuit", group = "Robot")
+@Autonomous(name = "Pure Pursuit", group = "Robot")
 //@Disabled
 public class PurePursuit extends CommandOpMode {
 
@@ -53,7 +53,7 @@ public class PurePursuit extends CommandOpMode {
 
         leftEncoder = new MotorEx(hardwareMap, "motorBackLeft");
         rightEncoder = new MotorEx(hardwareMap, "motorBackRight");
-        centerEncoder = new MotorEx(hardwareMap, "deadWheel");
+        // centerEncoder = new MotorEx(hardwareMap, "deadWheel");
 
         // calculate multiplier
         TICKS_TO_INCHES = WHEEL_DIAMETER * Math.PI / 8192;
@@ -62,7 +62,7 @@ public class PurePursuit extends CommandOpMode {
         m_robotOdometry = new HolonomicOdometry(
                 () -> leftEncoder.getCurrentPosition() * TICKS_TO_INCHES_POWERED,
                 () -> rightEncoder.getCurrentPosition() * TICKS_TO_INCHES_POWERED,
-                () -> centerEncoder.getCurrentPosition() * TICKS_TO_INCHES,
+                () -> leftEncoder.getCurrentPosition() * TICKS_TO_INCHES,
                 TRACKWIDTH, CENTER_WHEEL_OFFSET
         );
         OdometrySubsystem m_odometry = new OdometrySubsystem(m_robotOdometry);
@@ -98,13 +98,13 @@ public class PurePursuit extends CommandOpMode {
                 2, rotationBuffer
         );
         Waypoint p9 = new EndWaypoint();
-        Path m_path = new Path(p1, p2);//, p3, p4, p5, p6, p8, p9);
+        Path m_path = new Path(p1, p2, p9);//, p3, p4, p5, p6, p8, p9);
         m_path.init();
         m_path.followPath(m_robotDrive, m_robotOdometry);
         // create our pure pursuit command
         //PurePursuitCommand ppCommand = new PurePursuitCommand(
         //        m_robotDrive, m_odometry,
-        //        p1, p2, p3, p4, p5, p6, p8, p9
+        //        p1, p2, p9
         //);
         //ppCommand.schedule();
     }

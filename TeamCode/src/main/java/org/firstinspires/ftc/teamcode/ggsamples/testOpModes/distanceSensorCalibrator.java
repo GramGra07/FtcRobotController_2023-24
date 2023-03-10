@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.teleOp.robotCentric;
+import org.firstinspires.ftc.teamcode.ggsamples.nonx.teleOp.robotCentric;
+
 
 import java.util.Objects;
 
