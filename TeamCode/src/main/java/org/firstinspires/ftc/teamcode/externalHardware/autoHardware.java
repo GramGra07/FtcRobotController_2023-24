@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.externalHardware;
 
 import static android.os.SystemClock.sleep;
-
-import static org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig.*;
 import static org.firstinspires.ftc.teamcode.MathFunctions.setOvr;
 
 import android.graphics.Color;
@@ -12,8 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
-public class autoHardware extends HardwareConfig {
-    public double ovrPower = 0.5;
+public class autoHardware extends HardwareConfig {//auto version of hardware config
+    public double ovrPower = 0.5;//sets power
     HardwareMap hardwareMap = null;
 
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
@@ -25,7 +23,7 @@ public class autoHardware extends HardwareConfig {
 
     public void initAuto(HardwareMap ahwMap) {
         hardwareMap = ahwMap;
-        init(ahwMap);
+        init(ahwMap);//initializes with hardware config
         //not same
         myOpMode.telemetry.addData("Starting at", "%7d :%7d",
                 motorBackRight.getCurrentPosition(),

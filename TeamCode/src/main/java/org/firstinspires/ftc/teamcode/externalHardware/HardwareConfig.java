@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
 import android.graphics.Color;
+
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
@@ -32,7 +33,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
@@ -43,21 +43,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.RobotLog;
-import org.firstinspires.ftc.teamcode.ggsamples.testOpModes.distanceSensorCalibrator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class HardwareConfig {
+public class HardwareConfig {//this is an external opmode that can have public variables used by everything
 
 
-    public static final String TFOD_MODEL_ASSET = "custom.tflite";
+    public static final String TFOD_MODEL_ASSET = "custom.tflite";//use the custom tflite model
     public static final String[] LABELS = {
             "capacitor",//3
             "led",//1
             "resistor"//2
     };
+    //my personal key
     public static final String VUFORIA_KEY =
             "AXmzBcj/////AAABme5HSJ/H3Ucup73WSIaV87tx/sFHYaWfor9OZVg6afr2Bw7kNolHd+mF5Ps91SlQpgBHulieI0jcd86kqJSwx46BZ8v8DS5S5x//eQWMEGjMDnvco4/oTcDwuSOLIVZG2UtLmJXPS1L3CipjabePFlqAL2JtBlN78p6ZZbRFSHW680hWEMSimZuQy/cMudD7J/MjMjMs7b925b8BkijlnTQYr7CbSlXrpDh5K+9fLlk2OyEZ4w7tm7e4UJDInJ/T3oi8PqqKCqkUaTkJWlQsvoELbDu5L2FgzsuDhBLe2rHtJRqfORd7n+6M30UdFSsxqq5TaZztkWgzRUr1GC3yBSTS6iFqEuL3g06GrfwOJF0F";
     public VuforiaLocalizer vuforia;
@@ -67,18 +67,12 @@ public class HardwareConfig {
     public boolean slowModeIsOn = false;//declaring the slowModeIsOn variable
     public boolean slowModeIsOn2 = false;//declaring the slowModeIsOn variable
     public boolean reversed = false;//declaring the reversed variable
-    public int pitchMult = 2;
     //servo variables
     public double position = 0;//sets servo position to 0-1 multiplier
     public final double degree_mult = 0.00555555554;//100/180
     public final int baseClawVal = 30;//declaring the baseClawVal variable
     public final int magicNumOpen = 60;//declaring the magicNumOpen variable
     public boolean clawOpen = false;//declaring the clawOpen variable
-
-    //arm labels
-
-    //public boolean limiter = false;//declaring the limiter variable, is on or off
-    //public boolean limiting = false;//declaring the limiting variable
     public static final ElapsedTime runtime = new ElapsedTime();
 
     //rumble
@@ -86,20 +80,16 @@ public class HardwareConfig {
     public final double endgame = 120;//declaring the endgame variable
     public boolean isEndgame = false;//declaring the isEndgame variable
     public Gamepad.RumbleEffect customRumbleEffect1;// declaring the customRumbleEffect1 variable
-    public boolean rumble = false;//declaring the rumble variable
     public final double end = 150;//declaring the end variable
     public boolean isEnd = false;//declaring the isEnd variable
 
-    //rake
-
-    double yAxisPower;
     double zAxisPower;
     //motors
+    //declaring all motors
     public static DcMotor motorFrontLeft = null;
     public static DcMotor motorBackLeft = null;
     public static DcMotor motorFrontRight = null;
     public static DcMotor motorBackRight = null;
-    //public DcMotor deadWheel = null;//declaring the deadWheel motor
     public DcMotor tapeMeasure = null;
     public static DcMotor yArmMotor = null;
     public static DcMotor zArmMotor = null;
@@ -122,7 +112,7 @@ public class HardwareConfig {
     public static DcMotor pitchMotor = null;
     public Servo tmServo = null;
 
-    public int spot = 0;
+    public int spot = 0;//used as a variable to store where to go
     //color
     final float[] hsvValues = new float[3];//gets values for color sensor
     private final float redVal = 0;//the red value in rgb
@@ -131,9 +121,6 @@ public class HardwareConfig {
     private final String colorName = "N/A";//gets color name
     //
     public String statusVal = "OFFLINE";
-    public double fDistanceVal = 0;
-    public double lDistanceVal = 0;
-    public double rDistanceVal = 0;
     //isRight side
     public boolean right = true;//declaring the right variable
     private final float redValR = 0;//the red value in rgb
@@ -190,7 +177,7 @@ public class HardwareConfig {
     public int pitchBase = 0;
     public int pitchMagic = pitchBase + 90;
     //
-
+    //used for encoders
     public static int turn = 77;
     public static double yMult = 24;
     public static double xMult = 10;
@@ -240,7 +227,7 @@ public class HardwareConfig {
     private static final float halfTile = 12 * mmPerInch;
     private static final float oneAndHalfTile = 36 * mmPerInch;
 
-    // Class Members
+    // vuforia side panels
     private final OpenGLMatrix lastLocation = null;
     private VuforiaTrackables targets = null;
     private WebcamName webcamName = null;
@@ -261,6 +248,7 @@ public class HardwareConfig {
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
         ElapsedTime runtime = new ElapsedTime();//declaring the runtime variable
+        //imu
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -273,6 +261,7 @@ public class HardwareConfig {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
         gravity = imu.getGravity();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        //declarations
         lights = ahwMap.get(RevBlinkinLedDriver.class, "blinkin");
         rDistance = ahwMap.get(DistanceSensor.class, "rDistance");//getting the rDistance sensor
         lDistance = ahwMap.get(DistanceSensor.class, "lDistance");//getting the lDistance sensor
@@ -288,7 +277,6 @@ public class HardwareConfig {
         colorSensorR = ahwMap.get(NormalizedColorSensor.class, "colorSensorR");
         colorSensorL = ahwMap.get(NormalizedColorSensor.class, "colorSensorL");
         // Declare our motors
-        // Make sure your ID's match your configuration
         motorFrontLeft = ahwMap.get(DcMotor.class, "motorFrontLeft");//getting the motorFrontLeft motor
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
@@ -305,6 +293,7 @@ public class HardwareConfig {
         touchSensorEject = ahwMap.get(TouchSensor.class, ("touchSensorEject"));
         tapeMeasure = ahwMap.get(DcMotor.class, "tapeMeasure");
 
+        //reset all encoders
         yArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the sparkLong encoder
         zArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the sparkShort encoder
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontLeft encoder
@@ -314,9 +303,10 @@ public class HardwareConfig {
         //deadWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the deadWheel encoder
         pitchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         tapeMeasure.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the deadWheel encoder
-
+        //reversals
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         tapeMeasure.setDirection(DcMotor.Direction.REVERSE);
+        //set all to use encoders
         yArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the sparkLong encoder to run using encoder
         zArmMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the sparkShort encoder to run using encoder
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorFrontLeft encoder to run using encoder
@@ -327,6 +317,7 @@ public class HardwareConfig {
         pitchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         tapeMeasure.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the deadWheel encoder to run using encoder
 
+        //set all to brake when set 0 power
         motorBackRight.setZeroPowerBehavior(BRAKE);
         motorBackLeft.setZeroPowerBehavior(BRAKE);
         motorFrontRight.setZeroPowerBehavior(BRAKE);
@@ -335,6 +326,7 @@ public class HardwareConfig {
         zArmMotor.setZeroPowerBehavior(BRAKE);
         tapeMeasure.setZeroPowerBehavior(BRAKE);
         pitchMotor.setZeroPowerBehavior(BRAKE);
+        //to use digital led outputs
         red1.setMode(DigitalChannel.Mode.OUTPUT);//setting the red1 light to output
         green1.setMode(DigitalChannel.Mode.OUTPUT);//setting the green1 light to output
         red2.setMode(DigitalChannel.Mode.OUTPUT);//setting the red2 light to output
@@ -344,16 +336,15 @@ public class HardwareConfig {
         red4.setMode(DigitalChannel.Mode.OUTPUT);//setting the red4 light to output
         green4.setMode(DigitalChannel.Mode.OUTPUT);//setting the green4 light to output
 
-        //flipper.setPosition(setServo(magicFlip));//setting the flipper servo to the magicFlip position
         runtime.reset();//resetting the runtime variable
+        //LED
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+        //logging stuff, not completely tested
         if (myOpMode.isStopRequested()) {
             log((myOpMode.getClass()) + "stopped");
             return;
         }
-
-
         log("Init Done");
         if (myOpMode.isStarted()) {
             log((myOpMode.getClass()) + "started");
@@ -361,7 +352,7 @@ public class HardwareConfig {
 
     }
 
-    void initTrackables(HardwareMap ahwMap) {
+    void initTrackables(HardwareMap ahwMap) {//vuforia tags
         webcamName = ahwMap.get(WebcamName.class, "Webcam");
 
         /*
@@ -441,12 +432,12 @@ public class HardwareConfig {
     }
 
     public void doBulk(boolean fieldCentric) {
-        switches();
-        doClaw(false, 0);
-        drive(fieldCentric, slowPower);
+        switches();//anything that will switch on button press
+        doClaw(false, 0);//controls claw
+        drive(fieldCentric, slowPower);//will drive robot
         runArm();
         assistArm();
-        tapeMeasure();
+        tapeMeasure();//runs tape measure
         //
         // check all the trackable targets to see which one (if any) is visible.
         //targetVisible = false;
@@ -481,8 +472,8 @@ public class HardwareConfig {
         //} else {
         //    myOpMode.telemetry.addData("Visible Target", "none");
         //}
-        power();
-        buildTelemetry();
+        power();//sets power to power variables
+        buildTelemetry();//makes telemetry
     }
 
     public void power() {
@@ -539,39 +530,6 @@ public class HardwareConfig {
         color = "GREEN";
         isSolid = true;
     }
-
-    //public void runOldArm() {
-    //    armPower = -myOpMode.gamepad2.left_stick_y;
-    //    oldPresets();
-    //}
-    //
-    //public void oldPresets() {
-    //    if (myOpMode.gamepad2.left_stick_y != 0) {
-    //        armPower = -myOpMode.gamepad2.left_stick_y;
-    //    } else if (myOpMode.gamepad2.y) {//top level
-    //        if (sparkLong.getCurrentPosition() < topPoleVal) {//go up
-    //            armPower = 1;
-    //        }
-    //    } else if (myOpMode.gamepad2.a) {//base
-    //        if (sparkLong.getCurrentPosition() > baseArm) {//go down
-    //            armPower = -1;
-    //        }
-    //    } else if (myOpMode.gamepad2.b) {//middle
-    //        if (sparkLong.getCurrentPosition() > midPoleVal + 50) {//go down
-    //            armPower = -1;
-    //        }
-    //        if (sparkLong.getCurrentPosition() < midPoleVal - 50) {//go up
-    //            armPower = 1;
-    //        }
-    //    } else if (myOpMode.gamepad2.x) {//low
-    //        if (sparkLong.getCurrentPosition() > lowPoleVal + 50) {//go down
-    //            armPower = -1;
-    //        }
-    //        if (sparkLong.getCurrentPosition() < lowPoleVal - 50) {//go up
-    //            armPower = 1;
-    //        }
-    //    }
-    //}
 
     public void doClaw(boolean expandIfOver, int armOver) {
         //claw code
@@ -855,13 +813,9 @@ public class HardwareConfig {
 
     public void updateStatus(String status) {
         statusVal = status;
-    }//set a new controller/game status
+    }
 
-
-
-
-    //
-//claw
+    //claw
     public double setServo(int degrees) {
         position = degree_mult * degrees;
         return position;
@@ -875,8 +829,7 @@ public class HardwareConfig {
         clawServo.setPosition(setServo(baseClawVal));
     }
 
-    //
-//encoder
+    //encoder
     public void tapeEncoder(int pose, double speed, double timeOut, boolean isOut) {
         tapeMeasure.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         tapeMeasure.setTargetPosition(pose);
@@ -1206,11 +1159,7 @@ public class HardwareConfig {
         zArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    //
-//distance
-
-    //
-//walmart odo
+    //walmart odo
     public void turn(int degrees) {
         resetEncoders();
         if (degrees > 180) {
