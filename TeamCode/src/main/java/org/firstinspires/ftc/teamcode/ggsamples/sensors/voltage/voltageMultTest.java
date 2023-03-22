@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.ggsamples.voltage;
+package org.firstinspires.ftc.teamcode.ggsamples.sensors.voltage;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 

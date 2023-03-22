@@ -38,6 +38,7 @@ public class MathFunctions extends HardwareConfig {
             encoderDrive(1, -Math.toRadians(pitch), -Math.toRadians(pitch), 1);
         }
     }
+
     public static int getAverage(List val) {
         int sum = 0;
         for (int i = 0; i < val.size(); i++) {
@@ -45,6 +46,7 @@ public class MathFunctions extends HardwareConfig {
         }
         return sum / val.size();
     }
+
     public static void setOvr(double x, double y) {
         ovrCurrX = x;
         ovrCurrY = y;
