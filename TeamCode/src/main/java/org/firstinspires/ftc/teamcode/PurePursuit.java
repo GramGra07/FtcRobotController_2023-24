@@ -56,7 +56,7 @@ public class PurePursuit extends CommandOpMode {
 
         // calculate multiplier
         double GEAR_RATIO = 1 / (5.23 * 2.89);
-        double TICKS_PER_REV = 423.2116;
+        double TICKS_PER_REV = 423.2116/4;
         double WHEEL_DIAMETER = 3.89;
         double PulsePR = (GEAR_RATIO * TICKS_PER_REV);
         TICKS_TO_INCHES = PulsePR / ((Math.PI * WHEEL_DIAMETER) * 2 * Math.PI);
@@ -77,9 +77,9 @@ public class PurePursuit extends CommandOpMode {
 
         Pose2d current_pos = m_odometry.getPose();
 
-        Translation2d endP = new Translation2d(0, 10);
-        Rotation2d Rotation2d = new Rotation2d(0);
-        Pose2d endp = new Pose2d(endP, Rotation2d);
+        Translation2d endP = new Translation2d(0, 100000);
+        Rotation2d Rotation2d = new Rotation2d();
+        Pose2d endpose = new Pose2d(endP, Rotation2d);
 
         double turnSpeed = 0.8;
         double moveSpeed = 0.8;
@@ -89,9 +89,9 @@ public class PurePursuit extends CommandOpMode {
         Waypoint p1 = new StartWaypoint(0, 0);
         Waypoint p2 = new PointTurnWaypoint(
                 0, 300, 0, moveSpeed,
-                turnSpeed, followRadius, 10, rotationBuffer);
-        Waypoint p9 = new EndWaypoint(endp, moveSpeed, turnSpeed, followRadius, 10, rotationBuffer);
-        Path m_path = new Path(p1, p9);//, p3, p4, p5, p6, p8, p9);
+                turnSpeed, followRadius, 1, rotationBuffer);
+        Waypoint p9 = new EndWaypoint(endpose, moveSpeed, turnSpeed, followRadius, 10, rotationBuffer);
+        Path m_path = new Path(p1,p2, p9);//, p3, p4, p5, p6, p8, p9);
         m_path.init();
         m_path.disableRetrace();
 
