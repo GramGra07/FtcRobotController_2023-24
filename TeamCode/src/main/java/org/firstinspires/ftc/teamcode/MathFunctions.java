@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -18,25 +21,67 @@ public class MathFunctions extends HardwareConfig {
     public static void antiTip() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//get and initialize the IMU
         double roll = angles.secondAngle;
+
         double maxRoll = 10;
         double minRoll = -10;
-        if (roll > maxRoll) {
+        while (roll > maxRoll) {
             //tipped to right
-            sideWaysEncoderDrive(1, -Math.toRadians(roll), 1);
-        } else if (roll < minRoll) {
-            //tipped to left
-            sideWaysEncoderDrive(1, Math.toRadians(roll), 1);
+            motorBackLeft.setPower(-1);
+            motorFrontLeft.setPower(1);
+            if (roll<maxRoll) {
+                //not tipped
+                motorBackLeft.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackRight.setPower(0);
+                break;
+            }
         }
-        double pitch = angles.thirdAngle + 180;
+        while (roll < minRoll) {
+            //tipped to left
+            motorBackLeft.setPower(1);
+            motorFrontLeft.setPower(-1);
+            if (roll>minRoll) {
+                //not tipped
+                motorBackLeft.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackRight.setPower(0);
+                break;
+            }
+        }
+        double pitch = -(angles.thirdAngle-180);
         double maxPitch = 10;
         double minPitch = -10;
-        if (pitch > maxPitch) {
+        while (pitch > maxPitch) {
             //tipped to front
-            encoderDrive(1, Math.toRadians(pitch), Math.toRadians(pitch), 1);
-        } else if (pitch < minPitch) {
-            //tipped to back
-            encoderDrive(1, -Math.toRadians(pitch), -Math.toRadians(pitch), 1);
+            motorFrontRight.setPower(1);
+            motorFrontLeft.setPower(1);
+            OpMode.telemetry.addData("here", "here");
+            telemetry.update();
+            if (pitch<maxPitch) {
+                //not tipped
+                motorFrontRight.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorBackLeft.setPower(0);
+                motorBackRight.setPower(0);
+                break;
+            }
         }
+        while (pitch < minPitch) {
+            //tipped to back
+            motorBackRight.setPower(-1);
+            motorBackLeft.setPower(-1);
+            if (pitch>minPitch) {
+                //not tipped
+                motorFrontRight.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorBackLeft.setPower(0);
+                motorBackRight.setPower(0);
+                break;
+            }
+        }
+
     }
 
     public static int getAverage(List val) {
@@ -50,5 +95,8 @@ public class MathFunctions extends HardwareConfig {
     public static void setOvr(double x, double y) {
         ovrCurrX = x;
         ovrCurrY = y;
+    }
+    public static boolean inBetween(double in, double max, double min) {
+        return in < max && in > min;
     }
 }
