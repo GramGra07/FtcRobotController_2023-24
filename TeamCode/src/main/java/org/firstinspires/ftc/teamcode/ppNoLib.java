@@ -94,7 +94,6 @@ public class ppNoLib extends CommandOpMode {
         //Path m_path = new Path(p1,p2, p9);//, p3, p4, p5, p6, p8, p9);
         //m_path.init();
         //m_path.disableRetrace();
-
         //m_path.followPath(m_robotDrive, m_robotOdometry);
         // create our pure pursuit command
         ppCommand = new PurePursuitCommand(
@@ -102,8 +101,9 @@ public class ppNoLib extends CommandOpMode {
                 p1, p2, p9
         );
         ppCommand.schedule();
-        if (opModeIsActive()) {
-            ppCommand.execute();
-        }
+    }
+    @Override
+    public void runOpMode() throws InterruptedException {
+        ppCommand.execute();
     }
 }
