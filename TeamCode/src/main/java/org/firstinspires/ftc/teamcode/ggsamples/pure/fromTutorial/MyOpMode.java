@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 @Autonomous(name = "PurePursuit", group = "Robot")
 @Disabled
+@Deprecated
 public class MyOpMode extends LinearOpMode {
     private static Motor fL, fR, bL, bR;
 

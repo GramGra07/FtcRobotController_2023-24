@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.ftcLib;
 
 import static java.lang.Math.PI;
 
@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 
 @Autonomous
 //@Disabled
-public class ppNoLib extends CommandOpMode {
+public class purePursuit extends CommandOpMode {
 
     // define our constants
     static final double TRACKWIDTH = 13;
