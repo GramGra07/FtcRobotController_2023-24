@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.externalHardware;
 
 import static android.os.SystemClock.sleep;
-import static org.firstinspires.ftc.teamcode.MathFunctions.setOvr;
+import static org.firstinspires.ftc.teamcode.externalHardware.MathFunctions.setOvr;
 
 import android.graphics.Color;
 

@@ -1,14 +1,12 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.externalHardware;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 
 import java.util.List;
 
@@ -57,7 +55,7 @@ public class MathFunctions extends HardwareConfig {
             //tipped to front
             motorFrontRight.setPower(1);
             motorFrontLeft.setPower(1);
-            OpMode.telemetry.addData("here", "here");
+            telemetry.addData("here", "here");
             telemetry.update();
             if (pitch<maxPitch) {
                 //not tipped

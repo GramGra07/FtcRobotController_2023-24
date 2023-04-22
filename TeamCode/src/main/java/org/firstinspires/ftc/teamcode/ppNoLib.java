@@ -13,7 +13,6 @@ import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.arcrobotics.ftclib.kinematics.DifferentialOdometry;
 import com.arcrobotics.ftclib.kinematics.HolonomicOdometry;
-import com.arcrobotics.ftclib.purepursuit.Path;
 import com.arcrobotics.ftclib.purepursuit.Waypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.EndWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.PointTurnWaypoint;
@@ -22,9 +21,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 
-@Autonomous(name = "Pure Pursuit", group = "Robot")
+@Autonomous
 //@Disabled
-public class PurePursuit extends CommandOpMode {
+public class ppNoLib extends CommandOpMode {
 
     // define our constants
     static final double TRACKWIDTH = 13;
@@ -92,16 +91,19 @@ public class PurePursuit extends CommandOpMode {
                 0, 500, 0, moveSpeed,
                 turnSpeed, followRadius, 1, rotationBuffer);
         Waypoint p9 = new EndWaypoint(endP,endR, moveSpeed, turnSpeed, followRadius, 10, rotationBuffer);
-        Path m_path = new Path(p1,p2, p9);//, p3, p4, p5, p6, p8, p9);
-        m_path.init();
-        m_path.disableRetrace();
+        //Path m_path = new Path(p1,p2, p9);//, p3, p4, p5, p6, p8, p9);
+        //m_path.init();
+        //m_path.disableRetrace();
 
-        m_path.followPath(m_robotDrive, m_robotOdometry);
+        //m_path.followPath(m_robotDrive, m_robotOdometry);
         // create our pure pursuit command
-        //ppCommand = new PurePursuitCommand(
-        //        m_robotDrive, m_odometry,
-        //        p1, p2, p9
-        //);
-        //ppCommand.schedule();
+        ppCommand = new PurePursuitCommand(
+                m_robotDrive, m_odometry,
+                p1, p2, p9
+        );
+        ppCommand.schedule();
+        if (opModeIsActive()) {
+            ppCommand.execute();
+        }
     }
 }
