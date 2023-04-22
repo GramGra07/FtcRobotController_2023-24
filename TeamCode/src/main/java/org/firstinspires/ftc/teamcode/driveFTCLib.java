@@ -12,7 +12,7 @@ public class driveFTCLib extends LinearOpMode {
     public Motor motor4 = null;
     public void runOpMode() {
         // Initialize the gamepad
-        new GamepadEx(gamepad1);
+        new GamepadEx(gamepad1);//
         motor1 = new Motor(hardwareMap, "motorFrontLeft");
         motor2 = new Motor(hardwareMap, "motorFrontRight");
         motor3 = new Motor(hardwareMap, "motorBackLeft");
