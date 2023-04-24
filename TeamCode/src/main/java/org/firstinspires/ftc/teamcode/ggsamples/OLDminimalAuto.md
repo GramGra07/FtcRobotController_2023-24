@@ -6,9 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.externalHardware.autoHardware;
 
+@Deprecated
 @Autonomous(name = "minimalAutoX", group = "Robot")
 //@Disabled
-public class minimalAutoX extends LinearOpMode {
+public class OLDminimalAuto extends LinearOpMode {
     autoHardware robot = new autoHardware(this);
 
     @Override
