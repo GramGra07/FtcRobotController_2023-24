@@ -9,7 +9,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
-
+@Deprecated
 public class OLDAutoHardware extends HardwareConfig {//auto version of hardware config
     public double ovrPower = 0.5;//sets power
     HardwareMap hardwareMap = null;
