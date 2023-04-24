@@ -211,7 +211,8 @@ public class HardwareConfig {//this is an external opmode that can have public v
 
     public void doBulk(boolean fieldCentric) {
         switches();//anything that will switch on button press
-        drive(fieldCentric, slowPower);//will drive robot
+        drive(fieldCentric);//will drive robot
+
         // check all the trackable targets to see which one (if any) is visible.
         //targetVisible = false;
         //for (VuforiaTrackable trackable : allTrackables) {
@@ -240,6 +241,7 @@ public class HardwareConfig {//this is an external opmode that can have public v
         //} else {
         //    myOpMode.telemetry.addData("Visible Target", "none");
         //}
+
         power();//sets power to power variables
         buildTelemetry();//makes telemetry
     }
@@ -259,6 +261,7 @@ public class HardwareConfig {//this is an external opmode that can have public v
     }
 
     public void switches() {
+        boolean leftIsHigh = false, rightIsHigh = false;
         //switches
         if (myOpMode.gamepad1.left_trigger > 0) {
             slowModeIsOn = false;
@@ -273,7 +276,7 @@ public class HardwareConfig {//this is an external opmode that can have public v
         }
     }
 
-    public void drive(boolean fieldCentric, double slow) {
+    public void drive(boolean fieldCentric) {
         if (fieldCentric) {
             gamepadX = myOpMode.gamepad1.left_stick_x;//get the x val of left stick and store
             myOpMode.telemetry.addData("gamepadX", gamepadX);//tell us what gamepadX is
@@ -284,8 +287,10 @@ public class HardwareConfig {//this is an external opmode that can have public v
             myOpMode.telemetry.addData("gamepadHypot", gamepadHypot);//tell us what gamepadHypot is
             controllerAngle = Math.toDegrees(Math.atan2(gamepadY, gamepadX));//Get the angle of the controller stick using arc tangent
             myOpMode.telemetry.addData("controllerAngle", controllerAngle);//tell us what controllerAngle is
+            //might need to change based on corrected heading
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//get and initialize the IMU
             robotDegree = angles.firstAngle;//store robot angle in robotDegree
+
             myOpMode.telemetry.addData("robotDegree", robotDegree);//tell us what robotDegree is
             movementDegree = (controllerAngle - robotDegree);//get the movement degree based on the controller vs robot angle
             myOpMode.telemetry.addData("movementDegree", movementDegree);//tell us what movementDegree is
@@ -308,15 +313,15 @@ public class HardwareConfig {//this is an external opmode that can have public v
                 xControl = -xControl;
             }
             double turn = -myOpMode.gamepad1.right_stick_x;
-            frontRightPower = (yControl - xControl + turn) / slow;
-            backRightPower = (yControl + xControl + turn) / slow;
-            frontLeftPower = (yControl + xControl - turn) / slow;
-            backLeftPower = (yControl - xControl - turn) / slow;
+            frontRightPower = (yControl - xControl + turn) / slowPower;
+            backRightPower = (yControl + xControl + turn) / slowPower;
+            frontLeftPower = (yControl + xControl - turn) / slowPower;
+            backLeftPower = (yControl - xControl - turn) / slowPower;
 
         }
     }
 
-    public void rumble() {
+    public void rumble() {//soccer whistle
         if ((timer.seconds() > endgame) && !isEndgame) {
             myOpMode.gamepad1.runRumbleEffect(customRumbleEffect);
             myOpMode.gamepad2.runRumbleEffect(customRumbleEffect);
