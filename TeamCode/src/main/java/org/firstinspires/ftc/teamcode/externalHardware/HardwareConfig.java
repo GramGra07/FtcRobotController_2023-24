@@ -73,6 +73,8 @@ public class HardwareConfig {//this is an external opmode that can have public v
     public static BNO055IMU imu;
     public static Orientation angles;     //imu uses these to find angles and classify them
     public Acceleration gravity;    //Imu uses to get acceleration
+    public double primaryHeading, primaryRoll,primaryPitch;
+    public double heading,roll,pitch;
     //maintenance mode
     public final int delay = 1;
     public boolean isSolid = false;
@@ -331,21 +333,44 @@ public class HardwareConfig {//this is an external opmode that can have public v
         myOpMode.telemetry.addData("Status", statusVal);//shows current status
         myOpMode.telemetry.addData("reversed", reversed);
         myOpMode.telemetry.addData("slowMode", slowModeIsOn);
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
-        myOpMode.telemetry.addData("heading", angles.firstAngle);
+        getOrientation();
+        myOpMode.telemetry.addData("heading", heading);
+        myOpMode.telemetry.addData("roll", roll);
+        myOpMode.telemetry.addData("pitch", pitch);
+        //testing only
+        getCorrectedOrientation();
+        myOpMode.telemetry.addData("primary heading", primaryHeading);
+        myOpMode.telemetry.addData("primary roll", primaryRoll);
+        myOpMode.telemetry.addData("primary pitch", primaryPitch);
+        //end testing
         myOpMode.telemetry.addLine("motors: ")
                 .addData("front left", motorFrontLeft.getCurrentPosition())
                 .addData("front right", motorFrontRight.getCurrentPosition())
                 .addData("back left", motorBackLeft.getCurrentPosition())
                 .addData("back right", motorBackRight.getCurrentPosition());
         myOpMode.telemetry.addLine("power: ")
-                .addData("front left", frontLeftPower)
-                .addData("front right", frontRightPower)
-                .addData("back left", backLeftPower)
-                .addData("back right", backRightPower);
+                .addData("front left","%2f", frontLeftPower)
+                .addData("front right","%2f", frontRightPower)
+                .addData("back left","%2f", backLeftPower)
+                .addData("back right","%2f", backRightPower);
         teleSpace();
         updateStatus("Running");
         myOpMode.telemetry.update();
+    }
+    public void getOrientation() {
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        heading = angles.firstAngle - primaryHeading;
+        roll = angles.secondAngle - primaryRoll;
+        pitch = angles.thirdAngle - primaryPitch;
+    }
+    //meant to fix orientation problems
+    public void getCorrectedOrientation(){
+        if (myOpMode.opModeInInit()){
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            primaryHeading = angles.firstAngle;
+            primaryRoll = angles.secondAngle;
+            primaryPitch = angles.thirdAngle;
+        }
     }
 
     public String getColor() {
