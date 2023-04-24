@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode.externalHardware.teleOpX;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 import org.firstinspires.ftc.teamcode.externalHardware.MathFunctions;
+import org.firstinspires.ftc.teamcode.externalHardware.OLDHardwareConfig;
 
 @TeleOp(name = "antiTipTest", group = "Robot")
 //@Disabled
 public class antiTipTest extends LinearOpMode {
-    HardwareConfig robot = new HardwareConfig(this);
+    OLDHardwareConfig robot = new OLDHardwareConfig(this);
 
     @Override
     public void runOpMode() throws InterruptedException {
