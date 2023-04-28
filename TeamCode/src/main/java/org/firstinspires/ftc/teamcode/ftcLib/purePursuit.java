@@ -18,11 +18,12 @@ import com.arcrobotics.ftclib.purepursuit.waypoints.EndWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.PointTurnWaypoint;
 import com.arcrobotics.ftclib.purepursuit.waypoints.StartWaypoint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 
 @Autonomous
-//@Disabled
+@Disabled
 public class purePursuit extends CommandOpMode {
 
     // define our constants

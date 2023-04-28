@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 
 
-@TeleOp(name = "rCentricX", group = "Robot")
+@TeleOp
 //@Disabled//disabling the opmode
 public class rCentricX extends LinearOpMode {//declaring the class
     HardwareConfig robot = new HardwareConfig(this);
@@ -15,6 +15,7 @@ public class rCentricX extends LinearOpMode {//declaring the class
     public void runOpMode() {//if opmode is started
         robot.init(hardwareMap);
         waitForStart();
+        robot.timer.reset();
         while (opModeIsActive()) {//while the op mode is active
             robot.doBulk(false);
         }

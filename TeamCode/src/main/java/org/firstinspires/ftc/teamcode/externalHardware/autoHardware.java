@@ -36,9 +36,9 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         //runVu(6, false);
         myOpMode.telemetry.update();
         // Wait for the game to start (driver presses PLAY)
-        sleep(300);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         myOpMode.waitForStart();
+        timer.reset();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
     }
 

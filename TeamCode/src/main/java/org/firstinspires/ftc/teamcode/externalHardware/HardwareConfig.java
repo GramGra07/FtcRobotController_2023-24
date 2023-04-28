@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.externalHardware;
 
 import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
@@ -15,6 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -39,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class HardwareConfig {//this is an external opmode that can have public variables used by everything
+public class HardwareConfig {//this is an external opMode that can have public variables used by everything
     //my personal key
     public static final String VUFORIA_KEY =
             "AXmzBcj/////AAABme5HSJ/H3Ucup73WSIaV87tx/sFHYaWfor9OZVg6afr2Bw7kNolHd+mF5Ps91SlQpgBHulieI0jcd86kqJSwx46BZ8v8DS5S5x//eQWMEGjMDnvco4/oTcDwuSOLIVZG2UtLmJXPS1L3CipjabePFlqAL2JtBlN78p6ZZbRFSHW680hWEMSimZuQy/cMudD7J/MjMjMs7b925b8BkijlnTQYr7CbSlXrpDh5K+9fLlk2OyEZ4w7tm7e4UJDInJ/T3oi8PqqKCqkUaTkJWlQsvoELbDu5L2FgzsuDhBLe2rHtJRqfORd7n+6M30UdFSsxqq5TaZztkWgzRUr1GC3yBSTS6iFqEuL3g06GrfwOJF0F";
@@ -78,6 +80,7 @@ public class HardwareConfig {//this is an external opmode that can have public v
     //maintenance mode
     public final int delay = 1;
     public boolean isSolid = false;
+    public String LEDcolor = "none";
     //encoder vals
     public static int turn = 77;
     public static double yMult = 24, xMult = 10;
@@ -117,10 +120,18 @@ public class HardwareConfig {//this is an external opmode that can have public v
         myOpMode = opmode;
     }
 
+    public VoltageSensor vSensor;
+    public boolean lowVoltage = false;
+    public double minimumVoltage = 11.5;
+    public double currentVoltage;
+    public boolean once = false;
+
 
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
         ElapsedTime timer = new ElapsedTime();//declaring the runtime variable
+        vSensor = ahwMap.voltageSensor.get("Expansion Hub 2");//getting the voltage sensor\
+        getBatteryVoltage();
         //imu
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -165,8 +176,17 @@ public class HardwareConfig {//this is an external opmode that can have public v
         //LED
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+        myOpMode.telemetry.update();
     }
-
+    void getBatteryVoltage() {
+        double result = Double.POSITIVE_INFINITY;
+        double voltage = vSensor.getVoltage();
+        if (voltage > 0) {
+            result = Math.min(result, voltage);
+        }
+        lowVoltage = result <= minimumVoltage;
+        currentVoltage = result;
+    }
     void initTrackables(HardwareMap ahwMap) {//vuforia tags
         webcamName = ahwMap.get(WebcamName.class, "Webcam");
 
@@ -243,7 +263,72 @@ public class HardwareConfig {//this is an external opmode that can have public v
         //}
 
         power();//sets power to power variables
+        once();//runs once
+        //antiTip();
         buildTelemetry();//makes telemetry
+    }
+    public void once(){
+        if (!once) {
+            updateStatus("Running");
+            findOrientationOffset();
+            once = true;
+        }
+
+    }
+    public void antiTip(){
+        double maxRoll = 10;
+        double minRoll = -10;
+        if (roll > maxRoll) {
+            //tipped to right
+            motorBackLeft.setPower(-1);
+            motorFrontLeft.setPower(1);
+            if (roll<maxRoll) {
+                //not tipped
+                motorBackLeft.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackRight.setPower(0);
+            }
+        }
+        if (roll < minRoll) {
+            //tipped to left
+            motorBackLeft.setPower(1);
+            motorFrontLeft.setPower(-1);
+            if (roll>minRoll) {
+                //not tipped
+                motorBackLeft.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorFrontRight.setPower(0);
+                motorBackRight.setPower(0);
+            }
+        }
+        double maxPitch = 10;
+        double minPitch = -10;
+        if (pitch > maxPitch) {
+            //tipped to front
+            motorFrontRight.setPower(1);
+            motorFrontLeft.setPower(1);
+            telemetry.update();
+            if (pitch<maxPitch) {
+                //not tipped
+                motorFrontRight.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorBackLeft.setPower(0);
+                motorBackRight.setPower(0);
+            }
+        }
+        if (pitch < minPitch) {
+            //tipped to back
+            motorBackRight.setPower(-1);
+            motorBackLeft.setPower(-1);
+            if (pitch>minPitch) {
+                //not tipped
+                motorFrontRight.setPower(0);
+                motorFrontLeft.setPower(0);
+                motorBackLeft.setPower(0);
+                motorBackRight.setPower(0);
+            }
+        }
     }
 
     public void power() {// put all set power here
@@ -304,8 +389,7 @@ public class HardwareConfig {//this is an external opmode that can have public v
             frontLeftPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) - turn) / slowPower;
             backLeftPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) - turn) / slowPower;
         } else {
-            boolean reverse;
-            reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;
+            boolean reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
             yControl = -myOpMode.gamepad1.left_stick_y;
             xControl = myOpMode.gamepad1.left_stick_x;
             if (reverse) {
@@ -336,17 +420,17 @@ public class HardwareConfig {//this is an external opmode that can have public v
 
     public void buildTelemetry() {
         myOpMode.telemetry.addData("Status", statusVal);//shows current status
+        getBatteryVoltage();
+        myOpMode.telemetry.addData("Voltage",currentVoltage);//shows current battery voltage
+        myOpMode.telemetry.addData("lowBattery",lowVoltage);
+        //myOpMode.telemetry.addData("Timer","%.2f", timer.seconds());//shows current time
+        myOpMode.telemetry.addData("Color",LEDcolor);
         myOpMode.telemetry.addData("reversed", reversed);
         myOpMode.telemetry.addData("slowMode", slowModeIsOn);
         getOrientation();
         myOpMode.telemetry.addData("heading", heading);
         myOpMode.telemetry.addData("roll", roll);
         myOpMode.telemetry.addData("pitch", pitch);
-        //testing only
-        getCorrectedOrientation();
-        myOpMode.telemetry.addData("primary heading", primaryHeading);
-        myOpMode.telemetry.addData("primary roll", primaryRoll);
-        myOpMode.telemetry.addData("primary pitch", primaryPitch);
         //end testing
         myOpMode.telemetry.addLine("motors: ")
                 .addData("front left", motorFrontLeft.getCurrentPosition())
@@ -369,13 +453,11 @@ public class HardwareConfig {//this is an external opmode that can have public v
         pitch = angles.thirdAngle - primaryPitch;
     }
     //meant to fix orientation problems
-    public void getCorrectedOrientation(){
-        if (myOpMode.opModeInInit()){
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            primaryHeading = angles.firstAngle;
-            primaryRoll = angles.secondAngle;
-            primaryPitch = angles.thirdAngle;
-        }
+    public void findOrientationOffset(){
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        primaryHeading = angles.firstAngle;
+        primaryRoll = angles.secondAngle;
+        primaryPitch = angles.thirdAngle;
     }
 
     public String getColor() {
@@ -384,7 +466,6 @@ public class HardwareConfig {//this is an external opmode that can have public v
                 "RAINBOW_PARTY_PALETTE",
                 "BEATS_PER_MINUTE_RAINBOW_PALETTE",
                 "BEATS_PER_MINUTE_PARTY_PALETTE",
-                //"FIRE_MEDIUM",
                 "COLOR_WAVES_RAINBOW_PALETTE",
                 "COLOR_WAVES_PARTY_PALETTE",
                 "CP2_END_TO_END_BLEND_TO_BLACK",
@@ -397,7 +478,8 @@ public class HardwareConfig {//this is an external opmode that can have public v
         };
         final int min = 0;
         final int max = favColors.length - 1;
-        return favColors[(int) Math.floor(Math.random() * (max - min + 1) + min)];
+        LEDcolor = favColors[(int) Math.floor(Math.random() * (max - min + 1) + min)];
+        return LEDcolor;
     }
 
     //random
