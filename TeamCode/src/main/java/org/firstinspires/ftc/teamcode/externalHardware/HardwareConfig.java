@@ -126,6 +126,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public double currentVoltage;
     public boolean once = false;
 
+    //switchable profile presets
+    public String[] driverControls = {"Chase", "Camden","Graden","Kian"},otherControls = driverControls;
+    public int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
+    public int dIndex = baseDriver, oIndex = baseOther;//list integer of driver and other controls
+    public String currDriver = driverControls[dIndex], currOther = otherControls[oIndex];//list string of driver and other controls
+    public boolean armUp = false;
+    public boolean rBumpHigh = false, lBumpHigh = false;
 
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
@@ -230,8 +237,53 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void doBulk(boolean fieldCentric) {
+        //next two not tested
+        resetButtons();
+        switchControls();
+
         switches();//anything that will switch on button press
-        drive(fieldCentric);//will drive robot
+
+        if (fieldCentric) {
+            gamepadX = myOpMode.gamepad1.left_stick_x;//get the x val of left stick and store
+            myOpMode.telemetry.addData("gamepadX", gamepadX);//tell us what gamepadX is
+            gamepadY = myOpMode.gamepad1.left_stick_y;//get the y val of left stick and store
+            myOpMode.telemetry.addData("gamepadY", gamepadY);//tell us what gamepadY is
+            gamepadHypot = Range.clip(Math.hypot(gamepadX, gamepadY), 0, 1);//get the
+            // hypotenuse of the x and y values,clip it to a max of 1 and store
+            myOpMode.telemetry.addData("gamepadHypot", gamepadHypot);//tell us what gamepadHypot is
+            controllerAngle = Math.toDegrees(Math.atan2(gamepadY, gamepadX));//Get the angle of the controller stick using arc tangent
+            myOpMode.telemetry.addData("controllerAngle", controllerAngle);//tell us what controllerAngle is
+            //might need to change based on corrected heading
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//get and initialize the IMU
+            robotDegree = angles.firstAngle;//store robot angle in robotDegree
+
+            myOpMode.telemetry.addData("robotDegree", robotDegree);//tell us what robotDegree is
+            movementDegree = (controllerAngle - robotDegree);//get the movement degree based on the controller vs robot angle
+            myOpMode.telemetry.addData("movementDegree", movementDegree);//tell us what movementDegree is
+            xControl = Math.cos(Math.toRadians(movementDegree)) * gamepadHypot;//get the x value of the movement
+            myOpMode.telemetry.addData("xControl", xControl);//tell us what xControl is
+            yControl = Math.sin(Math.toRadians(movementDegree)) * gamepadHypot;//get the y value of the movement
+            myOpMode.telemetry.addData("yControl", yControl);//tell us what yControl is
+            double turn = -myOpMode.gamepad1.right_stick_x;
+            frontRightPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) + turn) / slowPower;
+            backRightPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) + turn) / slowPower;
+            frontLeftPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) - turn) / slowPower;
+            backLeftPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) - turn) / slowPower;
+        } else {
+            boolean reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
+            yControl = -myOpMode.gamepad1.left_stick_y;
+            xControl = myOpMode.gamepad1.left_stick_x;
+            if (reverse) {
+                yControl = -yControl;
+                xControl = -xControl;
+            }
+            double turn = -myOpMode.gamepad1.right_stick_x;
+            frontRightPower = (yControl - xControl + turn) / slowPower;
+            backRightPower = (yControl + xControl + turn) / slowPower;
+            frontLeftPower = (yControl + xControl - turn) / slowPower;
+            backLeftPower = (yControl - xControl - turn) / slowPower;
+
+        }
 
         // check all the trackable targets to see which one (if any) is visible.
         //targetVisible = false;
@@ -264,7 +316,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
         power();//sets power to power variables
         once();//runs once
-        //antiTip();
+
         buildTelemetry();//makes telemetry
     }
     public void once(){
@@ -272,6 +324,31 @@ public class HardwareConfig {//this is an external opMode that can have public v
             updateStatus("Running");
             findOrientationOffset();
             once = true;
+        }
+
+    }
+    public void switchControls(){
+        if (myOpMode.gamepad1.right_bumper && !rBumpHigh){
+            dIndex++;
+            currDriver = driverControls[dIndex];
+        }
+        rBumpHigh = myOpMode.gamepad1.right_bumper;
+        if (myOpMode.gamepad1.left_bumper && !lBumpHigh){
+            dIndex--;
+            currDriver = driverControls[dIndex];
+        }
+        lBumpHigh = myOpMode.gamepad1.left_bumper;
+    }
+    public void resetButtons(){
+        if (Objects.equals(currDriver, driverControls[0])){// curr driver = 0 index of driver controls
+            armUp = myOpMode.gamepad1.dpad_up;
+            myOpMode.telemetry.addData("armUp000", armUp);
+            // can add as many as needed
+        }
+        if (Objects.equals(currDriver, driverControls[1])){// curr driver = 1 index of driver controls
+            armUp = myOpMode.gamepad1.dpad_down;
+            myOpMode.telemetry.addData("armUp111", armUp);
+            // can add as many as needed
         }
 
     }
@@ -346,7 +423,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void switches() {
-        boolean leftIsHigh = false, rightIsHigh = false;
         //switches
         if (myOpMode.gamepad1.left_trigger > 0) {
             slowModeIsOn = false;
@@ -358,50 +434,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
             slowPower = slowMult;
         } else {
             slowPower = 1;
-        }
-    }
-
-    public void drive(boolean fieldCentric) {
-        if (fieldCentric) {
-            gamepadX = myOpMode.gamepad1.left_stick_x;//get the x val of left stick and store
-            myOpMode.telemetry.addData("gamepadX", gamepadX);//tell us what gamepadX is
-            gamepadY = myOpMode.gamepad1.left_stick_y;//get the y val of left stick and store
-            myOpMode.telemetry.addData("gamepadY", gamepadY);//tell us what gamepadY is
-            gamepadHypot = Range.clip(Math.hypot(gamepadX, gamepadY), 0, 1);//get the
-            // hypotenuse of the x and y values,clip it to a max of 1 and store
-            myOpMode.telemetry.addData("gamepadHypot", gamepadHypot);//tell us what gamepadHypot is
-            controllerAngle = Math.toDegrees(Math.atan2(gamepadY, gamepadX));//Get the angle of the controller stick using arc tangent
-            myOpMode.telemetry.addData("controllerAngle", controllerAngle);//tell us what controllerAngle is
-            //might need to change based on corrected heading
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//get and initialize the IMU
-            robotDegree = angles.firstAngle;//store robot angle in robotDegree
-
-            myOpMode.telemetry.addData("robotDegree", robotDegree);//tell us what robotDegree is
-            movementDegree = (controllerAngle - robotDegree);//get the movement degree based on the controller vs robot angle
-            myOpMode.telemetry.addData("movementDegree", movementDegree);//tell us what movementDegree is
-            xControl = Math.cos(Math.toRadians(movementDegree)) * gamepadHypot;//get the x value of the movement
-            myOpMode.telemetry.addData("xControl", xControl);//tell us what xControl is
-            yControl = Math.sin(Math.toRadians(movementDegree)) * gamepadHypot;//get the y value of the movement
-            myOpMode.telemetry.addData("yControl", yControl);//tell us what yControl is
-            double turn = -myOpMode.gamepad1.right_stick_x;
-            frontRightPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) + turn) / slowPower;
-            backRightPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) + turn) / slowPower;
-            frontLeftPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) - turn) / slowPower;
-            backLeftPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) - turn) / slowPower;
-        } else {
-            boolean reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
-            yControl = -myOpMode.gamepad1.left_stick_y;
-            xControl = myOpMode.gamepad1.left_stick_x;
-            if (reverse) {
-                yControl = -yControl;
-                xControl = -xControl;
-            }
-            double turn = -myOpMode.gamepad1.right_stick_x;
-            frontRightPower = (yControl - xControl + turn) / slowPower;
-            backRightPower = (yControl + xControl + turn) / slowPower;
-            frontLeftPower = (yControl + xControl - turn) / slowPower;
-            backLeftPower = (yControl - xControl - turn) / slowPower;
-
         }
     }
 
@@ -420,6 +452,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public void buildTelemetry() {
         myOpMode.telemetry.addData("Status", statusVal);//shows current status
+        myOpMode.telemetry.addData("Driver", currDriver);//shows current driver
+        myOpMode.telemetry.addData("Other controls", currOther);//shows current other controls")
         getBatteryVoltage();
         myOpMode.telemetry.addData("Voltage",currentVoltage);//shows current battery voltage
         myOpMode.telemetry.addData("lowBattery",lowVoltage);
