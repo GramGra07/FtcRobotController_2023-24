@@ -238,8 +238,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public void doBulk(boolean fieldCentric) {
         //next two not tested
-        resetButtons();
-        switchControls();
+        bindButtons();
+        switchProfile();
 
         switches();//anything that will switch on button press
 
@@ -327,7 +327,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
 
     }
-    public void switchControls(){
+    public void switchProfile(){
         if (myOpMode.gamepad1.right_bumper && !rBumpHigh){
             dIndex++;
             currDriver = driverControls[dIndex];
@@ -339,7 +339,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         lBumpHigh = myOpMode.gamepad1.left_bumper;
     }
-    public void resetButtons(){
+    public void bindButtons(){
         if (Objects.equals(currDriver, driverControls[0])){// curr driver = 0 index of driver controls
             armUp = myOpMode.gamepad1.dpad_up;
             myOpMode.telemetry.addData("armUp000", armUp);
@@ -350,7 +350,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
             myOpMode.telemetry.addData("armUp111", armUp);
             // can add as many as needed
         }
-
     }
     public void antiTip(){
         double maxRoll = 10;
