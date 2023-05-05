@@ -371,7 +371,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
     public void bindDriverButtons() {
         //"Chase", "Camden","Graden","Kian","Child"
-        if (currDriver == driverControls[0]) {
+        if (currDriver == driverControls[0]) {//Chase
             fieldCentric = false;
 
             if (myOpMode.gamepad1.dpad_down && !dDownHigh) {
@@ -380,25 +380,30 @@ public class HardwareConfig {//this is an external opMode that can have public v
             dDownHigh=myOpMode.gamepad1.dpad_down;
 
         }
-        if (currDriver == driverControls[1]) {
+        if (currDriver == driverControls[1]) {//Camden
             fieldCentric = false;
         }
-        if (currDriver == driverControls[2]) {
+        if (currDriver == driverControls[2]) {//Graden
             fieldCentric = true;
         }
-        if (currDriver == driverControls[3]) {
+        if (currDriver == driverControls[3]) {//Kian
             fieldCentric = true;
+        }
+        if (currDriver == driverControls[4]) {//Child
+            fieldCentric = false;
         }
     }
     public void bindOtherButtons(){
         //"Chase", "Camden","Graden","Kian","Child"
-        if (currOther == otherControls[0]){
+        if (currOther == otherControls[0]){//Chase
         }
-        if (currOther == otherControls[1]){
+        if (currOther == otherControls[1]){//Camden
         }
-        if (currOther == otherControls[2]){
+        if (currOther == otherControls[2]){//Graden
         }
-        if (currOther == otherControls[3]){
+        if (currOther == otherControls[3]){//Kian
+        }
+        if (currOther == otherControls[4]){//Child
         }
     }
 
