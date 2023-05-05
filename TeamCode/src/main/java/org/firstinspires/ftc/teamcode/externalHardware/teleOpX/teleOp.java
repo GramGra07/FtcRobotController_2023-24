@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
 
 @TeleOp
 //@Disabled//disabling the opmode
-public class rCentricX extends LinearOpMode {//declaring the class
+public class teleOp extends LinearOpMode {//declaring the class
     HardwareConfig robot = new HardwareConfig(this);
 
     @Override
@@ -17,7 +17,7 @@ public class rCentricX extends LinearOpMode {//declaring the class
         waitForStart();
         robot.timer.reset();
         while (opModeIsActive()) {//while the op mode is active
-            robot.doBulk(false);
+            robot.doBulk();
         }
     }
 }
