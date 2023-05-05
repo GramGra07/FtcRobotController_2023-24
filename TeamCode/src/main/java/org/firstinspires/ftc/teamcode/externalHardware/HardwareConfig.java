@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.externalHardware;
 
 import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
@@ -70,7 +69,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //driving
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
     //field centric
-    double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree, offSet = 0;
+    double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
     //imu
     public static BNO055IMU imu;
     public static Orientation angles;     //imu uses these to find angles and classify them
@@ -133,6 +132,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public String currDriver = driverControls[dIndex], currOther = otherControls[oIndex];//list string of driver and other controls
     boolean fieldCentric;
     public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false , shareHigh2 = false;
+    public boolean dDownHigh = false;
 
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
@@ -183,6 +183,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //LED
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+        myOpMode.telemetry.addData("Status", "Initialized");
+        myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.update();
     }
     void getBatteryVoltage() {
@@ -237,7 +239,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void doBulk() {
-        //next two not tested
+        once();//runs once
         bindDriverButtons();
         bindOtherButtons();
         switchProfile();
@@ -316,7 +318,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //}
 
         power();//sets power to power variables
-        once();//runs once
 
         buildTelemetry();//makes telemetry
     }
@@ -372,6 +373,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //"Chase", "Camden","Graden","Kian","Child"
         if (currDriver == driverControls[0]) {
             fieldCentric = false;
+
+            if (myOpMode.gamepad1.dpad_down && !dDownHigh) {
+                slowModeIsOn = !slowModeIsOn;
+            }
+            dDownHigh=myOpMode.gamepad1.dpad_down;
+
         }
         if (currDriver == driverControls[1]) {
             fieldCentric = false;
@@ -394,61 +401,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         if (currOther == otherControls[3]){
         }
     }
-    public void antiTip(){
-        double maxRoll = 10;
-        double minRoll = -10;
-        if (roll > maxRoll) {
-            //tipped to right
-            motorBackLeft.setPower(-1);
-            motorFrontLeft.setPower(1);
-            if (roll<maxRoll) {
-                //not tipped
-                motorBackLeft.setPower(0);
-                motorFrontLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                motorBackRight.setPower(0);
-            }
-        }
-        if (roll < minRoll) {
-            //tipped to left
-            motorBackLeft.setPower(1);
-            motorFrontLeft.setPower(-1);
-            if (roll>minRoll) {
-                //not tipped
-                motorBackLeft.setPower(0);
-                motorFrontLeft.setPower(0);
-                motorFrontRight.setPower(0);
-                motorBackRight.setPower(0);
-            }
-        }
-        double maxPitch = 10;
-        double minPitch = -10;
-        if (pitch > maxPitch) {
-            //tipped to front
-            motorFrontRight.setPower(1);
-            motorFrontLeft.setPower(1);
-            telemetry.update();
-            if (pitch<maxPitch) {
-                //not tipped
-                motorFrontRight.setPower(0);
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(0);
-                motorBackRight.setPower(0);
-            }
-        }
-        if (pitch < minPitch) {
-            //tipped to back
-            motorBackRight.setPower(-1);
-            motorBackLeft.setPower(-1);
-            if (pitch>minPitch) {
-                //not tipped
-                motorFrontRight.setPower(0);
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(0);
-                motorBackRight.setPower(0);
-            }
-        }
-    }
 
     public void power() {// put all set power here
         motorFrontLeft.setPower(frontLeftPower);
@@ -466,12 +418,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public void switches() {
         //switches
-        if (myOpMode.gamepad1.left_trigger > 0) {
-            slowModeIsOn = false;
-        }
-        if (myOpMode.gamepad1.right_trigger > 0) {
-            slowModeIsOn = true;
-        }
         if (slowModeIsOn) {
             slowPower = slowMult;
         } else {
