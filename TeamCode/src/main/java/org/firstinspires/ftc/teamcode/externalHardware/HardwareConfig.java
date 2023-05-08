@@ -373,7 +373,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //"Chase", "Camden","Graden","Kian","Child"
         if (currDriver == driverControls[0]) {//Chase
             fieldCentric = false;
-
+            //slowmode
             if (myOpMode.gamepad1.dpad_down && !dDownHigh) {
                 slowModeIsOn = !slowModeIsOn;
             }
@@ -382,9 +382,16 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         if (currDriver == driverControls[1]) {//Camden
             fieldCentric = false;
+            //no slow mode
         }
         if (currDriver == driverControls[2]) {//Graden
             fieldCentric = true;
+            //slowmode
+            if (myOpMode.gamepad1.dpad_down && !dDownHigh) {
+                slowModeIsOn = !slowModeIsOn;
+            }
+            dDownHigh=myOpMode.gamepad1.dpad_down;
+
         }
         if (currDriver == driverControls[3]) {//Kian
             fieldCentric = true;
