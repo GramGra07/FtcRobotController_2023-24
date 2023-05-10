@@ -12,7 +12,9 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -110,6 +112,16 @@ public class HardwareConfig {//this is an external opMode that can have public v
     private final boolean targetVisible = false;
     public List<VuforiaTrackable> allTrackables;
 
+    //rev potentiometer
+    public static final double POTENTIOMETER_MAX = 270;
+    public static final double POTENTIOMETER_MIN = 0;
+    public static final double POTENTIOMETER_RANGE = POTENTIOMETER_MAX - POTENTIOMETER_MIN;
+    public AnalogInput potentiometer;
+
+    // rev magnetic limit switch
+    public DigitalChannel limitSwitch;
+    public boolean limitSwitchState = limitSwitch.getState();
+
     //external
     HardwareMap hardwareMap = null;
 
@@ -119,13 +131,15 @@ public class HardwareConfig {//this is an external opMode that can have public v
         myOpMode = opmode;
     }
 
+    //voltage
+
     public VoltageSensor vSensor;
     public boolean lowVoltage = false;
     public double minimumVoltage = 11.5;
     public double currentVoltage;
     public boolean once = false;
 
-    //switchable profile presets
+    //switchable profile variables
     public String[] driverControls = {"Chase", "Camden","Graden","Kian","Child"},otherControls = driverControls;
     public int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
     public int dIndex = baseDriver, oIndex = baseOther;//list integer of driver and other controls
@@ -154,6 +168,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         lights = ahwMap.get(RevBlinkinLedDriver.class, "blinkin");
+
+        // rev potentiometer //analog
+        potentiometer = ahwMap.get(AnalogInput.class, "potent");
+
+        //magnetic limit switch //digital is pressed
+        limitSwitch = ahwMap.get(DigitalChannel.class, "limitSwitch");
+
         // Declare our motors
         motorFrontLeft = ahwMap.get(DcMotor.class, "motorFrontLeft");//getting the motorFrontLeft motor
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor
@@ -165,6 +186,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackRight encoder
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackLeft encoder
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontRight encoder
+
         //reversals
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
 
@@ -420,7 +442,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
     }
-
+    public void getLimitSwitch(){
+        limitSwitchState = limitSwitch.getState();
+    }
     public void greenRed() {
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
         sleep(delay * 1000);
@@ -451,6 +475,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void buildTelemetry() {
+        //testing
+        myOpMode.telemetry.addData("potentiometer", (81.8*potentiometer.getVoltage()));
+        getLimitSwitch();
+        myOpMode.telemetry.addData("limitSwitch", limitSwitchState);
+        //
         myOpMode.telemetry.addData("Status", statusVal);//shows current status
         myOpMode.telemetry.addLine("Drivers")
                 .addData("",currDriver)
