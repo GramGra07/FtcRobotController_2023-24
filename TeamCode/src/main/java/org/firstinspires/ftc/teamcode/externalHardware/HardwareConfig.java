@@ -448,6 +448,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
     }
+    public double getPotentVal(){
+        return (81.8 * potentiometer.getVoltage());
+    }
 
     public void getLimitSwitch() {
         limitSwitchState = limitSwitch.getState();
@@ -484,7 +487,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public void buildTelemetry() {
         //testing
-        myOpMode.telemetry.addData("potentiometer", (81.8 * potentiometer.getVoltage()));
+        myOpMode.telemetry.addData("potentiometer", getPotentVal());
         getLimitSwitch();
         myOpMode.telemetry.addData("limitSwitch", limitSwitchState);
         //
