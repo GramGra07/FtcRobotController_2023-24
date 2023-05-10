@@ -76,8 +76,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static BNO055IMU imu;
     public static Orientation angles;     //imu uses these to find angles and classify them
     public Acceleration gravity;    //Imu uses to get acceleration
-    public double primaryHeading, primaryRoll,primaryPitch;
-    public double heading,roll,pitch;
+    public double primaryHeading, primaryRoll, primaryPitch;
+    public double heading, roll, pitch;
     //maintenance mode
     public final int delay = 1;
     public boolean isSolid = false;
@@ -140,12 +140,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean once = false;
 
     //switchable profile variables
-    public String[] driverControls = {"Chase", "Camden","Graden","Kian","Child"},otherControls = driverControls;
+    public String[] driverControls = {"Chase", "Camden", "Graden", "Kian", "Child"}, otherControls = driverControls;
     public int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
     public int dIndex = baseDriver, oIndex = baseOther;//list integer of driver and other controls
     public String currDriver = driverControls[dIndex], currOther = otherControls[oIndex];//list string of driver and other controls
     boolean fieldCentric;
-    public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false , shareHigh2 = false;
+    public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public boolean dDownHigh = false;
 
     public void init(HardwareMap ahwMap) {
@@ -209,6 +209,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.update();
     }
+
     void getBatteryVoltage() {
         double result = Double.POSITIVE_INFINITY;
         double voltage = vSensor.getVoltage();
@@ -218,6 +219,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         lowVoltage = result <= minimumVoltage;
         currentVoltage = result;
     }
+
     void initTrackables(HardwareMap ahwMap) {//vuforia tags
         webcamName = ahwMap.get(WebcamName.class, "Webcam");
 
@@ -343,7 +345,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
         buildTelemetry();//makes telemetry
     }
-    public void once(){
+
+    public void once() {
         if (!once) {
             updateStatus("Running");
             findOrientationOffset();
@@ -351,10 +354,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
 
     }
-    public void switchProfile(){
+
+    public void switchProfile() {
         //driver
-        if (myOpMode.gamepad1.options && !optionsHigh1){
-            if (dIndex == driverControls.length - 1){
+        if (myOpMode.gamepad1.options && !optionsHigh1) {
+            if (dIndex == driverControls.length - 1) {
                 dIndex = 0;
             } else {
                 dIndex++;
@@ -362,8 +366,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
             currDriver = driverControls[dIndex];
         }
         optionsHigh1 = myOpMode.gamepad1.options;
-        if (myOpMode.gamepad1.share && !shareHigh1){
-            if (dIndex == 0){
+        if (myOpMode.gamepad1.share && !shareHigh1) {
+            if (dIndex == 0) {
                 dIndex = driverControls.length - 1;
             } else {
                 dIndex--;
@@ -372,8 +376,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         shareHigh1 = myOpMode.gamepad1.share;
         //other
-        if (myOpMode.gamepad2.options && !optionsHigh2){
-            if (oIndex == otherControls.length - 1){
+        if (myOpMode.gamepad2.options && !optionsHigh2) {
+            if (oIndex == otherControls.length - 1) {
                 oIndex = 0;
             } else {
                 oIndex++;
@@ -381,8 +385,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
             currOther = otherControls[oIndex];
         }
         optionsHigh2 = myOpMode.gamepad2.options;
-        if (myOpMode.gamepad2.share && !shareHigh2){
-            if (oIndex == 0){
+        if (myOpMode.gamepad2.share && !shareHigh2) {
+            if (oIndex == 0) {
                 oIndex = otherControls.length - 1;
             } else {
                 oIndex--;
@@ -391,6 +395,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         shareHigh2 = myOpMode.gamepad2.share;
     }
+
     public void bindDriverButtons() {
         //"Chase", "Camden","Graden","Kian","Child"
         if (currDriver == driverControls[0]) {//Chase
@@ -399,7 +404,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             if (myOpMode.gamepad1.dpad_down && !dDownHigh) {
                 slowModeIsOn = !slowModeIsOn;
             }
-            dDownHigh=myOpMode.gamepad1.dpad_down;
+            dDownHigh = myOpMode.gamepad1.dpad_down;
 
         }
         if (currDriver == driverControls[1]) {//Camden
@@ -412,7 +417,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             if (myOpMode.gamepad1.dpad_down && !dDownHigh) {
                 slowModeIsOn = !slowModeIsOn;
             }
-            dDownHigh=myOpMode.gamepad1.dpad_down;
+            dDownHigh = myOpMode.gamepad1.dpad_down;
 
         }
         if (currDriver == driverControls[3]) {//Kian
@@ -422,17 +427,18 @@ public class HardwareConfig {//this is an external opMode that can have public v
             fieldCentric = false;
         }
     }
-    public void bindOtherButtons(){
+
+    public void bindOtherButtons() {
         //"Chase", "Camden","Graden","Kian","Child"
-        if (currOther == otherControls[0]){//Chase
+        if (currOther == otherControls[0]) {//Chase
         }
-        if (currOther == otherControls[1]){//Camden
+        if (currOther == otherControls[1]) {//Camden
         }
-        if (currOther == otherControls[2]){//Graden
+        if (currOther == otherControls[2]) {//Graden
         }
-        if (currOther == otherControls[3]){//Kian
+        if (currOther == otherControls[3]) {//Kian
         }
-        if (currOther == otherControls[4]){//Child
+        if (currOther == otherControls[4]) {//Child
         }
     }
 
@@ -442,9 +448,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
     }
-    public void getLimitSwitch(){
+
+    public void getLimitSwitch() {
         limitSwitchState = limitSwitch.getState();
     }
+
     public void greenRed() {
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
         sleep(delay * 1000);
@@ -476,19 +484,19 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public void buildTelemetry() {
         //testing
-        myOpMode.telemetry.addData("potentiometer", (81.8*potentiometer.getVoltage()));
+        myOpMode.telemetry.addData("potentiometer", (81.8 * potentiometer.getVoltage()));
         getLimitSwitch();
         myOpMode.telemetry.addData("limitSwitch", limitSwitchState);
         //
         myOpMode.telemetry.addData("Status", statusVal);//shows current status
         myOpMode.telemetry.addLine("Drivers")
-                .addData("",currDriver)
+                .addData("", currDriver)
                 .addData("", currOther);
         getBatteryVoltage();
-        myOpMode.telemetry.addData("Voltage",currentVoltage);//shows current battery voltage
-        myOpMode.telemetry.addData("lowBattery",lowVoltage);
+        myOpMode.telemetry.addData("Voltage", currentVoltage);//shows current battery voltage
+        myOpMode.telemetry.addData("lowBattery", lowVoltage);
         //myOpMode.telemetry.addData("Timer","%.2f", timer.seconds());//shows current time
-        myOpMode.telemetry.addData("Color",LEDcolor);
+        myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.addData("reversed", reversed);
         myOpMode.telemetry.addData("slowMode", slowModeIsOn);
         getOrientation();
@@ -502,22 +510,24 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 .addData("back left", motorBackLeft.getCurrentPosition())
                 .addData("back right", motorBackRight.getCurrentPosition());
         myOpMode.telemetry.addLine("power: ")
-                .addData("front left","%2f", frontLeftPower)
-                .addData("front right","%2f", frontRightPower)
-                .addData("back left","%2f", backLeftPower)
-                .addData("back right","%2f", backRightPower);
+                .addData("front left", "%2f", frontLeftPower)
+                .addData("front right", "%2f", frontRightPower)
+                .addData("back left", "%2f", backLeftPower)
+                .addData("back right", "%2f", backRightPower);
         teleSpace();
         updateStatus("Running");
         myOpMode.telemetry.update();
     }
+
     public void getOrientation() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         heading = angles.firstAngle - primaryHeading;
         roll = angles.secondAngle - primaryRoll;
         pitch = angles.thirdAngle - primaryPitch;
     }
+
     //meant to fix orientation problems
-    public void findOrientationOffset(){
+    public void findOrientationOffset() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         primaryHeading = angles.firstAngle;
         primaryRoll = angles.secondAngle;
@@ -774,6 +784,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             resetEncoders();
         }
     }
+
     public static void resetEncoders() {
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
