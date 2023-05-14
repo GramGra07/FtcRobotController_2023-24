@@ -53,7 +53,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public String statusVal = "OFFLINE";
     //servo variables
     public double position = 0;//sets servo position to 0-1 multiplier
-    public final double degree_mult = 0.00555555554;//100/180
+    public final double degree_mult = 0.00555555554;// = 100/180
     public static final ElapsedTime timer = new ElapsedTime();
 
     //rumble
