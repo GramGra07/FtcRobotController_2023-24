@@ -115,7 +115,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //rev potentiometer
     public static final double POTENTIOMETER_MAX = 270;
     public static final double POTENTIOMETER_MIN = 0;
-    public static final double POTENTIOMETER_RANGE = POTENTIOMETER_MAX - POTENTIOMETER_MIN;
     public AnalogInput potentiometer;
 
     // rev magnetic limit switch
