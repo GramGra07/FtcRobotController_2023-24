@@ -147,6 +147,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public boolean dDownHigh = false;
 
+
+
+
+    public String currentVersion = "1.0.0";
+
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
         ElapsedTime timer = new ElapsedTime();//declaring the runtime variable
@@ -518,6 +523,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 .addData("back right", "%2f", backRightPower);
         teleSpace();
         updateStatus("Running");
+        teleSpace();
+        myOpMode.telemetry.addData("Version", currentVersion);
         myOpMode.telemetry.update();
     }
 
