@@ -32,12 +32,13 @@ public class blink extends HardwareConfig {
             "GOLD",
             "VIOLET"
     };
-    public static void setLights(String color) {
+    public static void setLights(String color, boolean freq) {
         if (color != null){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(color));
             LEDcolor = color;
         }
-        if (color == null)lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColor()));
+        if (color == null && !freq)lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColor()));
+        if (color == null && freq)blink.getColorFreq();
     }
     public void greenRed() {
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
@@ -98,19 +99,20 @@ public class blink extends HardwareConfig {
             final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
             LEDcolor = commonColors[rand];
         }
-        if (random > common && random <= common+uncommon){
+        else if (random > common && random <= common+uncommon){
             // choose uncommon
             max = uncommonColors.length - 1;
             min = 0;
             final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
             LEDcolor = uncommonColors[rand];
         }
-        if (random > uncommon && random <= common+uncommon+rare){
+        else if (random > uncommon && random <= common+uncommon+rare){
             //choose rare
             max = rareColors.length - 1;
             min = 0;
             final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
             LEDcolor = rareColors[rand];
         }
+        setLights(LEDcolor, false);
     }
 }
