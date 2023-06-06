@@ -17,6 +17,21 @@ public class blink extends HardwareConfig {
         super(opmode);
         myOpMode = opmode;
     }
+    public static final String[] favColors = {
+            "RAINBOW_RAINBOW_PALETTE",
+            "RAINBOW_PARTY_PALETTE",
+            "BEATS_PER_MINUTE_RAINBOW_PALETTE",
+            "BEATS_PER_MINUTE_PARTY_PALETTE",
+            "COLOR_WAVES_RAINBOW_PALETTE",
+            "COLOR_WAVES_PARTY_PALETTE",
+            "CP2_END_TO_END_BLEND_TO_BLACK",
+            "CP2_BREATH_SLOW",
+            "CP1_2_END_TO_END_BLEND_1_TO_2",
+            "CP1_2_END_TO_END_BLEND",
+            "HOT_PINK",
+            "GOLD",
+            "VIOLET"
+    };
     public static void setLights(String color) {
         if (color != null){
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(color));
@@ -32,21 +47,6 @@ public class blink extends HardwareConfig {
     }
     public static String getColor() {
         // CP colors are chosen on the blinkin, look at top for instructions
-        final String[] favColors = {
-                "RAINBOW_RAINBOW_PALETTE",
-                "RAINBOW_PARTY_PALETTE",
-                "BEATS_PER_MINUTE_RAINBOW_PALETTE",
-                "BEATS_PER_MINUTE_PARTY_PALETTE",
-                "COLOR_WAVES_RAINBOW_PALETTE",
-                "COLOR_WAVES_PARTY_PALETTE",
-                "CP2_END_TO_END_BLEND_TO_BLACK",
-                "CP2_BREATH_SLOW",
-                "CP1_2_END_TO_END_BLEND_1_TO_2",
-                "CP1_2_END_TO_END_BLEND",
-                "HOT_PINK",
-                "GOLD",
-                "VIOLET"
-        };
         final int min = 0;
         final int max = favColors.length - 1;
         LEDcolor = favColors[(int) Math.floor(Math.random() * (max - min + 1) + min)];
@@ -57,5 +57,60 @@ public class blink extends HardwareConfig {
         testingBlinkin = true;
         pattern = pattern.next();
         lights.setPattern(pattern);
+    }
+    public static void getColorFreq(){
+        // colors will be selected based on a frequency, selecting some more than others
+        // 100 total pings
+        // common = 66
+        // uncommon = 24
+        // rare = 10
+        // rare+uncommon+common = 100
+        final int common = 66;
+        final int uncommon = 24;
+        final int rare = 10;
+
+        int min = 0;
+        int max = 100;
+        final int random = (int) Math.floor(Math.random() * (max - min + 1) + min);
+        final String[] commonColors = {
+            "RAINBOW_RAINBOW_PALETTE",
+            "RAINBOW_PARTY_PALETTE",
+            "BEATS_PER_MINUTE_RAINBOW_PALETTE",
+            "BEATS_PER_MINUTE_PARTY_PALETTE",
+            "COLOR_WAVES_RAINBOW_PALETTE",
+            "COLOR_WAVES_PARTY_PALETTE",
+        };
+        final String[] uncommonColors = {
+            "CP2_END_TO_END_BLEND_TO_BLACK",
+            "CP2_BREATH_SLOW",
+            "CP1_2_END_TO_END_BLEND_1_TO_2",
+            "CP1_2_END_TO_END_BLEND",
+        };
+        final String[] rareColors = {
+            "HOT_PINK",
+            "GOLD",
+            "VIOLET"
+        };
+        if (random <= common){
+            // choose common
+            max = commonColors.length - 1;
+            min = 0;
+            final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
+            LEDcolor = commonColors[rand];
+        }
+        if (random > common && random <= common+uncommon){
+            // choose uncommon
+            max = uncommonColors.length - 1;
+            min = 0;
+            final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
+            LEDcolor = uncommonColors[rand];
+        }
+        if (random > uncommon && random <= common+uncommon+rare){
+            //choose rare
+            max = rareColors.length - 1;
+            min = 0;
+            final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
+            LEDcolor = rareColors[rand];
+        }
     }
 }

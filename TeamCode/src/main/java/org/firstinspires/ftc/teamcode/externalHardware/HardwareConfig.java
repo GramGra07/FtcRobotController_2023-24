@@ -150,7 +150,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean dDownHigh = false;
 
 
-    public String currentVersion = "1.0.0";
+    public String currentVersion = "1.0.1";
 
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
