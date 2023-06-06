@@ -7,6 +7,8 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.blink;
+
 public class autoHardware extends HardwareConfig {//auto version of hardware config
     public double ovrPower = 0.5;//sets power
     HardwareMap hardwareMap = null;
@@ -39,7 +41,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         myOpMode.waitForStart();
         timer.reset();
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColor()));
     }
 
     public void correctByImu(float currentAngle, int targetAngle) {

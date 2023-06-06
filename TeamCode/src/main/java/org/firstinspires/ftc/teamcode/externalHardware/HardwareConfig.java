@@ -1,7 +1,6 @@
 //import
 package org.firstinspires.ftc.teamcode.externalHardware;
 
-import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -37,6 +36,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.blink;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +64,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //motors
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null;
 
-    public RevBlinkinLedDriver lights;
+    public static RevBlinkinLedDriver lights;
+    public static RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
+    public static boolean testingBlinkin = false;
     //slow mode
     public double slowMult = 3, slowPower;
     public boolean slowModeIsOn = false, reversed;
@@ -81,7 +83,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //maintenance mode
     public final int delay = 1;
     public boolean isSolid = false;
-    public String LEDcolor = "none";
+    public static String LEDcolor;
     //encoder vals
     public static int turn = 77;
     public static double yMult = 24, xMult = 10;
@@ -119,7 +121,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     // rev magnetic limit switch
     public DigitalChannel limitSwitch;
-    public boolean limitSwitchState = limitSwitch.getState();
+    public boolean limitSwitchState = false;
 
     //external
     HardwareMap hardwareMap = null;
@@ -148,8 +150,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean dDownHigh = false;
 
 
-
-
     public String currentVersion = "1.0.0";
 
     public void init(HardwareMap ahwMap) {
@@ -172,6 +172,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
         lights = ahwMap.get(RevBlinkinLedDriver.class, "blinkin");
+
 
         // rev potentiometer //analog
         potentiometer = ahwMap.get(AnalogInput.class, "potent");
@@ -207,13 +208,14 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontLeft.setZeroPowerBehavior(BRAKE);
         timer.reset();//resetting the runtime variable
         //LED
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(getColor()));
+        blink.setLights(null);
         myOpMode.telemetry.addData("Status", "Initialized");
         myOpMode.telemetry.addData("Color", LEDcolor);
+        myOpMode.telemetry.addData("Version", currentVersion);
+        myOpMode.telemetry.addData("Voltage","%.2f", currentVoltage);
+        if (lowVoltage){myOpMode.telemetry.addData("lowBattery","true");}
         myOpMode.telemetry.update();
     }
-
     void getBatteryVoltage() {
         double result = Double.POSITIVE_INFINITY;
         double voltage = vSensor.getVoltage();
@@ -267,6 +269,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void doBulk() {
+        //blink.testBlinkColors(5);//only if testing to find new colors
         once();//runs once
         bindDriverButtons();
         bindOtherButtons();
@@ -453,18 +456,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackRight.setPower(backRightPower);
     }
     public double getPotentVal(){
-        return (81.8 * potentiometer.getVoltage());
+        return Range.clip(POTENTIOMETER_MAX/3.3 * potentiometer.getVoltage(),POTENTIOMETER_MIN,POTENTIOMETER_MAX);
     }
 
-    public void getLimitSwitch() {
-        limitSwitchState = limitSwitch.getState();
-    }
-
-    public void greenRed() {
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
-        sleep(delay * 1000);
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-        isSolid = true;
+    public boolean getLimitSwitch() {
+        limitSwitchState = !limitSwitch.getState();
+        return limitSwitchState;
     }
 
     public void switches() {
@@ -490,26 +487,24 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void buildTelemetry() {
-        //testing
-        myOpMode.telemetry.addData("potentiometer", getPotentVal());
-        getLimitSwitch();
-        myOpMode.telemetry.addData("limitSwitch", limitSwitchState);
+        if (testingBlinkin){myOpMode.telemetry.addData("Pattern", pattern.toString());updateStatus("Testing");}
+        //tested
+        //myOpMode.telemetry.addData("potentiometer","%.1f", getPotentVal());
+        //myOpMode.telemetry.addData("limitSwitch", getLimitSwitch());
         //
-        myOpMode.telemetry.addData("Status", statusVal);//shows current status
         myOpMode.telemetry.addLine("Drivers")
                 .addData("", currDriver)
                 .addData("", currOther);
         getBatteryVoltage();
-        myOpMode.telemetry.addData("Voltage", currentVoltage);//shows current battery voltage
-        myOpMode.telemetry.addData("lowBattery", lowVoltage);
-        //myOpMode.telemetry.addData("Timer","%.2f", timer.seconds());//shows current time
+        myOpMode.telemetry.addData("Voltage","%.1f", currentVoltage);//shows current battery voltage
+        if (lowVoltage){myOpMode.telemetry.addData("lowBattery","true");}
         myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.addData("reversed", reversed);
         myOpMode.telemetry.addData("slowMode", slowModeIsOn);
         getOrientation();
-        myOpMode.telemetry.addData("heading", heading);
-        myOpMode.telemetry.addData("roll", roll);
-        myOpMode.telemetry.addData("pitch", pitch);
+        myOpMode.telemetry.addData("heading","%.1f", heading);
+        myOpMode.telemetry.addData("roll","%.1f", roll);
+        myOpMode.telemetry.addData("pitch","%.1f", pitch);
         //end testing
         myOpMode.telemetry.addLine("motors: ")
                 .addData("front left", motorFrontLeft.getCurrentPosition())
@@ -517,12 +512,15 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 .addData("back left", motorBackLeft.getCurrentPosition())
                 .addData("back right", motorBackRight.getCurrentPosition());
         myOpMode.telemetry.addLine("power: ")
-                .addData("front left", "%2f", frontLeftPower)
-                .addData("front right", "%2f", frontRightPower)
-                .addData("back left", "%2f", backLeftPower)
-                .addData("back right", "%2f", backRightPower);
+                .addData("front left", "%.1f", frontLeftPower)
+                .addData("front right", "%.1f", frontRightPower)
+                .addData("back left", "%.1f", backLeftPower)
+                .addData("back right", "%.1f", backRightPower);
         teleSpace();
-        updateStatus("Running");
+        myOpMode.telemetry.addData("Timer","%.1f", timer.seconds());//shows current time
+        teleSpace();
+        if (!testingBlinkin)updateStatus("Running");
+        myOpMode.telemetry.addData("Status", statusVal);//shows current status
         teleSpace();
         myOpMode.telemetry.addData("Version", currentVersion);
         myOpMode.telemetry.update();
@@ -543,27 +541,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         primaryPitch = angles.thirdAngle;
     }
 
-    public String getColor() {
-        final String[] favColors = {
-                "RAINBOW_RAINBOW_PALETTE",
-                "RAINBOW_PARTY_PALETTE",
-                "BEATS_PER_MINUTE_RAINBOW_PALETTE",
-                "BEATS_PER_MINUTE_PARTY_PALETTE",
-                "COLOR_WAVES_RAINBOW_PALETTE",
-                "COLOR_WAVES_PARTY_PALETTE",
-                "CP2_END_TO_END_BLEND_TO_BLACK",
-                "CP2_BREATH_SLOW",
-                "CP1_2_END_TO_END_BLEND_1_TO_2",
-                "CP1_2_END_TO_END_BLEND",
-                "HOT_PINK",
-                "GOLD",
-                "VIOLET"
-        };
-        final int min = 0;
-        final int max = favColors.length - 1;
-        LEDcolor = favColors[(int) Math.floor(Math.random() * (max - min + 1) + min)];
-        return LEDcolor;
-    }
 
     //random
     public void teleSpace() {
