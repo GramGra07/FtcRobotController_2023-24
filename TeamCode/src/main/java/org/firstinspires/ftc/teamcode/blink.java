@@ -41,9 +41,9 @@ public class blink extends HardwareConfig {
         if (color == null && freq)blink.getColorFreq();
     }
     public void greenRed() {
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED);
+        setLights("RED", false);
         sleep(delay * 1000);
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+        setLights("GREEN", false);
         isSolid = true;
     }
     public static String getColor() {

@@ -208,7 +208,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontLeft.setZeroPowerBehavior(BRAKE);
         timer.reset();//resetting the runtime variable
         //LED
-        blink.setLights(null);
+        blink.setLights(null,true);
         myOpMode.telemetry.addData("Status", "Initialized");
         myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.addData("Version", currentVersion);
