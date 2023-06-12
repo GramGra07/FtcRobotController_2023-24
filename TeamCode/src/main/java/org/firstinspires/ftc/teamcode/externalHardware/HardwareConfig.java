@@ -155,7 +155,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
         ElapsedTime timer = new ElapsedTime();//declaring the runtime variable
-        vSensor = ahwMap.voltageSensor.get("Expansion Hub 2");//getting the voltage sensor\
+        vSensor = ahwMap.voltageSensor.get("Expansion Hub 2");//getting the voltage sensor
         getBatteryVoltage();
         //imu
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -845,7 +845,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = myOpMode.hardwareMap.get(WebcamName.class, "Webcam");
+        parameters.cameraName = myOpMode.hardwareMap.get(WebcamName.class, "Webcam 1");
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
@@ -866,7 +866,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
 
     void initTrackables(HardwareMap ahwMap) {//vuforia tags
-        webcamName = ahwMap.get(WebcamName.class, "Webcam");
+        webcamName = ahwMap.get(WebcamName.class, "Webcam 1");
 
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.

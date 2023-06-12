@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode.externalHardware.teleOpX;
 import static org.firstinspires.ftc.teamcode.externalHardware.OLDHardwareConfig.countsPerInchTape;
 import static org.firstinspires.ftc.teamcode.externalHardware.OLDHardwareConfig.tmPose;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.externalHardware.OLDHardwareConfig;
 
 @TeleOp(name = "maintenance", group = "Robot")
-//@Disabled
+@Disabled
 public class maintenanceV2 extends LinearOpMode {
     OLDHardwareConfig robot = new OLDHardwareConfig(this);
 

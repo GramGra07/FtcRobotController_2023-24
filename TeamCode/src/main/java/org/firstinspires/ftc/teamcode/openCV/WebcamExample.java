@@ -28,8 +28,7 @@ public class WebcamExample extends LinearOpMode {
 
         webcam.setPipeline(new SamplePipeline());
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
                 webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
@@ -52,7 +51,7 @@ public class WebcamExample extends LinearOpMode {
             telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
             telemetry.addData("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
             telemetry.update();
-            if(gamepad1.a) {
+            if (gamepad1.a) {
                 /*
                  * IMPORTANT NOTE: calling stopStreaming() will indeed stop the stream of images
                  * from the camera (and, by extension, stop calling your vision pipeline). HOWEVER,
@@ -78,18 +77,20 @@ public class WebcamExample extends LinearOpMode {
             sleep(100);
         }
     }
+
     class SamplePipeline extends OpenCvPipeline {
         boolean viewportPaused;
+
         @Override
         public Mat processFrame(Mat input) {
             Imgproc.rectangle(
                     input,
                     new Point(
-                            input.cols()/4,
-                            input.rows()/4),
+                            input.cols() / 4,
+                            input.rows() / 4),
                     new Point(
-                            input.cols()*(3f/4f),
-                            input.rows()*(3f/4f)),
+                            input.cols() * (3f / 4f),
+                            input.rows() * (3f / 4f)),
                     new Scalar(0, 255, 0), 4);
             return input;
         }
@@ -97,10 +98,9 @@ public class WebcamExample extends LinearOpMode {
         @Override
         public void onViewportTapped() {
             viewportPaused = !viewportPaused;
-            if(viewportPaused) {
+            if (viewportPaused) {
                 webcam.pauseViewport();
-            }
-            else {
+            } else {
                 webcam.resumeViewport();
             }
         }

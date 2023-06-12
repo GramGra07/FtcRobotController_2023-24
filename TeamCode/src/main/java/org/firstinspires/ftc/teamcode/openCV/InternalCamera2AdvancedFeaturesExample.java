@@ -41,8 +41,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
  */
 @TeleOp
 @Disabled
-public class InternalCamera2AdvancedFeaturesExample extends LinearOpMode
-{
+public class InternalCamera2AdvancedFeaturesExample extends LinearOpMode {
     /**
      * NB: we declare our camera as the {@link OpenCvInternalCamera2} type,
      * as opposed to simply {@link OpenCvCamera}. This allows us to access
@@ -51,8 +50,7 @@ public class InternalCamera2AdvancedFeaturesExample extends LinearOpMode
     OpenCvInternalCamera2 phoneCam;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         /**
          * NOTE: Many comments have been omitted from this sample for the
          * sake of conciseness. If you're just starting out with EasyOpenCV,
@@ -63,11 +61,9 @@ public class InternalCamera2AdvancedFeaturesExample extends LinearOpMode
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera2(OpenCvInternalCamera2.CameraDirection.BACK, cameraMonitorViewId);
 
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
+            public void onOpened() {
                 phoneCam.setPipeline(new UselessColorBoxDrawingPipeline(new Scalar(255, 0, 0)));
 
                 /*
@@ -97,8 +93,7 @@ public class InternalCamera2AdvancedFeaturesExample extends LinearOpMode
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
                 /*
                  * This will be called if the camera could not be opened
                  */
@@ -107,32 +102,28 @@ public class InternalCamera2AdvancedFeaturesExample extends LinearOpMode
 
         waitForStart();
 
-        while (opModeIsActive())
-        {
+        while (opModeIsActive()) {
             sleep(100);
         }
     }
 
-    class UselessColorBoxDrawingPipeline extends OpenCvPipeline
-    {
+    class UselessColorBoxDrawingPipeline extends OpenCvPipeline {
         Scalar color;
 
-        UselessColorBoxDrawingPipeline(Scalar color)
-        {
+        UselessColorBoxDrawingPipeline(Scalar color) {
             this.color = color;
         }
 
         @Override
-        public Mat processFrame(Mat input)
-        {
+        public Mat processFrame(Mat input) {
             Imgproc.rectangle(
                     input,
                     new Point(
-                            input.cols()/4,
-                            input.rows()/4),
+                            input.cols() / 4,
+                            input.rows() / 4),
                     new Point(
-                            input.cols()*(3f/4f),
-                            input.rows()*(3f/4f)),
+                            input.cols() * (3f / 4f),
+                            input.rows() * (3f / 4f)),
                     color, 4);
 
             return input;

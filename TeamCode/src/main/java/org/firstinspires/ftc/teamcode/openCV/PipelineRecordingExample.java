@@ -43,13 +43,11 @@ import org.openftc.easyopencv.PipelineRecordingParameters;
  */
 @TeleOp
 @Disabled
-public class PipelineRecordingExample extends LinearOpMode
-{
+public class PipelineRecordingExample extends LinearOpMode {
     OpenCvCamera phoneCam;
 
     @Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         /**
          * NOTE: Many comments have been omitted from this sample for the
          * sake of conciseness. If you're just starting out with EasyOpenCV,
@@ -63,17 +61,14 @@ public class PipelineRecordingExample extends LinearOpMode
         phoneCam.setPipeline(new SamplePipeline());
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
         phoneCam.setViewportRenderer(OpenCvCamera.ViewportRenderer.GPU_ACCELERATED);
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
+            public void onOpened() {
                 phoneCam.startStreaming(640, 480, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
                 /*
                  * This will be called if the camera could not be opened
                  */
@@ -88,8 +83,7 @@ public class PipelineRecordingExample extends LinearOpMode
          */
         waitForStart();
 
-        while (opModeIsActive())
-        {
+        while (opModeIsActive()) {
             /*
              * Send some stats to the telemetry
              */
@@ -111,36 +105,32 @@ public class PipelineRecordingExample extends LinearOpMode
     }
 
 
-    class SamplePipeline extends OpenCvPipeline
-    {
+    class SamplePipeline extends OpenCvPipeline {
         boolean toggleRecording = false;
 
         @Override
-        public Mat processFrame(Mat input)
-        {
+        public Mat processFrame(Mat input) {
             /*
              * Draw a simple box around the middle 1/2 of the entire frame
              */
             Imgproc.rectangle(
                     input,
                     new Point(
-                            input.cols()/4,
-                            input.rows()/4),
+                            input.cols() / 4,
+                            input.rows() / 4),
                     new Point(
-                            input.cols()*(3f/4f),
-                            input.rows()*(3f/4f)),
+                            input.cols() * (3f / 4f),
+                            input.rows() * (3f / 4f)),
                     new Scalar(0, 255, 0), 4);
 
             return input;
         }
 
         @Override
-        public void onViewportTapped()
-        {
+        public void onViewportTapped() {
             toggleRecording = !toggleRecording;
 
-            if(toggleRecording)
-            {
+            if (toggleRecording) {
                 /*
                  * This is all you need to do to start recording.
                  */
@@ -152,9 +142,7 @@ public class PipelineRecordingExample extends LinearOpMode
                                 .setFrameRate(30)
                                 .setPath("/sdcard/pipeline_rec.mp4")
                                 .build());
-            }
-            else
-            {
+            } else {
                 /*
                  * Note: if you don't stop recording by yourself, it will be automatically
                  * stopped for you at the end of your OpMode
