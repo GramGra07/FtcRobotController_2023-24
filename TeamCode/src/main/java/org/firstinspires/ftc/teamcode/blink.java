@@ -38,7 +38,7 @@ public class blink extends HardwareConfig {
             LEDcolor = color;
         }
         if (color == null && !freq)lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColor()));
-        if (color == null && freq)blink.getColorFreq();
+        if (color == null && freq)lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColorFreq()));
     }
     public void greenRed() {
         setLights("RED", false);
@@ -59,7 +59,7 @@ public class blink extends HardwareConfig {
         pattern = pattern.next();
         lights.setPattern(pattern);
     }
-    public static void getColorFreq(){
+    public static String getColorFreq(){
         // colors will be selected based on a frequency, selecting some more than others
         // 100 total pings
         // common = 66
@@ -113,6 +113,6 @@ public class blink extends HardwareConfig {
             final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
             LEDcolor = rareColors[rand];
         }
-        setLights(LEDcolor, false);
+        return LEDcolor;
     }
 }

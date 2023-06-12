@@ -208,66 +208,18 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontLeft.setZeroPowerBehavior(BRAKE);
         timer.reset();//resetting the runtime variable
         //LED
-        blink.setLights(null,true);
+        blink.setLights(null, true);
         myOpMode.telemetry.addData("Status", "Initialized");
         myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.addData("Version", currentVersion);
-        myOpMode.telemetry.addData("Voltage","%.2f", currentVoltage);
-        if (lowVoltage){myOpMode.telemetry.addData("lowBattery","true");}
+        myOpMode.telemetry.addData("Voltage", "%.2f", currentVoltage);
+        if (lowVoltage) {
+            myOpMode.telemetry.addData("lowBattery", "true");
+        }
         myOpMode.telemetry.update();
     }
-    void getBatteryVoltage() {
-        double result = Double.POSITIVE_INFINITY;
-        double voltage = vSensor.getVoltage();
-        if (voltage > 0) {
-            result = Math.min(result, voltage);
-        }
-        lowVoltage = result <= minimumVoltage;
-        currentVoltage = result;
-    }
 
-    void initTrackables(HardwareMap ahwMap) {//vuforia tags
-        webcamName = ahwMap.get(WebcamName.class, "Webcam");
-
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         * We can pass Vuforia the handle to a camera preview resource (on the RC screen);
-         * If no camera-preview is desired, use the parameter-less constructor instead (commented out below).
-         * Note: A preview window is required if you want to view the camera stream on the Driver Station Phone.
-         */
-        int cameraMonitorViewId = ahwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", ahwMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters camParameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        camParameters.vuforiaLicenseKey = VUFORIA_KEY;
-        camParameters.cameraName = webcamName;
-        camParameters.useExtendedTracking = false;
-        vuforia = ClassFactory.getInstance().createVuforia(camParameters);
-        targets = this.vuforia.loadTrackablesFromAsset("PowerPlay");
-        allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(targets);
-        identifyTarget(0, "Red Audience Wall", -halfField, -oneAndHalfTile, mmTargetHeight, 90, 0, 90);
-        identifyTarget(1, "Red Rear Wall", halfField, -oneAndHalfTile, mmTargetHeight, 90, 0, -90);
-        identifyTarget(2, "Blue Audience Wall", -halfField, oneAndHalfTile, mmTargetHeight, 90, 0, 90);
-        identifyTarget(3, "Blue Rear Wall", halfField, oneAndHalfTile, mmTargetHeight, 90, 0, -90);
-
-        final float CAMERA_FORWARD_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Enter the forward distance from the center of the robot to the camera lens
-        final float CAMERA_VERTICAL_DISPLACEMENT = 6.0f * mmPerInch;   // eg: Camera is 6 Inches above ground
-        final float CAMERA_LEFT_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Enter the left distance from the center of the robot to the camera lens
-        OpenGLMatrix cameraLocationOnRobot = OpenGLMatrix
-                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XZY, DEGREES, 90, 90, 0));
-        for (VuforiaTrackable trackable : allTrackables) {
-            ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(camParameters.cameraName, cameraLocationOnRobot);
-        }
-        targets.activate();
-    }
-
-    void identifyTarget(int targetIndex, String targetName, float dx, float dy, float dz, float rx, float ry, float rz) {
-        VuforiaTrackable aTarget = targets.get(targetIndex);
-        aTarget.setName(targetName);
-        aTarget.setLocation(OpenGLMatrix.translation(dx, dy, dz)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, rx, ry, rz)));
-    }
-
+    //code to run all drive functions
     public void doBulk() {
         //blink.testBlinkColors(5);//only if testing to find new colors
         once();//runs once
@@ -359,7 +311,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
             findOrientationOffset();
             once = true;
         }
-
     }
 
     public void switchProfile() {
@@ -455,14 +406,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
     }
-    public double getPotentVal(){
-        return Range.clip(POTENTIOMETER_MAX/3.3 * potentiometer.getVoltage(),POTENTIOMETER_MIN,POTENTIOMETER_MAX);
-    }
-
-    public boolean getLimitSwitch() {
-        limitSwitchState = !limitSwitch.getState();
-        return limitSwitchState;
-    }
 
     public void switches() {
         //switches
@@ -473,21 +416,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
     }
 
-    public void rumble() {//soccer whistle
-        if ((timer.seconds() > endgame) && !isEndgame) {
-            myOpMode.gamepad1.runRumbleEffect(customRumbleEffect);
-            myOpMode.gamepad2.runRumbleEffect(customRumbleEffect);
-            isEndgame = true;
-        }
-        if ((timer.seconds() > end) && !isEnd) {
-            myOpMode.gamepad1.runRumbleEffect(customRumbleEffect1);
-            myOpMode.gamepad2.runRumbleEffect(customRumbleEffect1);
-            isEnd = true;
-        }
-    }
-
     public void buildTelemetry() {
-        if (testingBlinkin){myOpMode.telemetry.addData("Pattern", pattern.toString());updateStatus("Testing");}
+        if (testingBlinkin) {
+            myOpMode.telemetry.addData("Pattern", pattern.toString());
+            updateStatus("Testing");
+        }
         //tested
         //myOpMode.telemetry.addData("potentiometer","%.1f", getPotentVal());
         //myOpMode.telemetry.addData("limitSwitch", getLimitSwitch());
@@ -496,15 +429,17 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 .addData("", currDriver)
                 .addData("", currOther);
         getBatteryVoltage();
-        myOpMode.telemetry.addData("Voltage","%.1f", currentVoltage);//shows current battery voltage
-        if (lowVoltage){myOpMode.telemetry.addData("lowBattery","true");}
+        myOpMode.telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
+        if (lowVoltage) {
+            myOpMode.telemetry.addData("lowBattery", "true");
+        }
         myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.addData("reversed", reversed);
         myOpMode.telemetry.addData("slowMode", slowModeIsOn);
         getOrientation();
-        myOpMode.telemetry.addData("heading","%.1f", heading);
-        myOpMode.telemetry.addData("roll","%.1f", roll);
-        myOpMode.telemetry.addData("pitch","%.1f", pitch);
+        myOpMode.telemetry.addData("heading", "%.1f", heading);
+        myOpMode.telemetry.addData("roll", "%.1f", roll);
+        myOpMode.telemetry.addData("pitch", "%.1f", pitch);
         //end testing
         myOpMode.telemetry.addLine("motors: ")
                 .addData("front left", motorFrontLeft.getCurrentPosition())
@@ -517,15 +452,36 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 .addData("back left", "%.1f", backLeftPower)
                 .addData("back right", "%.1f", backRightPower);
         teleSpace();
-        myOpMode.telemetry.addData("Timer","%.1f", timer.seconds());//shows current time
+        myOpMode.telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         teleSpace();
-        if (!testingBlinkin)updateStatus("Running");
+        if (!testingBlinkin) updateStatus("Running");
         myOpMode.telemetry.addData("Status", statusVal);//shows current status
         teleSpace();
         myOpMode.telemetry.addData("Version", currentVersion);
         myOpMode.telemetry.update();
     }
 
+    //sensors
+    public double getPotentVal() {
+        return Range.clip(POTENTIOMETER_MAX / 3.3 * potentiometer.getVoltage(), POTENTIOMETER_MIN, POTENTIOMETER_MAX);
+    }
+
+    public boolean getLimitSwitch() {
+        limitSwitchState = !limitSwitch.getState();
+        return limitSwitchState;
+    }
+
+    void getBatteryVoltage() {
+        double result = Double.POSITIVE_INFINITY;
+        double voltage = vSensor.getVoltage();
+        if (voltage > 0) {
+            result = Math.min(result, voltage);
+        }
+        lowVoltage = result <= minimumVoltage;
+        currentVoltage = result;
+    }
+
+    //IMU
     public void getOrientation() {
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         heading = angles.firstAngle - primaryHeading;
@@ -541,6 +497,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
         primaryPitch = angles.thirdAngle;
     }
 
+    //claw
+    public double setServo(int degrees) {
+        position = degree_mult * degrees;
+        return position;
+    }
 
     //random
     public void teleSpace() {
@@ -551,10 +512,17 @@ public class HardwareConfig {//this is an external opMode that can have public v
         statusVal = status;
     }
 
-    //claw
-    public double setServo(int degrees) {
-        position = degree_mult * degrees;
-        return position;
+    public void rumble() {//soccer whistle
+        if ((timer.seconds() > endgame) && !isEndgame) {
+            myOpMode.gamepad1.runRumbleEffect(customRumbleEffect);
+            myOpMode.gamepad2.runRumbleEffect(customRumbleEffect);
+            isEndgame = true;
+        }
+        if ((timer.seconds() > end) && !isEnd) {
+            myOpMode.gamepad1.runRumbleEffect(customRumbleEffect1);
+            myOpMode.gamepad2.runRumbleEffect(customRumbleEffect1);
+            isEnd = true;
+        }
     }
     //encoder
 
@@ -896,7 +864,50 @@ public class HardwareConfig {//this is an external opMode that can have public v
         // need these 2 vars ^
     }
 
-    //
+
+    void initTrackables(HardwareMap ahwMap) {//vuforia tags
+        webcamName = ahwMap.get(WebcamName.class, "Webcam");
+
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         * We can pass Vuforia the handle to a camera preview resource (on the RC screen);
+         * If no camera-preview is desired, use the parameter-less constructor instead (commented out below).
+         * Note: A preview window is required if you want to view the camera stream on the Driver Station Phone.
+         */
+        int cameraMonitorViewId = ahwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", ahwMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters camParameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        camParameters.vuforiaLicenseKey = VUFORIA_KEY;
+        camParameters.cameraName = webcamName;
+        camParameters.useExtendedTracking = false;
+        vuforia = ClassFactory.getInstance().createVuforia(camParameters);
+        targets = this.vuforia.loadTrackablesFromAsset("PowerPlay");
+        allTrackables = new ArrayList<VuforiaTrackable>();
+        allTrackables.addAll(targets);
+        identifyTarget(0, "Red Audience Wall", -halfField, -oneAndHalfTile, mmTargetHeight, 90, 0, 90);
+        identifyTarget(1, "Red Rear Wall", halfField, -oneAndHalfTile, mmTargetHeight, 90, 0, -90);
+        identifyTarget(2, "Blue Audience Wall", -halfField, oneAndHalfTile, mmTargetHeight, 90, 0, 90);
+        identifyTarget(3, "Blue Rear Wall", halfField, oneAndHalfTile, mmTargetHeight, 90, 0, -90);
+
+        final float CAMERA_FORWARD_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Enter the forward distance from the center of the robot to the camera lens
+        final float CAMERA_VERTICAL_DISPLACEMENT = 6.0f * mmPerInch;   // eg: Camera is 6 Inches above ground
+        final float CAMERA_LEFT_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Enter the left distance from the center of the robot to the camera lens
+        OpenGLMatrix cameraLocationOnRobot = OpenGLMatrix
+                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XZY, DEGREES, 90, 90, 0));
+        for (VuforiaTrackable trackable : allTrackables) {
+            ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(camParameters.cameraName, cameraLocationOnRobot);
+        }
+        targets.activate();
+    }
+
+    void identifyTarget(int targetIndex, String targetName, float dx, float dy, float dz, float rx, float ry, float rz) {
+        VuforiaTrackable aTarget = targets.get(targetIndex);
+        aTarget.setName(targetName);
+        aTarget.setLocation(OpenGLMatrix.translation(dx, dy, dz)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, rx, ry, rz)));
+    }
+
+    // color
     //public boolean colorInRange(float red, double targetR, float green, double targetG, float blue, double targetB, float range) {
     //    boolean rCheck = false;
     //    boolean gCheck = false;
