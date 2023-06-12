@@ -149,9 +149,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public boolean dDownHigh = false;
 
-
     public String currentVersion = "1.0.1";
 
+    //init
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
         ElapsedTime timer = new ElapsedTime();//declaring the runtime variable
