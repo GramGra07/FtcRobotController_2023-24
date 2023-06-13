@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.externalHardware.blank;
+package org.firstinspires.ftc.teamcode.opModes.blank;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 @TeleOp
 @Disabled

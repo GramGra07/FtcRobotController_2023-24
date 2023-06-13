@@ -1,5 +1,5 @@
 //import
-package org.firstinspires.ftc.teamcode.externalHardware;
+package org.firstinspires.ftc.teamcode.opModes;
 
 import static android.os.SystemClock.sleep;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;

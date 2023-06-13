@@ -1,7 +1,7 @@
-package org.firstinspires.ftc.teamcode.externalHardware;
+package org.firstinspires.ftc.teamcode.opModes;
 
 import static android.os.SystemClock.sleep;
-import static org.firstinspires.ftc.teamcode.externalHardware.MathFunctions.setOvr;
+import static org.firstinspires.ftc.teamcode.opModes.MathFunctions.setOvr;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

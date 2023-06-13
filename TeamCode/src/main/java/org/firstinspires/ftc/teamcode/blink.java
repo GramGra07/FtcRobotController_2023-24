@@ -5,7 +5,7 @@ import static android.os.SystemClock.sleep;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 public class blink extends HardwareConfig {
     // to change CP aka custom team colors, or length of strip:

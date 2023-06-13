@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.camera.openCV;
+package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;

@@ -1,5 +1,5 @@
 //import
-package org.firstinspires.ftc.teamcode.externalHardware;
+package org.firstinspires.ftc.teamcode.opModes;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;

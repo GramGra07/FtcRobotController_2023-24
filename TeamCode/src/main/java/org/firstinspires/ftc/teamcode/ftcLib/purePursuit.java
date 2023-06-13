@@ -20,7 +20,7 @@ import com.arcrobotics.ftclib.purepursuit.waypoints.StartWaypoint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.externalHardware.HardwareConfig;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 @Autonomous
 @Disabled

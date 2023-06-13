@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.externalHardware.blank;
+package org.firstinspires.ftc.teamcode.opModes.blank;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.externalHardware.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 
 @Autonomous
 @Disabled
