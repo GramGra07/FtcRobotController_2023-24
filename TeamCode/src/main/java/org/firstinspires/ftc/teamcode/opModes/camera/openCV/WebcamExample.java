@@ -23,7 +23,8 @@ public class WebcamExample extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
 
-        webcam.setPipeline(new SamplePipeline());
+        webcam.setPipeline(new EdgeDetectionPipeline());//!can switch pipelines here
+
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -42,7 +43,7 @@ public class WebcamExample extends LinearOpMode {
 
         while (opModeIsActive()) {
             telemetry.addData("Frame Count", webcam.getFrameCount());
-            telemetry.addData("FPS", String.format("%.2f", webcam.getFps()));
+            telemetry.addData("FPS", "%.2f", webcam.getFps());
             telemetry.addData("Total frame time ms", webcam.getTotalFrameTimeMs());
             telemetry.addData("Pipeline time ms", webcam.getPipelineTimeMs());
             telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
@@ -84,7 +85,7 @@ public class WebcamExample extends LinearOpMode {
             Imgproc.rectangle(
                     input,
                     new Point(
-                            input.cols() / 8,
+                            input.cols() / 4,
                             input.rows() / 4),
                     new Point(
                             input.cols() * (3f / 4f),
@@ -103,4 +104,75 @@ public class WebcamExample extends LinearOpMode {
             }
         }
     }
+    class EdgeDetectionPipeline extends OpenCvPipeline {
+        Mat gray = new Mat();
+        Mat edges = new Mat();
+        boolean viewportPaused;
+
+        @Override
+        public Mat processFrame(Mat input) {
+            Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.Canny(gray, edges, 50, 100);
+            return edges;
+        }
+        @Override
+        public void onViewportTapped() {
+            viewportPaused = !viewportPaused;
+            if (viewportPaused) {
+                webcam.pauseViewport();
+            } else {
+                webcam.resumeViewport();
+            }
+        }
+    }
 }
+//// Process frame if available
+//            if (frame != null) {
+//                    // Perform edge detection
+//                    Mat edges = performEdgeDetection(frame);
+//
+//                    // Show the edges
+//                    showImage("Edges", edges);
+//
+//                    // Release the frame and edges to free up memory
+//                    frame.release();
+//                    edges.release();
+//                    }
+//
+//                    idle();
+//                    }
+//
+//                    // Disable and release the camera view
+//                    if (cameraView != null) {
+//                    cameraView.disableView();
+//                    }
+//                    }
+//
+//private Mat performEdgeDetection(Mat frame) {
+//        // Convert the frame to grayscale
+//        Mat grayImage = new Mat();
+//        Imgproc.cvtColor(frame, grayImage, Imgproc.COLOR_RGBA2GRAY);
+//
+//        // Apply edge detection algorithm (Canny edge detector)
+//        Mat edges = new Mat();
+//        Imgproc.Canny(grayImage, edges, threshold1, threshold2);
+//
+//        // Release the grayscale image
+//        grayImage.release();
+//
+//        // Return the edges frame
+//        return edges;
+//        }
+//
+//private void showImage(String windowName, Mat image) {
+//        // Create a Bitmap to hold the image
+//        Bitmap bitmap = Bitmap.createBitmap(image.cols(), image.rows(), Bitmap.Config.ARGB_8888);
+//
+//        // Convert the Mat image to a Bitmap
+//        Utils.matToBitmap(image, bitmap);
+//
+//        // Show the Bitmap in FTC telemetry
+//        telemetry.addData(windowName, bitmap);
+//        telemetry.update();
+//        }
+//        }
