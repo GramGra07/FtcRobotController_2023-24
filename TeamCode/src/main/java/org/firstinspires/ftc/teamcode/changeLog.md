@@ -1,3 +1,9 @@
+1.2.0 June 13th,2023
+Added a new OpenCV Pipeline class that contains all the used pipelines
+Added the pipelineTester.java program to test the pipelines
+Added edge detection, color detection, and these combined as well as one with bounding boxes to create
+Color detection has four detectable colors: red, blue, yellow, and green
+
 1.1.0 June 12th,2023
 Added config.md and a template
 OpenCV tests working (and april tags) and will switch with vuforia as well  
