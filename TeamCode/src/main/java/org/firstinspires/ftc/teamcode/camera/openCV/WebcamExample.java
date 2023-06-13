@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.openCV;
+package org.firstinspires.ftc.teamcode.camera.openCV;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -22,9 +22,6 @@ public class WebcamExample extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-
-        // OR...  Do Not Activate the Camera Monitor View
-        //webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
         webcam.setPipeline(new SamplePipeline());
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
@@ -71,8 +68,9 @@ public class WebcamExample extends LinearOpMode {
                  * time. Of course, this comment is irrelevant in light of the use case described in
                  * the above "important note".
                  */
+                telemetry.addData("Webcam", "Stopping");
                 webcam.stopStreaming();
-                //webcam.closeCameraDevice();
+                webcam.closeCameraDevice();
             }
             sleep(100);
         }
@@ -86,7 +84,7 @@ public class WebcamExample extends LinearOpMode {
             Imgproc.rectangle(
                     input,
                     new Point(
-                            input.cols() / 4,
+                            input.cols() / 8,
                             input.rows() / 4),
                     new Point(
                             input.cols() * (3f / 4f),

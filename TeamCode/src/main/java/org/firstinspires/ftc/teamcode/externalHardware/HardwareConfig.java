@@ -149,7 +149,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public boolean dDownHigh = false;
 
-    public String currentVersion = "1.0.1";
+    public String currentVersion = "1.1.0";
 
     //init
     public void init(HardwareMap ahwMap) {
