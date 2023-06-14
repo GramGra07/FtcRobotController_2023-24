@@ -434,9 +434,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 .addData("", currOther);
         getBatteryVoltage();
         myOpMode.telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
-        if (lowVoltage) {
-            myOpMode.telemetry.addData("lowBattery", "true");
-        }
+        myOpMode.telemetry.addData("lowBattery", lowVoltage);
         myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.addData("reversed", reversed);
         myOpMode.telemetry.addData("slowMode", slowModeIsOn);
@@ -445,11 +443,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
         myOpMode.telemetry.addData("roll", "%.1f", roll);
         myOpMode.telemetry.addData("pitch", "%.1f", pitch);
         //end testing
-        myOpMode.telemetry.addLine("motors: ")
-                .addData("front left", motorFrontLeft.getCurrentPosition())
-                .addData("front right", motorFrontRight.getCurrentPosition())
-                .addData("back left", motorBackLeft.getCurrentPosition())
-                .addData("back right", motorBackRight.getCurrentPosition());
+        if ((motorBackLeft.getCurrentPosition() < 20000) && (motorBackRight.getCurrentPosition() < 20000) && (motorFrontLeft.getCurrentPosition() < 20000) && (motorFrontRight.getCurrentPosition() < 20000)) {
+            myOpMode.telemetry.addLine("motors: ")
+                    .addData("front left", motorFrontLeft.getCurrentPosition())
+                    .addData("front right", motorFrontRight.getCurrentPosition())
+                    .addData("back left", motorBackLeft.getCurrentPosition())
+                    .addData("back right", motorBackRight.getCurrentPosition());
+        }
         myOpMode.telemetry.addLine("power: ")
                 .addData("front left", "%.1f", frontLeftPower)
                 .addData("front right", "%.1f", frontRightPower)
