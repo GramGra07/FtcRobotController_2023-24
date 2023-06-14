@@ -40,10 +40,6 @@ public class pipelineTester extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("Frame Count", webcam.getFrameCount());
             telemetry.addData("FPS", "%.2f", webcam.getFps());
-            //telemetry.addData("Total frame time ms", webcam.getTotalFrameTimeMs());
-            //telemetry.addData("Pipeline time ms", webcam.getPipelineTimeMs());
-            //telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
-            //telemetry.addData("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
             telemetry.update();
             if (gamepad1.a) {
                 /*
