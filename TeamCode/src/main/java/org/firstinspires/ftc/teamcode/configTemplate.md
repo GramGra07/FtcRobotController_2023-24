@@ -1,3 +1,6 @@
+Only a template, dont edit this file, copy it and make a new file
+Format: # - type : name
+
 Control Hub
 Motor
 0 - 
