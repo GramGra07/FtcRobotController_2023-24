@@ -454,6 +454,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         teleSpace();
         myOpMode.telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         teleSpace();
+        //webcam telemetry, next three lines
+        //myOpMode.telemetry.addData("Frame Count", webcam.getFrameCount());
+        //myOpMode.telemetry.addData("FPS", "%.2f", webcam.getFps());
+        //teleSpace();
         if (!testingBlinkin) updateStatus("Running");
         myOpMode.telemetry.addData("Status", statusVal);//shows current status
         teleSpace();

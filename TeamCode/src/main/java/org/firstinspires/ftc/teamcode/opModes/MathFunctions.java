@@ -86,6 +86,7 @@ public class MathFunctions extends HardwareConfig {
         ovrCurrX = x;
         ovrCurrY = y;
     }
+
     public static boolean inBetween(double in, double max, double min) {
         return in < max && in > min;
     }

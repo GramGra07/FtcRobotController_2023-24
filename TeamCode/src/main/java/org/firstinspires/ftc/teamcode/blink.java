@@ -13,10 +13,12 @@ public class blink extends HardwareConfig {
     // change it with the screw holes
     // hold both strip select and mode button till it blinks blue
     private LinearOpMode myOpMode = null;
+
     public blink(LinearOpMode opmode) {
         super(opmode);
         myOpMode = opmode;
     }
+
     public static final String[] favColors = {
             "RAINBOW_RAINBOW_PALETTE",
             "RAINBOW_PARTY_PALETTE",
@@ -32,20 +34,25 @@ public class blink extends HardwareConfig {
             "GOLD",
             "VIOLET"
     };
+
     public static void setLights(String color, boolean freq) {
-        if (color != null){
+        if (color != null) {
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(color));
             LEDcolor = color;
         }
-        if (color == null && !freq)lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColor()));
-        if (color == null && freq)lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColorFreq()));
+        if (color == null && !freq)
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColor()));
+        if (color == null && freq)
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(blink.getColorFreq()));
     }
+
     public void greenRed() {
         setLights("RED", false);
         sleep(delay * 1000);
         setLights("GREEN", false);
         isSolid = true;
     }
+
     public static String getColor() {
         // CP colors are chosen on the blinkin, look at top for instructions
         final int min = 0;
@@ -53,13 +60,15 @@ public class blink extends HardwareConfig {
         LEDcolor = favColors[(int) Math.floor(Math.random() * (max - min + 1) + min)];
         return LEDcolor;
     }
-    public static void testBlinkColors(int delayS){
-        sleep(delayS* 1000L);
+
+    public static void testBlinkColors(int delayS) {
+        sleep(delayS * 1000L);
         testingBlinkin = true;
         pattern = pattern.next();
         lights.setPattern(pattern);
     }
-    public static String getColorFreq(){
+
+    public static String getColorFreq() {
         // colors will be selected based on a frequency, selecting some more than others
         // 100 total pings
         // common = 66
@@ -74,39 +83,37 @@ public class blink extends HardwareConfig {
         int max = 100;
         final int random = (int) Math.floor(Math.random() * (max - min + 1) + min);
         final String[] commonColors = {
-            "RAINBOW_RAINBOW_PALETTE",
-            "RAINBOW_PARTY_PALETTE",
-            "BEATS_PER_MINUTE_RAINBOW_PALETTE",
-            "BEATS_PER_MINUTE_PARTY_PALETTE",
-            "COLOR_WAVES_RAINBOW_PALETTE",
-            "COLOR_WAVES_PARTY_PALETTE",
+                "RAINBOW_RAINBOW_PALETTE",
+                "RAINBOW_PARTY_PALETTE",
+                "BEATS_PER_MINUTE_RAINBOW_PALETTE",
+                "BEATS_PER_MINUTE_PARTY_PALETTE",
+                "COLOR_WAVES_RAINBOW_PALETTE",
+                "COLOR_WAVES_PARTY_PALETTE",
         };
         final String[] uncommonColors = {
-            "CP2_END_TO_END_BLEND_TO_BLACK",
-            "CP2_BREATH_SLOW",
-            "CP1_2_END_TO_END_BLEND_1_TO_2",
-            "CP1_2_END_TO_END_BLEND",
+                "CP2_END_TO_END_BLEND_TO_BLACK",
+                "CP2_BREATH_SLOW",
+                "CP1_2_END_TO_END_BLEND_1_TO_2",
+                "CP1_2_END_TO_END_BLEND",
         };
         final String[] rareColors = {
-            "HOT_PINK",
-            "GOLD",
-            "VIOLET"
+                "HOT_PINK",
+                "GOLD",
+                "VIOLET"
         };
-        if (random <= common){
+        if (random <= common) {
             // choose common
             max = commonColors.length - 1;
             min = 0;
             final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
             LEDcolor = commonColors[rand];
-        }
-        else if (random > common && random <= common+uncommon){
+        } else if (random > common && random <= common + uncommon) {
             // choose uncommon
             max = uncommonColors.length - 1;
             min = 0;
             final int rand = (int) Math.floor(Math.random() * (max - min + 1) + min);
             LEDcolor = uncommonColors[rand];
-        }
-        else if (random > uncommon && random <= common+uncommon+rare){
+        } else if (random > uncommon && random <= common + uncommon + rare) {
             //choose rare
             max = rareColors.length - 1;
             min = 0;

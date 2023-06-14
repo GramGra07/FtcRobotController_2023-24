@@ -12,6 +12,7 @@ public class PIDtesting extends LinearOpMode {
     public static double p = 0.5;
     public static double i = 0.0;
     public static double d = 0.0;
+
     @Override
     public void runOpMode() {
         // Initialize the PID controller
@@ -30,7 +31,7 @@ public class PIDtesting extends LinearOpMode {
         ElapsedTime elapsedTime = new ElapsedTime();
         waitForStart();
         while (opModeIsActive() && motor.getCurrentPosition() < motor.getTargetPosition()) {
-            telemetry.addData("val",motor.getCurrentPosition());
+            telemetry.addData("val", motor.getCurrentPosition());
             telemetry.update();
             // Calculate the output of the PID controller
             double output = pidController.calculate(motor.getCurrentPosition(), motor.getTargetPosition());

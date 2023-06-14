@@ -4,20 +4,20 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class untestedFunctions extends HardwareConfig{
+public class untestedFunctions extends HardwareConfig {
 
     public untestedFunctions(LinearOpMode opmode) {
         super(opmode);
     }
 
-    public void antiTip(){
+    public void antiTip() {
         double maxRoll = 10;
         double minRoll = -10;
         if (roll > maxRoll) {
             //tipped to right
             motorBackLeft.setPower(-1);
             motorFrontLeft.setPower(1);
-            if (roll<maxRoll) {
+            if (roll < maxRoll) {
                 //not tipped
                 motorBackLeft.setPower(0);
                 motorFrontLeft.setPower(0);
@@ -29,7 +29,7 @@ public class untestedFunctions extends HardwareConfig{
             //tipped to left
             motorBackLeft.setPower(1);
             motorFrontLeft.setPower(-1);
-            if (roll>minRoll) {
+            if (roll > minRoll) {
                 //not tipped
                 motorBackLeft.setPower(0);
                 motorFrontLeft.setPower(0);
@@ -44,7 +44,7 @@ public class untestedFunctions extends HardwareConfig{
             motorFrontRight.setPower(1);
             motorFrontLeft.setPower(1);
             telemetry.update();
-            if (pitch<maxPitch) {
+            if (pitch < maxPitch) {
                 //not tipped
                 motorFrontRight.setPower(0);
                 motorFrontLeft.setPower(0);
@@ -56,7 +56,7 @@ public class untestedFunctions extends HardwareConfig{
             //tipped to back
             motorBackRight.setPower(-1);
             motorBackLeft.setPower(-1);
-            if (pitch>minPitch) {
+            if (pitch > minPitch) {
                 //not tipped
                 motorFrontRight.setPower(0);
                 motorFrontLeft.setPower(0);
