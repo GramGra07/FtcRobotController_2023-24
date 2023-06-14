@@ -151,6 +151,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public String currentVersion = "1.2.0";
 
+    //webcam
+    public static String cam1_N = "Webcam 1";
+    public static String cam2_N = "Webcam 2";
+
     //init
     public void init(HardwareMap ahwMap) {
         updateStatus("Initializing");
