@@ -46,6 +46,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class VuforiaFieldNavigationWebcam extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Connect to the camera we are to use.  This name must match what is set up in Robot Configuration
-        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        webcamName = hardwareMap.get(WebcamName.class, HardwareConfig.cam1_N);
 
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.

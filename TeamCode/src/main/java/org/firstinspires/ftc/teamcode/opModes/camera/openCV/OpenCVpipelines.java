@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OpenCVpipelines {
-    public static String detectionColor;
 
     public static Scalar scalarVals(String color) {//rgb scalar vals
         if (color == "yellow") {
@@ -49,12 +48,17 @@ public class OpenCVpipelines {
         Mat mask1, mask2 = new Mat();
         Mat end = new Mat();
 
+        String color;
+
+        public ColorDetection(String color) {
+            this.color = color;
+        }
+
         @Override
         public Mat processFrame(Mat input) {
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
-            String color = detectionColor;
             if (color == "yellow") {
                 scalarLow = new Scalar(20, 100, 100);
                 scalarHigh = new Scalar(30, 255, 255);
@@ -68,14 +72,10 @@ public class OpenCVpipelines {
                 scalarLow = new Scalar(0, 0, 0);
                 scalarHigh = new Scalar(0, 0, 0);
             }
-            hsv = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
-            end = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             if (!color.equals("red"))
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
             if (color == "red") {
-                mask1 = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
-                mask2 = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
                 Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
                 Core.inRange(hsv, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
@@ -89,13 +89,17 @@ public class OpenCVpipelines {
         Mat hsv = new Mat();
         Mat mask1, mask2 = new Mat();
         Mat end = new Mat();
+        String color;
+
+        public ColorEdgeDetection(String color) {
+            this.color = color;
+        }
 
         @Override
         public Mat processFrame(Mat input) {
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
-            String color = detectionColor;
             if (color == "yellow") {
                 scalarLow = new Scalar(20, 100, 100);
                 scalarHigh = new Scalar(30, 255, 255);
@@ -109,14 +113,10 @@ public class OpenCVpipelines {
                 scalarLow = new Scalar(0, 0, 0);
                 scalarHigh = new Scalar(0, 0, 0);
             }
-            hsv = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
-            end = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             if (!color.equals("red"))
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
             if (color == "red") {
-                mask1 = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
-                mask2 = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
                 Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
                 Core.inRange(hsv, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
@@ -133,12 +133,17 @@ public class OpenCVpipelines {
         Mat hsv = new Mat();
         Mat mask1, mask2 = new Mat();
 
+        String color;
+
+        public ColorEdgeDetectionBounded(String color) {
+            this.color = color;
+        }
+
         @Override
         public Mat processFrame(Mat input) {
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
-            String color = detectionColor;
             if (color == "yellow") {
                 scalarLow = new Scalar(20, 100, 100);
                 scalarHigh = new Scalar(30, 255, 255);
@@ -152,14 +157,10 @@ public class OpenCVpipelines {
                 scalarLow = new Scalar(0, 0, 0);
                 scalarHigh = new Scalar(0, 0, 0);
             }
-            hsv = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
-            end = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             if (!color.equals("red"))
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
             if (color == "red") {
-                mask1 = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
-                mask2 = new Mat(input.cols(), input.rows(), CvType.CV_8UC3);
                 Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
                 Core.inRange(hsv, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
@@ -188,7 +189,7 @@ public class OpenCVpipelines {
             }
             int highIndex = 0;
             for (int i = 0; i < contours.size(); i++) {
-                Scalar c = scalarVals(detectionColor);
+                Scalar c = scalarVals(color);
                 Imgproc.drawContours(drawing, contoursPolyList, i, c);
                 Imgproc.rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), c, 2);
                 if (boundRect[i].height > highIndex) highIndex = i;
