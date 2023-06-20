@@ -154,6 +154,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //webcam
     public static String cam1_N = "Webcam 1";
     public static String cam2_N = "Webcam 2";
+    public static String pipelineName = "";
 
     //init
     public void init(HardwareMap ahwMap) {
@@ -425,9 +426,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
             myOpMode.telemetry.addData("Pattern", pattern.toString());
             updateStatus("Testing");
         }
-        //tested
-        //myOpMode.telemetry.addData("potentiometer","%.1f", getPotentVal());
-        //myOpMode.telemetry.addData("limitSwitch", getLimitSwitch());
+        myOpMode.telemetry.addData("potentiometer","%.1f", getPotentVal());
+        myOpMode.telemetry.addData("limitSwitch", getLimitSwitch());
         //
         myOpMode.telemetry.addLine("Drivers")
                 .addData("", currDriver)
@@ -461,6 +461,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //webcam telemetry, next three lines
         //myOpMode.telemetry.addData("Frame Count", webcam.getFrameCount());
         //myOpMode.telemetry.addData("FPS", "%.2f", webcam.getFps());
+        //myOpMode.telemetry.addData("Pipeline",pipelineName);
         //teleSpace();
         if (!testingBlinkin) updateStatus("Running");
         myOpMode.telemetry.addData("Status", statusVal);//shows current status

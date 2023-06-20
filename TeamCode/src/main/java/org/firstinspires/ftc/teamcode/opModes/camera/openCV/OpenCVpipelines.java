@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -32,11 +33,13 @@ public class OpenCVpipelines {
 
 
     public static class EdgeDetection extends OpenCvPipeline {
+
         Mat gray = new Mat();
         Mat edges = new Mat();
 
         @Override
         public Mat processFrame(Mat input) {
+            HardwareConfig.pipelineName = "Edge Detection";
             Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
             Imgproc.Canny(gray, edges, 50, 100);
             return edges;
@@ -56,6 +59,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
+            HardwareConfig.pipelineName = "Color Detection";
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
@@ -97,6 +101,8 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
+
+            HardwareConfig.pipelineName = "Color Edge Detection";
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
@@ -141,6 +147,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
+            HardwareConfig.pipelineName = "Color Edge Detection Bounded";
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
@@ -192,9 +199,9 @@ public class OpenCVpipelines {
                 Scalar c = scalarVals(color);
                 Imgproc.drawContours(drawing, contoursPolyList, i, c);
                 Imgproc.rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), c, 2);
-                if (boundRect[i].height > highIndex) highIndex = i;
-                //Imgproc.circle(drawing, centers[i], (int) radius[i][0], color, 2);
+                if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)highIndex = i;
             }
+            //Imgproc.putText(drawing,"hi", new Point(120,200), 3, 15 , scalarVals("white"),2);
             return drawing;
         }
     }
@@ -203,6 +210,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
+            HardwareConfig.pipelineName = "Sample Pipeline";
             int x = input.width() / 2;
             int y = input.height() / 2;
             //vert middle line
@@ -214,23 +222,15 @@ public class OpenCVpipelines {
         }
     }
 
-    public void autoAdjust(Rect[] boundRect, int index, int width) {//takes in boundRect and index of largest rect to get the x value
+    public static void autoAdjust(Rect[] boundRect, int index, int width) {//takes in boundRect and index of largest rect to get the x value
         int x = boundRect[index].x;
+        pipelineTester.x = x;
         int left = 0;
         int right = width;
         int servoRange = 180;
         int center = (left + right) / 2;
         int servoAngle = servoRange / 2;//set at beginning //aka center
         int tolerance = 10;
-        //setServo(servoAngle);
-        while (true) {
-            if (x < center - tolerance) {//move right
-                servoAngle = servoAngle + 1;
-                //setServo(servoAngle);
-            } else if (x > center + tolerance) {//move left
-                servoAngle = servoAngle - 1;
-                //setServo(servoAngle);
-            }
-        }
+
     }
 }
