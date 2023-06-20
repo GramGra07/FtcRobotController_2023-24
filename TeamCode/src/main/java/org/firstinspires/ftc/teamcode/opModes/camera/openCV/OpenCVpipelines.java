@@ -138,6 +138,7 @@ public class OpenCVpipelines {
         Mat hierarchy = new Mat();
         Mat hsv = new Mat();
         Mat mask1, mask2 = new Mat();
+        Mat drawing = new Mat();
 
         String color;
 
@@ -189,7 +190,7 @@ public class OpenCVpipelines {
                 Imgproc.minEnclosingCircle(contoursPoly[i], centers[i], radius[i]);
             }
 
-            Mat drawing = Mat.zeros(edges.size(), CvType.CV_8UC3);
+            drawing = Mat.zeros(edges.size(), CvType.CV_8UC3);
             List<MatOfPoint> contoursPolyList = new ArrayList<>(contoursPoly.length);
             for (MatOfPoint2f poly : contoursPoly) {
                 contoursPolyList.add(new MatOfPoint(poly.toArray()));
@@ -201,7 +202,7 @@ public class OpenCVpipelines {
                 Imgproc.rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), c, 2);
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)highIndex = i;
             }
-            //Imgproc.putText(drawing,"hi", new Point(120,200), 3, 15 , scalarVals("white"),2);
+            Imgproc.putText(drawing,"hi", new Point(5,10), Imgproc.FONT_HERSHEY_PLAIN, 1 , new Scalar(0, 0, 0),2);
             return drawing;
         }
     }
