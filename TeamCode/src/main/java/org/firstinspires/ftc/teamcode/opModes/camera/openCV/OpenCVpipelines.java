@@ -202,7 +202,7 @@ public class OpenCVpipelines {
                 Imgproc.rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), c, 2);
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)highIndex = i;
             }
-            Imgproc.putText(drawing,"hi", new Point(5,10), Imgproc.FONT_HERSHEY_PLAIN, 1 , new Scalar(0, 0, 0),2);
+            Imgproc.putText(drawing,"hi", new Point(10,50), Imgproc.FONT_HERSHEY_PLAIN, 1 ,scalarVals("red"),2);
             return drawing;
         }
     }
