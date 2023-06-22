@@ -426,7 +426,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             myOpMode.telemetry.addData("Pattern", pattern.toString());
             updateStatus("Testing");
         }
-        myOpMode.telemetry.addData("potentiometer","%.1f", getPotentVal());
+        myOpMode.telemetry.addData("potentiometer", "%.1f", getPotentVal());
         myOpMode.telemetry.addData("limitSwitch", getLimitSwitch());
         //
         myOpMode.telemetry.addLine("Drivers")

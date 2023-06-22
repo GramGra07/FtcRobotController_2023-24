@@ -14,6 +14,11 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class pipelineTester extends LinearOpMode {
     OpenCvWebcam webcam;
     public static int x = 0;
+    public static double left = 0;
+    public static double right = 0;
+    public static double top = 0;
+    public static double bottom = 0;
+
 
     @Override
     public void runOpMode() {
@@ -41,8 +46,11 @@ public class pipelineTester extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("Frame Count", webcam.getFrameCount());
             telemetry.addData("FPS", "%.2f", webcam.getFps());
-            telemetry.addData("Pipeline",HardwareConfig.pipelineName);
-            telemetry.addData("x",x);
+            telemetry.addData("Pipeline", HardwareConfig.pipelineName);
+            telemetry.addData("Left", left);
+            telemetry.addData("Right", right);
+            telemetry.addData("Top", top);
+            telemetry.addData("Bottom", bottom);
             telemetry.update();
             if (gamepad1.a) {
                 /*

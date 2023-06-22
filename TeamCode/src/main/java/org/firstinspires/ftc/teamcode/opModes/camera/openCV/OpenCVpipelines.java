@@ -200,9 +200,18 @@ public class OpenCVpipelines {
                 Scalar c = scalarVals(color);
                 Imgproc.drawContours(drawing, contoursPolyList, i, c);
                 Imgproc.rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), c, 2);
-                if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)highIndex = i;
+                if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
+                    highIndex = i;
             }
-            Imgproc.putText(drawing,"hi", new Point(10,50), Imgproc.FONT_HERSHEY_PLAIN, 1 ,scalarVals("red"),2);
+            double left = boundRect[highIndex].tl().x;
+            double right = boundRect[highIndex].br().x;
+            double top = boundRect[highIndex].tl().y;
+            double bottom = boundRect[highIndex].br().y;
+            pipelineTester.left = left;
+            pipelineTester.right = right;
+            pipelineTester.top = top;
+            pipelineTester.bottom = bottom;
+            Imgproc.putText(drawing, "hi", new Point(10, 50), Imgproc.FONT_HERSHEY_PLAIN, 1, scalarVals("red"), 2);
             return drawing;
         }
     }
