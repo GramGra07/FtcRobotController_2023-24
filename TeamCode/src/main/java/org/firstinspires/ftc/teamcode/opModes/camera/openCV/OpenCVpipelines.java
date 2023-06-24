@@ -9,6 +9,9 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.dnn.Dnn;
+import org.opencv.dnn.Net;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
@@ -213,6 +216,54 @@ public class OpenCVpipelines {
             pipelineTester.bottom = bottom;
             Imgproc.putText(drawing, "hi", new Point(10, 50), Imgproc.FONT_HERSHEY_PLAIN, 1, scalarVals("red"), 2);
             return drawing;
+        }
+    }
+
+    //object detection using a model and bitmap
+    //public static class ObjectDetection extends OpenCvPipeline{
+    //    HardwareMap ahwMap;
+    //    TensorObjectDetector tfod = new TFODBuilder(ahwMap, "model.tflite", "Label 1", "Label 2").build();
+    //
+    //    Mat mat = new Mat();
+    //    MatOfRect faces = new MatOfRect();
+    //    public ObjectDetection(HardwareMap ahwMap) throws IOException {
+    //        ahwMap = this.ahwMap;
+    //    }
+    //    @Override
+    //    public Mat processFrame(Mat input) {
+    //        tfod.recognize(input);
+    //        return null;
+    //    }
+    //}
+    public static class ObjectDetection extends OpenCvPipeline {
+        String modelPath = "UltimateGoal.tflite";
+        Net net = Dnn.readNetFromTensorflow(modelPath);
+        Mat frame = new Mat();
+        Mat resizedFrame = new Mat();
+
+        @Override
+        public Mat processFrame(Mat input) {
+            Imgproc.resize(frame, resizedFrame, new Size(300, 300));
+            Mat inputBlob = Dnn.blobFromImage(resizedFrame, 1.0, new Size(300, 300), new Scalar(127.5, 127.5, 127.5), true, false, CvType.CV_32F);
+            net.setInput(inputBlob);
+            Mat detections = net.forward();
+            int numDetections = detections.size(2);
+            for (int i = 0; i < numDetections; i++) {
+                float confidence = (float) detections.get(0, i)[0];
+                if (confidence > HardwareConfig.minConfidence) {
+                    int classId = (int) detections.get(0, i)[1];
+                    int left = (int) (detections.get(0, i)[2] * frame.cols());
+                    int top = (int) (detections.get(0, i)[3] * frame.rows());
+                    int right = (int) (detections.get(0, i)[4] * frame.cols());
+                    int bottom = (int) (detections.get(0, i)[5] * frame.rows());
+
+                    Rect objectRect = new Rect(left, top, right - left, bottom - top);
+                    Imgproc.rectangle(frame, objectRect, new Scalar(0, 255, 0), 2);
+                    String label = "Class ID: " + classId + ", Confidence: " + confidence;
+                    Imgproc.putText(frame, label, new Point(left, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.9, new Scalar(0, 255, 0), 2);
+                }
+            }
+            return frame;
         }
     }
 
