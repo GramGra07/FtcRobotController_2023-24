@@ -1,0 +1,5 @@
+SamplePipeline
+EdgeDetection
+ColorDetection
+ColorEdgeDetection
+ColorEdgeDetectionBounded
