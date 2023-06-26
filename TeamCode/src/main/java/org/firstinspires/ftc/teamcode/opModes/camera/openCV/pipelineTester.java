@@ -25,8 +25,7 @@ public class pipelineTester extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, HardwareConfig.cam1_N), cameraMonitorViewId);
 
-        webcam.setPipeline(new OpenCVpipelines.ObjectDetection());//!can switch pipelines here
-        //ColorEdgeDetectionBounded("yellow")
+        webcam.setPipeline(new OpenCVpipelines.BlackDotDetection());//!can switch pipelines here
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -47,6 +46,8 @@ public class pipelineTester extends LinearOpMode {
             telemetry.addData("Frame Count", webcam.getFrameCount());
             telemetry.addData("FPS", "%.2f", webcam.getFps());
             telemetry.addData("Pipeline", HardwareConfig.pipelineName);
+            telemetry.addData("whiteDots",HardwareConfig.whiteDots);
+            telemetry.addData("blackDots",HardwareConfig.blackDots);
             telemetry.addData("Left", left);
             telemetry.addData("Right", right);
             telemetry.addData("Top", top);

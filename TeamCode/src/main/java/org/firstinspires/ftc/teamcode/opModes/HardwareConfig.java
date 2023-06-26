@@ -156,6 +156,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static String cam2_N = "Webcam 2";
     public static String pipelineName = "";
     public static double minConfidence = 0.6;
+    public static int whiteDots = 0;
+    public static int blackDots = 0;
 
     //init
     public void init(HardwareMap ahwMap) {

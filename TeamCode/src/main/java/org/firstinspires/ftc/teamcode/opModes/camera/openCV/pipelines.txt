@@ -5,4 +5,3 @@ ColorEdgeDetection
 ColorEdgeDetectionBounded
 WhiteDotDetection
 BlackDotDetection
-BlobDetection
