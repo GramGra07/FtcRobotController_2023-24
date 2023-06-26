@@ -234,49 +234,8 @@ public class OpenCVpipelines {
     //        return null;
     //    }
     //}
-    public static class EdgeFilter {
-        public int kernelSize;
-        public int erodeIter;
-        public int dilateIter;
-        public int canny1;
-        public int canny2;
 
-        public EdgeFilter(int kernelSize, int erodeIter, int dilateIter, int canny1, int canny2) {
-            this.kernelSize = kernelSize;
-            this.erodeIter = erodeIter;
-            this.dilateIter = dilateIter;
-            this.canny1 = canny1;
-            this.canny2 = canny2;
-        }
-    }
-
-    public static class hsvFilter {
-        public int hMin;
-        public int sMin;
-        public int vMin;
-        public int hMax;
-        public int sMax;
-        public int vMax;
-        public int sAdd;
-        public int sSub;
-        public int vAdd;
-        public int vSub;
-
-        public hsvFilter(int hMin, int sMin, int vMin, int hMax, int sMax, int vMax, int sAdd, int sSub, int vAdd, int vSub) {
-            this.hMin = hMin;
-            this.sMin = sMin;
-            this.vMin = vMin;
-            this.hMax = hMax;
-            this.sMax = sMax;
-            this.vMax = vMax;
-            this.sAdd = sAdd;
-            this.sSub = sSub;
-            this.vAdd = vAdd;
-            this.vSub = vSub;
-        }
-    }
-
-    public static class main extends OpenCvPipeline {
+    public static class xmlObjectDetection extends OpenCvPipeline {
         CascadeClassifier data = new CascadeClassifier("converted_tflite/model.tflite");
         MatOfRect rectangles = new MatOfRect();
         Vision vision = new Vision(null);
@@ -293,28 +252,6 @@ public class OpenCVpipelines {
         }
     }
 
-    public static class OBJDetect extends OpenCvPipeline {
-        String modelPath = "converted_tflite/model.tflite";
-        Mat img_gray = new Mat();
-        Mat img_rgb = new Mat();
-
-        @Override
-        public Mat processFrame(Mat input) {
-            Imgproc.cvtColor(input, img_gray, Imgproc.COLOR_BGR2GRAY);
-            Imgproc.cvtColor(input, img_rgb, Imgproc.COLOR_BGR2RGB);
-            CascadeClassifier data = new CascadeClassifier(modelPath);
-            MatOfRect detections = new MatOfRect();
-            data.detectMultiScale(img_gray, detections);
-            if (detections.empty()) {
-                return input;
-            }
-            for (Rect rect : detections.toArray()) {
-                Imgproc.rectangle(input, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
-                        scalarVals("green"));
-            }
-            return input;
-        }
-    }
 
     public static class WhiteDotDetection extends OpenCvPipeline {
         Mat blur = new Mat();
@@ -395,4 +332,8 @@ public class OpenCVpipelines {
             return input;
         }
     }
+
+
+
+
 }
