@@ -1,3 +1,7 @@
+1.2.2 June 22nd,2023
+More OpenCV pipelines available for use along with testing images for some of the pipelines
+New pipelins.txt file illustrating all of the pipelines available
+
 1.2.0 June 13th,2023
 Added a new OpenCV Pipeline class that contains all the used pipelines
 Added the pipelineTester.java program to test the pipelines

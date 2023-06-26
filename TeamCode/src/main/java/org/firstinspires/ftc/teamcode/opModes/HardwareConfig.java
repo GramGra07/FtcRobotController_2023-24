@@ -149,7 +149,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public boolean dDownHigh = false;
 
-    public String currentVersion = "1.2.0";
+    public String currentVersion = "1.2.2";
 
     //webcam
     public static String cam1_N = "Webcam 1";
