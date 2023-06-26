@@ -6,13 +6,12 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.dnn.Dnn;
-import org.opencv.dnn.Net;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
@@ -214,7 +213,7 @@ public class OpenCVpipelines {
             pipelineTester.right = right;
             pipelineTester.top = top;
             pipelineTester.bottom = bottom;
-            Imgproc.putText(drawing, String.valueOf(right-left),new Point(right-left,top),1,1,scalarVals("green"),2);
+            Imgproc.putText(drawing, String.valueOf(right - left), new Point(right - left, top), 1, 1, scalarVals("green"), 2);
             return drawing;
         }
     }
@@ -235,35 +234,85 @@ public class OpenCVpipelines {
     //        return null;
     //    }
     //}
-    public static class ObjectDetection extends OpenCvPipeline {
-        String modelPath = "converted_tflite_quantized/model.tflite";
-        Net net = Dnn.readNetFromTensorflow(modelPath);
-        Mat frame = new Mat();
-        Mat resizedFrame = new Mat();
+    public static class EdgeFilter {
+        public int kernelSize;
+        public int erodeIter;
+        public int dilateIter;
+        public int canny1;
+        public int canny2;
+
+        public EdgeFilter(int kernelSize, int erodeIter, int dilateIter, int canny1, int canny2) {
+            this.kernelSize = kernelSize;
+            this.erodeIter = erodeIter;
+            this.dilateIter = dilateIter;
+            this.canny1 = canny1;
+            this.canny2 = canny2;
+        }
+    }
+
+    public static class hsvFilter {
+        public int hMin;
+        public int sMin;
+        public int vMin;
+        public int hMax;
+        public int sMax;
+        public int vMax;
+        public int sAdd;
+        public int sSub;
+        public int vAdd;
+        public int vSub;
+
+        public hsvFilter(int hMin, int sMin, int vMin, int hMax, int sMax, int vMax, int sAdd, int sSub, int vAdd, int vSub) {
+            this.hMin = hMin;
+            this.sMin = sMin;
+            this.vMin = vMin;
+            this.hMax = hMax;
+            this.sMax = sMax;
+            this.vMax = vMax;
+            this.sAdd = sAdd;
+            this.sSub = sSub;
+            this.vAdd = vAdd;
+            this.vSub = vSub;
+        }
+    }
+
+    public static class main extends OpenCvPipeline {
+        CascadeClassifier data = new CascadeClassifier("converted_tflite/model.tflite");
+        MatOfRect rectangles = new MatOfRect();
+        Vision vision = new Vision(null);
 
         @Override
         public Mat processFrame(Mat input) {
-            Imgproc.resize(frame, resizedFrame, new Size(300, 300));
-            Mat inputBlob = Dnn.blobFromImage(resizedFrame, 1.0, new Size(300, 300), new Scalar(127.5, 127.5, 127.5), true, false, CvType.CV_32F);
-            net.setInput(inputBlob);
-            Mat detections = net.forward();
-            int numDetections = detections.size(2);
-            for (int i = 0; i < numDetections; i++) {
-                float confidence = (float) detections.get(0, i)[0];
-                if (confidence > HardwareConfig.minConfidence) {
-                    int classId = (int) detections.get(0, i)[1];
-                    int left = (int) (detections.get(0, i)[2] * frame.cols());
-                    int top = (int) (detections.get(0, i)[3] * frame.rows());
-                    int right = (int) (detections.get(0, i)[4] * frame.cols());
-                    int bottom = (int) (detections.get(0, i)[5] * frame.rows());
-
-                    Rect objectRect = new Rect(left, top, right - left, bottom - top);
-                    Imgproc.rectangle(frame, objectRect, new Scalar(0, 255, 0), 2);
-                    String label = "Class ID: " + classId + ", Confidence: " + confidence;
-                    Imgproc.putText(frame, label, new Point(left, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.9, new Scalar(0, 255, 0), 2);
-                }
+            data.detectMultiScale(input, rectangles);
+            vision.drawRectangles(input, (List<Rect>) rectangles);
+            for (Rect rect : rectangles.toArray()) {
+                Imgproc.rectangle(input, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
+                        scalarVals("green"), 2);
             }
-            return frame;
+            return input;
+        }
+    }
+
+    public static class OBJDetect extends OpenCvPipeline {
+        String modelPath = "converted_tflite/model.tflite";
+        Mat img_gray = new Mat();
+        Mat img_rgb = new Mat();
+
+        @Override
+        public Mat processFrame(Mat input) {
+            Imgproc.cvtColor(input, img_gray, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.cvtColor(input, img_rgb, Imgproc.COLOR_BGR2RGB);
+            CascadeClassifier data = new CascadeClassifier(modelPath);
+            MatOfRect detections = new MatOfRect();
+            data.detectMultiScale(img_gray, detections);
+            if (detections.empty()) {
+                return input;
+            }
+            for (Rect rect : detections.toArray()) {
+                Imgproc.rectangle(input, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
+                        scalarVals("green"));
+            }
+            return input;
         }
     }
 
@@ -345,17 +394,5 @@ public class OpenCVpipelines {
             //Imgproc.line(input, new Point(input.rows(), input.cols()), new Point(0, 0), scalarVals("red"), 2);
             return input;
         }
-    }
-
-    public static void autoAdjust(Rect[] boundRect, int index, int width) {//takes in boundRect and index of largest rect to get the x value
-        int x = boundRect[index].x;
-        pipelineTester.x = x;
-        int left = 0;
-        int right = width;
-        int servoRange = 180;
-        int center = (left + right) / 2;
-        int servoAngle = servoRange / 2;//set at beginning //aka center
-        int tolerance = 10;
-
     }
 }
