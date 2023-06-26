@@ -334,6 +334,4 @@ public class OpenCVpipelines {
     }
 
 
-
-
 }
