@@ -1,6 +1,12 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.minConfidence;
+
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+import org.firstinspires.ftc.teamcode.opModes.camera.openCV.ObjectDetection.TFODBuilder;
+import org.firstinspires.ftc.teamcode.opModes.camera.openCV.ObjectDetection.TensorObjectDetector;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -10,10 +16,14 @@ import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.tensorflow.lite.Interpreter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +38,10 @@ public class OpenCVpipelines {
             return new Scalar(0, 255, 0);
         } else if (color == "red") {
             return new Scalar(255, 0, 0);
-        } else {
+        } else if (color == "black") {
             return new Scalar(0, 0, 0);
         }
+        return new Scalar(0, 0, 0);
     }
 
 
@@ -175,9 +186,7 @@ public class OpenCVpipelines {
                 Core.inRange(hsv, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
-
             Imgproc.Canny(end, edges, 25, 50);
-
             List<MatOfPoint> contours = new ArrayList<>();
             Imgproc.findContours(edges, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
             MatOfPoint2f[] contoursPoly = new MatOfPoint2f[contours.size()];
@@ -191,7 +200,6 @@ public class OpenCVpipelines {
                 centers[i] = new Point();
                 Imgproc.minEnclosingCircle(contoursPoly[i], centers[i], radius[i]);
             }
-
             drawing = Mat.zeros(edges.size(), CvType.CV_8UC3);
             List<MatOfPoint> contoursPolyList = new ArrayList<>(contoursPoly.length);
             for (MatOfPoint2f poly : contoursPoly) {
@@ -205,53 +213,39 @@ public class OpenCVpipelines {
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
                     highIndex = i;
             }
-            double left = boundRect[highIndex].tl().x;
-            double right = boundRect[highIndex].br().x;
-            double top = boundRect[highIndex].tl().y;
-            double bottom = boundRect[highIndex].br().y;
-            pipelineTester.left = left;
-            pipelineTester.right = right;
-            pipelineTester.top = top;
-            pipelineTester.bottom = bottom;
-            Imgproc.putText(drawing, String.valueOf(right - left), new Point(right - left, top), 1, 1, scalarVals("green"), 2);
+            if (boundRect.length > 0) {
+                double left = boundRect[highIndex].tl().x;
+                double right = boundRect[highIndex].br().x;
+                double top = boundRect[highIndex].tl().y;
+                double bottom = boundRect[highIndex].br().y;
+                pipelineTester.left = left;
+                pipelineTester.right = right;
+                pipelineTester.top = top;
+                pipelineTester.bottom = bottom;
+                int centerX = (int) (left + ((right - left) / 2));
+                Imgproc.putText(drawing, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 1);
+            }
             return drawing;
         }
     }
 
-    //object detection using a model and bitmap
-    //public static class ObjectDetection extends OpenCvPipeline{
-    //    HardwareMap ahwMap;
-    //    TensorObjectDetector tfod = new TFODBuilder(ahwMap, "model.tflite", "Label 1", "Label 2").build();
-    //
-    //    Mat mat = new Mat();
-    //    MatOfRect faces = new MatOfRect();
-    //    public ObjectDetection(HardwareMap ahwMap) throws IOException {
-    //        ahwMap = this.ahwMap;
-    //    }
-    //    @Override
-    //    public Mat processFrame(Mat input) {
-    //        tfod.recognize(input);
-    //        return null;
-    //    }
-    //}
+    public static class ObjectDetection extends OpenCvPipeline {
+        HardwareMap ahwMap;
+        TensorObjectDetector tfod = new TFODBuilder(ahwMap, "model.tflite", "Label 1", "Label 2").build();
 
-    public static class xmlObjectDetection extends OpenCvPipeline {
-        CascadeClassifier data = new CascadeClassifier("converted_tflite/model.tflite");
-        MatOfRect rectangles = new MatOfRect();
-        Vision vision = new Vision(null);
+        Mat mat = new Mat();
+        MatOfRect faces = new MatOfRect();
+
+        public ObjectDetection(HardwareMap ahwMap) throws IOException {
+            ahwMap = this.ahwMap;
+        }
 
         @Override
         public Mat processFrame(Mat input) {
-            data.detectMultiScale(input, rectangles);
-            vision.drawRectangles(input, (List<Rect>) rectangles);
-            for (Rect rect : rectangles.toArray()) {
-                Imgproc.rectangle(input, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
-                        scalarVals("green"), 2);
-            }
-            return input;
+            tfod.recognize(input);
+            return null;
         }
     }
-
 
     public static class WhiteDotDetection extends OpenCvPipeline {
         Mat blur = new Mat();
@@ -276,6 +270,7 @@ public class OpenCVpipelines {
                 }
             }
             HardwareConfig.whiteDots = white_dots.size();
+            Imgproc.putText(input, String.valueOf(white_dots.size()), new Point(input.width() / 16, input.height() / 6), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, scalarVals("green"), 2);
             return input;
         }
     }
@@ -313,6 +308,7 @@ public class OpenCVpipelines {
                 }
             }
             HardwareConfig.blackDots = contours.size();
+            Imgproc.putText(input, String.valueOf(contours.size()), new Point(input.width() / 16, input.height() / 6), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, scalarVals("green"), 2);
             return input;
         }
     }
@@ -333,5 +329,74 @@ public class OpenCVpipelines {
         }
     }
 
+    public static class xmlObjectDetection extends OpenCvPipeline {
+        CascadeClassifier data = new CascadeClassifier("converted_tflite/model.tflite");
+        MatOfRect rectangles = new MatOfRect();
+        Vision vision = new Vision(null);
 
+        @Override
+        public Mat processFrame(Mat input) {
+            data.detectMultiScale(input, rectangles);
+            vision.drawRectangles(input, (List<Rect>) rectangles);
+            for (Rect rect : rectangles.toArray()) {
+                Imgproc.rectangle(input, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
+                        scalarVals("green"), 2);
+            }
+            return input;
+        }
+    }
+
+    public static class OBJDetect extends OpenCvPipeline {
+        int numClasses = 2;
+        int batchSize = 1;
+        private Interpreter tflite;
+        Mat resizedFrame = new Mat();
+
+        public OBJDetect(String modelPath) {
+            try {
+                tflite = new Interpreter(new File(modelPath));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public Mat processFrame(Mat frame) {
+            Imgproc.resize(frame, resizedFrame, new Size(frame.width(), frame.height()));
+            Imgproc.cvtColor(resizedFrame, resizedFrame, Imgproc.COLOR_RGBA2RGB);
+            resizedFrame.convertTo(resizedFrame, CvType.CV_32F,1.0/255.0);
+            float[] inputArray = new float[frame.width()*frame.height()*frame.channels()];
+            resizedFrame.get(0,0,inputArray);
+            float[][] outputArray = new float[batchSize][numClasses];
+            try{
+                tflite.run(inputArray, outputArray);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            List<DetectionResult> detectionResults = new ArrayList<>();
+            int numDetections = outputArray[0].length;
+            for (int i =0; i<numDetections; i++){
+                float[] detection = outputArray[i];
+                float x = detection[0];
+                float y = detection[1];
+                float w = detection[2];
+                float h = detection[3];
+                Rect boundingBox = new Rect((int) x, (int) y, (int) w, (int) h); // Replace with actual values
+                String classLabel = "object"; // Replace with actual class label
+                float confidenceScore = 0.9f; // Replace with actual confidence score
+                DetectionResult result = new DetectionResult(boundingBox, classLabel, confidenceScore);
+                detectionResults.add(result);
+            }
+            for (DetectionResult result : detectionResults) {
+                Rect bbox = DetectionResult.getBoundingBox();
+                String label = result.getClassLabel();
+                float score = result.getConfidenceScore();
+                if (score > minConfidence) {
+                    Imgproc.rectangle(frame, bbox.tl(), bbox.br(), OpenCVpipelines.scalarVals("green"), 2);
+                    Imgproc.putText(frame, label + ": " + score, bbox.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, OpenCVpipelines.scalarVals("green"), 2);
+                }
+            }
+            return frame;
+        }
+    }
 }
