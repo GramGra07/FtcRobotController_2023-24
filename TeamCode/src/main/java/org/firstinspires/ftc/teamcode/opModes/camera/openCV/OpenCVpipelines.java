@@ -214,7 +214,7 @@ public class OpenCVpipelines {
             pipelineTester.right = right;
             pipelineTester.top = top;
             pipelineTester.bottom = bottom;
-            Imgproc.putText(drawing, "hi", new Point(10, 50), Imgproc.FONT_HERSHEY_PLAIN, 1, scalarVals("red"), 2);
+            Imgproc.putText(drawing, String.valueOf(right-left),new Point(right-left,top),1,1,scalarVals("green"),2);
             return drawing;
         }
     }
@@ -266,24 +266,26 @@ public class OpenCVpipelines {
             return frame;
         }
     }
-    public static class WhiteDotDetection extends OpenCvPipeline{
+
+    public static class WhiteDotDetection extends OpenCvPipeline {
         Mat blur = new Mat();
         Mat gray = new Mat();
         Mat thresh = new Mat();
         Mat hierarchy = new Mat();
         double min_area = 0.1;
+
         @Override
-        public Mat processFrame(Mat input){
-            Imgproc.medianBlur(input,blur,5 );
-            Imgproc.cvtColor(blur,gray, Imgproc.COLOR_BGR2GRAY);
-            Imgproc.threshold(gray,thresh, 200, 255, Imgproc.THRESH_BINARY);
+        public Mat processFrame(Mat input) {
+            Imgproc.medianBlur(input, blur, 5);
+            Imgproc.cvtColor(blur, gray, Imgproc.COLOR_BGR2GRAY);
+            Imgproc.threshold(gray, thresh, 200, 255, Imgproc.THRESH_BINARY);
             List<MatOfPoint> contours = new ArrayList<>();
-            Imgproc.findContours(thresh,contours,hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
             List<Object> white_dots = new ArrayList<>();
+            Imgproc.findContours(thresh, contours, hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
             for (Object c : contours) {
                 double area = Imgproc.contourArea((Mat) c);
                 if (area > this.min_area) {
-                    Imgproc.drawContours(input,contours,-1,  scalarVals("green"), 2);
+                    Imgproc.drawContours(input, contours, -1, scalarVals("green"), 2);
                     white_dots.add(c);
                 }
             }
@@ -291,15 +293,14 @@ public class OpenCVpipelines {
             return input;
         }
     }
-    public static class BlackDotDetection extends OpenCvPipeline{
-        Mat blur = new Mat();
+
+    public static class BlackDotDetection extends OpenCvPipeline {
         Mat gray = new Mat();
-        Mat thresh = new Mat();
-        Mat hierarchy = new Mat();
-        Mat mask = new Mat();
-        double min_area = 0.1;
-        double max_area = 250;
         Mat circles = new Mat();
+        Mat mask = new Mat();
+        Mat thresh = new Mat();
+        Mat masked = new Mat();
+
         @Override
         public Mat processFrame(Mat input) {
             Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
@@ -316,36 +317,20 @@ public class OpenCVpipelines {
                     Imgproc.circle(mask, center, radius, new Scalar(255, 255, 255), -1, 8, 0);
                 }
             }
-            Mat masked = new Mat();
-            input.copyTo( masked, mask );
-            Mat thresh = new Mat();
-            Imgproc.threshold( mask, thresh, 1, 255, Imgproc.THRESH_BINARY );
+            input.copyTo(masked, mask);
+            Imgproc.threshold(mask, thresh, 1, 255, Imgproc.THRESH_BINARY);
             List<MatOfPoint> contours = new ArrayList<>();
             Imgproc.findContours(thresh, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
             if (contours.size() > 0) {
-                Imgproc.rectangle(input, Imgproc.boundingRect(contours.get(0)).tl(), Imgproc.boundingRect(contours.get(0)).br(), scalarVals("white"), 2);
+                for (int c = 0; c < contours.size(); c++) {
+                    Imgproc.rectangle(input, Imgproc.boundingRect(contours.get(c)).tl(), Imgproc.boundingRect(contours.get(c)).br(), scalarVals("green"), 2);
+                }
             }
             HardwareConfig.blackDots = contours.size();
             return input;
-
-
-            //Imgproc.medianBlur(input,blur,5 );
-            //Imgproc.cvtColor(blur,gray, Imgproc.COLOR_BGR2GRAY);
-            //Imgproc.threshold(gray,thresh, 200, 255, Imgproc.THRESH_BINARY_INV|Imgproc.THRESH_OTSU);
-            //List<MatOfPoint> contours = new ArrayList<>();
-            //Imgproc.findContours(thresh,contours,hierarchy, Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
-            //List<Object> black_dots = new ArrayList<>();
-            //for (Object c : contours) {
-            //    double area = Imgproc.contourArea((Mat) c);
-            //    if ((area > this.min_area)&&(area < this.max_area)) {
-            //        Imgproc.drawContours(input,contours,-1,  scalarVals("red"), 2);
-            //        black_dots.add(c);
-            //    }
-            //}
-            //HardwareConfig.blackDots = black_dots.size();
-            //return input;
         }
     }
+
     public static class SamplePipeline extends OpenCvPipeline {
 
         @Override
