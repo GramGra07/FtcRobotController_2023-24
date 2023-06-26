@@ -3,3 +3,6 @@ EdgeDetection
 ColorDetection
 ColorEdgeDetection
 ColorEdgeDetectionBounded
+WhiteDotDetection
+BlackDotDetection
+BlobDetection
