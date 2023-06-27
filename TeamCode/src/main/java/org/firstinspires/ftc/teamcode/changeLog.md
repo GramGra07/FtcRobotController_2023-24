@@ -1,3 +1,6 @@
+2.0.0 June 26th,2023
+Added Road Runner implementations and are tested
+
 1.2.2 June 22nd,2023
 More OpenCV pipelines available for use along with testing images for some of the pipelines
 New pipelins.txt file illustrating all of the pipelines available
