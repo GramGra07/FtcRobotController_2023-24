@@ -21,7 +21,6 @@ public class MeepMeepTesting {
                 .setColorScheme(new ColorSchemeBlueDark())
                 .setConstraints(maxVel, maxAccel, Math.toRadians(maxAngVel), Math.toRadians(maxAngAccel), trackWidth)
                 .setDimensions(16, 18)//bot width and height
-                .setStartPose(startPose)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 .splineTo(new Vector2d(60,60), Math.toRadians(90))
@@ -31,7 +30,7 @@ public class MeepMeepTesting {
                 .setColorScheme(new ColorSchemeRedLight())
                 .setConstraints(maxVel, maxAccel, Math.toRadians(maxAngVel), Math.toRadians(maxAngAccel), trackWidth)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(60, 30, Math.toRadians(180)))
+                        drive.trajectorySequenceBuilder(startPose)
                                 .forward(30)
                                 .build()
                 );
@@ -39,7 +38,7 @@ public class MeepMeepTesting {
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
                 .setDarkMode(true)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(bot)
+                .addEntity(mySecondBot)
                 //.addEntity(mySecondBot)
                 .start();
     }
