@@ -8,14 +8,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous
 public class AutoTest extends LinearOpMode {
+    public Pose2d startPose = new Pose2d(10, -8, Math.toRadians(90));
     @Override
     public void runOpMode() {
         // @link https://learnroadrunner.com/trajectorybuilder-functions.html#forward-distance-double
         //pause
         // @link https://learnroadrunner.com/markers.html#types-of-markers
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        Pose2d startPose = new Pose2d(10, -8, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
