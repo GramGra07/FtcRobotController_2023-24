@@ -44,7 +44,6 @@ public class OpenCVpipelines {
         return new Scalar(0, 0, 0);
     }
 
-
     public static class EdgeDetection extends OpenCvPipeline {
 
         Mat gray = new Mat();
@@ -364,18 +363,18 @@ public class OpenCVpipelines {
         public Mat processFrame(Mat frame) {
             Imgproc.resize(frame, resizedFrame, new Size(frame.width(), frame.height()));
             Imgproc.cvtColor(resizedFrame, resizedFrame, Imgproc.COLOR_RGBA2RGB);
-            resizedFrame.convertTo(resizedFrame, CvType.CV_32F,1.0/255.0);
-            float[] inputArray = new float[frame.width()*frame.height()*frame.channels()];
-            resizedFrame.get(0,0,inputArray);
+            resizedFrame.convertTo(resizedFrame, CvType.CV_32F, 1.0 / 255.0);
+            float[] inputArray = new float[frame.width() * frame.height() * frame.channels()];
+            resizedFrame.get(0, 0, inputArray);
             float[][] outputArray = new float[batchSize][numClasses];
-            try{
+            try {
                 tflite.run(inputArray, outputArray);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             List<DetectionResult> detectionResults = new ArrayList<>();
             int numDetections = outputArray[0].length;
-            for (int i =0; i<numDetections; i++){
+            for (int i = 0; i < numDetections; i++) {
                 float[] detection = outputArray[i];
                 float x = detection[0];
                 float y = detection[1];

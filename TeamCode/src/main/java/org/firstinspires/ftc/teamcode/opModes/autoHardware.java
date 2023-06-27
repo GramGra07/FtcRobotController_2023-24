@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
 import static android.os.SystemClock.sleep;
-import static org.firstinspires.ftc.teamcode.opModes.MathFunctions.setOvr;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -166,6 +165,10 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         }
         setOvr(targetX, targetY);
         myOpMode.telemetry.update();
+    }
+    public static void setOvr(double x, double y) {
+        ovrCurrX = x;
+        ovrCurrY = y;
     }
 
 }
