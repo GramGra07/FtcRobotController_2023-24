@@ -17,6 +17,8 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.dnn.Dnn;
+import org.opencv.dnn.Net;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.openftc.easyopencv.OpenCvPipeline;
@@ -228,24 +230,6 @@ public class OpenCVpipelines {
         }
     }
 
-    public static class ObjectDetection extends OpenCvPipeline {
-        HardwareMap ahwMap;
-        TensorObjectDetector tfod = new TFODBuilder(ahwMap, "model.tflite", "Label 1", "Label 2").build();
-
-        Mat mat = new Mat();
-        MatOfRect faces = new MatOfRect();
-
-        public ObjectDetection(HardwareMap ahwMap) throws IOException {
-            ahwMap = this.ahwMap;
-        }
-
-        @Override
-        public Mat processFrame(Mat input) {
-            tfod.recognize(input);
-            return null;
-        }
-    }
-
     public static class WhiteDotDetection extends OpenCvPipeline {
         Mat blur = new Mat();
         Mat gray = new Mat();
@@ -345,6 +329,24 @@ public class OpenCVpipelines {
         }
     }
 
+    public static class ObjectDetection extends OpenCvPipeline {
+        HardwareMap ahwMap;
+        TensorObjectDetector tfod = new TFODBuilder(ahwMap, "model.tflite", "Label 1", "Label 2").build();
+
+        Mat mat = new Mat();
+        MatOfRect faces = new MatOfRect();
+
+        public ObjectDetection(HardwareMap ahwMap) throws IOException {
+            ahwMap = this.ahwMap;
+        }
+
+        @Override
+        public Mat processFrame(Mat input) {
+            tfod.recognize(input);
+            return null;
+        }
+    }
+
     public static class OBJDetect extends OpenCvPipeline {
         int numClasses = 2;
         int batchSize = 1;
@@ -396,6 +398,38 @@ public class OpenCVpipelines {
                 }
             }
             return frame;
+        }
+    }
+
+    public static class ObjectDetectionPipeline extends OpenCvPipeline {
+        public static final String LABEL_PATH = "labels.txt";
+        public static final String MODEL_PATH = "model.tflite";
+        public static final String FOLDER = "/sdcard/FIRST/tflitemodels/";
+
+        @Override
+        public Mat processFrame(Mat input) {
+            //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            Net net = Dnn.readNetFromTensorflow(FOLDER+MODEL_PATH, FOLDER+LABEL_PATH);
+            net.setInput(Dnn.blobFromImage(input, 1.0, new Size(300, 300), new Scalar(127.5, 127.5, 127.5), true, false));
+            Mat detections = net.forward();
+            int numDetections = detections.size(2);
+            for (int i = 0; i < numDetections; i++) {
+                double confidence = detections.get(0, i)[2];
+                if (confidence > 0.5) { // Set a minimum confidence threshold for detection
+                    int classId = (int) detections.get(0, i)[1];
+                    int left = (int) (detections.get(0, i)[3] * input.cols());
+                    int top = (int) (detections.get(0, i)[4] * input.rows());
+                    int right = (int) (detections.get(0, i)[5] * input.cols());
+                    int bottom = (int) (detections.get(0, i)[6] * input.rows());
+
+                    // Draw bounding box and label on the frame
+                    Imgproc.rectangle(input, new Point(left, top), new Point(right, bottom), new Scalar(0, 255, 0), 2);
+                    String label = "Class" + classId;
+                    Imgproc.putText(input, label, new Point(left, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.9, new Scalar(0, 255, 0), 2);
+                    Imgproc.putText(input, label + ": " + confidence, new Point(left, top - 30), Imgproc.FONT_HERSHEY_SIMPLEX, 0.9, new Scalar(0, 255, 0), 2);
+                }
+            }
+            return input;
         }
     }
 }
