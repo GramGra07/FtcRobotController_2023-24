@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes;
 
 import static android.os.SystemClock.sleep;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -9,7 +10,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.blink;
 
 public class autoHardware extends HardwareConfig {//auto version of hardware config
-    public double ovrPower = 0.5;//sets power
+
+    public static Pose2d startPose = new Pose2d(10, -8, Math.toRadians(90));
     HardwareMap hardwareMap = null;
 
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
@@ -21,12 +23,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
 
     public void initAuto(HardwareMap ahwMap) {
         hardwareMap = ahwMap;
-        init(ahwMap);//initializes with hardware config
-        //not same
-        myOpMode.telemetry.addData("Starting at", "%7d :%7d",
-                motorBackRight.getCurrentPosition(),
-                motorBackLeft.getCurrentPosition(),
-                motorFrontLeft.getCurrentPosition());
+        init(ahwMap,true);//initializes with hardware config
         // ONLY use for vuforia
         //initVuforia();
         //initTfod();
@@ -35,7 +32,6 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         //    tfod.setZoom(1.0, 16.0 / 9.0);
         //}
         //runVu(6, false);
-        myOpMode.telemetry.update();
         // Wait for the game to start (driver presses PLAY)
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         myOpMode.waitForStart();
@@ -170,5 +166,4 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         ovrCurrX = x;
         ovrCurrY = y;
     }
-
 }

@@ -1,31 +1,17 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.minConfidence;
-
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
-import org.firstinspires.ftc.teamcode.opModes.camera.openCV.ObjectDetection.TFODBuilder;
-import org.firstinspires.ftc.teamcode.opModes.camera.openCV.ObjectDetection.TensorObjectDetector;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.dnn.Dnn;
-import org.opencv.dnn.Net;
 import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
 import org.openftc.easyopencv.OpenCvPipeline;
-import org.tensorflow.lite.Interpreter;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -239,6 +225,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
+            HardwareConfig.pipelineName = "White Dot Detection";
             Imgproc.medianBlur(input, blur, 5);
             Imgproc.cvtColor(blur, gray, Imgproc.COLOR_BGR2GRAY);
             Imgproc.threshold(gray, thresh, 200, 255, Imgproc.THRESH_BINARY);
@@ -267,6 +254,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
+            HardwareConfig.pipelineName = "Black Dot Detection";
             Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
             Imgproc.medianBlur(gray, gray, 5);
             Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0,
@@ -312,124 +300,4 @@ public class OpenCVpipelines {
         }
     }
 
-    public static class xmlObjectDetection extends OpenCvPipeline {
-        CascadeClassifier data = new CascadeClassifier("converted_tflite/model.tflite");
-        MatOfRect rectangles = new MatOfRect();
-        Vision vision = new Vision(null);
-
-        @Override
-        public Mat processFrame(Mat input) {
-            data.detectMultiScale(input, rectangles);
-            vision.drawRectangles(input, (List<Rect>) rectangles);
-            for (Rect rect : rectangles.toArray()) {
-                Imgproc.rectangle(input, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
-                        scalarVals("green"), 2);
-            }
-            return input;
-        }
-    }
-
-    public static class ObjectDetection extends OpenCvPipeline {
-        HardwareMap ahwMap;
-        TensorObjectDetector tfod = new TFODBuilder(ahwMap, "model.tflite", "Label 1", "Label 2").build();
-
-        Mat mat = new Mat();
-        MatOfRect faces = new MatOfRect();
-
-        public ObjectDetection(HardwareMap ahwMap) throws IOException {
-            ahwMap = this.ahwMap;
-        }
-
-        @Override
-        public Mat processFrame(Mat input) {
-            tfod.recognize(input);
-            return null;
-        }
-    }
-
-    public static class OBJDetect extends OpenCvPipeline {
-        int numClasses = 2;
-        int batchSize = 1;
-        private Interpreter tflite;
-        Mat resizedFrame = new Mat();
-
-        public OBJDetect(String modelPath) {
-            try {
-                tflite = new Interpreter(new File(modelPath));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public Mat processFrame(Mat frame) {
-            Imgproc.resize(frame, resizedFrame, new Size(frame.width(), frame.height()));
-            Imgproc.cvtColor(resizedFrame, resizedFrame, Imgproc.COLOR_RGBA2RGB);
-            resizedFrame.convertTo(resizedFrame, CvType.CV_32F, 1.0 / 255.0);
-            float[] inputArray = new float[frame.width() * frame.height() * frame.channels()];
-            resizedFrame.get(0, 0, inputArray);
-            float[][] outputArray = new float[batchSize][numClasses];
-            try {
-                tflite.run(inputArray, outputArray);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            List<DetectionResult> detectionResults = new ArrayList<>();
-            int numDetections = outputArray[0].length;
-            for (int i = 0; i < numDetections; i++) {
-                float[] detection = outputArray[i];
-                float x = detection[0];
-                float y = detection[1];
-                float w = detection[2];
-                float h = detection[3];
-                Rect boundingBox = new Rect((int) x, (int) y, (int) w, (int) h); // Replace with actual values
-                String classLabel = "object"; // Replace with actual class label
-                float confidenceScore = 0.9f; // Replace with actual confidence score
-                DetectionResult result = new DetectionResult(boundingBox, classLabel, confidenceScore);
-                detectionResults.add(result);
-            }
-            for (DetectionResult result : detectionResults) {
-                Rect bbox = DetectionResult.getBoundingBox();
-                String label = result.getClassLabel();
-                float score = result.getConfidenceScore();
-                if (score > minConfidence) {
-                    Imgproc.rectangle(frame, bbox.tl(), bbox.br(), OpenCVpipelines.scalarVals("green"), 2);
-                    Imgproc.putText(frame, label + ": " + score, bbox.tl(), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, OpenCVpipelines.scalarVals("green"), 2);
-                }
-            }
-            return frame;
-        }
-    }
-
-    public static class ObjectDetectionPipeline extends OpenCvPipeline {
-        public static final String LABEL_PATH = "labels.txt";
-        public static final String MODEL_PATH = "model.tflite";
-        public static final String FOLDER = "/sdcard/FIRST/tflitemodels/";
-
-        @Override
-        public Mat processFrame(Mat input) {
-            //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-            Net net = Dnn.readNetFromTensorflow(FOLDER+MODEL_PATH, FOLDER+LABEL_PATH);
-            net.setInput(Dnn.blobFromImage(input, 1.0, new Size(300, 300), new Scalar(127.5, 127.5, 127.5), true, false));
-            Mat detections = net.forward();
-            int numDetections = detections.size(2);
-            for (int i = 0; i < numDetections; i++) {
-                double confidence = detections.get(0, i)[2];
-                if (confidence > 0.5) { // Set a minimum confidence threshold for detection
-                    int classId = (int) detections.get(0, i)[1];
-                    int left = (int) (detections.get(0, i)[3] * input.cols());
-                    int top = (int) (detections.get(0, i)[4] * input.rows());
-                    int right = (int) (detections.get(0, i)[5] * input.cols());
-                    int bottom = (int) (detections.get(0, i)[6] * input.rows());
-
-                    // Draw bounding box and label on the frame
-                    Imgproc.rectangle(input, new Point(left, top), new Point(right, bottom), new Scalar(0, 255, 0), 2);
-                    String label = "Class" + classId;
-                    Imgproc.putText(input, label, new Point(left, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.9, new Scalar(0, 255, 0), 2);
-                    Imgproc.putText(input, label + ": " + confidence, new Point(left, top - 30), Imgproc.FONT_HERSHEY_SIMPLEX, 0.9, new Scalar(0, 255, 0), 2);
-                }
-            }
-            return input;
-        }
-    }
 }

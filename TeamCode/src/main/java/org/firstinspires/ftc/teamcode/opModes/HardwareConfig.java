@@ -160,24 +160,26 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static int blackDots = 0;
 
     //init
-    public void init(HardwareMap ahwMap) {
+    public void init(HardwareMap ahwMap,boolean auto) {
         updateStatus("Initializing");
         ElapsedTime timer = new ElapsedTime();//declaring the runtime variable
         vSensor = ahwMap.voltageSensor.get("Expansion Hub 2");//getting the voltage sensor
         getBatteryVoltage();
         //imu
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "IMU";
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        imu = ahwMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
-        gravity = imu.getGravity();
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        if (!auto) {
+            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+            parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+            parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+            parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+            parameters.loggingEnabled = true;
+            parameters.loggingTag = "IMU";
+            parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+            imu = ahwMap.get(BNO055IMU.class, "imu");
+            imu.initialize(parameters);
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
+            gravity = imu.getGravity();
+            imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        }
 
         lights = ahwMap.get(RevBlinkinLedDriver.class, "blinkin");
 

@@ -13,7 +13,7 @@ public class teleOp extends LinearOpMode {//declaring the class
 
     @Override
     public void runOpMode() {//if opmode is started
-        robot.init(hardwareMap);
+        robot.init(hardwareMap,false);
         waitForStart();
         robot.timer.reset();
         while (opModeIsActive()) {//while the op mode is active
