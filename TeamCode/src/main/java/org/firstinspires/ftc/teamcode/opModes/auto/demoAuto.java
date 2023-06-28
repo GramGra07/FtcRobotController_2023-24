@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 @Autonomous
 public class demoAuto extends LinearOpMode {
@@ -27,5 +28,6 @@ public class demoAuto extends LinearOpMode {
 
 
         drive.followTrajectory(traj1);
+        PoseStorage.currentPose = drive.getPoseEstimate();
     }
 }

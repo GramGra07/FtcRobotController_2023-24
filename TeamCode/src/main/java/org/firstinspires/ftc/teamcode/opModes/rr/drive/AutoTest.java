@@ -6,6 +6,8 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
+
 @Autonomous
 public class AutoTest extends LinearOpMode {
     public Pose2d startPose = new Pose2d(10, -8, Math.toRadians(90));
@@ -52,5 +54,6 @@ public class AutoTest extends LinearOpMode {
         drive.followTrajectory(myTrajectory);
         //drive.turn(Math.toRadians(90));
         drive.followTrajectory(myTrajectory2);
+        PoseStorage.currentPose = drive.getPoseEstimate();
     }
 }
