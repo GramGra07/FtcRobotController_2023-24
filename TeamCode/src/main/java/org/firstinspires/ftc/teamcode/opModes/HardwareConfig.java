@@ -7,6 +7,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -30,6 +31,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.blink;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 import java.util.ArrayList;
@@ -154,6 +156,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static int blackDots = 0;
     //rr
     public SampleMecanumDrive drive = null;
+    public static double thisDist = 0;
 
     //init
     public void init(HardwareMap ahwMap, boolean auto) {
@@ -296,7 +299,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             frontLeftPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) - turn) / slowPower;
             backLeftPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) - turn) / slowPower;
         } else {
-            boolean reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right\
+            boolean reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
             reversed = reverse;
             yControl = -myOpMode.gamepad1.left_stick_y;
             xControl = myOpMode.gamepad1.left_stick_x;
@@ -312,7 +315,16 @@ public class HardwareConfig {//this is an external opMode that can have public v
             backLeftPower = (yControl - xControl - turn) / slowPower;
         }
         drive.update();
+        updateDistTraveled(PoseStorage.currentPose, drive.getPoseEstimate());
         PoseStorage.currentPose = drive.getPoseEstimate();
+    }
+
+    public void updateDistTraveled(Pose2d before, Pose2d after) {
+        double x = after.getX() - before.getX();
+        double y = after.getY() - before.getY();
+        double dist = Math.sqrt((x * x) + (y * y));
+        thisDist += dist;
+        DistanceStorage.totalDist += dist;
     }
 
     public void switchProfile() {
@@ -436,9 +448,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //myOpMode.telemetry.addData("pitch", "%.1f", pitch);
         //end testing
         teleSpace();
-        myOpMode.telemetry.addData("x","%.2f", drive.getPoseEstimate().getX());
-        myOpMode.telemetry.addData("y","%.2f", drive.getPoseEstimate().getY());
-        myOpMode.telemetry.addData("heading","%.2f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
+        myOpMode.telemetry.addData("x", "%.2f", drive.getPoseEstimate().getX());
+        myOpMode.telemetry.addData("y", "%.2f", drive.getPoseEstimate().getY());
+        myOpMode.telemetry.addData("heading", "%.2f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
         teleSpace();
         if ((motorBackLeft.getCurrentPosition() < 20000) && (motorBackRight.getCurrentPosition() < 20000) && (motorFrontLeft.getCurrentPosition() < 20000) && (motorFrontRight.getCurrentPosition() < 20000)) {
             myOpMode.telemetry.addLine("motors: ")
@@ -446,14 +458,17 @@ public class HardwareConfig {//this is an external opMode that can have public v
                     .addData("front right", motorFrontRight.getCurrentPosition())
                     .addData("back left", motorBackLeft.getCurrentPosition())
                     .addData("back right", motorBackRight.getCurrentPosition());
-        }else{
-            myOpMode.telemetry.addData("","All motor's pose > 20,000");
+        } else {
+            myOpMode.telemetry.addData("", "All motor's pose > 20,000");
         }
         myOpMode.telemetry.addLine("power: ")
                 .addData("front left", "%.1f", frontLeftPower)
                 .addData("front right", "%.1f", frontRightPower)
                 .addData("back left", "%.1f", backLeftPower)
                 .addData("back right", "%.1f", backRightPower);
+        teleSpace();
+        myOpMode.telemetry.addData("thisDistance", "%.1f", thisDist);
+        myOpMode.telemetry.addData("totalDistance", "%.1f", DistanceStorage.totalDist);
         teleSpace();
         myOpMode.telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         teleSpace();
