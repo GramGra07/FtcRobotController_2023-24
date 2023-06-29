@@ -1,16 +1,16 @@
 package org.firstinspires.ftc.teamcode.opModes.rr.drive;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 @Autonomous
 public class AutoTest extends LinearOpMode {
-    public Pose2d startPose = new Pose2d(10, -8, Math.toRadians(90));
+    public Pose2d startPose = autoHardware.startPose;
     @Override
     public void runOpMode() {
         // @link https://learnroadrunner.com/trajectorybuilder-functions.html#forward-distance-double
@@ -25,15 +25,6 @@ public class AutoTest extends LinearOpMode {
                 .build();
         Trajectory myTrajectory2 = drive.trajectoryBuilder(myTrajectory.end())
                 .strafeLeft(10)
-                .build();
-
-        Trajectory splineMovement = drive.trajectoryBuilder(new Pose2d())
-                .splineTo(new Vector2d(20, 9), Math.toRadians(90))
-                .splineTo(new Vector2d(20, 9), Math.toRadians(180))
-                .build();
-
-        Trajectory trajectory = drive.trajectoryBuilder(new Pose2d(), true)
-                .splineTo(new Vector2d(36, 36), Math.toRadians(0))
                 .build();
         // if used a drive.turn method, follow below to make it change radians
         //Trajectory traj2 = drive.trajectoryBuilder(last traj.end().plus(new Pose2d(0, 0, Math.toRadians(90))), false)

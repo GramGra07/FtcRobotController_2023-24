@@ -143,7 +143,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public boolean dDownHigh = false;
 
-    public String currentVersion = "2.0.0";
+    public String currentVersion = "2.1.0";
 
     //webcam
     public static String cam1_N = "Webcam 1";
@@ -193,15 +193,15 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //reversals
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         //reset all encoders
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontLeft encoder
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackRight encoder
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackLeft encoder
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontRight encoder
-        //set all to use encoders
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorFrontLeft encoder to run using encoder
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorBackLeft encoder to run using encoder
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorBackRight encoder to run using encoder
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorFrontRight encoder to run using encoder
+        //motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontLeft encoder
+        //motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackRight encoder
+        //motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackLeft encoder
+        //motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontRight encoder
+        ////set all to use encoders
+        //motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorFrontLeft encoder to run using encoder
+        //motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorBackLeft encoder to run using encoder
+        //motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorBackRight encoder to run using encoder
+        //motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorFrontRight encoder to run using encoder
         //set all to brake when set 0 power
         motorBackRight.setZeroPowerBehavior(BRAKE);
         motorBackLeft.setZeroPowerBehavior(BRAKE);
@@ -258,13 +258,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //}
         power();//sets power to power variables
         buildTelemetry();//makes telemetry
-        onEnd();
-    }
-
-    public void onEnd() {
-        if (myOpMode.isStopRequested()) {
-            PoseStorage.currentPose = drive.getPoseEstimate();
-        }
     }
 
     public void once() {
@@ -318,7 +311,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
             frontLeftPower = (yControl + xControl - turn) / slowPower;
             backLeftPower = (yControl - xControl - turn) / slowPower;
         }
-        //drive.update();
+        drive.update();
+        PoseStorage.currentPose = drive.getPoseEstimate();
     }
 
     public void switchProfile() {
@@ -442,9 +436,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //myOpMode.telemetry.addData("pitch", "%.1f", pitch);
         //end testing
         teleSpace();
-        myOpMode.telemetry.addData("x", drive.getPoseEstimate().getX());
-        myOpMode.telemetry.addData("y", drive.getPoseEstimate().getY());
-        myOpMode.telemetry.addData("heading", Math.toDegrees(drive.getPoseEstimate().getHeading()));
+        myOpMode.telemetry.addData("x","%.2f", drive.getPoseEstimate().getX());
+        myOpMode.telemetry.addData("y","%.2f", drive.getPoseEstimate().getY());
+        myOpMode.telemetry.addData("heading","%.2f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
         teleSpace();
         if ((motorBackLeft.getCurrentPosition() < 20000) && (motorBackRight.getCurrentPosition() < 20000) && (motorFrontLeft.getCurrentPosition() < 20000) && (motorFrontRight.getCurrentPosition() < 20000)) {
             myOpMode.telemetry.addLine("motors: ")
@@ -452,6 +446,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
                     .addData("front right", motorFrontRight.getCurrentPosition())
                     .addData("back left", motorBackLeft.getCurrentPosition())
                     .addData("back right", motorBackRight.getCurrentPosition());
+        }else{
+            myOpMode.telemetry.addData("","All motor's pose > 20,000");
         }
         myOpMode.telemetry.addLine("power: ")
                 .addData("front left", "%.1f", frontLeftPower)
