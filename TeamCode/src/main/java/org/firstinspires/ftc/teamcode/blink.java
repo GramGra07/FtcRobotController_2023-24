@@ -61,13 +61,6 @@ public class blink extends HardwareConfig {
         return LEDcolor;
     }
 
-    public static void testBlinkColors(int delayS) {
-        sleep(delayS * 1000L);
-        testingBlinkin = true;
-        pattern = pattern.next();
-        lights.setPattern(pattern);
-    }
-
     public static String getColorFreq() {
         // colors will be selected based on a frequency, selecting some more than others
         // 100 total pings

@@ -7,10 +7,6 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -25,13 +21,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -72,18 +62,18 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
     public static boolean testingBlinkin = false;
     //slow mode
-    public double slowMult = 3, slowPower;
+    public int slowMult = 3, slowPower;
     public boolean slowModeIsOn = false, reversed;
     //driving
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
     //field centric
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
     //imu
-    public static BNO055IMU imu;
-    public static Orientation angles;     //imu uses these to find angles and classify them
-    public Acceleration gravity;    //Imu uses to get acceleration
-    public double primaryHeading, primaryRoll, primaryPitch;
-    public double heading, roll, pitch;
+    //public static BNO055IMU imu;
+    //public static Orientation angles;     //imu uses these to find angles and classify them
+    //public Acceleration gravity;    //Imu uses to get acceleration
+    //public double primaryHeading, primaryRoll, primaryPitch;
+    //public double heading, roll, pitch;
     //maintenance mode
     public final int delay = 1;
     public boolean isSolid = false;
@@ -164,34 +154,31 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static int blackDots = 0;
     //rr
     public SampleMecanumDrive drive = null;
-    public boolean rrDrive = true; //using road runner to drive or not
 
     //init
     public void init(HardwareMap ahwMap, boolean auto) {
         updateStatus("Initializing");
-        if (rrDrive) {
-            drive = new SampleMecanumDrive(hardwareMap);
-            drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            drive.setPoseEstimate(PoseStorage.currentPose);
-        }
+        drive = new SampleMecanumDrive(ahwMap);
+        drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.setPoseEstimate(PoseStorage.currentPose);
         ElapsedTime timer = new ElapsedTime();//declaring the runtime variable
         vSensor = ahwMap.voltageSensor.get("Expansion Hub 2");//getting the voltage sensor
         getBatteryVoltage();
         //imu
-        if (!auto) {
-            BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-            parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-            parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-            parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-            parameters.loggingEnabled = true;
-            parameters.loggingTag = "IMU";
-            parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-            imu = ahwMap.get(BNO055IMU.class, "imu");
-            imu.initialize(parameters);
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
-            gravity = imu.getGravity();
-            imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        }
+        //if (!auto) {
+        //    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        //    parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        //    parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        //    parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        //    parameters.loggingEnabled = true;
+        //    parameters.loggingTag = "IMU";
+        //    parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+        //    imu = ahwMap.get(BNO055IMU.class, "imu");
+        //    imu.initialize(parameters);
+        //    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.YZX, AngleUnit.DEGREES);
+        //    gravity = imu.getGravity();
+        //    imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        //}
 
         lights = ahwMap.get(RevBlinkinLedDriver.class, "blinkin");
         // rev potentiometer //analog
@@ -203,13 +190,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
+        //reversals
+        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         //reset all encoders
         motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontLeft encoder
         motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackRight encoder
         motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackLeft encoder
         motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontRight encoder
-        //reversals
-        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         //set all to use encoders
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorFrontLeft encoder to run using encoder
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorBackLeft encoder to run using encoder
@@ -240,7 +227,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         bindOtherButtons();
         switchProfile();
         switches();//anything that will switch on button press
-        drive(rrDrive, fieldCentric);
+        drive(fieldCentric);
         // check all the trackable targets to see which one (if any) is visible.
         //targetVisible = false;
         //for (VuforiaTrackable trackable : allTrackables) {
@@ -273,8 +260,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         buildTelemetry();//makes telemetry
         onEnd();
     }
-    public void onEnd(){
-        if (myOpMode.isStopRequested()){
+
+    public void onEnd() {
+        if (myOpMode.isStopRequested()) {
             PoseStorage.currentPose = drive.getPoseEstimate();
         }
     }
@@ -282,81 +270,55 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void once() {
         if (!once) {
             updateStatus("Running");
-            findOrientationOffset();
+            //findOrientationOffset();
             once = true;
         }
     }
 
-    public void drive(boolean rr, boolean fieldCentric) {
-        if (!rr) {
-            if (fieldCentric) {
-                gamepadX = myOpMode.gamepad1.left_stick_x;//get the x val of left stick and store
-                //myOpMode.telemetry.addData("gamepadX", gamepadX);//tell us what gamepadX is
-                gamepadY = -myOpMode.gamepad1.left_stick_y;//get the y val of left stick and store
-                //myOpMode.telemetry.addData("gamepadY", gamepadY);//tell us what gamepadY is
-                gamepadHypot = Range.clip(Math.hypot(gamepadX, gamepadY), 0, 1);//get the
-                // hypotenuse of the x and y values,clip it to a max of 1 and store
-                //myOpMode.telemetry.addData("gamepadHypot", gamepadHypot);//tell us what gamepadHypot is
-                controllerAngle = Math.toDegrees(Math.atan2(gamepadY, gamepadX));//Get the angle of the controller stick using arc tangent
-                //myOpMode.telemetry.addData("controllerAngle", controllerAngle);//tell us what controllerAngle is
-                //might need to change based on corrected heading
-                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//get and initialize the IMU
-                robotDegree = angles.firstAngle;//store robot angle in robotDegree
-
-                //myOpMode.telemetry.addData("robotDegree", robotDegree);//tell us what robotDegree is
-                movementDegree = (controllerAngle - robotDegree);//get the movement degree based on the controller vs robot angle
-                //myOpMode.telemetry.addData("movementDegree", movementDegree);//tell us what movementDegree is
-                xControl = Math.cos(Math.toRadians(movementDegree)) * gamepadHypot;//get the x value of the movement
-                //myOpMode.telemetry.addData("xControl", xControl);//tell us what xControl is
-                yControl = Math.sin(Math.toRadians(movementDegree)) * gamepadHypot;//get the y value of the movement
-                //myOpMode.telemetry.addData("yControl", yControl);//tell us what yControl is
-                double turn = -myOpMode.gamepad1.right_stick_x;
-                frontRightPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) + turn) / slowPower;
-                backRightPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) + turn) / slowPower;
-                frontLeftPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) - turn) / slowPower;
-                backLeftPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) - turn) / slowPower;
-            } else {
-                boolean reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
-                yControl = -myOpMode.gamepad1.left_stick_y;
-                xControl = myOpMode.gamepad1.left_stick_x;
-                if (reverse) {
-                    yControl = -yControl;
-                    xControl = -xControl;
-                }
-                double turn = -myOpMode.gamepad1.right_stick_x;
-                frontRightPower = (yControl - xControl + turn) / slowPower;
-                backRightPower = (yControl + xControl + turn) / slowPower;
-                frontLeftPower = (yControl + xControl - turn) / slowPower;
-                backLeftPower = (yControl - xControl - turn) / slowPower;
+    public void drive(boolean fieldCentric) {
+        if (fieldCentric) {
+            gamepadX = myOpMode.gamepad1.left_stick_x;//get the x val of left stick and store
+            //myOpMode.telemetry.addData("gamepadX", gamepadX);//tell us what gamepadX is
+            gamepadY = -myOpMode.gamepad1.left_stick_y;//get the y val of left stick and store
+            //myOpMode.telemetry.addData("gamepadY", gamepadY);//tell us what gamepadY is
+            gamepadHypot = Range.clip(Math.hypot(gamepadX, gamepadY), 0, 1);//get the
+            // hypotenuse of the x and y values,clip it to a max of 1 and store
+            //myOpMode.telemetry.addData("gamepadHypot", gamepadHypot);//tell us what gamepadHypot is
+            controllerAngle = Math.toDegrees(Math.atan2(gamepadY, gamepadX));//Get the angle of the controller stick using arc tangent
+            //myOpMode.telemetry.addData("controllerAngle", controllerAngle);//tell us what controllerAngle is
+            //might need to change based on corrected heading
+            //angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//get and initialize the IMU
+            //robotDegree = angles.firstAngle;//store robot angle in robotDegree
+            robotDegree = Math.toDegrees(drive.getPoseEstimate().getHeading());
+            //myOpMode.telemetry.addData("robotDegree", robotDegree);//tell us what robotDegree is
+            movementDegree = (controllerAngle - robotDegree);//get the movement degree based on the controller vs robot angle
+            //myOpMode.telemetry.addData("movementDegree", movementDegree);//tell us what movementDegree is
+            xControl = Math.cos(Math.toRadians(movementDegree)) * gamepadHypot;//get the x value of the movement
+            //myOpMode.telemetry.addData("xControl", xControl);//tell us what xControl is
+            yControl = Math.sin(Math.toRadians(movementDegree)) * gamepadHypot;//get the y value of the movement
+            //myOpMode.telemetry.addData("yControl", yControl);//tell us what yControl is
+            double turn = -myOpMode.gamepad1.right_stick_x;
+            frontRightPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) + turn) / slowPower;
+            backRightPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) + turn) / slowPower;
+            frontLeftPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) - turn) / slowPower;
+            backLeftPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) - turn) / slowPower;
+        } else {
+            boolean reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right\
+            reversed = reverse;
+            yControl = -myOpMode.gamepad1.left_stick_y;
+            xControl = myOpMode.gamepad1.left_stick_x;
+            if (reverse) {
+                yControl = -yControl;
+                xControl = -xControl;
             }
+            double turn = -myOpMode.gamepad1.right_stick_x;
+            if (slowModeIsOn) slowPower = slowMult;
+            frontRightPower = (yControl - xControl + turn) / slowPower;
+            backRightPower = (yControl + xControl + turn) / slowPower;
+            frontLeftPower = (yControl + xControl - turn) / slowPower;
+            backLeftPower = (yControl - xControl - turn) / slowPower;
         }
-        if (rr) {
-            if (fieldCentric) {
-                Pose2d poseEstimate = drive.getPoseEstimate();
-                Vector2d input = new Vector2d(
-                        -myOpMode.gamepad1.left_stick_y,
-                        -myOpMode.gamepad1.left_stick_x
-                ).rotated(-poseEstimate.getHeading());
-                drive.setWeightedDrivePower(
-                        new Pose2d(
-                                input.getX(),
-                                input.getY(),
-                                -myOpMode.gamepad1.right_stick_x
-                        )
-                );
-                drive.update();
-            } else {
-                drive.setWeightedDrivePower(
-                        new Pose2d(
-                                -myOpMode.gamepad1.left_stick_y,
-                                -myOpMode.gamepad1.left_stick_x,
-                                -myOpMode.gamepad1.right_stick_x
-                        )
-                );
-                drive.update();
-                Pose2d poseEstimate = drive.getPoseEstimate();
-            }
-        }
+        //drive.update();
     }
 
     public void switchProfile() {
@@ -409,7 +371,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 slowModeIsOn = !slowModeIsOn;
             }
             dDownHigh = myOpMode.gamepad1.dpad_down;
-
         }
         if (currDriver == driverControls[1]) {//Camden
             fieldCentric = false;
@@ -463,10 +424,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void buildTelemetry() {
-        if (testingBlinkin) {
-            myOpMode.telemetry.addData("Pattern", pattern.toString());
-            updateStatus("Testing");
-        }
         myOpMode.telemetry.addData("potentiometer", "%.1f", getPotentVal());
         myOpMode.telemetry.addData("limitSwitch", getLimitSwitch());
         //
@@ -479,30 +436,28 @@ public class HardwareConfig {//this is an external opMode that can have public v
         myOpMode.telemetry.addData("Color", LEDcolor);
         myOpMode.telemetry.addData("reversed", reversed);
         myOpMode.telemetry.addData("slowMode", slowModeIsOn);
-        getOrientation();
-        myOpMode.telemetry.addData("heading", "%.1f", heading);
-        myOpMode.telemetry.addData("roll", "%.1f", roll);
-        myOpMode.telemetry.addData("pitch", "%.1f", pitch);
+        //getOrientation();
+        //myOpMode.telemetry.addData("heading", "%.1f", heading);
+        //myOpMode.telemetry.addData("roll", "%.1f", roll);
+        //myOpMode.telemetry.addData("pitch", "%.1f", pitch);
         //end testing
-        if(rrDrive){
-            Pose2d poseEstimate = drive.getPoseEstimate();
-            myOpMode.telemetry.addData("x", poseEstimate.getX());
-            myOpMode.telemetry.addData("y", poseEstimate.getY());
-            myOpMode.telemetry.addData("heading", poseEstimate.getHeading());
-        }else {
-            if ((motorBackLeft.getCurrentPosition() < 20000) && (motorBackRight.getCurrentPosition() < 20000) && (motorFrontLeft.getCurrentPosition() < 20000) && (motorFrontRight.getCurrentPosition() < 20000)) {
-                myOpMode.telemetry.addLine("motors: ")
-                        .addData("front left", motorFrontLeft.getCurrentPosition())
-                        .addData("front right", motorFrontRight.getCurrentPosition())
-                        .addData("back left", motorBackLeft.getCurrentPosition())
-                        .addData("back right", motorBackRight.getCurrentPosition());
-            }
-            myOpMode.telemetry.addLine("power: ")
-                    .addData("front left", "%.1f", frontLeftPower)
-                    .addData("front right", "%.1f", frontRightPower)
-                    .addData("back left", "%.1f", backLeftPower)
-                    .addData("back right", "%.1f", backRightPower);
+        teleSpace();
+        myOpMode.telemetry.addData("x", drive.getPoseEstimate().getX());
+        myOpMode.telemetry.addData("y", drive.getPoseEstimate().getY());
+        myOpMode.telemetry.addData("heading", Math.toDegrees(drive.getPoseEstimate().getHeading()));
+        teleSpace();
+        if ((motorBackLeft.getCurrentPosition() < 20000) && (motorBackRight.getCurrentPosition() < 20000) && (motorFrontLeft.getCurrentPosition() < 20000) && (motorFrontRight.getCurrentPosition() < 20000)) {
+            myOpMode.telemetry.addLine("motors: ")
+                    .addData("front left", motorFrontLeft.getCurrentPosition())
+                    .addData("front right", motorFrontRight.getCurrentPosition())
+                    .addData("back left", motorBackLeft.getCurrentPosition())
+                    .addData("back right", motorBackRight.getCurrentPosition());
         }
+        myOpMode.telemetry.addLine("power: ")
+                .addData("front left", "%.1f", frontLeftPower)
+                .addData("front right", "%.1f", frontRightPower)
+                .addData("back left", "%.1f", backLeftPower)
+                .addData("back right", "%.1f", backRightPower);
         teleSpace();
         myOpMode.telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         teleSpace();
@@ -511,7 +466,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //myOpMode.telemetry.addData("FPS", "%.2f", webcam.getFps());
         //myOpMode.telemetry.addData("Pipeline",pipelineName);
         //teleSpace();
-        if (!testingBlinkin) updateStatus("Running");
+        updateStatus("Running");
         myOpMode.telemetry.addData("Status", statusVal);//shows current status
         teleSpace();
         myOpMode.telemetry.addData("Version", currentVersion);
@@ -539,20 +494,20 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     //IMU
-    public void getOrientation() {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        heading = angles.firstAngle - primaryHeading;
-        roll = angles.secondAngle - primaryRoll;
-        pitch = angles.thirdAngle - primaryPitch;
-    }
+    //public void getOrientation() {
+    //    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    //    heading = angles.firstAngle - primaryHeading;
+    //    roll = angles.secondAngle - primaryRoll;
+    //    pitch = angles.thirdAngle - primaryPitch;
+    //}
 
     //meant to fix orientation problems
-    public void findOrientationOffset() {
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        primaryHeading = angles.firstAngle;
-        primaryRoll = angles.secondAngle;
-        primaryPitch = angles.thirdAngle;
-    }
+    //public void findOrientationOffset() {
+    //    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    //    primaryHeading = angles.firstAngle;
+    //    primaryRoll = angles.secondAngle;
+    //    primaryPitch = angles.thirdAngle;
+    //}
 
     //claw
     public double setServo(int degrees) {
