@@ -210,7 +210,7 @@ public class OpenCVpipelines {
                 pipelineTester.top = top;
                 pipelineTester.bottom = bottom;
                 int centerX = (int) (left + ((right - left) / 2));
-                Imgproc.putText(drawing, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 1);
+                Imgproc.putText(drawing, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
             }
             return drawing;
         }

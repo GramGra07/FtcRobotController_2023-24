@@ -1,3 +1,10 @@
+2.5.0 July 1st,2023
+Added data logging for paths
+Commands are in HardwareConfig (write to file), once connected to robot, 
+run the two commands and paste the data into file.txt, then run the python script
+Python script will take the file data and make a graph and show it
+Instructions are also all in the HardwareConfig file under writeToFile()
+
 2.1.0 June 28th,2023
 Road Runner is now fully implemented and tested
 Road Runner Localization implemented into teleOp

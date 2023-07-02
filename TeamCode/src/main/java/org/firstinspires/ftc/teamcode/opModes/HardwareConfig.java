@@ -7,6 +7,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 
+import android.os.Environment;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -34,9 +36,12 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
     //my personal key
@@ -145,8 +150,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public boolean dDownHigh = false;
 
-    public String currentVersion = "2.1.0";
-
     //webcam
     public static String cam1_N = "Webcam 1";
     public static String cam2_N = "Webcam 2";
@@ -158,8 +161,50 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public SampleMecanumDrive drive = null;
     public static double thisDist = 0;
 
+    //file write
+    public final String file = String.format("%s/FIRST/matchlogs/log.txt", Environment.getExternalStorageDirectory().getAbsolutePath());
+    FileWriter fileWriter;
+
+    public void setUpFile() {
+        File myObj = new File(file);
+        try {
+            myObj.delete();
+            myObj.createNewFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            fileWriter.write("");
+            fileWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeToFile(int x, int y) {
+        //  terminal
+        //  clear
+        //  adb shell
+        //  cat /storage/emulated/0/FIRST/matchlogs/log.txt
+        //  copy everything
+        //  paste into file.txt
+        //  run testGraphing in pycharm or other python IDE
+        //  look at results in graph.png
+        try {
+            fileWriter = new FileWriter(file, true);
+            fileWriter.append(String.valueOf(x)).append(" ").append(String.valueOf(y)).append(" \n");
+            fileWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String currentVersion = "2.5.0";
     //init
     public void init(HardwareMap ahwMap, boolean auto) {
+        thisDist = 0;
+        setUpFile();
         updateStatus("Initializing");
         drive = new SampleMecanumDrive(ahwMap);
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -195,16 +240,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
         //reversals
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
-        //reset all encoders
-        //motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontLeft encoder
-        //motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackRight encoder
-        //motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorBackLeft encoder
-        //motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);//resetting the motorFrontRight encoder
-        ////set all to use encoders
-        //motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorFrontLeft encoder to run using encoder
-        //motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorBackLeft encoder to run using encoder
-        //motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorBackRight encoder to run using encoder
-        //motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);//setting the motorFrontRight encoder to run using encoder
         //set all to brake when set 0 power
         motorBackRight.setZeroPowerBehavior(BRAKE);
         motorBackLeft.setZeroPowerBehavior(BRAKE);
@@ -316,6 +351,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         drive.update();
         updateDistTraveled(PoseStorage.currentPose, drive.getPoseEstimate());
+        writeToFile((int) drive.getPoseEstimate().getX(), (int) drive.getPoseEstimate().getY());
         PoseStorage.currentPose = drive.getPoseEstimate();
     }
 
