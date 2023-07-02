@@ -488,23 +488,23 @@ public class HardwareConfig {//this is an external opMode that can have public v
         myOpMode.telemetry.addData("y", "%.2f", drive.getPoseEstimate().getY());
         myOpMode.telemetry.addData("heading", "%.2f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
         teleSpace();
-        if ((motorBackLeft.getCurrentPosition() < 20000) && (motorBackRight.getCurrentPosition() < 20000) && (motorFrontLeft.getCurrentPosition() < 20000) && (motorFrontRight.getCurrentPosition() < 20000)) {
-            myOpMode.telemetry.addLine("motors: ")
-                    .addData("front left", motorFrontLeft.getCurrentPosition())
-                    .addData("front right", motorFrontRight.getCurrentPosition())
-                    .addData("back left", motorBackLeft.getCurrentPosition())
-                    .addData("back right", motorBackRight.getCurrentPosition());
-        } else {
-            myOpMode.telemetry.addData("", "All motor's pose > 20,000");
-        }
+        //if ((motorBackLeft.getCurrentPosition() < 20000) && (motorBackRight.getCurrentPosition() < 20000) && (motorFrontLeft.getCurrentPosition() < 20000) && (motorFrontRight.getCurrentPosition() < 20000)) {
+        //    myOpMode.telemetry.addLine("motors: ")
+        //            .addData("front left", motorFrontLeft.getCurrentPosition())
+        //            .addData("front right", motorFrontRight.getCurrentPosition())
+        //            .addData("back left", motorBackLeft.getCurrentPosition())
+        //            .addData("back right", motorBackRight.getCurrentPosition());
+        //} else {
+        //    myOpMode.telemetry.addData("", "All motor's pose > 20,000");
+        //}
         myOpMode.telemetry.addLine("power: ")
                 .addData("front left", "%.1f", frontLeftPower)
                 .addData("front right", "%.1f", frontRightPower)
                 .addData("back left", "%.1f", backLeftPower)
                 .addData("back right", "%.1f", backRightPower);
         teleSpace();
-        myOpMode.telemetry.addData("thisDistance", "%.1f", thisDist);
-        myOpMode.telemetry.addData("totalDistance", "%.1f", DistanceStorage.totalDist);
+        myOpMode.telemetry.addData("thisDistance (in)", "%.1f", thisDist);
+        myOpMode.telemetry.addData("totalDistance (in)", "%.1f", DistanceStorage.totalDist);
         teleSpace();
         myOpMode.telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         teleSpace();
