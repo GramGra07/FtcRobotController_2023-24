@@ -28,9 +28,11 @@ def log(posex, posey):
     file.close()
 
 
-def graph(file):
-    file = open(file, "r")
-    lines = file.readlines()
+def graph(r_file, title):
+    title = title.replace(" ", "_")
+    plt.title(title)
+    r_file = open(r_file, "r")
+    lines = r_file.readlines()
     for line in lines:
         if (line == lines[0]):
             beginX, beginY = line.split()
@@ -49,10 +51,17 @@ def graph(file):
         else:
             x, y = line.split()
             plt.plot(int(x), int(y), 'o', color="black", markersize=1)
-    file.close()
+    r_file.close()
+    if title == "":
+        saveFile = "graph.png"
+    else:
+        saveFile = "saved/"+title + ".png"
+    plt.savefig(saveFile)
+    plt.show()
 
 
 def setup():
+    formatFile(fileWrite)
     plt.axis("square")
     plt.axis([-72, 72, -72, 72])
     plt.xticks(range(-72, 73, 24))
@@ -106,8 +115,7 @@ def drawField():
     plt.plot(xPoints, yPoints, color="blue")
 
 
-formatFile(fileWrite)
 setup()
-graph(fileWrite)
-plt.savefig(saveFile)
-plt.show()
+graph(fileWrite,"")
+# title is optional, if you want it to be saved,
+# put a title in, otherwise leave blank ("")
