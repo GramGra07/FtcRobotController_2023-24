@@ -4,7 +4,6 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueDark;
-import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeRedLight;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
@@ -24,41 +23,24 @@ public class MeepMeepTesting {
                 .setConstraints(maxVel, maxAccel, 60, 60, trackWidth)
                 .setDimensions(robotWidth, robotHeight)//bot width and height
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPose)
-                                .splineTo(new Vector2d(60,60), Math.toRadians(90))
+                        drive.trajectorySequenceBuilder(new Pose2d(12.00, -63.00, Math.toRadians(90.00)))
+                                .splineTo(new Vector2d(12.24, -29.60), Math.toRadians(86.57))
+                                .splineTo(new Vector2d(47.70, -11.88), Math.toRadians(1.76))
+                                .splineTo(new Vector2d(44.59, 36.00), Math.toRadians(183.79))
+                                .splineTo(new Vector2d(4.20, 35.45), Math.toRadians(177.46))
+                                .splineTo(new Vector2d(-16.08, 19.01), Math.toRadians(236.84))
+                                .splineTo(new Vector2d(-33.62, 2.38), Math.toRadians(-90.00))
+                                .splineTo(new Vector2d(-12.24, -23.76), Math.toRadians(-70.90))
+                                .splineTo(new Vector2d(-12.43, -61.58), Math.toRadians(269.54))
                                 .build()
                 );
-        RoadRunnerBotEntity mySecondBot = new DefaultBotBuilder(meepMeep)
-                .setColorScheme(new ColorSchemeRedLight())
-                .setConstraints(maxVel, maxAccel, Math.toRadians(maxAngVel), Math.toRadians(maxAngAccel), trackWidth)
-                .setDimensions(robotWidth, robotHeight)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(startPose)
-                                .forward(30)
-                                .build()
-                );
-        RoadRunnerBotEntity testBot = new DefaultBotBuilder(meepMeep)
-                .setColorScheme(new ColorSchemeRedLight())
-                .setConstraints(90.00, 90.00, 90.00, 90.00, trackWidth)
-                .setDimensions(robotWidth, robotHeight)
-                .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(new Pose2d(36.55, -65.79, Math.toRadians(90.00)))
-                                .splineTo(new Vector2d(36.09, -13.19), Math.toRadians(89.13))
-                                .lineToConstantHeading(new Vector2d(15.94, -11.54))
-                                .splineTo(new Vector2d(8.98, 15.02), Math.toRadians(104.69))
-                                .splineTo(new Vector2d(-14.29, 14.84), Math.toRadians(180.45))
-                                .splineTo(new Vector2d(-16.31, -11.54), Math.toRadians(90.00))
-                                .splineTo(new Vector2d(-37.01, -14.66), Math.toRadians(188.56))
-                                .splineTo(new Vector2d(-39.76, -32.43), Math.toRadians(270.00))
-                                .splineTo(new Vector2d(-61.74, -65.22), Math.toRadians(236.16))
-                        .build()
-                );
+
         // to speed up ,SampleMecanumDrive.getVelocityConstraint(90, 90, 13.24),SampleMecanumDrive.getAccelerationConstraint(90)
         meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
                 .setDarkMode(true)
                 .setAxesInterval(20)
                 .setBackgroundAlpha(0.95f)
-                .addEntity(testBot)
+                .addEntity(bot)
                 //.addEntity(mySecondBot)
                 .start();
     }

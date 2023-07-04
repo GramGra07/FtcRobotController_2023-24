@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.blink;
 
 public class autoHardware extends HardwareConfig {//auto version of hardware config
 
-    public static Pose2d startPose = new Pose2d(10, -8, Math.toRadians(90));
+    public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
     HardwareMap hardwareMap = null;
 
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
