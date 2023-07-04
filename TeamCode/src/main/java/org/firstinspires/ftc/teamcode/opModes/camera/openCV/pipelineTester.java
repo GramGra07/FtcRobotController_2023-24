@@ -23,7 +23,7 @@ public class pipelineTester extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, HardwareConfig.cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new OpenCVpipelines.TemplateMatch());//!can switch pipelines here
+        webcam.setPipeline(new OpenCVpipelines.ColorEdgeDetectionBounded("yellow"));//!can switch pipelines here
         //OpenCVpipelines.WhiteDotDetection()
         //OpenCVpipelines.ColorEdgeDetectionBounded("yellow")
         //OpenCVpipelines.OBJDetect("converted_tflite/model.tflite")

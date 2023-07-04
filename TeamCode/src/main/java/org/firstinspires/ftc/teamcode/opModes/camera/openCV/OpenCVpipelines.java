@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
+import static org.opencv.core.CvType.CV_8U;
+
+import android.os.Environment;
+
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -9,6 +13,8 @@ import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
@@ -260,7 +266,7 @@ public class OpenCVpipelines {
             Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0,
                     0.1,
                     100.0, 30.0, 1, 100);
-            Mat mask = new Mat(input.rows(), input.cols(), CvType.CV_8U, Scalar.all(0));
+            Mat mask = new Mat(input.rows(), input.cols(), CV_8U, Scalar.all(0));
             if (circles.cols() > 0) {
                 for (int x = 0; x < circles.cols(); x++) {
                     double[] c = circles.get(0, x);
@@ -280,6 +286,31 @@ public class OpenCVpipelines {
             }
             HardwareConfig.blackDots = contours.size();
             Imgproc.putText(input, String.valueOf(contours.size()), new Point(input.width() / 16, input.height() / 6), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, scalarVals("green"), 2);
+            return input;
+        }
+    }
+
+    public static class TemplateMatch extends OpenCvPipeline {
+        Mat result = new Mat();
+        String file = String.format("%s/FIRST/tflitemodels/template.jpg", Environment.getExternalStorageDirectory().getAbsolutePath());
+        Mat template = Imgcodecs.imread(file);
+
+        @Override
+        public Mat processFrame(Mat input) {
+            Imgproc.cvtColor(template, template, CV_8U);
+            Imgproc.cvtColor(input, input, CV_8U);
+            Imgproc.resize(template, template, new Size(input.width(), input.height()));
+
+            Imgproc.matchTemplate(input, template, result, Imgproc.TM_CCOEFF_NORMED);
+            Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+            Point matchLoc = mmr.maxLoc;
+            int templateHeight = template.rows();
+            int templateWidth = template.cols();
+            if (mmr.maxVal >= 0.2){
+                Point topLeft = matchLoc;
+                Point bottomRight = new Point(matchLoc.x+templateWidth,matchLoc.y+templateHeight);
+                Imgproc.rectangle(input,topLeft,bottomRight,scalarVals("yellow"),2);
+            }
             return input;
         }
     }
