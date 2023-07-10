@@ -302,14 +302,22 @@ public class OpenCVpipelines {
             Imgproc.resize(template, template, new Size(input.width(), input.height()));
 
             Imgproc.matchTemplate(input, template, result, Imgproc.TM_CCOEFF_NORMED);
-            Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
-            Point matchLoc = mmr.maxLoc;
-            int templateHeight = template.rows();
-            int templateWidth = template.cols();
-            if (mmr.maxVal >= 0.2){
+            double threshold = 0.5;
+            List<Point> matchLocations = new ArrayList<>();
+            Core.MinMaxLocResult mmr;
+            do {
+                mmr = Core.minMaxLoc(result);
+                Point matchLoc = mmr.maxLoc;
+                if (mmr.maxVal >= threshold) {
+                    matchLocations.add(matchLoc);
+                    Imgproc.rectangle(result, matchLoc, new Point(matchLoc.x + template.cols(),
+                            matchLoc.y + template.rows()), new Scalar(0, 0, 0), -1);
+                }
+            } while (mmr.maxVal >= threshold);
+            for (Point matchLoc : matchLocations) {
                 Point topLeft = matchLoc;
-                Point bottomRight = new Point(matchLoc.x+templateWidth,matchLoc.y+templateHeight);
-                Imgproc.rectangle(input,topLeft,bottomRight,scalarVals("yellow"),2);
+                Point bottomRight = new Point(matchLoc.x + template.cols(), matchLoc.y + template.rows());
+                Imgproc.rectangle(input, topLeft, bottomRight, scalarVals("green"), 2);
             }
             return input;
         }

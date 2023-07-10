@@ -9,6 +9,8 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 
 import android.os.Environment;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -42,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
     //my personal key
     public static final String VUFORIA_KEY =
@@ -50,7 +51,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public VuforiaLocalizer vuforia;
     public TFObjectDetector tfod;
     //other variables
-
     public String statusVal = "OFFLINE";
     //servo variables
     public double position = 0;//sets servo position to 0-1 multiplier
@@ -65,9 +65,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //motors
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null;
 
+    //lights
     public static RevBlinkinLedDriver lights;
-    public static RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.RAINBOW_RAINBOW_PALETTE;
-    public static boolean testingBlinkin = false;
     //slow mode
     public int slowMult = 3, slowPower;
     public boolean slowModeIsOn = false, reversed;
@@ -137,13 +136,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public VoltageSensor vSensor;
     public boolean lowVoltage = false;
-    public double minimumVoltage = 11.5;
+    public final double minimumVoltage = 11.5;
     public double currentVoltage;
     public boolean once = false;
 
     //switchable profile variables
-    public String[] driverControls = {"Chase", "Camden", "Graden", "Kian", "Child"}, otherControls = driverControls;
-    public int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
+    public final String[] driverControls = {"Chase", "Camden", "Graden", "Kian", "Child"}, otherControls = driverControls;
+    public final int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
     public int dIndex = baseDriver, oIndex = baseOther;//list integer of driver and other controls
     public String currDriver = driverControls[dIndex], currOther = otherControls[oIndex];//list string of driver and other controls
     boolean fieldCentric;
@@ -151,10 +150,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public boolean dDownHigh = false;
 
     //webcam
-    public static String cam1_N = "Webcam 1";
-    public static String cam2_N = "Webcam 2";
+    public final static String cam1_N = "Webcam 1";
+    public final static String cam2_N = "Webcam 2";
     public static String pipelineName = "";
-    public static double minConfidence = 0.6;
+    public final static double minConfidence = 0.6;
     public static int whiteDots = 0;
     public static int blackDots = 0;
     //rr
@@ -200,9 +199,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
 
-    public String currentVersion = "2.5.0";
+    public final String currentVersion = "2.5.0";
+
     //init
     public void init(HardwareMap ahwMap, boolean auto) {
+        // test this
+        myOpMode.telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         thisDist = 0;
         setUpFile();
         updateStatus("Initializing");
@@ -256,6 +258,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             myOpMode.telemetry.addData("lowBattery", "true");
         }
         myOpMode.telemetry.update();
+
     }
 
     //code to run all drive functions
