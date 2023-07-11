@@ -270,34 +270,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         switchProfile();
         switches();//anything that will switch on button press
         drive(fieldCentric);
-        // check all the trackable targets to see which one (if any) is visible.
-        //targetVisible = false;
-        //for (VuforiaTrackable trackable : allTrackables) {
-        //    if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
-        //        telemetry.addData("Visible Target", trackable.getName());
-        //        targetVisible = true;
-        //        OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
-        //        if (robotLocationTransform != null) {
-        //            lastLocation = robotLocationTransform;
-        //        }
-        //        break;
-        //    }
-        //}
-        //if (targetVisible) {
-        //    // express position (translation) of robot in inches.
-        //    VectorF translation = lastLocation.getTranslation();
-        //    telemetry.addData("Pos (inches)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-        //            translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-        //
-        //    log("x" + (translation.get(0) / mmPerInch));
-        //    log("y" + (translation.get(1) / mmPerInch));
-        //
-        //    // express the rotation of the robot in degrees.
-        //    Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        //    telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
-        //} else {
-        //    telemetry.addData("Visible Target", "none");
-        //}
         power();//sets power to power variables
         buildTelemetry();//makes telemetry
     }
