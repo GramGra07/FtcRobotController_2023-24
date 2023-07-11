@@ -23,7 +23,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
 
     public void initAuto(HardwareMap ahwMap) {
         hardwareMap = ahwMap;
-        init(ahwMap,true);//initializes with hardware config
+        init(ahwMap);//initializes with hardware config
         // ONLY use for vuforia
         //initVuforia();
         //initTfod();

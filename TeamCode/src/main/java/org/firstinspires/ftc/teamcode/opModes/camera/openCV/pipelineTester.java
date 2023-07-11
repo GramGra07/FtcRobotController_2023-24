@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -23,7 +24,8 @@ public class pipelineTester extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, HardwareConfig.cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new OpenCVpipelines.TemplateMatch());//!can switch pipelines here
+        webcam.setPipeline(new OpenCVpipelines.RecognizeObject("redCone"));//!can switch pipelines here
+        FtcDashboard.getInstance().startCameraStream(webcam, 0);
         //OpenCVpipelines.WhiteDotDetection()
         //OpenCVpipelines.ColorEdgeDetectionBounded("yellow")
         //OpenCVpipelines.OBJDetect("converted_tflite/model.tflite")

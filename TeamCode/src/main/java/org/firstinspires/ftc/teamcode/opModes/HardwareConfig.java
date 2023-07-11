@@ -24,6 +24,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -31,9 +32,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.blink;
+import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
@@ -68,7 +69,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //lights
     public static RevBlinkinLedDriver lights;
     //slow mode
-    public int slowMult = 3, slowPower;
+    public int slowMult = varConfig.slowMult, slowPower;
     public boolean slowModeIsOn = false, reversed;
     //driving
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
@@ -81,12 +82,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //public double primaryHeading, primaryRoll, primaryPitch;
     //public double heading, roll, pitch;
     //maintenance mode
-    public final int delay = 1;
+    public int delay = varConfig.delay;
     public boolean isSolid = false;
     public static String LEDcolor;
     //encoder vals
-    public static int turn = 77;
-    public static double yMult = 24, xMult = 10;
+    public static final int turn = 77;
+    public static final double yMult = 24, xMult = 10;
     public static double ovrCurrX = 0, ovrCurrY = 0, ovrTurn = 0;
     public static final double COUNTS_PER_INCH_Side_dead = -665.08, COUNTS_PER_INCH_Side = -100;
     //reg mecanum
@@ -153,7 +154,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public final static String cam1_N = "Webcam 1";
     public final static String cam2_N = "Webcam 2";
     public static String pipelineName = "";
-    public final static double minConfidence = 0.6;
+    public final static double minConfidence = varConfig.minConfidence;
     public static int whiteDots = 0;
     public static int blackDots = 0;
     //rr
@@ -202,9 +203,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public final String currentVersion = "2.5.0";
 
     //init
-    public void init(HardwareMap ahwMap, boolean auto) {
-        // test this
-        myOpMode.telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
+    public void init(HardwareMap ahwMap) {
+        Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
+        // Telemetry telemetry = myOpMode.telemetry;
         thisDist = 0;
         setUpFile();
         updateStatus("Initializing");
@@ -250,14 +251,14 @@ public class HardwareConfig {//this is an external opMode that can have public v
         timer.reset();//resetting the runtime variable
         //LED
         blink.setLights(null, true);
-        myOpMode.telemetry.addData("Status", "Initialized");
-        myOpMode.telemetry.addData("Color", LEDcolor);
-        myOpMode.telemetry.addData("Version", currentVersion);
-        myOpMode.telemetry.addData("Voltage", "%.2f", currentVoltage);
+        telemetry.addData("Status", "Initialized");
+        telemetry.addData("Color", LEDcolor);
+        telemetry.addData("Version", currentVersion);
+        telemetry.addData("Voltage", "%.2f", currentVoltage);
         if (lowVoltage) {
-            myOpMode.telemetry.addData("lowBattery", "true");
+            telemetry.addData("lowBattery", "true");
         }
-        myOpMode.telemetry.update();
+        telemetry.update();
 
     }
 
@@ -273,7 +274,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //targetVisible = false;
         //for (VuforiaTrackable trackable : allTrackables) {
         //    if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
-        //        myOpMode.telemetry.addData("Visible Target", trackable.getName());
+        //        telemetry.addData("Visible Target", trackable.getName());
         //        targetVisible = true;
         //        OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener) trackable.getListener()).getUpdatedRobotLocation();
         //        if (robotLocationTransform != null) {
@@ -285,7 +286,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //if (targetVisible) {
         //    // express position (translation) of robot in inches.
         //    VectorF translation = lastLocation.getTranslation();
-        //    myOpMode.telemetry.addData("Pos (inches)", "{X, Y, Z} = %.1f, %.1f, %.1f",
+        //    telemetry.addData("Pos (inches)", "{X, Y, Z} = %.1f, %.1f, %.1f",
         //            translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
         //
         //    log("x" + (translation.get(0) / mmPerInch));
@@ -293,9 +294,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //
         //    // express the rotation of the robot in degrees.
         //    Orientation rotation = Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES);
-        //    myOpMode.telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+        //    telemetry.addData("Rot (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
         //} else {
-        //    myOpMode.telemetry.addData("Visible Target", "none");
+        //    telemetry.addData("Visible Target", "none");
         //}
         power();//sets power to power variables
         buildTelemetry();//makes telemetry
@@ -303,6 +304,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public void once() {
         if (!once) {
+            Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
+            // Telemetry telemetry = myOpMode.telemetry;
+            telemetry.clearAll();
             updateStatus("Running");
             //findOrientationOffset();
             once = true;
@@ -312,25 +316,25 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void drive(boolean fieldCentric) {
         if (fieldCentric) {
             gamepadX = myOpMode.gamepad1.left_stick_x;//get the x val of left stick and store
-            //myOpMode.telemetry.addData("gamepadX", gamepadX);//tell us what gamepadX is
+            //telemetry.addData("gamepadX", gamepadX);//tell us what gamepadX is
             gamepadY = -myOpMode.gamepad1.left_stick_y;//get the y val of left stick and store
-            //myOpMode.telemetry.addData("gamepadY", gamepadY);//tell us what gamepadY is
+            //telemetry.addData("gamepadY", gamepadY);//tell us what gamepadY is
             gamepadHypot = Range.clip(Math.hypot(gamepadX, gamepadY), 0, 1);//get the
             // hypotenuse of the x and y values,clip it to a max of 1 and store
-            //myOpMode.telemetry.addData("gamepadHypot", gamepadHypot);//tell us what gamepadHypot is
+            //telemetry.addData("gamepadHypot", gamepadHypot);//tell us what gamepadHypot is
             controllerAngle = Math.toDegrees(Math.atan2(gamepadY, gamepadX));//Get the angle of the controller stick using arc tangent
-            //myOpMode.telemetry.addData("controllerAngle", controllerAngle);//tell us what controllerAngle is
+            //telemetry.addData("controllerAngle", controllerAngle);//tell us what controllerAngle is
             //might need to change based on corrected heading
             //angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);//get and initialize the IMU
             //robotDegree = angles.firstAngle;//store robot angle in robotDegree
             robotDegree = Math.toDegrees(drive.getPoseEstimate().getHeading());
-            //myOpMode.telemetry.addData("robotDegree", robotDegree);//tell us what robotDegree is
+            //telemetry.addData("robotDegree", robotDegree);//tell us what robotDegree is
             movementDegree = (controllerAngle - robotDegree);//get the movement degree based on the controller vs robot angle
-            //myOpMode.telemetry.addData("movementDegree", movementDegree);//tell us what movementDegree is
+            //telemetry.addData("movementDegree", movementDegree);//tell us what movementDegree is
             xControl = Math.cos(Math.toRadians(movementDegree)) * gamepadHypot;//get the x value of the movement
-            //myOpMode.telemetry.addData("xControl", xControl);//tell us what xControl is
+            //telemetry.addData("xControl", xControl);//tell us what xControl is
             yControl = Math.sin(Math.toRadians(movementDegree)) * gamepadHypot;//get the y value of the movement
-            //myOpMode.telemetry.addData("yControl", yControl);//tell us what yControl is
+            //telemetry.addData("yControl", yControl);//tell us what yControl is
             double turn = -myOpMode.gamepad1.right_stick_x;
             frontRightPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) + turn) / slowPower;
             backRightPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) + turn) / slowPower;
@@ -469,49 +473,43 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void buildTelemetry() {
-        myOpMode.telemetry.addData("potentiometer", "%.1f", getPotentVal());
-        myOpMode.telemetry.addData("limitSwitch", getLimitSwitch());
-        //
-        myOpMode.telemetry.addLine("Drivers")
-                .addData("", currDriver)
-                .addData("", currOther);
+        Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
+        //Telemetry telemetry = myOpMode.telemetry;
+        telemetry.addData("potentiometer", "%.1f", getPotentVal());
+        telemetry.addData("limitSwitch", getLimitSwitch());
+
+        telemetry.addData("Drivers", currDriver + " " + currOther);
         getBatteryVoltage();
-        myOpMode.telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
-        myOpMode.telemetry.addData("lowBattery", lowVoltage);
-        myOpMode.telemetry.addData("Color", LEDcolor);
-        myOpMode.telemetry.addData("reversed", reversed);
-        myOpMode.telemetry.addData("slowMode", slowModeIsOn);
+        telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
+        telemetry.addData("lowBattery", lowVoltage);
+        telemetry.addData("Color", LEDcolor);
+        telemetry.addData("reversed", reversed);
+        telemetry.addData("slowMode", slowModeIsOn);
         //getOrientation();
-        //myOpMode.telemetry.addData("heading", "%.1f", heading);
-        //myOpMode.telemetry.addData("roll", "%.1f", roll);
-        //myOpMode.telemetry.addData("pitch", "%.1f", pitch);
+        //telemetry.addData("heading", "%.1f", heading);
+        //telemetry.addData("roll", "%.1f", roll);
+        //telemetry.addData("pitch", "%.1f", pitch);
         //end testing
         teleSpace();
-        myOpMode.telemetry.addData("x", "%.2f", drive.getPoseEstimate().getX());
-        myOpMode.telemetry.addData("y", "%.2f", drive.getPoseEstimate().getY());
-        myOpMode.telemetry.addData("heading", "%.2f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
+        telemetry.addData("x", "%.2f", drive.getPoseEstimate().getX());
+        telemetry.addData("y", "%.2f", drive.getPoseEstimate().getY());
+        telemetry.addData("heading", "%.2f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
         teleSpace();
-        myOpMode.telemetry.addLine("power: ")
-                .addData("front left", "%.1f", frontLeftPower)
-                .addData("front right", "%.1f", frontRightPower)
-                .addData("back left", "%.1f", backLeftPower)
-                .addData("back right", "%.1f", backRightPower);
+        telemetry.addData("thisDistance (in)", "%.1f", thisDist);
+        telemetry.addData("totalDistance (in)", "%.1f", DistanceStorage.totalDist);
         teleSpace();
-        myOpMode.telemetry.addData("thisDistance (in)", "%.1f", thisDist);
-        myOpMode.telemetry.addData("totalDistance (in)", "%.1f", DistanceStorage.totalDist);
-        teleSpace();
-        myOpMode.telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
+        telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         teleSpace();
         //webcam telemetry, next three lines
-        //myOpMode.telemetry.addData("Frame Count", webcam.getFrameCount());
-        //myOpMode.telemetry.addData("FPS", "%.2f", webcam.getFps());
-        //myOpMode.telemetry.addData("Pipeline",pipelineName);
+        //telemetry.addData("Frame Count", webcam.getFrameCount());
+        //telemetry.addData("FPS", "%.2f", webcam.getFps());
+        //telemetry.addData("Pipeline",pipelineName);
         //teleSpace();
         updateStatus("Running");
-        myOpMode.telemetry.addData("Status", statusVal);//shows current status
+        telemetry.addData("Status", statusVal);//shows current status
         teleSpace();
-        myOpMode.telemetry.addData("Version", currentVersion);
-        myOpMode.telemetry.update();
+        telemetry.addData("Version", currentVersion);
+        telemetry.update();
     }
 
     //sensors
@@ -558,7 +556,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     //random
     public void teleSpace() {
-        myOpMode.telemetry.addLine();
+        Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
+        //Telemetry telemetry = myOpMode.telemetry;
+        telemetry.addLine(" ");
     }
 
     public void updateStatus(String status) {
@@ -624,11 +624,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //            (runtime.seconds() < timeoutS) && sparkLong.isBusy()) {
     //
     //        // Display it for the driver.
-    //        myOpMode.telemetry.addData(" arm Running to", sparkLong.getCurrentPosition());
-    //        myOpMode.telemetry.addData("arm Currently at",
+    //        telemetry.addData(" arm Running to", sparkLong.getCurrentPosition());
+    //        telemetry.addData("arm Currently at",
     //                sparkLong.getCurrentPosition());
     //        // Display it for the driver.
-    //        myOpMode.telemetry.update();
+    //        telemetry.update();
     //    }
     //
     //    // Stop all motion;
@@ -647,7 +647,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //    //deadWheelR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     //    //deadWheelL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     //    resetEncoders();
-    //    myOpMode.telemetry.update();
+    //    telemetry.update();
     //}
 
     public static void encoderDrive(double speed,
@@ -691,7 +691,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 //telemetry.addData("Running to", "%7d :%7d", -newDLeftTarget, -newDRightTarget);//"%7d :%7d"
                 //telemetry.addData("Currently at", "%7d :%7d",
                 //        deadWheelL.getCurrentPosition(), deadWheelR.getCurrentPosition());
-                myOpMode.telemetry.addData("fr", motorFrontRight.getCurrentPosition());
             }
 
             // Stop all motion;
@@ -762,18 +761,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
             motorBackRight.setPower(Math.abs(speed));
             while (myOpMode.opModeIsActive() &&
                     (timer.seconds() < timeoutS) && motorFrontLeft.isBusy()) {
-
-                // Display it for the driver.
-                myOpMode.telemetry.addData("Running to", "%7d:%7d", motorFrontLeft.getCurrentPosition()
-                        , motorBackRight.getCurrentPosition());
-                myOpMode.telemetry.addData("Running to", "%7d:%7d", motorBackLeft.getCurrentPosition()
-                        , motorFrontRight.getCurrentPosition());
-                myOpMode.telemetry.addData("Currently at", "%7d:%7d",
-                        motorFrontLeft.getCurrentPosition()
-                        , motorBackRight.getCurrentPosition());
-                myOpMode.telemetry.addData("Currently at", "%7d:%7d",
-                        motorFrontRight.getCurrentPosition()
-                        , motorBackLeft.getCurrentPosition());
             }
 
             // Stop all motion;
@@ -825,8 +812,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
             double fwdInches = (targetY - currY) * yMult;
             fwdInches *= orientationVal;
             sidewaysInches *= orientationVal;
-            myOpMode.telemetry.addData("fwdInches", fwdInches);
-            myOpMode.telemetry.addData("sidewaysInches", sidewaysInches);
             if (currX < targetX) {
                 sideWaysEncoderDrive(power, sidewaysInches, 1);
             } else if (currX > targetX) {
@@ -853,43 +838,42 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         ovrTurn += turn;
         //telemetry.addData("orientation", orientation);
-        myOpMode.telemetry.update();
         //sleep(5000);
     }
 
     //
 //vu
-    public void runVu(int timeoutS, boolean giveSpot) {
-        timer.reset();
-        while (myOpMode.opModeIsActive()) {// and nothing given back
-            if (timer.seconds() > timeoutS) {// is over time
-                //auto select
-            }
-            if (tfod != null) {
-                // getUpdatedRecognitions() will return null if no new information is available since
-                // the last time that call was made.
-                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                if (updatedRecognitions != null) {
-                    myOpMode.telemetry.addData("# Objects Detected", updatedRecognitions.size());
-
-                    // step through the list of recognitions and display image position/size information for each one
-                    // Note: "Image number" refers to the randomized image orientation/number
-                    for (Recognition recognition : updatedRecognitions) {
-                        double col = (recognition.getLeft() + recognition.getRight()) / 2;
-                        double row = (recognition.getTop() + recognition.getBottom()) / 2;
-                        double width = Math.abs(recognition.getRight() - recognition.getLeft());
-                        double height = Math.abs(recognition.getTop() - recognition.getBottom());
-
-                        myOpMode.telemetry.addData("", " ");
-                        myOpMode.telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
-                        myOpMode.telemetry.addData("- Position (Row/Col)", "%.0f / %.0f", row, col);
-                        myOpMode.telemetry.addData("- Size (Width/Height)", "%.0f / %.0f", width, height);
-                    }
-                    myOpMode.telemetry.update();
-                }
-            }
-        }
-    }
+    //public void runVu(int timeoutS, boolean giveSpot) {
+    //    timer.reset();
+    //    while (myOpMode.opModeIsActive()) {// and nothing given back
+    //        if (timer.seconds() > timeoutS) {// is over time
+    //            //auto select
+    //        }
+    //        if (tfod != null) {
+    //            // getUpdatedRecognitions() will return null if no new information is available since
+    //            // the last time that call was made.
+    //            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+    //            if (updatedRecognitions != null) {
+    //                telemetry.addData("# Objects Detected", updatedRecognitions.size());
+//
+    //                // step through the list of recognitions and display image position/size information for each one
+    //                // Note: "Image number" refers to the randomized image orientation/number
+    //                for (Recognition recognition : updatedRecognitions) {
+    //                    double col = (recognition.getLeft() + recognition.getRight()) / 2;
+    //                    double row = (recognition.getTop() + recognition.getBottom()) / 2;
+    //                    double width = Math.abs(recognition.getRight() - recognition.getLeft());
+    //                    double height = Math.abs(recognition.getTop() - recognition.getBottom());
+//
+    //                    telemetry.addData("", " ");
+    //                    telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+    //                    telemetry.addData("- Position (Row/Col)", "%.0f / %.0f", row, col);
+    //                    telemetry.addData("- Size (Width/Height)", "%.0f / %.0f", width, height);
+    //                }
+    //                telemetry.update();
+    //            }
+    //        }
+    //    }
+    //}
 
     public void initVuforia() {
         /*
@@ -981,7 +965,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //    //gives color values
     //    NormalizedRGBA colorsR = colorSensorR.getNormalizedColors();
     //    Color.colorToHSV(colorsR.toColor(), hsvValues);
-    //    myOpMode.telemetry.addLine()
+    //    telemetry.addLine()
     //            .addData("Red", "%.3f", colorsR.red)
     //            .addData("Green", "%.3f", colorsR.green)
     //            .addData("Blue", "%.3f", colorsR.blue)
@@ -989,7 +973,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //            .addData("Saturation", "%.3f", hsvValues[1])
     //            .addData("Value", "%.3f", hsvValues[2])
     //            .addData("Alpha", "%.3f", colorsR.alpha);
-    //    myOpMode.telemetry.addLine()
+    //    telemetry.addLine()
     //            .addData("Color", colorName)
     //            .addData("RGB", "(" + redValR + "," + greenValR + "," + blueValR + ")");//shows rgb value
     //}
@@ -998,7 +982,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //    //gives color values
     //    NormalizedRGBA colors = colorSensorL.getNormalizedColors();
     //    Color.colorToHSV(colors.toColor(), hsvValues);
-    //    myOpMode.telemetry.addLine()
+    //    telemetry.addLine()
     //            .addData("Red", "%.3f", colors.red)
     //            .addData("Green", "%.3f", colors.green)
     //            .addData("Blue", "%.3f", colors.blue)
@@ -1006,7 +990,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //            .addData("Saturation", "%.3f", hsvValues[1])
     //            .addData("Value", "%.3f", hsvValues[2])
     //            .addData("Alpha", "%.3f", colors.alpha);
-    //    myOpMode.telemetry.addLine()
+    //    telemetry.addLine()
     //            .addData("Color", colorName)
     //            .addData("RGB", "(" + redValL + "," + greenValL + "," + blueValL + ")");//shows rgb value
     //}

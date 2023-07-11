@@ -2,19 +2,15 @@ package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
 import static org.opencv.core.CvType.CV_8U;
 
-import android.os.Environment;
-
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.opencv.core.Core;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
-import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
@@ -143,8 +139,9 @@ public class OpenCVpipelines {
         Mat edges = new Mat();
         Mat hierarchy = new Mat();
         Mat hsv = new Mat();
-        Mat mask1, mask2 = new Mat();
-        Mat drawing = new Mat();
+        Mat hsv2 = new Mat();
+        Mat mask1 = new Mat();
+        Mat mask2 = new Mat();
 
         String color;
 
@@ -172,11 +169,12 @@ public class OpenCVpipelines {
                 scalarHigh = new Scalar(0, 0, 0);
             }
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
+            Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
             if (!color.equals("red"))
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
-            if (color == "red") {
+            else{
                 Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
-                Core.inRange(hsv, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
+                Core.inRange(hsv2, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
             Imgproc.Canny(end, edges, 25, 50);
@@ -193,7 +191,6 @@ public class OpenCVpipelines {
                 centers[i] = new Point();
                 Imgproc.minEnclosingCircle(contoursPoly[i], centers[i], radius[i]);
             }
-            drawing = Mat.zeros(edges.size(), CvType.CV_8UC3);
             List<MatOfPoint> contoursPolyList = new ArrayList<>(contoursPoly.length);
             for (MatOfPoint2f poly : contoursPoly) {
                 contoursPolyList.add(new MatOfPoint(poly.toArray()));
@@ -201,8 +198,8 @@ public class OpenCVpipelines {
             int highIndex = 0;
             for (int i = 0; i < contours.size(); i++) {
                 Scalar c = scalarVals(color);
-                Imgproc.drawContours(drawing, contoursPolyList, i, c);
-                Imgproc.rectangle(drawing, boundRect[i].tl(), boundRect[i].br(), c, 2);
+                Imgproc.drawContours(input, contoursPolyList, i, c);
+                Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 2);
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
                     highIndex = i;
             }
@@ -216,9 +213,9 @@ public class OpenCVpipelines {
                 pipelineTester.top = top;
                 pipelineTester.bottom = bottom;
                 int centerX = (int) (left + ((right - left) / 2));
-                Imgproc.putText(drawing, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
+                Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
             }
-            return drawing;
+            return input;
         }
     }
 
@@ -290,34 +287,78 @@ public class OpenCVpipelines {
         }
     }
 
-    public static class TemplateMatch extends OpenCvPipeline {
-        Mat result = new Mat();
-        String file = String.format("%s/FIRST/tflitemodels/template.jpg", Environment.getExternalStorageDirectory().getAbsolutePath());
-        Mat template = Imgcodecs.imread(file);
+    public static class RecognizeObject extends OpenCvPipeline {
+        String obj;
+
+        public RecognizeObject(String obj) {
+            this.obj = obj;
+        }
+        double aspectRatio = 0.69;
+
+        Mat hsv = new Mat();
+        Mat mask1 = new Mat();
+        Mat mask2 = new Mat();
+        Mat end = new Mat();
+        Mat edges = new Mat();
+        Mat hierarchy = new Mat();
 
         @Override
         public Mat processFrame(Mat input) {
-            Imgproc.cvtColor(template, template, CV_8U);
-            Imgproc.cvtColor(input, input, CV_8U);
-            Imgproc.resize(template, template, new Size(input.width(), input.height()));
+            HardwareConfig.pipelineName = "Recognize Object";
+            Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
+            Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
+            Core.inRange(hsv, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
+            Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
+            Imgproc.Canny(end, edges, 25, 50);
+            List<MatOfPoint> contours = new ArrayList<>();
+            Imgproc.findContours(edges, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+            MatOfPoint2f[] contoursPoly = new MatOfPoint2f[contours.size()];
+            Rect[] boundRect = new Rect[contours.size()];
+            Point[] centers = new Point[contours.size()];
+            float[][] radius = new float[contours.size()][1];
+            for (int i = 0; i < contours.size(); i++) {
+                contoursPoly[i] = new MatOfPoint2f();
+                Imgproc.approxPolyDP(new MatOfPoint2f(contours.get(i).toArray()), contoursPoly[i], 3, true);
+                boundRect[i] = Imgproc.boundingRect(new MatOfPoint(contoursPoly[i].toArray()));
+                centers[i] = new Point();
+                Imgproc.minEnclosingCircle(contoursPoly[i], centers[i], radius[i]);
+            }
+            List<MatOfPoint> contoursPolyList = new ArrayList<>(contoursPoly.length);
+            for (MatOfPoint2f poly : contoursPoly) {
+                contoursPolyList.add(new MatOfPoint(poly.toArray()));
+            }
+            int highIndex = 0;
+            for (int i = 0; i < contours.size(); i++) {
+                Scalar c = scalarVals("red");
+                Imgproc.drawContours(input, contoursPolyList, i, c);
+                Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 2);
+                if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
+                    highIndex = i;
+            }
+            if (boundRect.length > 0) {
+                double left = boundRect[highIndex].tl().x;
+                double right = boundRect[highIndex].br().x;
+                double top = boundRect[highIndex].tl().y;
+                double bottom = boundRect[highIndex].br().y;
+                pipelineTester.left = left;
+                pipelineTester.right = right;
+                pipelineTester.top = top;
+                pipelineTester.bottom = bottom;
+                int centerX = (int) (left + ((right - left) / 2));
+                Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
+            }
+            double height = Math.abs(pipelineTester.top - pipelineTester.bottom);
+            double width = Math.abs(pipelineTester.right - pipelineTester.left);
+            double newAspectRatio = width / height;
 
-            Imgproc.matchTemplate(input, template, result, Imgproc.TM_CCOEFF_NORMED);
-            double threshold = 0.5;
-            List<Point> matchLocations = new ArrayList<>();
-            Core.MinMaxLocResult mmr;
-            do {
-                mmr = Core.minMaxLoc(result);
-                Point matchLoc = mmr.maxLoc;
-                if (mmr.maxVal >= threshold) {
-                    matchLocations.add(matchLoc);
-                    Imgproc.rectangle(result, matchLoc, new Point(matchLoc.x + template.cols(),
-                            matchLoc.y + template.rows()), new Scalar(0, 0, 0), -1);
+            double tolerance = varConfig.tolerance;
+            double minWidth = varConfig.minWidth;
+            double minHeight = varConfig.minHeight;
+            if (minWidth <= width && minHeight<=height) {
+                if (aspectRatio + tolerance > newAspectRatio && aspectRatio - tolerance < newAspectRatio) {
+                    //should be a cone
+                    Imgproc.rectangle(input, new Point(0, 0), new Point(input.width(), input.height()), scalarVals("green"), 3);
                 }
-            } while (mmr.maxVal >= threshold);
-            for (Point matchLoc : matchLocations) {
-                Point topLeft = matchLoc;
-                Point bottomRight = new Point(matchLoc.x + template.cols(), matchLoc.y + template.rows());
-                Imgproc.rectangle(input, topLeft, bottomRight, scalarVals("green"), 2);
             }
             return input;
         }
