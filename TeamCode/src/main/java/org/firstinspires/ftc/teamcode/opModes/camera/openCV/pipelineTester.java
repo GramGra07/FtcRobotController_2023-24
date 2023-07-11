@@ -24,7 +24,7 @@ public class pipelineTester extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, HardwareConfig.cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new OpenCVpipelines.RecognizeObject("cone","red"));//!can switch pipelines here
+        webcam.setPipeline(new OpenCVpipelines.RecognizeObject("cone", "red"));//!can switch pipelines here
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
         //OpenCVpipelines.WhiteDotDetection()
         //OpenCVpipelines.ColorEdgeDetectionBounded("yellow")
@@ -49,8 +49,8 @@ public class pipelineTester extends LinearOpMode {
             telemetry.addData("Frame Count", webcam.getFrameCount());
             telemetry.addData("FPS", "%.2f", webcam.getFps());
             telemetry.addData("Pipeline", HardwareConfig.pipelineName);
-            telemetry.addData("whiteDots",HardwareConfig.whiteDots);
-            telemetry.addData("blackDots",HardwareConfig.blackDots);
+            telemetry.addData("whiteDots", HardwareConfig.whiteDots);
+            telemetry.addData("blackDots", HardwareConfig.blackDots);
             telemetry.addData("Left", left);
             telemetry.addData("Right", right);
             telemetry.addData("Top", top);

@@ -99,16 +99,16 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             telemetry.addData("Please move the object you are training for into the frame", "4 seconds until capture");
             telemetry.update();
             wait(4000);
-            aspectRatio = width/height;
+            aspectRatio = width / height;
             telemetry.clearAll();
-            telemetry.addData("Now place the object as far back as you want it to read","4 seconds until capture");
+            telemetry.addData("Now place the object as far back as you want it to read", "4 seconds until capture");
             telemetry.update();
             wait(4000);
             minWidth = width;
             minHeight = height;
-            minArea = width*height;
+            minArea = width * height;
             telemetry.clearAll();
-            telemetry.addData("Now place the object as close as you want it to read","4 seconds until capture");
+            telemetry.addData("Now place the object as close as you want it to read", "4 seconds until capture");
             telemetry.update();
             wait(4000);
             maxWidth = width;
@@ -121,13 +121,13 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
                 telemetry.update();
             }
             telemetry.clearAll();
-            translationX = xDistance/xDist;
+            translationX = xDistance / xDist;
             while (yDistance != 0) {
                 telemetry.addData("Please measure the distance from the camera to the object and input it in FTC Dash under yDistance", "");
                 telemetry.update();
             }
             telemetry.clearAll();
-            translationY = yDistance/botDist;
+            translationY = yDistance / botDist;
             telemetry.addData("Building file, you will create a new file with the name: " + color + name + "ObjVars.java", "");
             telemetry.update();
             wait(5000);
@@ -137,7 +137,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         }
     }
 
-    public void buildFile(){
+    public void buildFile() {
         telemetry.addData("package ;\nimport com.acmerobotics.dashboard.config.Config;\n@Config\npublic class " + color + name + "ObjVars {", "");
         telemetry.addData("public static double aspectRatio = " + aspectRatio + ";", "");
         telemetry.addData("public static double minWidth = " + minWidth + ";", "");
@@ -231,7 +231,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             botDist = Math.abs(input.height() - bottom);
             middle = input.width() / 2;
             xDist = Math.abs(middle - centerX);
-            if (centerX<=middle) xDist = -xDist;
+            if (centerX <= middle) xDist = -xDist;
             return input;
         }
     }

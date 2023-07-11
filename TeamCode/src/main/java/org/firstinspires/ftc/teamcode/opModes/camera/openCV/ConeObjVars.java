@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
+
 import com.acmerobotics.dashboard.config.Config;
 
 @Config
@@ -14,9 +15,4 @@ public class ConeObjVars {
 
     public static double translationX = 0.0;
     public static double translationY = 0.6;
-
-    // distance away from cam forward , bottom to the bottom of the cone
-    // distance left right is from the center of the cone to middle of input
-    // will report distance in both directions away from the camera
-
 }
