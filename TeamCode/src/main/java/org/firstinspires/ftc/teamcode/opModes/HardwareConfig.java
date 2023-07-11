@@ -200,7 +200,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
 
-    public final String currentVersion = "2.5.0";
+    public final String currentVersion = "2.5.1";
 
     //init
     public void init(HardwareMap ahwMap) {
