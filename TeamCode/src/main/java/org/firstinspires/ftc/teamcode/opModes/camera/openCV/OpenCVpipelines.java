@@ -2,8 +2,10 @@ package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
 import static org.opencv.core.CvType.CV_8U;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
-import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -172,7 +174,7 @@ public class OpenCVpipelines {
             Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
             if (!color.equals("red"))
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
-            else{
+            else {
                 Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
                 Core.inRange(hsv2, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
@@ -293,7 +295,8 @@ public class OpenCVpipelines {
         public RecognizeObject(String obj) {
             this.obj = obj;
         }
-        double aspectRatio = 0.69;
+
+        double aspectRatio = ConeObjVars.aspectRatio;
 
         Mat hsv = new Mat();
         Mat mask1 = new Mat();
@@ -349,15 +352,33 @@ public class OpenCVpipelines {
             }
             double height = Math.abs(pipelineTester.top - pipelineTester.bottom);
             double width = Math.abs(pipelineTester.right - pipelineTester.left);
+            double left = pipelineTester.left;
+            double right = pipelineTester.right;
+            double top = pipelineTester.top;
+            double bottom = pipelineTester.bottom;
+            double centerX = (left + right) / 2;
+            double centerY = (top + bottom) / 2;
             double newAspectRatio = width / height;
 
-            double tolerance = varConfig.tolerance;
-            double minWidth = varConfig.minWidth;
-            double minHeight = varConfig.minHeight;
-            if (minWidth <= width && minHeight<=height) {
+            double tolerance = ConeObjVars.tolerance;
+            double minWidth = ConeObjVars.minWidth;
+            double minHeight = ConeObjVars.minHeight;
+            double minArea = ConeObjVars.minArea;
+            double maxWidth = ConeObjVars.maxWidth;
+            double maxHeight = ConeObjVars.maxHeight;
+
+            Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
+            telemetry.addData("New Aspect Ratio", newAspectRatio);
+            telemetry.addData("Aspect Ratio", aspectRatio);
+            telemetry.addData("Width", width);
+            telemetry.addData("Height", height);
+            telemetry.addData("Center X", centerX);
+            telemetry.addData("Center Y", centerY);
+            telemetry.update();
+            if ((minWidth <= width && minHeight <= height) && (maxWidth >= width && maxHeight >= height) && (minArea <= width * height)) {
                 if (aspectRatio + tolerance > newAspectRatio && aspectRatio - tolerance < newAspectRatio) {
                     //should be a cone
-                    Imgproc.rectangle(input, new Point(0, 0), new Point(input.width(), input.height()), scalarVals("green"), 3);
+                    Imgproc.circle(input, new Point(centerX, centerY), 5, scalarVals("green"), 2);
                 }
             }
             return input;
