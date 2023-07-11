@@ -1,3 +1,6 @@
+3.0.0 July 11th,2023
+FTC has officially updated to 8.2.0 code is all updated to work with this version
+
 2.5.1 July 10th,2023
 Added a new class called varConfig that contains all changeable variables for the robot
 These can be changed easily using the FTC Dashboard and won't be saved until enter is pressed, then it will change the variables live, then the variables need to be changed in the actual code

@@ -200,7 +200,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
 
-    public final String currentVersion = "2.5.1";
+    public final String currentVersion = "3.0.0";
 
     //init
     public void init(HardwareMap ahwMap) {
@@ -874,32 +874,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //        }
     //    }
     //}
-
-    public void initVuforia() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         */
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = myOpMode.hardwareMap.get(WebcamName.class, "Webcam 1");
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-    }
-
-    public void initTfod() {
-        int tfodMonitorViewId = myOpMode.hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", myOpMode.hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.75f;
-        tfodParameters.isModelTensorFlow2 = true;
-        tfodParameters.inputSize = 300;
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-
-        //tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-        // need these 2 vars ^
-    }
 
 
     void initTrackables(HardwareMap ahwMap) {//vuforia tags
