@@ -33,7 +33,7 @@ public class OpenCVpipelines {
         } else if (color == "black") {
             return new Scalar(0, 0, 0);
         }
-        return new Scalar(0, 0, 0);
+        return new Scalar(255, 255, 255);
     }
 
     public static class EdgeDetection extends OpenCvPipeline {
@@ -253,7 +253,6 @@ public class OpenCVpipelines {
     public static class BlackDotDetection extends OpenCvPipeline {
         Mat gray = new Mat();
         Mat circles = new Mat();
-        Mat mask = new Mat();
         Mat thresh = new Mat();
         Mat masked = new Mat();
 
@@ -290,15 +289,18 @@ public class OpenCVpipelines {
     }
 
     public static class RecognizeObject extends OpenCvPipeline {
+        String color;
         String obj;
 
-        public RecognizeObject(String obj) {
+        public RecognizeObject(String obj, String color) {
+            this.color = color;
             this.obj = obj;
         }
 
         double aspectRatio = ConeObjVars.aspectRatio;
 
         Mat hsv = new Mat();
+        Mat hsv2 = new Mat();
         Mat mask1 = new Mat();
         Mat mask2 = new Mat();
         Mat end = new Mat();
@@ -308,10 +310,30 @@ public class OpenCVpipelines {
         @Override
         public Mat processFrame(Mat input) {
             HardwareConfig.pipelineName = "Recognize Object";
+            Scalar scalarLow, scalarHigh;
+            if (color == "yellow") {
+                scalarLow = new Scalar(20, 100, 100);
+                scalarHigh = new Scalar(30, 255, 255);
+            } else if (color == "blue") {
+                scalarLow = new Scalar(90, 100, 100);
+                scalarHigh = new Scalar(140, 255, 255);
+            } else if (color == "green") {
+                scalarLow = new Scalar(40, 100, 100);
+                scalarHigh = new Scalar(75, 255, 255);
+            } else {
+                scalarLow = new Scalar(0, 0, 0);
+                scalarHigh = new Scalar(0, 0, 0);
+            }
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
-            Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
-            Core.inRange(hsv, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
-            Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
+            Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
+            if (!color.equals("red"))
+                Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
+            else {
+                Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
+                Core.inRange(hsv2, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
+                Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
+            }
+
             Imgproc.Canny(end, edges, 25, 50);
             List<MatOfPoint> contours = new ArrayList<>();
             Imgproc.findContours(edges, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
@@ -360,12 +382,14 @@ public class OpenCVpipelines {
             double centerY = (top + bottom) / 2;
             double newAspectRatio = width / height;
 
+            // place if other object here
             double tolerance = ConeObjVars.tolerance;
             double minWidth = ConeObjVars.minWidth;
             double minHeight = ConeObjVars.minHeight;
             double minArea = ConeObjVars.minArea;
             double maxWidth = ConeObjVars.maxWidth;
             double maxHeight = ConeObjVars.maxHeight;
+            double maxArea = ConeObjVars.maxArea;
 
             Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
             telemetry.addData("New Aspect Ratio", newAspectRatio);
@@ -374,13 +398,26 @@ public class OpenCVpipelines {
             telemetry.addData("Height", height);
             telemetry.addData("Center X", centerX);
             telemetry.addData("Center Y", centerY);
-            telemetry.update();
-            if ((minWidth <= width && minHeight <= height) && (maxWidth >= width && maxHeight >= height) && (minArea <= width * height)) {
+            if ((minWidth <= width && minHeight <= height) && (maxWidth >= width && maxHeight >= height) && (minArea <= width * height && width * height <= maxArea)) {
                 if (aspectRatio + tolerance > newAspectRatio && aspectRatio - tolerance < newAspectRatio) {
                     //should be a cone
                     Imgproc.circle(input, new Point(centerX, centerY), 5, scalarVals("green"), 2);
+
+                    double botDist = Math.abs(input.height() - bottom);
+                    int middle = input.width() / 2;
+                    double xDist = Math.abs(middle - centerX);
+                    if (centerX<=middle) xDist = -xDist;
+
+                    // add if other object here
+                    double xTranslation = xDist * ConeObjVars.translationX;
+                    double yTranslation = botDist * ConeObjVars.translationY;
+
+                    telemetry.addData("x", xTranslation);
+                    telemetry.addData("y", yTranslation);
+                    // report dist away from cone
                 }
             }
+            telemetry.update();
             return input;
         }
     }
