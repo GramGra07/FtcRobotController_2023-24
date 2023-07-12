@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
+import static org.firstinspires.ftc.teamcode.scalarUtil.fetchScalar;
 import static org.firstinspires.ftc.teamcode.scalarUtil.scalarVals;
 import static org.opencv.core.CvType.CV_8U;
 
@@ -7,7 +8,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
-import org.firstinspires.ftc.teamcode.scalarUtil;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -56,12 +56,12 @@ public class OpenCVpipelines {
             Scalar scalarLow, scalarHigh;
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             if (!color.equals("red")) {
-                scalarLow = scalarUtil.fetchScalar("l", color, 0);
-                scalarHigh = scalarUtil.fetchScalar("h", color, 0);
+                scalarLow = fetchScalar("l", color, 0);
+                scalarHigh = fetchScalar("h", color, 0);
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
             } else {
-                Core.inRange(hsv, scalarUtil.fetchScalar("l", color, 1), scalarUtil.fetchScalar("h", color, 1), mask1);
-                Core.inRange(hsv2, scalarUtil.fetchScalar("l", color, 2), scalarUtil.fetchScalar("h", color, 2), mask2);
+                Core.inRange(hsv, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
+                Core.inRange(hsv2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
             return end;
@@ -90,12 +90,12 @@ public class OpenCVpipelines {
             Scalar scalarLow, scalarHigh;
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             if (!color.equals("red")) {
-                scalarLow = scalarUtil.fetchScalar("l", color, 0);
-                scalarHigh = scalarUtil.fetchScalar("h", color, 0);
+                scalarLow = fetchScalar("l", color, 0);
+                scalarHigh = fetchScalar("h", color, 0);
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
             } else {
-                Core.inRange(hsv, scalarUtil.fetchScalar("l", color, 1), scalarUtil.fetchScalar("h", color, 1), mask1);
-                Core.inRange(hsv2, scalarUtil.fetchScalar("l", color, 2), scalarUtil.fetchScalar("h", color, 2), mask2);
+                Core.inRange(hsv, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
+                Core.inRange(hsv2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
             Imgproc.Canny(end, edges, 25, 50);
@@ -127,12 +127,12 @@ public class OpenCVpipelines {
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
             if (!color.equals("red")) {
-                scalarLow = scalarUtil.fetchScalar("l", color, 0);
-                scalarHigh = scalarUtil.fetchScalar("h", color, 0);
+                scalarLow = fetchScalar("l", color, 0);
+                scalarHigh = fetchScalar("h", color, 0);
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
             } else {
-                Core.inRange(hsv, scalarUtil.fetchScalar("l", color, 1), scalarUtil.fetchScalar("h", color, 1), mask1);
-                Core.inRange(hsv2, scalarUtil.fetchScalar("l", color, 2), scalarUtil.fetchScalar("h", color, 2), mask2);
+                Core.inRange(hsv, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
+                Core.inRange(hsv2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
             Imgproc.Canny(end, edges, 25, 50);
@@ -291,12 +291,12 @@ public class OpenCVpipelines {
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
             if (!color.equals("red")) {
-                scalarLow = scalarUtil.fetchScalar("l", color, 0);
-                scalarHigh = scalarUtil.fetchScalar("h", color, 0);
+                scalarLow = fetchScalar("l", color, 0);
+                scalarHigh = fetchScalar("h", color, 0);
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
             } else {
-                Core.inRange(hsv, scalarUtil.fetchScalar("l", color, 1), scalarUtil.fetchScalar("h", color, 1), mask1);
-                Core.inRange(hsv2, scalarUtil.fetchScalar("l", color, 2), scalarUtil.fetchScalar("h", color, 2), mask2);
+                Core.inRange(hsv, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
+                Core.inRange(hsv2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
 
