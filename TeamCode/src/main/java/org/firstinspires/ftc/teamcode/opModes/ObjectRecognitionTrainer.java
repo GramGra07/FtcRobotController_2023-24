@@ -33,19 +33,18 @@ import java.util.List;
 public class ObjectRecognitionTrainer extends LinearOpMode {
     OpenCvWebcam webcam;
 
-    public String name = null;
-    public static String color = null;
+    public static String name = "";
+    public static String color = "";
     public static double aspectRatio;
     public static double minWidth;
     public static double minHeight;
     public static double maxWidth;
     public static double maxHeight;
-    public static double minArea;
     public static double tolerance = 0.2;
     public static double translationX;
     public static double translationY;
-    public static double xDistance;
-    public static double yDistance;
+    public static double xDistance = 0;
+    public static double yDistance = 0;
 
 
     public double centerX;
@@ -82,74 +81,105 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         });
         waitForStart();
         if (opModeIsActive()) {
-            while (name == null) {
+            while (name == "") {
+                if (isStopRequested()) {
+                    return;
+                }
                 telemetry.addData("Please enter the name of the object you are training for in FTC Dash", "");
                 telemetry.update();
             }
             telemetry.clearAll();
-            while (color == null) {
+            while (color == "") {
+                if (isStopRequested()) {
+                    return;
+                }
                 telemetry.addData("Please enter the color of the object you are training for in FTC Dash", "");
                 telemetry.update();
             }
-            while (color != "red" && color != "yellow" && color != "blue" && color != "green") {
-                telemetry.addData("Please enter a valid color", "");
-                telemetry.update();
-            }
             telemetry.clearAll();
-            telemetry.addData("Please move the object you are training for into the frame", "4 seconds until capture");
+            telemetry.addData("Please move the object you are training for into the frame", "press circle to capture");
             telemetry.update();
-            wait(4000);
+            while (!gamepad1.circle) {
+                if (isStopRequested()) {
+                    return;
+                }
+            }
             aspectRatio = width / height;
             telemetry.clearAll();
-            telemetry.addData("Now place the object as far back as you want it to read", "4 seconds until capture");
+            telemetry.addData("Now place the object as far back as you want it to read", "press square to capture");
             telemetry.update();
-            wait(4000);
+            while (!gamepad1.square) {
+                if (isStopRequested()) {
+                    return;
+                }
+            }
             minWidth = width;
             minHeight = height;
-            minArea = width * height;
             telemetry.clearAll();
-            telemetry.addData("Now place the object as close as you want it to read", "4 seconds until capture");
+            telemetry.addData("Now place the object as close as you want it to read", "press triangle to capture");
             telemetry.update();
-            wait(4000);
+            while (!gamepad1.triangle) {
+                if (isStopRequested()) {
+                    return;
+                }
+            }
             maxWidth = width;
             maxHeight = height;
             telemetry.clearAll();
+            telemetry.addData("Please move robot back to starting position", "press square when complete");
+            telemetry.update();
+            while (!gamepad1.square) {
+                if (isStopRequested()) {
+                    return;
+                }
+            }
+            telemetry.clearAll();
             webcam.stopStreaming();
             // translations
-            while (xDistance != 0) {
-                telemetry.addData("Please measure the distance from the center of the camera to the center of the object and input it in FTC Dash under xDistance", "");
-                telemetry.update();
+            telemetry.addData("Once done with below, press circle to complete", "");
+            telemetry.addData("Please measure the distance from the center of the camera to the center of the object and input it in FTC Dash under xDistance", "");
+            telemetry.addData("Please measure the distance from the camera to the object and input it in FTC Dash under yDistance", "");
+            telemetry.update();
+            while (!gamepad1.circle) {
+                if (isStopRequested()) {
+                    return;
+                }
             }
             telemetry.clearAll();
-            translationX = xDistance / xDist;
-            while (yDistance != 0) {
-                telemetry.addData("Please measure the distance from the camera to the object and input it in FTC Dash under yDistance", "");
-                telemetry.update();
-            }
-            telemetry.clearAll();
-            translationY = yDistance / botDist;
+            translationX = xDist / xDistance;
+            translationY = botDist / yDistance;
             telemetry.addData("Building file, you will create a new file with the name: " + color + name + "ObjVars.java", "");
             telemetry.update();
-            wait(5000);
+            sleep(5000);
             while (opModeIsActive()) {
+                if (isStopRequested()) {
+                    return;
+                }
                 buildFile();
             }
         }
     }
 
     public void buildFile() {
-        telemetry.addData("package ;\nimport com.acmerobotics.dashboard.config.Config;\n@Config\npublic class " + color + name + "ObjVars {", "");
-        telemetry.addData("public static double aspectRatio = " + aspectRatio + ";", "");
-        telemetry.addData("public static double minWidth = " + minWidth + ";", "");
-        telemetry.addData("public static double minHeight = " + minHeight + ";", "");
-        telemetry.addData("public static double maxWidth = " + maxWidth + ";", "");
-        telemetry.addData("public static double maxHeight = " + maxHeight + ";", "");
-        telemetry.addData("public static double minArea = " + minArea + ";", "");
-        telemetry.addData("public static double tolerance = " + tolerance + "; // this is the value that will determine how far off the aspect ratio can be to still detect it, you will need to tune it more", "");
-        telemetry.addData("public static double translationX = " + translationX + ";", "");
-        telemetry.addData("public static double translationY = " + translationY + ";", "");
-        telemetry.addData("}", "");
-        telemetry.addData("\n\nCopy this code into the new file you created, set the package name, then press stop", "");
+        Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+        telemetry.clearAll();
+        telemetry.addData("Name", color + name + "ObjVars.java");
+        telemetry.addLine("package ; // set this to your correct package");
+        telemetry.addLine("import com.acmerobotics.dashboard.config.Config;");
+        telemetry.addLine("@Config");
+        telemetry.addLine("public class " + color + name + "ObjVars {");
+        telemetry.addLine("public static double aspectRatio = " + aspectRatio + ";");
+        telemetry.addLine("public static double minWidth = " + minWidth + ";");
+        telemetry.addLine("public static double minHeight = " + minHeight + ";");
+        telemetry.addLine("public static double maxWidth = " + maxWidth + ";");
+        telemetry.addLine("public static double maxHeight = " + maxHeight + ";");
+        telemetry.addLine("public static double minArea = minWidth * minHeight;");
+        telemetry.addLine("public static double maxArea = maxWidth * maxHeight;");
+        telemetry.addLine("public static double tolerance = " + tolerance + "; // this is the value that will determine how far off the aspect ratio can be to still detect it, you will need to tune it more");
+        telemetry.addLine("public static double translationX = " + translationX + ";");
+        telemetry.addLine("public static double translationY = " + translationY + ";");
+        telemetry.addLine("}");
+        telemetry.addLine("\n\nCopy this code into the new file you created, set the package name, then press stop");
         telemetry.update();
     }
 
@@ -228,7 +258,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             centerX = (left + right) / 2;
             centerY = (top + bottom) / 2;
             aspectRatio = width / height;
-            botDist = Math.abs(input.height() - bottom);
+            botDist = Math.abs(input.height() - centerY);
             middle = input.width() / 2;
             xDist = Math.abs(middle - centerX);
             if (centerX <= middle) xDist = -xDist;

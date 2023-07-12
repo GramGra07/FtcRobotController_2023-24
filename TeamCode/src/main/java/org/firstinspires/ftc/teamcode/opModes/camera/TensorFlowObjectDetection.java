@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.opModes.camera;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -52,7 +53,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 @TeleOp
-//@Disabled
+@Disabled
 public class TensorFlowObjectDetection extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;
@@ -92,7 +93,7 @@ public class TensorFlowObjectDetection extends LinearOpMode {
 
                 // Use setModelAssetName() if the TF Model is built in as an asset.
                 // Use setModelFileName() if you have downloaded a custom team model to the Robot Controller.
-                .setModelAssetName("model.tflite")
+                //.setModelAssetName("model.tflite")
                 //.setModelFileName(TFOD_MODEL_FILE)
 
                 .setModelLabels(labels)

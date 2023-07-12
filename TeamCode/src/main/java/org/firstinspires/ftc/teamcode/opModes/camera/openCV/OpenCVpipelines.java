@@ -291,13 +291,34 @@ public class OpenCVpipelines {
     public static class RecognizeObject extends OpenCvPipeline {
         String color;
         String obj;
+        String name;
+        double aspectRatio;
+        double xTranslation;
+        double yTranslation;
 
-        public RecognizeObject(String obj, String color) {
+        double tolerance;
+        double minWidth;
+        double minHeight;
+        double minArea;
+        double maxWidth;
+        double maxHeight;
+        double maxArea;
+
+        public RecognizeObject(String color, String obj) { // both uncaps
             this.color = color;
             this.obj = obj;
-        }
+            this.name = color + obj;
 
-        double aspectRatio = ConeObjVars.aspectRatio;
+            switch (name) {
+                case "redcone":
+                    aspectRatio = redconeObjVars.aspectRatio;
+                    break;
+                default:
+                    aspectRatio = 0;
+                    break;
+            }
+
+        }
 
         Mat hsv = new Mat();
         Mat hsv2 = new Mat();
@@ -381,15 +402,27 @@ public class OpenCVpipelines {
             double centerX = (left + right) / 2;
             double centerY = (top + bottom) / 2;
             double newAspectRatio = width / height;
-
             // place if other object here
-            double tolerance = ConeObjVars.tolerance;
-            double minWidth = ConeObjVars.minWidth;
-            double minHeight = ConeObjVars.minHeight;
-            double minArea = ConeObjVars.minArea;
-            double maxWidth = ConeObjVars.maxWidth;
-            double maxHeight = ConeObjVars.maxHeight;
-            double maxArea = ConeObjVars.maxArea;
+            switch (name) {
+                case "redcone":
+                    tolerance = redconeObjVars.tolerance;
+                    minWidth = redconeObjVars.minWidth;
+                    minHeight = redconeObjVars.minHeight;
+                    minArea = redconeObjVars.minArea;
+                    maxWidth = redconeObjVars.maxWidth;
+                    maxHeight = redconeObjVars.maxHeight;
+                    maxArea = redconeObjVars.maxArea;
+                    break;
+                default:
+                    tolerance = 0.1;
+                    minWidth = 0;
+                    minHeight = 0;
+                    minArea = 0;
+                    maxWidth = 0;
+                    maxHeight = 0;
+                    maxArea = 0;
+                    break;
+            }
 
             Telemetry telemetry = FtcDashboard.getInstance().getTelemetry();
             telemetry.addData("New Aspect Ratio", newAspectRatio);
@@ -401,22 +434,30 @@ public class OpenCVpipelines {
             if ((minWidth <= width && minHeight <= height) && (maxWidth >= width && maxHeight >= height) && (minArea <= width * height && width * height <= maxArea)) {
                 if (aspectRatio + tolerance > newAspectRatio && aspectRatio - tolerance < newAspectRatio) {
                     //should be a cone
+                    Imgproc.rectangle(input, new Point(0, 0), new Point(input.width(), input.height()), scalarVals("green"), 2);
                     Imgproc.circle(input, new Point(centerX, centerY), 5, scalarVals("green"), 2);
 
                     double botDist = Math.abs(input.height() - bottom);
                     int middle = input.width() / 2;
                     double xDist = Math.abs(middle - centerX);
-                    if (centerX<=middle) xDist = -xDist;
-
+                    if (centerX <= middle) xDist = -xDist;
                     // add if other object here
-                    double xTranslation = xDist * ConeObjVars.translationX;
-                    double yTranslation = botDist * ConeObjVars.translationY;
+                    switch (name) {
+                        case "redcone":
+                            xTranslation = xDist * redconeObjVars.translationX;
+                            yTranslation = botDist * redconeObjVars.translationY;
+                            break;
+                        default:
+                            xTranslation = 0;
+                            yTranslation = 0;
+                            break;
+                    }
 
-                    telemetry.addData("x", xTranslation);
-                    telemetry.addData("y", yTranslation);
                     // report dist away from cone
                 }
             }
+            telemetry.addData("x", xTranslation);
+            telemetry.addData("y", yTranslation);
             telemetry.update();
             return input;
         }
