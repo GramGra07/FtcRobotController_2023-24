@@ -82,20 +82,12 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         });
         waitForStart();
         if (opModeIsActive()) {
-            while (name == "") {
+            telemetry.addData("Please enter the name and color of the object you are training for in FTC Dash", "press square when complete");
+            telemetry.update();
+            while (!gamepad1.square) {
                 if (isStopRequested()) {
                     return;
                 }
-                telemetry.addData("Please enter the name of the object you are training for in FTC Dash", "");
-                telemetry.update();
-            }
-            telemetry.clearAll();
-            while (color == "") {
-                if (isStopRequested()) {
-                    return;
-                }
-                telemetry.addData("Please enter the color of the object you are training for in FTC Dash", "");
-                telemetry.update();
             }
             telemetry.clearAll();
             telemetry.addData("Please move the object you are training for into the frame", "press circle to capture");
@@ -149,7 +141,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             telemetry.clearAll();
             translationX = xDist / xDistance;
             translationY = botDist / yDistance;
-            telemetry.addData("Building file, you will create a new file with the name: " + color + name + "ObjVars.java", "");
+            telemetry.addLine("Building file, you will create a new java file with the name: " + color + name + "ObjVars.java");
             telemetry.update();
             sleep(3000);
             buildFile();
