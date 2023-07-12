@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
 
-import static org.firstinspires.ftc.teamcode.opModes.camera.openCV.OpenCVpipelines.scalarVals;
+import static org.firstinspires.ftc.teamcode.scalarUtil.scalarVals;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.scalarUtil;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -150,14 +151,71 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             translationY = botDist / yDistance;
             telemetry.addData("Building file, you will create a new file with the name: " + color + name + "ObjVars.java", "");
             telemetry.update();
-            sleep(5000);
-            while (opModeIsActive()) {
+            sleep(3000);
+            buildFile();
+            telemetry.addData("File built, please copy and paste the file into your project", "press square when done");
+            telemetry.update();
+            while (!gamepad1.square) {
                 if (isStopRequested()) {
                     return;
                 }
-                buildFile();
+            }
+            telemetry.clearAll();
+            additions();
+        }
+    }
+
+    public void additions() {
+        String fullName = color + name;
+        Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+        telemetry.addLine("To finish setup you will add the followint to the Object Recognition Pipeline");
+        telemetry.addLine("In the constructor add the following lines: ");
+        telemetry.addLine("case (" + fullName + "):");
+        telemetry.addLine("aspectRatio = " + fullName + "ObjVars.aspectRatio;");
+        telemetry.addLine("break;");
+        telemetry.addData("Once done", "press circle to continue");
+        telemetry.update();
+        while (!gamepad1.circle) {
+            if (isStopRequested()) {
+                return;
             }
         }
+        telemetry.clearAll();
+        telemetry.addLine("Add the following lines under process frame and the switch statement");
+        telemetry.addLine("case (" + fullName + "):");
+        telemetry.addLine("tolerance = " + fullName + "ObjVars.tolerance;");
+        telemetry.addLine("minWidth = " + fullName + "ObjVars.minWidth;");
+        telemetry.addLine("minHeight = " + fullName + "ObjVars.minHeight;");
+        telemetry.addLine("minArea = " + fullName + "ObjVars.minArea;");
+        telemetry.addLine("maxWidth = " + fullName + "ObjVars.maxWidth;");
+        telemetry.addLine("maxHeight = " + fullName + "ObjVars.maxHeight;");
+        telemetry.addLine("maxArea = " + fullName + "ObjVars.maxArea;");
+        telemetry.addLine("break;");
+        telemetry.addData("Once done", "press square to continue");
+        telemetry.update();
+        while (!gamepad1.square) {
+            if (isStopRequested()) {
+                return;
+            }
+        }
+        telemetry.clearAll();
+        telemetry.addLine("Add the following lines under get recognitions (in a comment) and the switch statement");
+        telemetry.addLine("case (" + fullName + "):");
+        telemetry.addLine("xTranslation = xDist * " + fullName + "ObjVars.translationX;");
+        telemetry.addLine("yTranslation = botDist * " + fullName + "ObjVars.translationY;");
+        telemetry.addLine("break;");
+        telemetry.addData("Once done", "press triangle to continue");
+        telemetry.update();
+        while (!gamepad1.triangle) {
+            if (isStopRequested()) {
+                return;
+            }
+        }
+        telemetry.clearAll();
+        telemetry.addLine("All finished, now just change the name in pieplineTester of whatever opmode to the color and name and it should work!");
+        telemetry.addLine("Please press stop when done");
+        telemetry.update();
+        webcam.closeCameraDevice();
     }
 
     public void buildFile() {
@@ -196,26 +254,15 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         @Override
         public Mat processFrame(Mat input) {
             Scalar scalarLow, scalarHigh;
-            if (color == "yellow") {
-                scalarLow = new Scalar(20, 100, 100);
-                scalarHigh = new Scalar(30, 255, 255);
-            } else if (color == "blue") {
-                scalarLow = new Scalar(90, 100, 100);
-                scalarHigh = new Scalar(140, 255, 255);
-            } else if (color == "green") {
-                scalarLow = new Scalar(40, 100, 100);
-                scalarHigh = new Scalar(75, 255, 255);
-            } else {
-                scalarLow = new Scalar(0, 0, 0);
-                scalarHigh = new Scalar(0, 0, 0);
-            }
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
-            if (!color.equals("red"))
+            if (!color.equals("red")) {
+                scalarLow = scalarUtil.fetchScalar("l", color, 0);
+                scalarHigh = scalarUtil.fetchScalar("h", color, 0);
                 Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
-            else {
-                Core.inRange(hsv, new Scalar(0, 70, 50), new Scalar(8, 255, 255), mask1);
-                Core.inRange(hsv2, new Scalar(172, 70, 50), new Scalar(180, 255, 255), mask2);
+            } else {
+                Core.inRange(hsv, scalarUtil.fetchScalar("l", color, 1), scalarUtil.fetchScalar("h", color, 1), mask1);
+                Core.inRange(hsv2, scalarUtil.fetchScalar("l", color, 2), scalarUtil.fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
 
