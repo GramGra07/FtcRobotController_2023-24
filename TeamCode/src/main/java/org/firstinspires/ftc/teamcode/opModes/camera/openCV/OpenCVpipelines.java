@@ -437,7 +437,7 @@ public class OpenCVpipelines {
                     Imgproc.rectangle(input, new Point(0, 0), new Point(input.width(), input.height()), scalarVals("green"), 2);
                     Imgproc.circle(input, new Point(centerX, centerY), 5, scalarVals("green"), 2);
 
-                    double botDist = Math.abs(input.height() - bottom);
+                    double botDist = Math.abs(input.height() - centerY);
                     int middle = input.width() / 2;
                     double xDist = Math.abs(middle - centerX);
                     if (centerX <= middle) xDist = -xDist;
