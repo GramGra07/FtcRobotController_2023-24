@@ -47,12 +47,13 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
     public static double xDistance = 0;
     public static double yDistance = 0;
 
-    public String heightError;
-    public String widthError;
-    public String areaError;
-    public String aspectError;
-    public String xError;
-    public String yError;
+    public String heightError = "";
+    public String widthError = "";
+    public String areaError = "";
+    public String aspectError1 = "";
+    public String aspectError2 = "";
+    public String xError = "";
+    public String yError = "";
 
     public double centerX;
     public double left;
@@ -91,6 +92,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         telemetry.addLine("Please open the ObjectRecognitionTrainer in the configuration tab, this is where you will edit the variables");
         telemetry.addLine("Press enter to save any changes made on FTC Dash");
         telemetry.addLine("Please enter the name and color of the object you are training for in FTC Dash");
+        telemetry.addLine("If you just now entered name and color, please hit stop and re-start this program");
         telemetry.addLine("Note that while training, make sure that it only sees the object you want it to");
         telemetry.addLine("Start the OpMode");
         telemetry.update();
@@ -247,10 +249,12 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         if (minHeight < 0) heightError = "// possible height error minHeight<0";
         if (minWidth < 0) widthError = "// possible width error minWidth<0";
         if ((minWidth * minHeight) < 0) areaError = "// possible area error minArea<0";
-        if (aspectRatio + tolerance > maxWidth / maxHeight || maxWidth / maxHeight < aspectRatio - tolerance)
-            aspectError = "// possible aspect ratio error, max's not in aspect";
-        if (aspectRatio + tolerance > minWidth / minHeight || minWidth / minHeight < aspectRatio - tolerance)
-            aspectError = "// possible aspect ratio error, min's not in aspect";
+        double maxAspect = maxWidth / maxHeight;
+        double minAspect = minWidth / minHeight;
+        if (!(aspectRatio + tolerance >= maxAspect) && !(maxAspect >= aspectRatio - tolerance))
+            aspectError2 = "// possible aspect ratio error, max's not in aspect";
+        if (!(aspectRatio + tolerance >= minAspect) && !(minAspect >= aspectRatio - tolerance))
+            aspectError1 = "// possible aspect ratio error, min's not in aspect";
         if (translationX > 100) xError = "// possible translation error, xTranslation>100";
         if (translationY > 100) yError = "// possible translation error, yTranslation>100";
     }
@@ -263,7 +267,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         telemetry.addLine("import com.acmerobotics.dashboard.config.Config;");
         telemetry.addLine("@Config");
         telemetry.addLine("public class " + color + name + "ObjVars {");
-        telemetry.addLine("public static double aspectRatio = " + aspectRatio + ";" + aspectError);
+        telemetry.addLine("public static double aspectRatio = " + aspectRatio + ";" + aspectError1 + aspectError2);
         telemetry.addLine("public static double minWidth = " + minWidth + ";" + widthError);
         telemetry.addLine("public static double minHeight = " + minHeight + ";" + heightError);
         telemetry.addLine("public static double maxWidth = " + maxWidth + ";");
