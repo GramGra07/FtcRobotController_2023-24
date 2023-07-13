@@ -21,7 +21,7 @@ public class scalarUtil {
                     case "yellow":
                         return new Scalar(20, 100, 100);
                     case "blue":
-                        return new Scalar(90, 100, 100);
+                        return new Scalar(100, 100, 100);
                     case "white":
                         return new Scalar(0, 0, 100);
                     case "green":
@@ -52,6 +52,24 @@ public class scalarUtil {
     }
 
     public static Scalar scalarVals(String color) {//rgb scalar vals
+        switch (color) {
+            case "red":
+                color = "red";
+                break;
+            case "blue":
+                color = "blue";
+                break;
+            case "yellow":
+                color = "yellow";
+                break;
+            case "green":
+                color = "green";
+                break;
+            case "white":
+                color = "white";
+                break;
+        }
+
         if (color == "yellow") {
             return new Scalar(255, 255, 0);
         } else if (color == "blue") {
@@ -62,7 +80,10 @@ public class scalarUtil {
             return new Scalar(255, 0, 0);
         } else if (color == "black") {
             return new Scalar(0, 0, 0);
+        } else if (color == "white") {
+            return new Scalar(255, 255, 255);
+        } else {
+            return new Scalar(255, 255, 255);
         }
-        return new Scalar(255, 255, 255);
     }
 }

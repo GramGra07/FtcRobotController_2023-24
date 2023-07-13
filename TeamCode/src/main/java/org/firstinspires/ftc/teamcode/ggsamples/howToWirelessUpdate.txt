@@ -1,0 +1,6 @@
+Get onto HUB's wifi
+Right click, external tools HUB Connect Over Wifi Direct
+
+If it disconnects run
+adb disconnect 192.168.43.1:5555
+and then reconnect like above

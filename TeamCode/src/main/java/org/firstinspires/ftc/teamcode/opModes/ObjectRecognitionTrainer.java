@@ -47,6 +47,12 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
     public static double xDistance = 0;
     public static double yDistance = 0;
 
+    public String heightError;
+    public String widthError;
+    public String areaError;
+    public String aspectError;
+    public String xError;
+    public String yError;
 
     public double centerX;
     public double left;
@@ -80,17 +86,28 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             public void onError(int errorCode) {
             }
         });
+        telemetry.addLine("Please navigate to FTC Dashboard @ http://192.168.43.1:8080/dash");
+        telemetry.addLine("Also have the camera and configuration tab open on the Dashboard");
+        telemetry.addLine("Please open the ObjectRecognitionTrainer in the configuration tab, this is where you will edit the variables");
+        telemetry.addLine("Press enter to save any changes made on FTC Dash");
+        telemetry.addLine("Please enter the name and color of the object you are training for in FTC Dash");
+        telemetry.addLine("Note that while training, make sure that it only sees the object you want it to");
+        telemetry.addLine("Start the OpMode");
+        telemetry.update();
         waitForStart();
+        telemetry.clearAll();
         if (opModeIsActive()) {
-            telemetry.addData("Please enter the name and color of the object you are training for in FTC Dash", "press square when complete");
-            telemetry.update();
-            while (!gamepad1.square) {
-                if (isStopRequested()) {
-                    return;
+            if (color == "" || name == "") {
+                telemetry.addData("Please enter the name and color of the object you are training for in FTC Dash", "stop the opmode and restart");
+                telemetry.update();
+                while (!gamepad1.square) {
+                    if (isStopRequested()) {
+                        return;
+                    }
                 }
             }
             telemetry.clearAll();
-            telemetry.addData("Please move the object you are training for into the frame", "press circle to capture");
+            telemetry.addData("Please move the object you are training for into the frame", "press circle on gamepad to capture");
             telemetry.update();
             while (!gamepad1.circle) {
                 if (isStopRequested()) {
@@ -99,7 +116,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             }
             aspectRatio = width / height;
             telemetry.clearAll();
-            telemetry.addData("Now place the object as far back as you want it to read", "press square to capture");
+            telemetry.addData("Now place the object as far back as you want it to read", "press square on gamepad to capture");
             telemetry.update();
             while (!gamepad1.square) {
                 if (isStopRequested()) {
@@ -109,7 +126,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             minWidth = width;
             minHeight = height;
             telemetry.clearAll();
-            telemetry.addData("Now place the object as close as you want it to read", "press triangle to capture");
+            telemetry.addData("Now place the object as close as you want it to read", "press triangle on gamepad to capture");
             telemetry.update();
             while (!gamepad1.triangle) {
                 if (isStopRequested()) {
@@ -119,7 +136,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             maxWidth = width;
             maxHeight = height;
             telemetry.clearAll();
-            telemetry.addData("Please move robot back to starting position", "press square when complete");
+            telemetry.addData("Please move object back to starting position", "press square on gamepad when complete");
             telemetry.update();
             while (!gamepad1.square) {
                 if (isStopRequested()) {
@@ -127,26 +144,40 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
                 }
             }
             telemetry.clearAll();
-            webcam.stopStreaming();
             // translations
-            telemetry.addData("Once done with below, press circle to complete", "");
             telemetry.addData("Please measure the distance from the center of the camera to the center of the object and input it in FTC Dash under xDistance", "");
-            telemetry.addData("Please measure the distance from the camera to the object and input it in FTC Dash under yDistance", "");
+            telemetry.addData("Please measure the distance from the camera to the front of the object and input it in FTC Dash under yDistance", "");
+            telemetry.addLine("Press circle on gamepad to complete");
             telemetry.update();
             while (!gamepad1.circle) {
                 if (isStopRequested()) {
                     return;
                 }
             }
+            if (botDist == 0) {
+                telemetry.addData("Object too close, please move robot back", "press triangle on gamepad when done");
+                telemetry.update();
+                while (!gamepad1.triangle) {
+                    if (isStopRequested()) {
+                        return;
+                    }
+                }
+            }
             telemetry.clearAll();
-            translationX = xDist / xDistance;
-            translationY = botDist / yDistance;
+            webcam.stopStreaming();
+            translationX = Math.abs(xDistance / xDist);
+            translationY = yDistance / botDist;
             String fullName = color + name;
+            String caseName = "\"" + fullName + "\"";
             telemetry.addLine("Building file, you will create a new java file with the name: " + fullName + "ObjVars.java");
             telemetry.update();
-            sleep(3000);
+            sleep(1500);
+            telemetry.addLine("Now running check on variables created");
+            telemetry.update();
+            sleep(1500);
+            checkVars();
             buildFile();
-            telemetry.addData("File built, please copy and paste the file into your project", "press square when done");
+            telemetry.addData("File built, please copy and paste the file into your project", "press square on gamepad when done");
             telemetry.update();
             while (!gamepad1.square) {
                 if (isStopRequested()) {
@@ -154,12 +185,13 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
                 }
             }
             telemetry.clearAll();
-            telemetry.addLine("To finish setup you will add the followint to the Object Recognition Pipeline");
+
+            telemetry.addLine("To finish setup you will add the following to the Object Recognition Pipeline");
             telemetry.addLine("In the constructor add the following lines: ");
-            telemetry.addLine("case (" + fullName + "):");
+            telemetry.addLine("case " + caseName + ":");
             telemetry.addLine("aspectRatio = " + fullName + "ObjVars.aspectRatio;");
             telemetry.addLine("break;");
-            telemetry.addData("Once done", "press circle to continue");
+            telemetry.addLine("Press circle on gamepad to continue");
             telemetry.update();
             while (!gamepad1.circle) {
                 if (isStopRequested()) {
@@ -168,7 +200,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             }
             telemetry.clearAll();
             telemetry.addLine("Add the following lines under process frame and the switch statement");
-            telemetry.addLine("case (" + fullName + "):");
+            telemetry.addLine("case " + caseName + ":");
             telemetry.addLine("tolerance = " + fullName + "ObjVars.tolerance;");
             telemetry.addLine("minWidth = " + fullName + "ObjVars.minWidth;");
             telemetry.addLine("minHeight = " + fullName + "ObjVars.minHeight;");
@@ -177,7 +209,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             telemetry.addLine("maxHeight = " + fullName + "ObjVars.maxHeight;");
             telemetry.addLine("maxArea = " + fullName + "ObjVars.maxArea;");
             telemetry.addLine("break;");
-            telemetry.addData("Once done", "press square to continue");
+            telemetry.addLine("Press square on gamepad to continue");
             telemetry.update();
             while (!gamepad1.square) {
                 if (isStopRequested()) {
@@ -186,7 +218,7 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             }
             telemetry.clearAll();
             telemetry.addLine("Add the following lines under get recognitions (in a comment) and the switch statement");
-            telemetry.addLine("case (" + fullName + "):");
+            telemetry.addLine("case " + caseName + ":");
             telemetry.addLine("xTranslation = xDist * " + fullName + "ObjVars.translationX;");
             telemetry.addLine("yTranslation = botDist * " + fullName + "ObjVars.translationY;");
             telemetry.addLine("break;");
@@ -205,7 +237,22 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         }
     }
 
-    public void additions() {
+    public void checkVars() {
+        Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
+        telemetry.addLine("Possible errors:");
+        if (minHeight > maxHeight) heightError = "// possible height error minHeight>maxHeight";
+        if (minWidth > maxWidth) widthError = "// possible width error minWidth>maxWidth";
+        if ((minWidth * minHeight) > (maxWidth * maxHeight))
+            areaError = "// possible area error minArea>maxArea";
+        if (minHeight < 0) heightError = "// possible height error minHeight<0";
+        if (minWidth < 0) widthError = "// possible width error minWidth<0";
+        if ((minWidth * minHeight) < 0) areaError = "// possible area error minArea<0";
+        if (aspectRatio + tolerance > maxWidth / maxHeight || maxWidth / maxHeight < aspectRatio - tolerance)
+            aspectError = "// possible aspect ratio error, max's not in aspect";
+        if (aspectRatio + tolerance > minWidth / minHeight || minWidth / minHeight < aspectRatio - tolerance)
+            aspectError = "// possible aspect ratio error, min's not in aspect";
+        if (translationX > 100) xError = "// possible translation error, xTranslation>100";
+        if (translationY > 100) yError = "// possible translation error, yTranslation>100";
     }
 
     public void buildFile() {
@@ -216,16 +263,16 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
         telemetry.addLine("import com.acmerobotics.dashboard.config.Config;");
         telemetry.addLine("@Config");
         telemetry.addLine("public class " + color + name + "ObjVars {");
-        telemetry.addLine("public static double aspectRatio = " + aspectRatio + ";");
-        telemetry.addLine("public static double minWidth = " + minWidth + ";");
-        telemetry.addLine("public static double minHeight = " + minHeight + ";");
+        telemetry.addLine("public static double aspectRatio = " + aspectRatio + ";" + aspectError);
+        telemetry.addLine("public static double minWidth = " + minWidth + ";" + widthError);
+        telemetry.addLine("public static double minHeight = " + minHeight + ";" + heightError);
         telemetry.addLine("public static double maxWidth = " + maxWidth + ";");
         telemetry.addLine("public static double maxHeight = " + maxHeight + ";");
-        telemetry.addLine("public static double minArea = minWidth * minHeight;");
+        telemetry.addLine("public static double minArea = minWidth * minHeight;" + areaError);
         telemetry.addLine("public static double maxArea = maxWidth * maxHeight;");
         telemetry.addLine("public static double tolerance = " + tolerance + "; // this is the value that will determine how far off the aspect ratio can be to still detect it, you will need to tune it more");
-        telemetry.addLine("public static double translationX = " + translationX + ";");
-        telemetry.addLine("public static double translationY = " + translationY + ";");
+        telemetry.addLine("public static double translationX = " + translationX + ";" + xError);
+        telemetry.addLine("public static double translationY = " + translationY + ";" + yError);
         telemetry.addLine("}");
         telemetry.addLine("Copy this code into the new file you created and set the package name");
         telemetry.update();
@@ -276,29 +323,56 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
             }
             int highIndex = 0;
             for (int i = 0; i < contours.size(); i++) {
-                Scalar c = scalarVals("red");
+                Scalar c = scalarVals(color);
                 Imgproc.drawContours(input, contoursPolyList, i, c);
                 Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 2);
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
                     highIndex = i;
             }
+            int lIndex = 0;
+            int rIndex = 0;
+            int tIndex = 0;
+            int bIndex = 0;
             if (boundRect.length > 0) {
-                left = boundRect[highIndex].tl().x;
-                right = boundRect[highIndex].br().x;
-                top = boundRect[highIndex].tl().y;
-                bottom = boundRect[highIndex].br().y;
-                centerX = (int) (left + ((right - left) / 2));
-                Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
+                // find furthest left
+                for (int i = 0; i < boundRect.length; i++) {
+                    if (boundRect[i].tl().x <= boundRect[lIndex].tl().x) {
+                        lIndex = i;
+                    }
+                    if (boundRect[i].br().x >= boundRect[rIndex].br().x) {
+                        rIndex = i;
+                    }
+                    if (boundRect[i].tl().y <= boundRect[tIndex].tl().y) {
+                        tIndex = i;
+                    }
+                    if (boundRect[i].br().y >= boundRect[bIndex].br().y) {
+                        bIndex = i;
+                    }
+                }
             }
+            if (boundRect.length > 0) {
+                left = boundRect[lIndex].tl().x;
+                right = boundRect[rIndex].br().x;
+                top = boundRect[tIndex].tl().y;
+                bottom = boundRect[bIndex].br().y;
+                centerX = (int) (left + ((right - left) / 2));
+                //Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
+            }
+            middle = input.width() / 2;
+            Imgproc.line(input, new Point(middle, 0), new Point(middle, input.height()), scalarVals("yellow"), 1);
             height = Math.abs(top - bottom);
             width = Math.abs(right - left);
             centerX = (left + right) / 2;
             centerY = (top + bottom) / 2;
             aspectRatio = width / height;
-            botDist = Math.abs(input.height() - centerY);
-            middle = input.width() / 2;
+            botDist = Math.abs(input.height() - bottom);
             xDist = Math.abs(middle - centerX);
             if (centerX <= middle) xDist = -xDist;
+
+            Imgproc.line(input, new Point(centerX, top), new Point(centerX, 0), scalarVals(color), 1);
+            Imgproc.line(input, new Point(centerX, bottom), new Point(centerX, input.height()), scalarVals(color), 1);
+            Imgproc.putText(input, String.valueOf(Math.abs(xDist)), new Point((centerX + middle) / 2, 15), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
+            Imgproc.putText(input, String.valueOf(botDist), new Point(centerX + 2, (bottom + input.height()) / 2), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
             return input;
         }
     }

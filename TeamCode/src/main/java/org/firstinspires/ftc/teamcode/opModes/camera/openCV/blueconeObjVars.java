@@ -3,15 +3,15 @@ package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 import com.acmerobotics.dashboard.config.Config;
 
 @Config
-public class redconeObjVars {
-    public static double aspectRatio = 0.7872340425531915;
-    public static double minWidth = 43.0;
-    public static double minHeight = 58.0;
-    public static double maxWidth = 108.0;
-    public static double maxHeight = 145.0;
+public class blueconeObjVars {
+    public static double aspectRatio = 0.7333333333333333;
+    public static double minWidth = 53.0;
+    public static double minHeight = 74.0;
+    public static double maxWidth = 228.0;
+    public static double maxHeight = 240.0;
     public static double minArea = minWidth * minHeight;
     public static double maxArea = maxWidth * maxHeight;
     public static double tolerance = 0.2; // this is the value that will determine how far off the aspect ratio can be to still detect it, you will need to tune it more
-    public static double translationX = 0.05357142857142857;
-    public static double translationY = 0.5;
+    public static double translationX = -1.7142857142857142;
+    public static double translationY = 8.033898305084746;
 }

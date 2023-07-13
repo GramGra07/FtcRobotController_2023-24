@@ -259,6 +259,11 @@ public class OpenCVpipelines {
         double maxWidth;
         double maxHeight;
         double maxArea;
+        double left;
+        double right;
+        double top;
+        double bottom;
+        int centerX;
 
         public RecognizeObject(String color, String obj) { // both uncaps
             this.color = color;
@@ -268,6 +273,9 @@ public class OpenCVpipelines {
             switch (name) {
                 case "redcone":
                     aspectRatio = redconeObjVars.aspectRatio;
+                    break;
+                case "bluecone":
+                    aspectRatio = blueconeObjVars.aspectRatio;
                     break;
                 default:
                     aspectRatio = 0;
@@ -320,30 +328,45 @@ public class OpenCVpipelines {
             }
             int highIndex = 0;
             for (int i = 0; i < contours.size(); i++) {
-                Scalar c = scalarVals("red");
+                Scalar c = scalarVals(color);
                 Imgproc.drawContours(input, contoursPolyList, i, c);
                 Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 2);
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
                     highIndex = i;
             }
+            int lIndex = 0;
+            int rIndex = 0;
+            int tIndex = 0;
+            int bIndex = 0;
             if (boundRect.length > 0) {
-                double left = boundRect[highIndex].tl().x;
-                double right = boundRect[highIndex].br().x;
-                double top = boundRect[highIndex].tl().y;
-                double bottom = boundRect[highIndex].br().y;
-                pipelineTester.left = left;
-                pipelineTester.right = right;
-                pipelineTester.top = top;
-                pipelineTester.bottom = bottom;
-                int centerX = (int) (left + ((right - left) / 2));
-                Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
+                // find furthest left
+                for (int i = 0; i < boundRect.length; i++) {
+                    if (boundRect[i].area() > 50) {
+                        if (boundRect[i].tl().x <= boundRect[lIndex].tl().x) {
+                            lIndex = i;
+                        }
+                        if (boundRect[i].br().x >= boundRect[rIndex].br().x) {
+                            rIndex = i;
+                        }
+                        if (boundRect[i].tl().y <= boundRect[tIndex].tl().y) {
+                            tIndex = i;
+                        }
+                        if (boundRect[i].br().y >= boundRect[bIndex].br().y) {
+                            bIndex = i;
+                        }
+                    }
+                }
             }
-            double height = Math.abs(pipelineTester.top - pipelineTester.bottom);
-            double width = Math.abs(pipelineTester.right - pipelineTester.left);
-            double left = pipelineTester.left;
-            double right = pipelineTester.right;
-            double top = pipelineTester.top;
-            double bottom = pipelineTester.bottom;
+            if (boundRect.length > 0) {
+                left = boundRect[lIndex].tl().x;
+                right = boundRect[rIndex].br().x;
+                top = boundRect[tIndex].tl().y;
+                bottom = boundRect[bIndex].br().y;
+                centerX = (int) (left + ((right - left) / 2));
+                //Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
+            }
+            double height = Math.abs(top - bottom);
+            double width = Math.abs(right - left);
             double centerX = (left + right) / 2;
             double centerY = (top + bottom) / 2;
             double newAspectRatio = width / height;
@@ -357,6 +380,15 @@ public class OpenCVpipelines {
                     maxWidth = redconeObjVars.maxWidth;
                     maxHeight = redconeObjVars.maxHeight;
                     maxArea = redconeObjVars.maxArea;
+                    break;
+                case "bluecone":
+                    tolerance = blueconeObjVars.tolerance;
+                    minWidth = blueconeObjVars.minWidth;
+                    minHeight = blueconeObjVars.minHeight;
+                    minArea = blueconeObjVars.minArea;
+                    maxWidth = blueconeObjVars.maxWidth;
+                    maxHeight = blueconeObjVars.maxHeight;
+                    maxArea = blueconeObjVars.maxArea;
                     break;
                 default:
                     tolerance = 0.1;
@@ -380,10 +412,9 @@ public class OpenCVpipelines {
             if ((minWidth <= width && minHeight <= height) && (maxWidth >= width && maxHeight >= height) && (minArea <= width * height && width * height <= maxArea)) {
                 if (aspectRatio + tolerance > newAspectRatio && aspectRatio - tolerance < newAspectRatio) {
                     //should be a cone
-                    Imgproc.rectangle(input, new Point(0, 0), new Point(input.width(), input.height()), scalarVals("green"), 2);
                     Imgproc.circle(input, new Point(centerX, centerY), 5, scalarVals("green"), 2);
-
-                    double botDist = Math.abs(input.height() - centerY);
+                    Imgproc.rectangle(input, new Point(left, top), new Point(right, bottom), scalarVals("green"), 2);
+                    double botDist = Math.abs(input.height() - bottom);
                     int middle = input.width() / 2;
                     double xDist = Math.abs(middle - centerX);
                     if (centerX <= middle) xDist = -xDist;
@@ -393,13 +424,21 @@ public class OpenCVpipelines {
                             xTranslation = xDist * redconeObjVars.translationX;
                             yTranslation = botDist * redconeObjVars.translationY;
                             break;
+                        case "bluecone":
+                            xTranslation = xDist * blueconeObjVars.translationX;
+                            yTranslation = botDist * blueconeObjVars.translationY;
+                            break;
                         default:
                             xTranslation = 0;
                             yTranslation = 0;
                             break;
                     }
+                    Imgproc.line(input, new Point(middle, 0), new Point(middle, input.height()), scalarVals("yellow"), 1);
+                    Imgproc.line(input, new Point(0, input.height() / 2), new Point(input.width(), input.height() / 2), scalarVals("yellow"), 1);
                 }
             }
+            Imgproc.line(input, new Point(input.width() / 2, 0), new Point(input.width() / 2, input.height()), scalarVals("yellow"), 1);
+            Imgproc.line(input, new Point(0, input.height() / 2), new Point(input.width(), input.height() / 2), scalarVals("yellow"), 1);
             telemetry.addData("x", xTranslation);
             telemetry.addData("y", yTranslation);
             telemetry.update();
