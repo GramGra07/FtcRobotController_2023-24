@@ -36,14 +36,14 @@ public class ObjectRecognitionTrainer extends LinearOpMode {
 
     public static String name = "";
     public static String color = "";
-    public static double aspectRatio;
-    public static double minWidth;
-    public static double minHeight;
-    public static double maxWidth;
-    public static double maxHeight;
+    public double aspectRatio;
+    public double minWidth;
+    public double minHeight;
+    public double maxWidth;
+    public double maxHeight;
     public static double tolerance = 0.2;
-    public static double translationX;
-    public static double translationY;
+    public double translationX;
+    public double translationY;
     public static double xDistance = 0;
     public static double yDistance = 0;
 

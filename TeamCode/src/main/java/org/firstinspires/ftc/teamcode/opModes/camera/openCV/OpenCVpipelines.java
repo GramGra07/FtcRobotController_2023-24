@@ -245,6 +245,7 @@ public class OpenCVpipelines {
     }
 
     public static class RecognizeObject extends OpenCvPipeline {
+        double minRectArea = 100;
         String color;
         String obj;
         String name;
@@ -334,12 +335,6 @@ public class OpenCVpipelines {
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
                     highIndex = i;
             }
-            // delete all rectangles that are too small
-            for (int i = 0; i < boundRect.length; i++) {
-                if (boundRect[i].area() < 50) {
-                    boundRect[i] = new Rect();
-                }
-            }
             int lIndex = 0;
             int rIndex = 0;
             int tIndex = 0;
@@ -347,7 +342,7 @@ public class OpenCVpipelines {
             if (boundRect.length > 0) {
                 // find furthest left
                 for (int i = 0; i < boundRect.length; i++) {
-                    if (boundRect[i].area() > 50) {
+                    if (boundRect[i].area() > minRectArea) {
                         if (boundRect[i].tl().x <= boundRect[lIndex].tl().x) {
                             lIndex = i;
                         }
