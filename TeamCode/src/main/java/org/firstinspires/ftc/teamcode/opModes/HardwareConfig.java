@@ -200,7 +200,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
 
-    public final String currentVersion = "3.0.0";
+    public final String currentVersion = "3.0.1";
 
     //init
     public void init(HardwareMap ahwMap) {
@@ -268,7 +268,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         bindDriverButtons();
         bindOtherButtons();
         switchProfile();
-        switches();//anything that will switch on button press
         drive(fieldCentric);
         power();//sets power to power variables
         buildTelemetry();//makes telemetry
@@ -433,15 +432,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft.setPower(backLeftPower);
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
-    }
-
-    public void switches() {
-        //switches
-        if (slowModeIsOn) {
-            slowPower = slowMult;
-        } else {
-            slowPower = 1;
-        }
     }
 
     public void buildTelemetry() {

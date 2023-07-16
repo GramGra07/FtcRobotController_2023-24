@@ -1,14 +1,19 @@
+3.0.1 July 16th,2023
+Added a Math Functions class that contains easy to use functions including math
+
 3.0.0 July 11th,2023
 FTC has officially updated to 8.2.0 code is all updated to work with this version
 
 2.5.1 July 10th,2023
 Added a new class called varConfig that contains all changeable variables for the robot
-These can be changed easily using the FTC Dashboard and won't be saved until enter is pressed, then it will change the variables live, then the variables need to be changed in the actual code
-Started on Object Recognition using OpenCV with ConeObjVars class containing all variables for the cone object, can also be changed with FTC Dashboard
+These can be changed easily using the FTC Dashboard and won't be saved until enter is pressed, then
+it will change the variables live, then the variables need to be changed in the actual code
+Started on Object Recognition using OpenCV with ConeObjVars class containing all variables for the
+cone object, can also be changed with FTC Dashboard
 
 2.5.0 July 1st,2023
 Added data logging for paths
-Commands are in HardwareConfig (write to file), once connected to robot, 
+Commands are in HardwareConfig (write to file), once connected to robot,
 run the two commands and paste the data into file.txt, then run the python script
 Python script will take the file data and make a graph and show it
 Instructions are also all in the HardwareConfig file under writeToFile()
@@ -30,7 +35,8 @@ New pipelines.txt file illustrating all of the pipelines available
 1.2.0 June 13th,2023
 Added a new OpenCV Pipeline class that contains all the used pipelines
 Added the pipelineTester.java program to test the pipelines
-Added edge detection, color detection, and these combined as well as one with bounding boxes to create
+Added edge detection, color detection, and these combined as well as one with bounding boxes to
+create
 Color detection has four detectable colors: red, blue, yellow, and green
 
 1.1.0 June 12th,2023

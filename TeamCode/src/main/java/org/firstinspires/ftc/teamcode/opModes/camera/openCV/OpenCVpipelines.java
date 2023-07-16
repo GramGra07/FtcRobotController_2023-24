@@ -334,6 +334,12 @@ public class OpenCVpipelines {
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
                     highIndex = i;
             }
+            // delete all rectangles that are too small
+            for (int i = 0; i < boundRect.length; i++) {
+                if (boundRect[i].area() < 50) {
+                    boundRect[i] = new Rect();
+                }
+            }
             int lIndex = 0;
             int rIndex = 0;
             int tIndex = 0;
@@ -410,7 +416,7 @@ public class OpenCVpipelines {
             telemetry.addData("Center Y", centerY);
             // get recognitions
             if ((minWidth <= width && minHeight <= height) && (maxWidth >= width && maxHeight >= height) && (minArea <= width * height && width * height <= maxArea)) {
-                if (aspectRatio + tolerance > newAspectRatio && aspectRatio - tolerance < newAspectRatio) {
+                if (aspectRatio + tolerance >= newAspectRatio && aspectRatio - tolerance <= newAspectRatio) {
                     //should be a cone
                     Imgproc.circle(input, new Point(centerX, centerY), 5, scalarVals("green"), 2);
                     Imgproc.rectangle(input, new Point(left, top), new Point(right, bottom), scalarVals("green"), 2);
