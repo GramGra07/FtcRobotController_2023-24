@@ -5,3 +5,4 @@ ColorEdgeDetection
 ColorEdgeDetectionBounded
 WhiteDotDetection
 BlackDotDetection
+RecognizeObject

@@ -8,6 +8,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -245,7 +246,6 @@ public class OpenCVpipelines {
     }
 
     public static class RecognizeObject extends OpenCvPipeline {
-        double minRectArea = 100;
         String color;
         String obj;
         String name;
@@ -331,10 +331,13 @@ public class OpenCVpipelines {
             for (int i = 0; i < contours.size(); i++) {
                 Scalar c = scalarVals(color);
                 Imgproc.drawContours(input, contoursPolyList, i, c);
-                Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 2);
+                if (boundRect[i].area()>varConfig.minRectArea) {
+                    Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 2);
+                }
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
                     highIndex = i;
             }
+
             int lIndex = 0;
             int rIndex = 0;
             int tIndex = 0;
@@ -342,7 +345,7 @@ public class OpenCVpipelines {
             if (boundRect.length > 0) {
                 // find furthest left
                 for (int i = 0; i < boundRect.length; i++) {
-                    if (boundRect[i].area() > minRectArea) {
+                    if (boundRect[i].area() > varConfig.minRectArea) {
                         if (boundRect[i].tl().x <= boundRect[lIndex].tl().x) {
                             lIndex = i;
                         }
@@ -409,11 +412,12 @@ public class OpenCVpipelines {
             telemetry.addData("Height", height);
             telemetry.addData("Center X", centerX);
             telemetry.addData("Center Y", centerY);
-            // get recognitions
+            // get recognitions translation
             if ((minWidth <= width && minHeight <= height) && (maxWidth >= width && maxHeight >= height) && (minArea <= width * height && width * height <= maxArea)) {
                 if (aspectRatio + tolerance >= newAspectRatio && aspectRatio - tolerance <= newAspectRatio) {
                     //should be a cone
-                    Imgproc.circle(input, new Point(centerX, centerY), 5, scalarVals("green"), 2);
+                    Imgproc.line(input,new Point(centerX-10,centerY), new Point(centerX+10,centerY),scalarVals("green"));
+                    Imgproc.line(input,new Point(centerX,centerY-10), new Point(centerX,centerY+10),scalarVals("green"));
                     Imgproc.rectangle(input, new Point(left, top), new Point(right, bottom), scalarVals("green"), 2);
                     double botDist = Math.abs(input.height() - bottom);
                     int middle = input.width() / 2;

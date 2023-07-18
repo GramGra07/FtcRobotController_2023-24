@@ -132,6 +132,5 @@ public class AprilTag extends LinearOpMode {
         telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
         telemetry.addLine("RBE = Range, Bearing & Elevation");
         telemetry.update();
-
     }
 }
