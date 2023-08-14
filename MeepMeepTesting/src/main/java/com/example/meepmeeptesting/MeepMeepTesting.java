@@ -36,7 +36,7 @@ public class MeepMeepTesting {
                 );
 
         // to speed up ,SampleMecanumDrive.getVelocityConstraint(90, 90, 13.24),SampleMecanumDrive.getAccelerationConstraint(90)
-        meepMeep.setBackground(MeepMeep.Background.FIELD_POWERPLAY_OFFICIAL)
+        meepMeep.setBackground(MeepMeep.Background.GRID_GRAY)
                 .setDarkMode(true)
                 .setAxesInterval(20)
                 .setBackgroundAlpha(0.95f)
