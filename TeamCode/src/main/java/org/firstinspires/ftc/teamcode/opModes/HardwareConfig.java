@@ -387,8 +387,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         if (currDriver == driverControls[0]) {//Chase
             fieldCentric = false;
             //slowmode
-            if (myOpMode.gamepad1.dpad_down && !dDownHigh) {
-                slowModeIsOn = !slowModeIsOn;
+            if (myOpMode.gamepad1.dpad_down && !dDownHigh && !slowModeIsOn) {
+                slowModeIsOn = true;
+            }else if (myOpMode.gamepad1.dpad_down && !dDownHigh && slowModeIsOn){
+                slowModeIsOn = false;
             }
             dDownHigh = myOpMode.gamepad1.dpad_down;
         }
@@ -399,8 +401,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         if (currDriver == driverControls[2]) {//Graden
             fieldCentric = true;
             //slowmode
-            if (myOpMode.gamepad1.dpad_down && !dDownHigh) {
-                slowModeIsOn = !slowModeIsOn;
+            if (myOpMode.gamepad1.dpad_down && !dDownHigh && !slowModeIsOn) {
+                slowModeIsOn = true;
+            }else if (myOpMode.gamepad1.dpad_down && !dDownHigh && slowModeIsOn){
+                slowModeIsOn = false;
             }
             dDownHigh = myOpMode.gamepad1.dpad_down;
 
