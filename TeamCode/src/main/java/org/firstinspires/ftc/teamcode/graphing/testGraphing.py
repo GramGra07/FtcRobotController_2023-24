@@ -53,7 +53,7 @@ def graph(r_file, title):
             plt.plot(int(x), int(y), 'o', color="black", markersize=1)
     r_file.close()
     if title == "":
-        saveFile = "graph.png"
+        saveFile = "saved/graph.png"
     else:
         saveFile = "saved/"+title + ".png"
     plt.savefig(saveFile)

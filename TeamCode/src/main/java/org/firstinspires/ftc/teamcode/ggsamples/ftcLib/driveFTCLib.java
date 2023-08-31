@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.ftcLib;
+package org.firstinspires.ftc.teamcode.ggsamples.ftcLib;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;

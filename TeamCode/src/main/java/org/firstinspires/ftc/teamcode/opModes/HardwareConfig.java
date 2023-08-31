@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
+    boolean reverse = false;
     //my personal key
     public static final String VUFORIA_KEY =
             "AXmzBcj/////AAABme5HSJ/H3Ucup73WSIaV87tx/sFHYaWfor9OZVg6afr2Bw7kNolHd+mF5Ps91SlQpgBHulieI0jcd86kqJSwx46BZ8v8DS5S5x//eQWMEGjMDnvco4/oTcDwuSOLIVZG2UtLmJXPS1L3CipjabePFlqAL2JtBlN78p6ZZbRFSHW680hWEMSimZuQy/cMudD7J/MjMjMs7b925b8BkijlnTQYr7CbSlXrpDh5K+9fLlk2OyEZ4w7tm7e4UJDInJ/T3oi8PqqKCqkUaTkJWlQsvoELbDu5L2FgzsuDhBLe2rHtJRqfORd7n+6M30UdFSsxqq5TaZztkWgzRUr1GC3yBSTS6iFqEuL3g06GrfwOJF0F";
@@ -312,7 +313,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             frontLeftPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) - turn) / slowPower;
             backLeftPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) - turn) / slowPower;
         } else {
-            boolean reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
+            reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
             reversed = reverse;
             yControl = -myOpMode.gamepad1.left_stick_y;
             xControl = myOpMode.gamepad1.left_stick_x;
