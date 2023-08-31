@@ -22,6 +22,7 @@ public class DriveConstants {
     /*
      * These are motor constants that should be listed online for your motors.
      */
+    // hd hex motor 28,400
     public static final double TICKS_PER_REV = 28;
     public static final double MAX_RPM = 400;
 
@@ -47,12 +48,7 @@ public class DriveConstants {
      * angular distances although most angular parameters are wrapped in Math.toRadians() for
      * convenience. Make sure to exclude any gear ratio included in MOTOR_CONFIG from GEAR_RATIO.
      */
-    //!Jason's robot
-    //public static double WHEEL_RADIUS = 1.5; // in
-    //public static double GEAR_RATIO = 20.0; // output (wheel) speed / input (motor) speed
-    //public static double TRACK_WIDTH = 11.625; // in
 
-    //!Graden's robot
     public static double WHEEL_RADIUS = 1.88; // in (96mm)
     public static double GEAR_RATIO = 1/15.0; // output (wheel) speed / input (motor) speed
     public static double TRACK_WIDTH = 13.24; // in
