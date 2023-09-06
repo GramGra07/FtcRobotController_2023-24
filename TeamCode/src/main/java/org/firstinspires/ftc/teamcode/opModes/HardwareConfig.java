@@ -66,6 +66,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     //motors
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null;
+    //encoders
+    public static DcMotor enc1 = null;
 
     //lights
     public static RevBlinkinLedDriver lights;
@@ -242,6 +244,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
+        //encoders
+        enc1 = ahwMap.get(DcMotor.class, "enc1");
+        enc1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        enc1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //reversals
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         //set all to brake when set 0 power
