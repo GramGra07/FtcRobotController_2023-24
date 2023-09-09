@@ -1,4 +1,4 @@
-Only a template, dont edit this file, copy it and make a new file
+Only a template, don't edit this file, copy it and make a new file
 Format: # - type : name
 
 Control Hub

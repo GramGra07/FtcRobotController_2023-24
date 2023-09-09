@@ -1,3 +1,6 @@
+4.0.0 September 9th, 2023
+Updated to FTC 9.0 and start of season
+
 3.0.1 July 16th,2023
 Added a Math Functions class that contains easy to use functions including math
 

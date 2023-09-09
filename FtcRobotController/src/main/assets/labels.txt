@@ -1,2 +1,0 @@
-0 servo
-1 not
