@@ -1,0 +1,1 @@
+Amt 103 Encoders have 5 ports, 4 of which are shared with regular motor encoders. A,B,G,5V

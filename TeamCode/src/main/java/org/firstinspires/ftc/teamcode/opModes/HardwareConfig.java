@@ -164,6 +164,17 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public SampleMecanumDrive drive = null;
     public static double thisDist = 0;
 
+    //temp vars
+    public final int leftR = 4;
+    public final int midR = 5;
+    public final int rightR = 6;
+    public final int leftB = 7;
+    public final int midB=8;
+    public final int rightB=9;
+    public final int aprilTagB = 10;
+    public final int aprilTagR = 11;
+
+
     //file write
     public final String file = String.format("%s/FIRST/matchlogs/log.txt", Environment.getExternalStorageDirectory().getAbsolutePath());
     FileWriter fileWriter;
@@ -495,7 +506,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         return limitSwitchState;
     }
 
-    void getBatteryVoltage() {
+    void getBatteryVoltage() { //VoltageSensor sensor
         double result = Double.POSITIVE_INFINITY;
         double voltage = vSensor.getVoltage();
         if (voltage > 0) {
@@ -847,49 +858,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //        }
     //    }
     //}
-
-
-    void initTrackables(HardwareMap ahwMap) {//vuforia tags
-        webcamName = ahwMap.get(WebcamName.class, "Webcam 1");
-
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         * We can pass Vuforia the handle to a camera preview resource (on the RC screen);
-         * If no camera-preview is desired, use the parameter-less constructor instead (commented out below).
-         * Note: A preview window is required if you want to view the camera stream on the Driver Station Phone.
-         */
-        int cameraMonitorViewId = ahwMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", ahwMap.appContext.getPackageName());
-        VuforiaLocalizer.Parameters camParameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        camParameters.vuforiaLicenseKey = VUFORIA_KEY;
-        camParameters.cameraName = webcamName;
-        camParameters.useExtendedTracking = false;
-        vuforia = ClassFactory.getInstance().createVuforia(camParameters);
-        targets = this.vuforia.loadTrackablesFromAsset("PowerPlay");
-        allTrackables = new ArrayList<VuforiaTrackable>();
-        allTrackables.addAll(targets);
-        identifyTarget(0, "Red Audience Wall", -halfField, -oneAndHalfTile, mmTargetHeight, 90, 0, 90);
-        identifyTarget(1, "Red Rear Wall", halfField, -oneAndHalfTile, mmTargetHeight, 90, 0, -90);
-        identifyTarget(2, "Blue Audience Wall", -halfField, oneAndHalfTile, mmTargetHeight, 90, 0, 90);
-        identifyTarget(3, "Blue Rear Wall", halfField, oneAndHalfTile, mmTargetHeight, 90, 0, -90);
-
-        final float CAMERA_FORWARD_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Enter the forward distance from the center of the robot to the camera lens
-        final float CAMERA_VERTICAL_DISPLACEMENT = 6.0f * mmPerInch;   // eg: Camera is 6 Inches above ground
-        final float CAMERA_LEFT_DISPLACEMENT = 0.0f * mmPerInch;   // eg: Enter the left distance from the center of the robot to the camera lens
-        OpenGLMatrix cameraLocationOnRobot = OpenGLMatrix
-                .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XZY, DEGREES, 90, 90, 0));
-        for (VuforiaTrackable trackable : allTrackables) {
-            ((VuforiaTrackableDefaultListener) trackable.getListener()).setCameraLocationOnRobot(camParameters.cameraName, cameraLocationOnRobot);
-        }
-        targets.activate();
-    }
-
-    void identifyTarget(int targetIndex, String targetName, float dx, float dy, float dz, float rx, float ry, float rz) {
-        VuforiaTrackable aTarget = targets.get(targetIndex);
-        aTarget.setName(targetName);
-        aTarget.setLocation(OpenGLMatrix.translation(dx, dy, dz)
-                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, rx, ry, rz)));
-    }
 
     // color
     //public boolean colorInRange(float red, double targetR, float green, double targetG, float blue, double targetB, float range) {
