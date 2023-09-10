@@ -3,13 +3,8 @@ package org.firstinspires.ftc.teamcode.opModes;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import static org.firstinspires.ftc.teamcode.Drivers.*;
-import static org.firstinspires.ftc.teamcode.Sensors.currentVoltage;
-import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
-import static org.firstinspires.ftc.teamcode.Sensors.getLimitSwitch;
-import static org.firstinspires.ftc.teamcode.Sensors.getPotentVal;
-import static org.firstinspires.ftc.teamcode.Sensors.lowVoltage;
-import static org.firstinspires.ftc.teamcode.FileWriterFTC.setUpFile;
-import static org.firstinspires.ftc.teamcode.FileWriterFTC.writeToFile;
+import static org.firstinspires.ftc.teamcode.Sensors.*;
+import static org.firstinspires.ftc.teamcode.FileWriterFTC.*;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
