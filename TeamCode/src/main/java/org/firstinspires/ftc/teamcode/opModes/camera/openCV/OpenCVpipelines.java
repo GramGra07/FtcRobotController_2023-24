@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
-import static org.firstinspires.ftc.teamcode.scalarUtil.fetchScalar;
-import static org.firstinspires.ftc.teamcode.scalarUtil.scalarVals;
+import static org.firstinspires.ftc.teamcode.ScalarUtil.fetchScalar;
+import static org.firstinspires.ftc.teamcode.ScalarUtil.scalarVals;
 import static org.opencv.core.CvType.CV_8U;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+import org.firstinspires.ftc.teamcode.EOCVWebcam;
 import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -31,7 +31,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
-            HardwareConfig.pipelineName = "Edge Detection";
+            EOCVWebcam.pipelineName = "Edge Detection";
             Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
             Imgproc.Canny(gray, edges, 50, 100);
             return edges;
@@ -53,7 +53,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
-            HardwareConfig.pipelineName = "Color Detection";
+            EOCVWebcam.pipelineName = "Color Detection";
             Scalar scalarLow, scalarHigh;
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             if (!color.equals("red")) {
@@ -85,7 +85,7 @@ public class OpenCVpipelines {
         @Override
         public Mat processFrame(Mat input) {
 
-            HardwareConfig.pipelineName = "Color Edge Detection";
+            EOCVWebcam.pipelineName = "Color Edge Detection";
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
@@ -121,7 +121,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
-            HardwareConfig.pipelineName = "Color Edge Detection Bounded";
+            EOCVWebcam.pipelineName = "Color Edge Detection Bounded";
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
@@ -187,7 +187,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
-            HardwareConfig.pipelineName = "White Dot Detection";
+            EOCVWebcam.pipelineName = "White Dot Detection";
             Imgproc.medianBlur(input, blur, 5);
             Imgproc.cvtColor(blur, gray, Imgproc.COLOR_BGR2GRAY);
             Imgproc.threshold(gray, thresh, 200, 255, Imgproc.THRESH_BINARY);
@@ -201,7 +201,7 @@ public class OpenCVpipelines {
                     white_dots.add(c);
                 }
             }
-            HardwareConfig.whiteDots = white_dots.size();
+            EOCVWebcam.whiteDots = white_dots.size();
             Imgproc.putText(input, String.valueOf(white_dots.size()), new Point(input.width() / 16, input.height() / 6), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, scalarVals("green"), 2);
             return input;
         }
@@ -215,7 +215,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
-            HardwareConfig.pipelineName = "Black Dot Detection";
+            EOCVWebcam.pipelineName = "Black Dot Detection";
             Imgproc.cvtColor(input, gray, Imgproc.COLOR_BGR2GRAY);
             Imgproc.medianBlur(gray, gray, 5);
             Imgproc.HoughCircles(gray, circles, Imgproc.HOUGH_GRADIENT, 1.0,
@@ -239,7 +239,7 @@ public class OpenCVpipelines {
                     Imgproc.rectangle(input, Imgproc.boundingRect(contours.get(c)).tl(), Imgproc.boundingRect(contours.get(c)).br(), scalarVals("green"), 2);
                 }
             }
-            HardwareConfig.blackDots = contours.size();
+            EOCVWebcam.blackDots = contours.size();
             Imgproc.putText(input, String.valueOf(contours.size()), new Point(input.width() / 16, input.height() / 6), Imgproc.FONT_HERSHEY_SIMPLEX, 1.0, scalarVals("green"), 2);
             return input;
         }
@@ -295,7 +295,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
-            HardwareConfig.pipelineName = "Recognize Object";
+            EOCVWebcam.pipelineName = "Recognize Object";
             Scalar scalarLow, scalarHigh;
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
             Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
@@ -455,7 +455,7 @@ public class OpenCVpipelines {
 
         @Override
         public Mat processFrame(Mat input) {
-            HardwareConfig.pipelineName = "Sample Pipeline";
+            EOCVWebcam.pipelineName = "Sample Pipeline";
             int x = input.width() / 2;
             int y = input.height() / 2;
             //vert middle line

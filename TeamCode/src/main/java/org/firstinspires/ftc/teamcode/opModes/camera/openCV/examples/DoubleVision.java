@@ -29,13 +29,14 @@
 
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV.examples;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+import org.firstinspires.ftc.teamcode.EOCVWebcam;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -43,30 +44,30 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
-/**
- * This 2023-2024 OpMode illustrates the basics of using both AprilTag recognition and TensorFlow
+/*
+ * This OpMode illustrates the basics of using both AprilTag recognition and TensorFlow
  * Object Detection.
- * <p>
+ *
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
-@TeleOp
-//@Disabled
+@TeleOp(name = "Concept: Double Vision", group = "Concept")
+@Disabled
 public class DoubleVision extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     /**
-     * {@link #aprilTag} is the variable to store our instance of the AprilTag processor.
+     * The variable to store our instance of the AprilTag processor.
      */
     private AprilTagProcessor aprilTag;
 
     /**
-     * {@link #tfod} is the variable to store our instance of the TensorFlow Object Detection processor.
+     * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfod;
 
     /**
-     * {@link #myVisionPortal} is the variable to store our instance of the vision portal.
+     * The variable to store our instance of the vision portal.
      */
     private VisionPortal myVisionPortal;
 
@@ -76,10 +77,10 @@ public class DoubleVision extends LinearOpMode {
 
         // This OpMode loops continuously, allowing the user to switch between
         // AprilTag and TensorFlow Object Detection (TFOD) image processors.
-        while (!isStopRequested()) {
+        while (!isStopRequested())  {
 
             if (opModeInInit()) {
-                telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
+                telemetry.addData("DS preview on/off","3 dots, Camera Stream");
                 telemetry.addLine();
                 telemetry.addLine("----------------------------------------");
             }
@@ -124,7 +125,7 @@ public class DoubleVision extends LinearOpMode {
 
 
     /**
-     * Function to initialize AprilTag and TFOD.
+     * Initialize AprilTag and TFOD.
      */
     private void initDoubleVision() {
         // -----------------------------------------------------------------------------------------
@@ -147,7 +148,7 @@ public class DoubleVision extends LinearOpMode {
 
         if (USE_WEBCAM) {
             myVisionPortal = new VisionPortal.Builder()
-                    .setCamera(hardwareMap.get(WebcamName.class, HardwareConfig.cam1_N))
+                    .setCamera(hardwareMap.get(WebcamName.class, EOCVWebcam.cam1_N))
                     .addProcessors(tfod, aprilTag)
                     .build();
         } else {
@@ -159,7 +160,7 @@ public class DoubleVision extends LinearOpMode {
     }   // end initDoubleVision()
 
     /**
-     * Function to add telemetry about AprilTag detections.
+     * Add telemetry about AprilTag detections.
      */
     private void telemetryAprilTag() {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -181,7 +182,7 @@ public class DoubleVision extends LinearOpMode {
     }   // end method telemetryAprilTag()
 
     /**
-     * Function to add telemetry about TensorFlow Object Detection (TFOD) recognitions.
+     * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
     private void telemetryTfod() {
         List<Recognition> currentRecognitions = tfod.getRecognitions();
@@ -189,10 +190,10 @@ public class DoubleVision extends LinearOpMode {
 
         // Step through the list of recognitions and display info for each one.
         for (Recognition recognition : currentRecognitions) {
-            double x = (recognition.getLeft() + recognition.getRight()) / 2;
-            double y = (recognition.getTop() + recognition.getBottom()) / 2;
+            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
 
-            telemetry.addData("", " ");
+            telemetry.addData(""," ");
             telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
             telemetry.addData("- Position", "%.0f / %.0f", x, y);
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());

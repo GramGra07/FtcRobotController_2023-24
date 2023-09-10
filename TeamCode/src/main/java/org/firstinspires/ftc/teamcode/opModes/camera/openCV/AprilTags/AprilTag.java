@@ -36,6 +36,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.EOCVWebcam;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -93,12 +94,11 @@ public class AprilTag extends LinearOpMode {
                 .build();
         VisionPortal.Builder builder = new VisionPortal.Builder();
         if (USE_WEBCAM) {
-            builder.setCamera(hardwareMap.get(WebcamName.class, HardwareConfig.cam1_N));
+            builder.setCamera(hardwareMap.get(WebcamName.class, EOCVWebcam.cam1_N));
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
         builder.setCameraResolution(new android.util.Size(640, 480));
-        builder.enableCameraMonitoring(true);
 
         // Set the stream format; MJPEG uses less bandwidth than default YUY2.
         //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
