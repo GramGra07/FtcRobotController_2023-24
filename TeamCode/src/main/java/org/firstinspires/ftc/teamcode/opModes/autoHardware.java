@@ -29,6 +29,4 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         timer.reset();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
-
-
 }
