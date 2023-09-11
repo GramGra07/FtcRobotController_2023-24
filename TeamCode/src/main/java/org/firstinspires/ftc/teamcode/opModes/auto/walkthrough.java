@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
+import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
 @Autonomous
 //@Disabled
@@ -24,7 +26,24 @@ public class walkthrough extends LinearOpMode {
 
         drive.setPoseEstimate(startPose);
         //create trajectories here
-
+        TrajectorySequence navToSpikeLRed = drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .splineTo(new Vector2d(13.01, -25.47), Math.toRadians(90.00))
+                .build();
+        TrajectorySequence navToSpikeLBlue = drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .splineTo(new Vector2d(13.01, -25.47), Math.toRadians(90.00))
+                .build();
+        TrajectorySequence navToSpikeMRed = drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .splineTo(new Vector2d(13.01, -25.47), Math.toRadians(90.00))
+                .build();
+        TrajectorySequence navToSpikeMBlue = drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .splineTo(new Vector2d(13.01, -25.47), Math.toRadians(90.00))
+                .build();
+        TrajectorySequence navToSpikeRRed = drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .splineTo(new Vector2d(13.01, -25.47), Math.toRadians(90.00))
+                .build();
+        TrajectorySequence navToSpikeRBlue = drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .splineTo(new Vector2d(13.01, -25.47), Math.toRadians(90.00))
+                .build();
         robot.initAuto(hardwareMap, true);
         if(isStopRequested()) return;
         while (opModeIsActive()) {
