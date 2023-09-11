@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.*;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -13,6 +14,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @TeleOp
+@Disabled
 public class pipelineTester extends LinearOpMode {
     OpenCvWebcam webcam;
     public static int x = 0;

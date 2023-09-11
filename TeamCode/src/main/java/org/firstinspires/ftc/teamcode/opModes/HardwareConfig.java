@@ -5,6 +5,7 @@ import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import static org.firstinspires.ftc.teamcode.Drivers.*;
 import static org.firstinspires.ftc.teamcode.Sensors.*;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.*;
+import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.*;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -20,6 +21,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
@@ -27,9 +29,11 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 import java.io.FileWriter;
+import java.util.List;
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
     public static boolean useFileWriter = true;
+    public static boolean multipleDrivers = true;
     public String statusVal = "OFFLINE";
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null;
     public static DcMotor enc1 = null;
@@ -110,17 +114,20 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
         //encoders
         enc1 = ahwMap.get(DcMotor.class, "enc1");
-        enc1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        enc1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        resetEncoder(enc1);
+        runWithoutEncoder(enc1);
         //reversals
-        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+        setDirectionR(motorBackLeft);
         //set all to brake when set 0 power
-        motorBackRight.setZeroPowerBehavior(BRAKE);
-        motorBackLeft.setZeroPowerBehavior(BRAKE);
-        motorFrontRight.setZeroPowerBehavior(BRAKE);
-        motorFrontLeft.setZeroPowerBehavior(BRAKE);
+        zeroPowerBrake(motorBackRight);
+        zeroPowerBrake(motorBackLeft);
+        zeroPowerBrake(motorFrontLeft);
+        zeroPowerBrake(motorFrontRight);
         timer.reset();//resetting the runtime variable
-        //LED
+        Sensors.ledIND(green1,red1,true);
+        Sensors.ledIND(green2,red2,true);
+        Sensors.ledIND(green3,red3,true);
+        Sensors.ledIND(green4,red4,true);
         Blink.setLights(null, true);
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Color", LEDcolor);
@@ -135,9 +142,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //code to run all drive functions
     public void doBulk() {
         once();//runs once
-        bindDriverButtons(myOpMode);
-        bindOtherButtons(myOpMode);
-        switchProfile(myOpMode);
+        if (multipleDrivers) {
+            bindDriverButtons(myOpMode);
+            bindOtherButtons(myOpMode);
+            switchProfile(myOpMode);
+        }
         drive(fieldCentric);
         power();//sets power to power variables
         buildTelemetry();//makes telemetry

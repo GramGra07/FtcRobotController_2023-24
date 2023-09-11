@@ -37,7 +37,7 @@ USB -
 
 Expansion Hub
 Motor
-0 - Ultra planetary:motor
+0 - 
 1 -
 2 -
 3 -

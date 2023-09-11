@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -51,32 +52,42 @@ public class Vision {
     }
     public static void telemetryAprilTag(OpMode myOpMode) {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-
-        for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null) {
-                myOpMode.telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                myOpMode.telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
-                myOpMode.telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
-                myOpMode.telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
-            } else {
-                myOpMode.telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                myOpMode.telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+        if (currentDetections.size()>0) {
+            for (AprilTagDetection detection : currentDetections) {
+                if (detection.metadata != null) {
+                    myOpMode.telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                    myOpMode.telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                    myOpMode.telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                    myOpMode.telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+                    myOpMode.telemetry.addData("width",cameraWidth);
+                } else {
+                    myOpMode.telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                    myOpMode.telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+                }
+                myOpMode.telemetry.update();
             }
-            myOpMode.telemetry.update();
         }
     }
-    public static int searchAprilTags(int id){
+    public static void searchAprilTags(int id){
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        for (AprilTagDetection detection : currentDetections) {
-            if (detection.id == id) {
-                return detection.id;
+        if (currentDetections.size()>0) {
+            for (AprilTagDetection detection : currentDetections) {
+                if (detection.id == id) {
+                    return;
+                }
             }
         }
-        return 0;
     }
     public static double extractCenter(int id){
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        return currentDetections.get(searchAprilTags(id)).center.x;
+        if (currentDetections.size()>0) {
+            for (AprilTagDetection detection : currentDetections) {
+                if (detection.id == id) {
+                    return detection.center.x;
+                }
+            }
+        }
+        return 0;
     }
     public static void getPoseFromCenter(int id){
         double cameraThird = cameraWidth/3;
@@ -87,5 +98,6 @@ public class Vision {
         }else if (extractCenter(id) > cameraThird*2){
             autoHardware.autonomousRandom = AutoRandom.right;
         }
+
     }
 }
