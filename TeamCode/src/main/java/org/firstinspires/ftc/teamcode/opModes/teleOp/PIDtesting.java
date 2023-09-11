@@ -26,7 +26,7 @@ public class PIDtesting extends LinearOpMode {
         );
 
         // Initialize the motor
-        DcMotorEx motor = hardwareMap.get(DcMotorEx.class, "motor");
+        DcMotor motor = hardwareMap.get(DcMotor.class, "motor");
         motor.setTargetPosition(10000);
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

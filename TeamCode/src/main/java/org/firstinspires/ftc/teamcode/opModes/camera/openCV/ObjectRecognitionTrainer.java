@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
 
-import static org.firstinspires.ftc.teamcode.ScalarUtil.fetchScalar;
-import static org.firstinspires.ftc.teamcode.ScalarUtil.scalarVals;
+import static org.firstinspires.ftc.teamcode.UtilClass.ScalarUtil.fetchScalar;
+import static org.firstinspires.ftc.teamcode.UtilClass.ScalarUtil.scalarVals;
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 
 import com.acmerobotics.dashboard.FtcDashboard;

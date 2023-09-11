@@ -5,9 +5,8 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.AutoRandom;
-import org.firstinspires.ftc.teamcode.Blink;
-import org.firstinspires.ftc.teamcode.StartPose;
+import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
+import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.Vision;
 
 public class autoHardware extends HardwareConfig {//auto version of hardware config

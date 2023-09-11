@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.Range;
 
@@ -30,5 +31,12 @@ public class Sensors {
         }
         lowVoltage = result <= minimumVoltage;
         currentVoltage = result;
+    }
+    public static void ledIND(DigitalChannel green, DigitalChannel red, boolean greenOn){
+        green.setState(greenOn);
+        red.setState(!greenOn);
+    }
+    public static boolean getTouchSensor(TouchSensor touchSensor){
+        return touchSensor.isPressed();
     }
 }

@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode.opModes;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import static org.firstinspires.ftc.teamcode.Drivers.*;
 import static org.firstinspires.ftc.teamcode.Sensors.*;
-import static org.firstinspires.ftc.teamcode.FileWriterFTC.*;
+import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.*;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -15,11 +15,12 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.Blink;
+import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
@@ -29,50 +30,34 @@ import java.io.FileWriter;
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
     public static boolean useFileWriter = true;
-
-    //other variables
     public String statusVal = "OFFLINE";
-    //servo variables
-    public double position = 0;//sets servo position to 0-1 multiplier
-    public final double degree_mult = 0.00555555554;// = 100/180
-
-    //motors
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null;
-    //encoders
     public static DcMotor enc1 = null;
-
-    //lights
     public static RevBlinkinLedDriver lights;
-
-    //slow mode
     public int slowMult = varConfig.slowMult, slowPower;
     public static boolean slowModeIsOn = false, reversed;
-    //driving
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
-    //field centric
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
-
-
     boolean reverse = false;
-    //maintenance mode
     public int delay = varConfig.delay;
     public boolean isSolid = false;
     public static String LEDcolor;
     public static DigitalChannel green1;
     public static DigitalChannel green2;
     public static DigitalChannel green3;
-    public DigitalChannel green4;
+    public static DigitalChannel green4;
     public static DigitalChannel red1;
     public static DigitalChannel red2;
     public static DigitalChannel red3;
-    public DigitalChannel red4;
-    //rev potentiometer
+    public static DigitalChannel red4;
     public AnalogInput potentiometer;
-
-    // rev magnetic limit switch
     public DigitalChannel limitSwitch;
-
-    //external
+    public VoltageSensor vSensor;
+//    public TouchSensor touchSensor;
+    public SampleMecanumDrive drive = null;
+    public static double thisDist = 0;
+    public static final ElapsedTime timer = new ElapsedTime();
+    FileWriter fileWriter;
     HardwareMap hardwareMap = null;
 
     private static LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
@@ -80,20 +65,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public HardwareConfig(LinearOpMode opmode) {
         myOpMode = opmode;
     }
-
-    //voltage
-
-    public VoltageSensor vSensor;
-    //rr
-    public SampleMecanumDrive drive = null;
-    public static double thisDist = 0;
-
-    public static final ElapsedTime timer = new ElapsedTime();
-
-
-    //file write
-    FileWriter fileWriter;
-    //
 
     public boolean once = false;
     public final String currentVersion = "4.0.0";
@@ -115,7 +86,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         potentiometer = ahwMap.get(AnalogInput.class, "potent");
         //magnetic limit switch //digital is pressed
         limitSwitch = ahwMap.get(DigitalChannel.class, "limitSwitch");
-        //
+//        touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
         green1 = ahwMap.get(DigitalChannel.class, "green1");
         green2 = ahwMap.get(DigitalChannel.class, "green2");
         green3 = ahwMap.get(DigitalChannel.class, "green3");
@@ -124,6 +95,14 @@ public class HardwareConfig {//this is an external opMode that can have public v
         red2 = ahwMap.get(DigitalChannel.class, "red2");
         red3 = ahwMap.get(DigitalChannel.class, "red3");
         red4 = ahwMap.get(DigitalChannel.class, "red4");
+        green1.setMode(DigitalChannel.Mode.OUTPUT);
+        green2.setMode(DigitalChannel.Mode.OUTPUT);
+        green3.setMode(DigitalChannel.Mode.OUTPUT);
+        green4.setMode(DigitalChannel.Mode.OUTPUT);
+        red1.setMode(DigitalChannel.Mode.OUTPUT);
+        red2.setMode(DigitalChannel.Mode.OUTPUT);
+        red3.setMode(DigitalChannel.Mode.OUTPUT);
+        red4.setMode(DigitalChannel.Mode.OUTPUT);
         // Declare our motors
         motorFrontLeft = ahwMap.get(DcMotor.class, "motorFrontLeft");//getting the motorFrontLeft motor
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor
@@ -255,12 +234,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         teleSpace();
         telemetry.addData("Version", currentVersion);
         telemetry.update();
-    }
-
-    //claw
-    public double setServo(int degrees) {
-        position = degree_mult * degrees;
-        return position;
     }
 
     //random
