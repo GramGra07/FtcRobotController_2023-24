@@ -58,6 +58,14 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public int delay = varConfig.delay;
     public boolean isSolid = false;
     public static String LEDcolor;
+    public static DigitalChannel green1;
+    public static DigitalChannel green2;
+    public static DigitalChannel green3;
+    public DigitalChannel green4;
+    public static DigitalChannel red1;
+    public static DigitalChannel red2;
+    public static DigitalChannel red3;
+    public DigitalChannel red4;
     //rev potentiometer
     public AnalogInput potentiometer;
 
@@ -107,6 +115,15 @@ public class HardwareConfig {//this is an external opMode that can have public v
         potentiometer = ahwMap.get(AnalogInput.class, "potent");
         //magnetic limit switch //digital is pressed
         limitSwitch = ahwMap.get(DigitalChannel.class, "limitSwitch");
+        //
+        green1 = ahwMap.get(DigitalChannel.class, "green1");
+        green2 = ahwMap.get(DigitalChannel.class, "green2");
+        green3 = ahwMap.get(DigitalChannel.class, "green3");
+        green4 = ahwMap.get(DigitalChannel.class, "green4");
+        red1 = ahwMap.get(DigitalChannel.class, "red1");
+        red2 = ahwMap.get(DigitalChannel.class, "red2");
+        red3 = ahwMap.get(DigitalChannel.class, "red3");
+        red4 = ahwMap.get(DigitalChannel.class, "red4");
         // Declare our motors
         motorFrontLeft = ahwMap.get(DcMotor.class, "motorFrontLeft");//getting the motorFrontLeft motor
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor

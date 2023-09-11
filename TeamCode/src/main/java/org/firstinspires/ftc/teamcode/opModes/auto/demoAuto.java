@@ -22,7 +22,7 @@ public class demoAuto extends LinearOpMode {
                 .forward(20)
                 .build();
 
-        robot.initAuto(hardwareMap);
+        robot.initAuto(hardwareMap,false);
 
         if(isStopRequested()) return;
 

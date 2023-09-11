@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
-import static android.os.SystemClock.sleep;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.AutoRandom;
 import org.firstinspires.ftc.teamcode.Blink;
+import org.firstinspires.ftc.teamcode.Vision;
 
 public class autoHardware extends HardwareConfig {//auto version of hardware config
 
@@ -20,10 +20,12 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         super(opMode);
         myOpMode = opMode;
     }
+    public static AutoRandom autonomousRandom = AutoRandom.mid;
 
-    public void initAuto(HardwareMap ahwMap) {
+    public void initAuto(HardwareMap ahwMap, boolean vision) {
         hardwareMap = ahwMap;
         init(ahwMap);
+        Vision.initVision(ahwMap);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         myOpMode.waitForStart();
         timer.reset();

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
@@ -27,19 +28,19 @@ public class Vision {
     public final int redSmall = 8;
     public final int blueSmall = 9;
     public final int blueLarge = 10;
-    private void initVision(HardwareMap hardwareMap) {
+    public static final int ourTag = 12;
+    public static void initVision(HardwareMap hardwareMap) {
         aprilTag = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
-                .setDrawCubeProjection(true)
-                //.setDrawTagOutline(true)
+                .setDrawCubeProjection(false)
+                .setDrawTagOutline(true)
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+                .setDrawTagID(true)
                 .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
                 .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
-
-                // == CAMERA CALIBRATION ==
                 // If you do not manually specify calibration parameters, the SDK will attempt
                 // to load a predefined calibration for your camera.
-                //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
+                // .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
                 // ... these parameters are fx, fy, cx, cy.
                 .build();
         VisionPortal.Builder builder = new VisionPortal.Builder();
@@ -75,14 +76,14 @@ public class Vision {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         return currentDetections.get(searchAprilTags(id)).center.x;
     }
-    public static void getPoseFromBearing(int id){
+    public static void getPoseFromCenter(int id){
         double cameraThird = cameraWidth/3;
         if (extractCenter(id) < cameraThird){
-            //left
+            autoHardware.autonomousRandom = AutoRandom.left;
         }else if (extractCenter(id) > cameraThird && extractCenter(id) < cameraThird*2){
-            //middle
+            autoHardware.autonomousRandom = AutoRandom.mid;
         }else if (extractCenter(id) > cameraThird*2){
-            //right
+            autoHardware.autonomousRandom = AutoRandom.right;
         }
     }
 }
