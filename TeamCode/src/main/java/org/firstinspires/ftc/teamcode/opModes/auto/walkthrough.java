@@ -25,34 +25,36 @@ public class walkthrough extends LinearOpMode {
 
         robot.initAuto(hardwareMap, true);
         if(isStopRequested()) return;
-        // look for april tag with dif id
-        Vision.searchAprilTags(Vision.ourTag);
-        // find it take which side, left, right, center
-        Vision.getPoseFromCenter(Vision.ourTag);
-        switch (autoHardware.autonomousRandom) {
-            case left:
-                // move to left side
-                HardwareConfig.green1.setState(true);
-                HardwareConfig.red1.setState(false);
-                break;
-            case mid:
-                // move to mid side
-                HardwareConfig.green1.setState(true);
-                HardwareConfig.red1.setState(false);
-                HardwareConfig.green2.setState(true);
-                HardwareConfig.red2.setState(false);
-                break;
-            case right:
-                // move to right side
-                HardwareConfig.green1.setState(true);
-                HardwareConfig.red1.setState(false);
-                HardwareConfig.green2.setState(true);
-                HardwareConfig.red2.setState(false);
-                HardwareConfig.green3.setState(true);
-                HardwareConfig.red3.setState(false);
-                break;
+        while (opModeIsActive()) {
+            // look for april tag with dif id
+            Vision.searchAprilTags(Vision.ourTag);
+            // find it take which side, left, right, center
+            Vision.getPoseFromCenter(Vision.ourTag);
+            switch (autoHardware.autonomousRandom) {
+                case left:
+                    // move to left side
+                    HardwareConfig.green1.setState(true);
+                    HardwareConfig.red1.setState(false);
+                    break;
+                case mid:
+                    // move to mid side
+                    HardwareConfig.green1.setState(true);
+                    HardwareConfig.red1.setState(false);
+                    HardwareConfig.green2.setState(true);
+                    HardwareConfig.red2.setState(false);
+                    break;
+                case right:
+                    // move to right side
+                    HardwareConfig.green1.setState(true);
+                    HardwareConfig.red1.setState(false);
+                    HardwareConfig.green2.setState(true);
+                    HardwareConfig.red2.setState(false);
+                    HardwareConfig.green3.setState(true);
+                    HardwareConfig.red3.setState(false);
+                    break;
+            }
+            Vision.telemetryAprilTag(this);
         }
-        stop();
         // move and place to that side
         // move all the way to backdrop
         switch (autoHardware.autonomousRandom) {

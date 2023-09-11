@@ -61,6 +61,7 @@ public class Vision {
                 myOpMode.telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
                 myOpMode.telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
             }
+            myOpMode.telemetry.update();
         }
     }
     public static int searchAprilTags(int id){
