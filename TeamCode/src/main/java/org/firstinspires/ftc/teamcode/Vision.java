@@ -20,16 +20,16 @@ public class Vision {
     public static AprilTagProcessor aprilTag;
     public static VisionPortal portal;
     public static double cameraWidth = 640;
-    public final int leftB = 1;
-    public final int midB=2;
-    public final int rightB=3;
-    public final int leftR = 4;
-    public final int midR = 5;
-    public final int rightR = 6;
-    public final int redLarge = 7;
-    public final int redSmall = 8;
-    public final int blueSmall = 9;
-    public final int blueLarge = 10;
+    public static final int leftB = 1;
+    public static final int midB=2;
+    public static final int rightB=3;
+    public static final int leftR = 4;
+    public static final int midR = 5;
+    public static final int rightR = 6;
+    public static final int redLarge = 7;
+    public static final int redSmall = 8;
+    public static final int blueSmall = 9;
+    public static final int blueLarge = 10;
     public static final int ourTag = 12;
     public static void initVision(HardwareMap hardwareMap) {
         aprilTag = new AprilTagProcessor.Builder()
@@ -68,15 +68,33 @@ public class Vision {
             }
         }
     }
-    public static void searchAprilTags(int id){
+    public static void telemetryOneTag(OpMode myOpMode, int id) {
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        if (currentDetections.size()>0) {
+            for (AprilTagDetection detection : currentDetections) {
+                if (detection.metadata != null && detection.id == id) {
+                    myOpMode.telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                    myOpMode.telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                    myOpMode.telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                    myOpMode.telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+                } else {
+                    myOpMode.telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                    myOpMode.telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+                }
+                myOpMode.telemetry.update();
+            }
+        }
+    }
+    public static boolean searchAprilTags(int id){
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
         if (currentDetections.size()>0) {
             for (AprilTagDetection detection : currentDetections) {
                 if (detection.id == id) {
-                    return;
+                    return true;
                 }
             }
         }
+        return false;
     }
     public static double extractCenter(int id){
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();

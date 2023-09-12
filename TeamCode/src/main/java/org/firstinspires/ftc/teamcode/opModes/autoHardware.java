@@ -5,7 +5,10 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
+import org.firstinspires.ftc.teamcode.Enums.StartSide;
+import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.Vision;
 
@@ -32,17 +35,25 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         timer.reset();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
-//    public Pose2d getStartPose(StartPose spot){
-//        switch (spot){
-//            todo: add start positions
-//            case redRight:
-//                return new Pose2d(-60, -35, Math.toRadians(0));
-//            case redLeft:
-//                return new Pose2d(12, -63, Math.toRadians(-90));
-//            case blueRight:
-//                return new Pose2d(12, -63, Math.toRadians(90));
-//            case blueLeft:
-//                return new Pose2d(12, -35, Math.toRadians(90));
-//        }
-//    }
+    public static Pose2d getStartPose(Alliance alliance, StartSide side){
+        StartPose.alliance = alliance;
+        StartPose.side = side;
+        switch (alliance){
+            case RED:
+                switch (side){
+                    case LEFT:
+                        return new Pose2d(12, -63, Math.toRadians(90));
+                    case RIGHT:
+                        return new Pose2d(12, 63, Math.toRadians(90));
+                }
+            case BLUE:
+                switch (side){
+                    case LEFT:
+                        return new Pose2d(-12, -63, Math.toRadians(90));
+                    case RIGHT:
+                        return new Pose2d(12, -63, Math.toRadians(90));
+                }
+        }
+        return new Pose2d(0,0,0);
+    }
 }
