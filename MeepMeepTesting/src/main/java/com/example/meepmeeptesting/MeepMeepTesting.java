@@ -38,7 +38,7 @@ public class MeepMeepTesting {
         Image img = null;
         try { img = ImageIO.read(new File("/Users/gradengentry/Desktop/robotics/field.png")); }
         // graden: "/Users/gradengentry/Desktop/robotics/field.png"
-        // chase:
+        // chase: "C:\Users\bubba\OneDrive\Desktop\Robotics\field.png"
         catch (IOException e) {}
 
         //meepMeep.setBackground(MeepMeep.Background.GRID_GRAY)
