@@ -22,7 +22,7 @@ public class blankAuto extends LinearOpMode {
         drive.setPoseEstimate(startPose);
         //create trajectories here
 
-        robot.initAuto(hardwareMap,false);
+        robot.initAuto(hardwareMap);
 
         if(isStopRequested()) return;
         //put drive.followTrajectory(traj1); here

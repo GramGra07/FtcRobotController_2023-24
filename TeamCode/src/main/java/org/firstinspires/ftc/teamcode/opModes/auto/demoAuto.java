@@ -24,7 +24,7 @@ public class demoAuto extends LinearOpMode {
                 .forward(20)
                 .build();
 
-        robot.initAuto(hardwareMap,false);
+        robot.initAuto(hardwareMap);
 
         if(isStopRequested()) return;
 

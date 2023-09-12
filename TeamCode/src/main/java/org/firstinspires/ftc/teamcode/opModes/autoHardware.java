@@ -33,7 +33,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
     }
     public static AutoRandom autonomousRandom = AutoRandom.mid;
 
-    public void initAuto(HardwareMap ahwMap, boolean vision) {
+    public void initAuto(HardwareMap ahwMap) {
         hardwareMap = ahwMap;
         init(ahwMap);
         Vision.initVision(ahwMap);
@@ -64,10 +64,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         return new Pose2d(0,0,0);
     }
     public static void runSpikeNav(SampleMecanumDrive drive, OpMode opMode){
-        while (!Vision.searchAprilTags(Vision.ourTag)) {
-            Vision.searchAprilTags(Vision.ourTag);
-            Vision.telemetryOneTag(opMode, Vision.ourTag);
-        }
+        delayUntilTagFound(opMode, Vision.ourTag);
         // look for april tag with dif id
         Vision.searchAprilTags(Vision.ourTag);
         // find it take which side, left, right, center
@@ -148,6 +145,12 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                         break;
                 }
                 break;
+        }
+    }
+    public static void delayUntilTagFound(OpMode myOpMode, int tag){
+        while (!Vision.searchAprilTags(tag)) {
+            Vision.searchAprilTags(tag);
+            Vision.telemetryOneTag(myOpMode, tag);
         }
     }
 }

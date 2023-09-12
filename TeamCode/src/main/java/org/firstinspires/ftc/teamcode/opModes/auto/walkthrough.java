@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.auto;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRandom;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.delayUntilTagFound;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.randTag;
@@ -28,13 +29,13 @@ public class walkthrough extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
-        robot.initAuto(hardwareMap, true);
+        robot.initAuto(hardwareMap);
         if (isStopRequested()) return;
         runSpikeNav(drive, this);
         // do claw stuff to move & drop pixel
         navToBackdrop(drive);
         // drop pixel
-        while (!Vision.searchAprilTags(randTag)) {Vision.searchAprilTags(randTag);}
+        delayUntilTagFound(this,randTag);
         // do we need new pose?
         // move claw up
         switch (autonomousRandom) {
