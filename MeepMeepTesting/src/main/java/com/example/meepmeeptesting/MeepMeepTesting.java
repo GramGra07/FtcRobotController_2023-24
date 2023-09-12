@@ -1,7 +1,6 @@
 package com.example.meepmeeptesting;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
@@ -36,10 +35,13 @@ public class MeepMeepTesting {
 
         // to speed up ,SampleMecanumDrive.getVelocityConstraint(90, 90, 13.24),SampleMecanumDrive.getAccelerationConstraint(90)
         Image img = null;
-        try { img = ImageIO.read(new File("/Users/gradengentry/Desktop/robotics/field.png")); }
+        try {
+            img = ImageIO.read(new File("/Users/gradengentry/Desktop/robotics/field.png"));
+        }
         // graden: "/Users/gradengentry/Desktop/robotics/field.png"
         // chase: "C:\Users\bubba\OneDrive\Desktop\Robotics\field.png"
-        catch (IOException e) {}
+        catch (IOException e) {
+        }
 
         //meepMeep.setBackground(MeepMeep.Background.GRID_GRAY)
         meepMeep.setBackground(img)
