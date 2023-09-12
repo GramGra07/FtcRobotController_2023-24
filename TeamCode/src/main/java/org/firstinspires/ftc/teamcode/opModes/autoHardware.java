@@ -3,19 +3,26 @@ package org.firstinspires.ftc.teamcode.opModes;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
+import org.firstinspires.ftc.teamcode.Sensors;
+import org.firstinspires.ftc.teamcode.Trajectories.BackdropTrajectories;
+import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.Vision;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 public class autoHardware extends HardwareConfig {//auto version of hardware config
 
     public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
 //    public static Pose2d startPose = getStartPose(StartPose.redRight);
+    public static int randTag = 0;
     HardwareMap hardwareMap = null;
 
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
@@ -55,5 +62,92 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 }
         }
         return new Pose2d(0,0,0);
+    }
+    public static void runSpikeNav(SampleMecanumDrive drive, OpMode opMode){
+        while (!Vision.searchAprilTags(Vision.ourTag)) {
+            Vision.searchAprilTags(Vision.ourTag);
+            Vision.telemetryOneTag(opMode, Vision.ourTag);
+        }
+        // look for april tag with dif id
+        Vision.searchAprilTags(Vision.ourTag);
+        // find it take which side, left, right, center
+        Vision.getPoseFromCenter(Vision.ourTag);
+        switch (autoHardware.autonomousRandom) {
+            case left:
+                // move to left side
+                if (StartPose.alliance == Alliance.RED) {
+                    randTag = Vision.leftR;
+                } else {
+                    randTag = Vision.leftB;
+                }
+                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
+                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
+                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
+                SpikeNavTrajectories.navToSpikeLeft(drive).start();
+                PoseStorage.currentPose = drive.getPoseEstimate();
+                break;
+            case mid:
+                // move to mid side
+                if (StartPose.alliance == Alliance.RED) {
+                    randTag = Vision.midR;
+                } else {
+                    randTag = Vision.midB;
+                }
+                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
+                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
+                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
+                SpikeNavTrajectories.navToSpikeCenter(drive).start();
+                PoseStorage.currentPose = drive.getPoseEstimate();
+                break;
+            case right:
+                // move to right side
+                if (StartPose.alliance == Alliance.RED) {
+                    randTag = Vision.rightR;
+                } else {
+                    randTag = Vision.rightB;
+                }
+                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
+                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
+                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
+                SpikeNavTrajectories.navToSpikeRight(drive).start();
+                PoseStorage.currentPose = drive.getPoseEstimate();
+                break;
+            default:
+                if (StartPose.alliance == Alliance.RED) {
+                    randTag = Vision.midR;
+                } else {
+                    randTag = Vision.midB;
+                }
+                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
+                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
+                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
+                SpikeNavTrajectories.navToSpikeCenter(drive).start();
+                PoseStorage.currentPose = drive.getPoseEstimate();
+        }
+    }
+    public static void navToBackdrop(SampleMecanumDrive drive){
+        // move all the way to backdrop
+        switch (StartPose.alliance){
+            case RED:
+                switch (StartPose.side){
+                    case LEFT:
+                        BackdropTrajectories.redShort(drive).start();
+                        break;
+                    case RIGHT:
+                        BackdropTrajectories.redLong(drive).start();
+                        break;
+                }
+                break;
+            case BLUE:
+                switch (StartPose.side){
+                    case LEFT:
+                        BackdropTrajectories.blueShort(drive).start();
+                        break;
+                    case RIGHT:
+                        BackdropTrajectories.blueLong(drive).start();
+                        break;
+                }
+                break;
+        }
     }
 }
