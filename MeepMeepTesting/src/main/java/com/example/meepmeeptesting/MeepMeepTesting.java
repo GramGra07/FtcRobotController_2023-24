@@ -7,6 +7,10 @@ import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
 public class MeepMeepTesting {
@@ -26,11 +30,19 @@ public class MeepMeepTesting {
                 .setDimensions(robotWidth, robotHeight)//bot width and height
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
+                                .forward(10)
                                 .build()
                 );
 
         // to speed up ,SampleMecanumDrive.getVelocityConstraint(90, 90, 13.24),SampleMecanumDrive.getAccelerationConstraint(90)
-        meepMeep.setBackground(MeepMeep.Background.GRID_GRAY)
+        Image img = null;
+        try { img = ImageIO.read(new File("/Users/gradengentry/Desktop/robotics/field.png")); }
+        // graden: "/Users/gradengentry/Desktop/robotics/field.png"
+        // chase:
+        catch (IOException e) {}
+
+        //meepMeep.setBackground(MeepMeep.Background.GRID_GRAY)
+        meepMeep.setBackground(img)
                 .setDarkMode(true)
                 .setAxesInterval(20)
                 .setBackgroundAlpha(0.95f)

@@ -50,6 +50,14 @@ public class walkthrough extends LinearOpMode {
                 break;
         }
         // drop pixel
+        // start repeat
+        // nav back to cycle
+        // move arm to position
+        // grab pixel
+        // nav back to drop
+        // move arm up
+        // drop pixel
+        // end repeat
         PoseStorage.currentPose = drive.getPoseEstimate();
     }
 }
