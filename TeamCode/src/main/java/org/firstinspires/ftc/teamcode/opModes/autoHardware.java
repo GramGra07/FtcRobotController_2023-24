@@ -11,7 +11,8 @@ import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.BackdropTrajectories;
-import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectories;
+import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesLEFT;
+import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesRIGHT;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.Vision;
@@ -84,12 +85,12 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
                     if (StartPose.alliance == Alliance.RED) {
-                        SpikeNavTrajectories.navToSpikeLeftLRed(drive).start();
+                        SpikeNavTrajectoriesLEFT.navToSpikeLeftLRed(drive).start();
                     } else {
-                        SpikeNavTrajectories.navToSpikeLeftLBlue(drive).start();
+                        SpikeNavTrajectoriesLEFT.navToSpikeLeftLBlue(drive).start();
                     }
                 } else {
-                    SpikeNavTrajectories.navToSpikeLeftRIGHT(drive).start();
+                    SpikeNavTrajectoriesRIGHT.navToSpikeLeftR(drive).start();
                 }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
@@ -104,9 +105,9 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
-                    SpikeNavTrajectories.navToSpikeCenterLEFT(drive).start();
+                    SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive).start();
                 } else {
-                    SpikeNavTrajectories.navToSpikeCenterRIGHT(drive).start();
+                    SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive).start();
                 }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
@@ -121,9 +122,9 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
                 if (StartPose.side == StartSide.LEFT) {
-                    SpikeNavTrajectories.navToSpikeRightLEFT(drive).start();
+                    SpikeNavTrajectoriesLEFT.navToSpikeRightL(drive).start();
                 } else {
-                    SpikeNavTrajectories.navToSpikeRightRIGHT(drive).start();
+                    SpikeNavTrajectoriesRIGHT.navToSpikeRightR(drive).start();
                 }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
@@ -137,9 +138,9 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
-                    SpikeNavTrajectories.navToSpikeCenterLEFT(drive).start();
+                    SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive).start();
                 } else {
-                    SpikeNavTrajectories.navToSpikeCenterRIGHT(drive).start();
+                    SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive).start();
                 }
                 PoseStorage.currentPose = drive.getPoseEstimate();
         }
