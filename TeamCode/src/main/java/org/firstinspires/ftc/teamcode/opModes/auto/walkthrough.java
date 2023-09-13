@@ -39,13 +39,13 @@ public class walkthrough extends LinearOpMode {
         // move claw up
         switch (autonomousRandom) {
             case left:
-                ShiftTrajectories.shiftLeft(drive);
+                ShiftTrajectories.shiftLeft(drive).start();
                 break;
             case mid:
                 // should already be lined up
                 break;
             case right:
-                ShiftTrajectories.shiftRight(drive);
+                ShiftTrajectories.shiftRight(drive).start();
                 break;
         }
         // drop pixel
