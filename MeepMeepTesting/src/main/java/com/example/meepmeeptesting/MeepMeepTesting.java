@@ -1,6 +1,7 @@
 package com.example.meepmeeptesting;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.core.colorscheme.scheme.ColorSchemeBlueDark;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
@@ -15,7 +16,7 @@ import javax.imageio.ImageIO;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-        Pose2d startPose = new Pose2d(35, -60, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-36, 72-(18/2), Math.toRadians(-90));
         int maxVel = 57;
         int maxAccel = 60;
         int maxAngVel = 360;
@@ -29,7 +30,13 @@ public class MeepMeepTesting {
                 .setDimensions(robotWidth, robotHeight)//bot width and height
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .forward(10)
+                                .forward(36)
+                                .strafeRight(2)
+                                .back(10)
+
+                                .splineTo(new Vector2d(-36, 58), Math.toRadians(0))
+                                .lineTo(new Vector2d(36,58))
+                                .lineToLinearHeading(new Pose2d(46,36,Math.toRadians(0)))
                                 .build()
                 );
 
@@ -43,7 +50,6 @@ public class MeepMeepTesting {
         catch (IOException e) {
         }
 
-        //meepMeep.setBackground(MeepMeep.Background.GRID_GRAY)
         meepMeep.setBackground(img)
                 .setDarkMode(true)
                 .setAxesInterval(20)

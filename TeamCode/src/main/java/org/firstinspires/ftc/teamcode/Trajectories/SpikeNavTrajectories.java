@@ -8,23 +8,59 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
 public class SpikeNavTrajectories {
-    public static TrajectorySequence navToSpikeRight(SampleMecanumDrive drive) {
+    public static TrajectorySequence navToSpikeRightRIGHT(SampleMecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .forward(10)
-                .strafeLeft(10)
-                .turn(Math.toRadians(90))
-                .build();
-    }
-    public static TrajectorySequence navToSpikeLeft(SampleMecanumDrive drive) {
-        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .forward(10)
                 .strafeRight(10)
-                .turn(Math.toRadians(-90))
+                .forward(24)
+                .back(8)
                 .build();
     }
-    public static TrajectorySequence navToSpikeCenter(SampleMecanumDrive drive) {
+    public static TrajectorySequence navToSpikeLeftRIGHT(SampleMecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .forward(10)
+                .forward(31)
+                .turn(Math.toRadians(90))
+                .forward(5)
+                .back(6)
+                .build();
+    }
+    public static TrajectorySequence navToSpikeCenterRIGHT(SampleMecanumDrive drive) {
+        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .forward(36)
+                .strafeRight(2)
+                .back(10)
+                .build();
+    }
+    public static TrajectorySequence navToSpikeRightLEFT(SampleMecanumDrive drive) {
+        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .forward(31)
+                .turn(Math.toRadians(-90))
+                .forward(5)
+                .back(6)
+                .build();
+    }
+    public static TrajectorySequence navToSpikeLeftLRed(SampleMecanumDrive drive) {
+        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .forward(32)
+                .turn(Math.toRadians(90))
+                .forward(5)
+                .back(6)
+                .build();
+    }
+    public static TrajectorySequence navToSpikeLeftLBlue(SampleMecanumDrive drive) {
+        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .forward(32)
+                .turn(Math.toRadians(90))
+                .forward(5)
+                .back(6)
+                .strafeLeft(12)
+                .forward(15)
+                .build();
+    }
+    public static TrajectorySequence navToSpikeCenterLEFT(SampleMecanumDrive drive) {
+        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .forward(36)
+                .strafeLeft(2)
+                .back(10)
                 .build();
     }
 }

@@ -4,7 +4,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRand
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.delayUntilTagFound;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.randTag;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.targetTag;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.runSpikeNav;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -14,7 +14,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Trajectories.ShiftTrajectories;
-import org.firstinspires.ftc.teamcode.Vision;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
@@ -35,7 +34,7 @@ public class walkthrough extends LinearOpMode {
         // do claw stuff to move & drop pixel
         navToBackdrop(drive);
         // drop pixel
-        delayUntilTagFound(this,randTag);
+        delayUntilTagFound(this, targetTag);
         // do we need new pose?
         // move claw up
         switch (autonomousRandom) {

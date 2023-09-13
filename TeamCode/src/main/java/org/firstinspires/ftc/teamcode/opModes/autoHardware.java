@@ -19,10 +19,12 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 public class autoHardware extends HardwareConfig {//auto version of hardware config
+    public static double robotWidth = 16;
+    public static double robotLength = 18;
 
     public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
-//    public static Pose2d startPose = getStartPose(StartPose.redRight);
-    public static int randTag = 0;
+//  public static Pose2d startPose = getStartPose(StartPose.redRight);
+    public static int targetTag = 0;
     HardwareMap hardwareMap = null;
 
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
@@ -49,16 +51,16 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
             case RED:
                 switch (side){
                     case LEFT:
-                        return new Pose2d(12, -63, Math.toRadians(90));
+                        return new Pose2d(-36, -72+(robotLength/2), Math.toRadians(90));
                     case RIGHT:
-                        return new Pose2d(12, 63, Math.toRadians(90));
+                        return new Pose2d(12, -72+(robotLength/2), Math.toRadians(90));
                 }
             case BLUE:
                 switch (side){
                     case LEFT:
-                        return new Pose2d(-12, -63, Math.toRadians(90));
+                        return new Pose2d(12, 72-(robotLength/2), Math.toRadians(-90));
                     case RIGHT:
-                        return new Pose2d(12, -63, Math.toRadians(90));
+                        return new Pose2d(-36, 72-(robotLength/2), Math.toRadians(-90));
                 }
         }
         return new Pose2d(0,0,0);
@@ -73,52 +75,72 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
             case left:
                 // move to left side
                 if (StartPose.alliance == Alliance.RED) {
-                    randTag = Vision.leftR;
+                    targetTag = Vision.leftR;
                 } else {
-                    randTag = Vision.leftB;
+                    targetTag = Vision.leftB;
                 }
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                SpikeNavTrajectories.navToSpikeLeft(drive).start();
+                if (StartPose.side == StartSide.LEFT) {
+                    if (StartPose.alliance == Alliance.RED) {
+                        SpikeNavTrajectories.navToSpikeLeftLRed(drive).start();
+                    } else {
+                        SpikeNavTrajectories.navToSpikeLeftLBlue(drive).start();
+                    }
+                } else {
+                    SpikeNavTrajectories.navToSpikeLeftRIGHT(drive).start();
+                }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
             case mid:
                 // move to mid side
                 if (StartPose.alliance == Alliance.RED) {
-                    randTag = Vision.midR;
+                    targetTag = Vision.midR;
                 } else {
-                    randTag = Vision.midB;
+                    targetTag = Vision.midB;
                 }
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                SpikeNavTrajectories.navToSpikeCenter(drive).start();
+                if (StartPose.side == StartSide.LEFT) {
+                    SpikeNavTrajectories.navToSpikeCenterLEFT(drive).start();
+                } else {
+                    SpikeNavTrajectories.navToSpikeCenterRIGHT(drive).start();
+                }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
             case right:
                 // move to right side
                 if (StartPose.alliance == Alliance.RED) {
-                    randTag = Vision.rightR;
+                    targetTag = Vision.rightR;
                 } else {
-                    randTag = Vision.rightB;
+                    targetTag = Vision.rightB;
                 }
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
-                SpikeNavTrajectories.navToSpikeRight(drive).start();
+                if (StartPose.side == StartSide.LEFT) {
+                    SpikeNavTrajectories.navToSpikeRightLEFT(drive).start();
+                } else {
+                    SpikeNavTrajectories.navToSpikeRightRIGHT(drive).start();
+                }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
             default:
                 if (StartPose.alliance == Alliance.RED) {
-                    randTag = Vision.midR;
+                    targetTag = Vision.midR;
                 } else {
-                    randTag = Vision.midB;
+                    targetTag = Vision.midB;
                 }
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                SpikeNavTrajectories.navToSpikeCenter(drive).start();
+                if (StartPose.side == StartSide.LEFT) {
+                    SpikeNavTrajectories.navToSpikeCenterLEFT(drive).start();
+                } else {
+                    SpikeNavTrajectories.navToSpikeCenterRIGHT(drive).start();
+                }
                 PoseStorage.currentPose = drive.getPoseEstimate();
         }
     }
