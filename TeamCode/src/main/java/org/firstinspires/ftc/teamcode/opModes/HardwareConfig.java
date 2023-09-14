@@ -1,7 +1,6 @@
 //import
 package org.firstinspires.ftc.teamcode.opModes;
 
-import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 import static org.firstinspires.ftc.teamcode.Drivers.*;
 import static org.firstinspires.ftc.teamcode.Sensors.*;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.*;
@@ -15,8 +14,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -29,18 +28,21 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 import java.io.FileWriter;
-import java.util.List;
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
     public static boolean useFileWriter = true;
     public static boolean multipleDrivers = true;
     public String statusVal = "OFFLINE";
-    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null;
+    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorPaperAirplane;
     public static DcMotor enc1 = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
+    public static double airplanePower = 0;
+    public static final double airplaneMax = 1;
+    public static boolean airplaneArmed = false;
+    public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
     boolean reverse = false;
     public int delay = varConfig.delay;
@@ -112,10 +114,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
+        motorPaperAirplane = ahwMap.get(DcMotor.class, "airplane");
         //encoders
         enc1 = ahwMap.get(DcMotor.class, "enc1");
         resetEncoder(enc1);
         runWithoutEncoder(enc1);
+        runWithoutEncoder(motorPaperAirplane);
         //reversals
         setDirectionR(motorBackLeft);
         //set all to brake when set 0 power
@@ -123,6 +127,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorBackLeft);
         zeroPowerBrake(motorFrontLeft);
         zeroPowerBrake(motorFrontRight);
+        zeroPowerBrake(motorPaperAirplane);
+        cRE = new Gamepad.RumbleEffect.Builder()
+                .addStep(1.0, 1.0, 250)  //  Rumble right motor 100% for 500 mSec
+                .build();
         timer.reset();//resetting the runtime variable
         Sensors.ledIND(green1,red1,true);
         Sensors.ledIND(green2,red2,true);
@@ -142,9 +150,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //code to run all drive functions
     public void doBulk() {
         once();//runs once
+        bindDriverButtons(myOpMode);
+        bindOtherButtons(myOpMode);
         if (multipleDrivers) {
-            bindDriverButtons(myOpMode);
-            bindOtherButtons(myOpMode);
             switchProfile(myOpMode);
         }
         drive(fieldCentric);
@@ -213,6 +221,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft.setPower(backLeftPower);
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
+        motorPaperAirplane.setPower(airplanePower);
     }
 
     public void buildTelemetry() {

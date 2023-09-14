@@ -3,6 +3,8 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+
 public class Drivers {
     public static final String[] driverControls = {"Chase", "Camden", "Kian", "Grady", "Michael"}, otherControls = driverControls;
     public static final int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
@@ -48,15 +50,44 @@ public class Drivers {
 
     public static void bindOtherButtons(OpMode myOpMode){
         //"Chase", "Camden", "Kian", "Grady", "Michael"
+        if (!airplaneArmed && timer.seconds() > 80) {
+            airplaneArmed = true;
+            myOpMode.gamepad2.runRumbleEffect(cRE);
+        }
         if (currOther == otherControls[0]) {//Chase
+            if (myOpMode.gamepad1.circle && airplaneArmed){
+                airplanePower = airplaneMax;
+            }else{
+                airplanePower = 0;
+            }
         }
         if (currOther == otherControls[1]) {//Camden
+            if (myOpMode.gamepad1.circle && airplaneArmed){
+                airplanePower = airplaneMax;
+            }else{
+                airplanePower = 0;
+            }
         }
         if (currOther == otherControls[2]) {//Kian
+            if (myOpMode.gamepad1.circle && airplaneArmed){
+                airplanePower = airplaneMax;
+            }else{
+                airplanePower = 0;
+            }
         }
         if (currOther == otherControls[3]) {//Grady
+            if (myOpMode.gamepad1.circle && airplaneArmed){
+                airplanePower = airplaneMax;
+            }else{
+                airplanePower = 0;
+            }
         }
         if (currOther == otherControls[4]) {//Michael
+            if (myOpMode.gamepad1.circle && airplaneArmed){
+                airplanePower = airplaneMax;
+            }else{
+                airplanePower = 0;
+            }
         }
     }
 
