@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Vision.cameraWidth;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
+import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OpenCVpipelines;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -17,7 +21,7 @@ public class EOCVWebcam {
     public static String pipelineName = "";
     public static int whiteDots = 0, blackDots = 0;
     public static double blackDotCenterX = 0, blackDotCenterY = 0;
-    public static double centerX, centerY;
+    public static double centerX = 0, centerY;
     public static void initEOCV(HardwareMap hardwareMap, OpenCvWebcam webcam){
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
@@ -39,5 +43,14 @@ public class EOCVWebcam {
         webcam.stopStreaming();
         webcam.closeCameraDevice();
     }
-
+    public static void extrapolateCenter(){
+        double cameraThird = cameraWidth/3;
+        if (EOCVWebcam.centerX < cameraThird){
+            autoHardware.autonomousRandom = AutoRandom.left;
+        }else if (EOCVWebcam.centerX > cameraThird && EOCVWebcam.centerX < cameraThird*2){
+            autoHardware.autonomousRandom = AutoRandom.mid;
+        }else if (EOCVWebcam.centerX > cameraThird*2){
+            autoHardware.autonomousRandom = AutoRandom.right;
+        }
+    }
 }

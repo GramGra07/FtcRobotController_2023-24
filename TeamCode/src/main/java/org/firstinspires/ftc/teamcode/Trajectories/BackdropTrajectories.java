@@ -23,6 +23,9 @@ public class BackdropTrajectories {
     public static TrajectorySequence blueShort(SampleMecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .splineToLinearHeading(new Pose2d(46,36), Math.toRadians(0))
+                .addSpatialMarker(new Vector2d(36,36), () -> {
+                    // put up arm
+                })
                 .build();
     }
     public static TrajectorySequence blueLong(SampleMecanumDrive drive) {

@@ -37,6 +37,9 @@ public class MeepMeepTesting {
                                 .strafeLeft(12)
 
                                 .splineToLinearHeading(new Pose2d(46,36), Math.toRadians(0))
+                                .addSpatialMarker(new Vector2d(36,36), () -> {
+                                    // put up arm
+                                })
                                 .build()
                 );
 

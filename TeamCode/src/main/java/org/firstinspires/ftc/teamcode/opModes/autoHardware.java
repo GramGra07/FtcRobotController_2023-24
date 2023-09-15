@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.extrapolateCenter;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -49,6 +51,11 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         timer.reset();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
+    public static void delayIfNoOBJ(){
+        while (EOCVWebcam.centerX == 0){
+
+        }
+    }
     public static Pose2d getStartPose(Alliance alliance, StartSide side){
         StartPose.alliance = alliance;
         StartPose.side = side;
@@ -71,11 +78,8 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         return new Pose2d(0,0,0);
     }
     public static void runSpikeNav(SampleMecanumDrive drive, OpMode opMode){
-        delayUntilTagFound(opMode, Vision.ourTag);
-        // look for april tag with dif id
-        Vision.searchAprilTags(Vision.ourTag);
-        // find it take which side, left, right, center
-        Vision.getPoseFromCenter(Vision.ourTag);
+        delayIfNoOBJ();
+        extrapolateCenter();
         switch (autoHardware.autonomousRandom) {
             case left:
                 // move to left side

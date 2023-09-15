@@ -22,12 +22,12 @@ Digital
 4:5 - green3,red3
 6:7 - green2,red2
 I2C
-0 - REV color sensor V3:colorSensorR
+0 - 
 1 - 
 2 - 
-3 - REV color sensor V3:colorSensorL
+3 - 
 Analog
-0 - Analog Input:potent
+0 - 
 1 -
 2 -
 3 -
@@ -55,13 +55,13 @@ Servo
 5 -
 Digital
 0 -
-1 - touchSensor
+1 - 
 2 -
-3 - limitSwitch
+3 - 
 4 -
 5 -
 6 -
-7 - touchSensorL
+7 - 
 I2C
 0 - internal IMU BNO055:imu
 1 -
