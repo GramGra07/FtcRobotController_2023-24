@@ -226,6 +226,8 @@ public class OpenCVpipelines {
                 for (int x = 0; x < circles.cols(); x++) {
                     double[] c = circles.get(0, x);
                     Point center = new Point(Math.round(c[0]), Math.round(c[1]));
+                    EOCVWebcam.blackDotCenterX = center.x;
+                    EOCVWebcam.blackDotCenterY = center.y;
                     int radius = (int) Math.round(c[2]);
                     Imgproc.circle(mask, center, radius, new Scalar(255, 255, 255), -1, 8, 0);
                 }
@@ -444,8 +446,10 @@ public class OpenCVpipelines {
             }
             Imgproc.line(input, new Point(input.width() / 2, 0), new Point(input.width() / 2, input.height()), scalarVals("yellow"), 1);
             Imgproc.line(input, new Point(0, input.height() / 2), new Point(input.width(), input.height() / 2), scalarVals("yellow"), 1);
-            telemetry.addData("x", xTranslation);
-            telemetry.addData("y", yTranslation);
+            EOCVWebcam.centerX = centerX;
+            EOCVWebcam.centerY = centerY;
+            telemetry.addData("x", centerX);
+            telemetry.addData("y", centerY);
             telemetry.update();
             return input;
         }

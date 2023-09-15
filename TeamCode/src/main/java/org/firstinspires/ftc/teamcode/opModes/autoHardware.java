@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.EOCVWebcam;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.Vision;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 public class autoHardware extends HardwareConfig {//auto version of hardware config
     public static double robotWidth = 16;
@@ -27,6 +29,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
 //  public static Pose2d startPose = getStartPose(StartPose.redRight);
     public static int targetTag = 0;
     HardwareMap hardwareMap = null;
+    OpenCvWebcam webcam;
 
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
 
@@ -39,7 +42,8 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
     public void initAuto(HardwareMap ahwMap) {
         hardwareMap = ahwMap;
         init(ahwMap);
-        Vision.initVision(ahwMap);
+//        Vision.initVision(ahwMap);
+        EOCVWebcam.initEOCV(ahwMap,webcam);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         myOpMode.waitForStart();
         timer.reset();
