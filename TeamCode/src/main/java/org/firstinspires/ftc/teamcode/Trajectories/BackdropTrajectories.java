@@ -15,14 +15,14 @@ public class BackdropTrajectories {
     }
     public static TrajectorySequence redLong(SampleMecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .splineTo(new Vector2d(-36, -58), Math.toRadians(0))
-                .lineTo(new Vector2d(36,-58))
-                .lineToLinearHeading(new Pose2d(46,-36,Math.toRadians(0)))
+                .lineTo(new Vector2d(58, -36))
+                .lineTo(new Vector2d(58,36))
+                .lineToLinearHeading(new Pose2d(36,46,Math.toRadians(90)))
                 .build();
     }
     public static TrajectorySequence blueShort(SampleMecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .splineToLinearHeading(new Pose2d(46,36), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-36,46,Math.toRadians(90)))
                 .addSpatialMarker(new Vector2d(36,36), () -> {
                     // put up arm
                 })
@@ -30,9 +30,9 @@ public class BackdropTrajectories {
     }
     public static TrajectorySequence blueLong(SampleMecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .splineTo(new Vector2d(-36, 58), Math.toRadians(0))
-                .lineTo(new Vector2d(36,58))
-                .lineToLinearHeading(new Pose2d(46,36,Math.toRadians(0)))
+                .lineTo(new Vector2d( -58,-36))
+                .lineTo(new Vector2d(-58,36))
+                .lineToLinearHeading(new Pose2d(-36,46,Math.toRadians(90)))
                 .build();
     }
 }

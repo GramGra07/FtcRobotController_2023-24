@@ -30,7 +30,7 @@ public class SpikeNavTrajectoriesLEFT {
                 .forward(5)
                 .addDisplacementMarker(()->{})
                 .back(6)
-                .strafeLeft(12)
+                .strafeLeft(16)
                 .forward(15)
                 .build();
     }
@@ -40,7 +40,6 @@ public class SpikeNavTrajectoriesLEFT {
                 .strafeLeft(2)
                 .addDisplacementMarker(()->{})
                 .back(10)
-                .strafeLeft(12)
                 .build();
     }
 }

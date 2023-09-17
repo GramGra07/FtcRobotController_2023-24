@@ -13,7 +13,7 @@ public class SpikeNavTrajectoriesRIGHT {
                 .strafeRight(10)
                 .forward(24)
                 .addDisplacementMarker(()->{})
-                .back(8)
+                .back(16)
                 .build();
     }
     public static TrajectorySequence navToSpikeLeftR(SampleMecanumDrive drive) {
@@ -28,7 +28,7 @@ public class SpikeNavTrajectoriesRIGHT {
     public static TrajectorySequence navToSpikeCenterR(SampleMecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .forward(36)
-                .strafeRight(2)
+                .strafeLeft(2)
                 .addDisplacementMarker(()->{})
                 .back(10)
                 .build();
