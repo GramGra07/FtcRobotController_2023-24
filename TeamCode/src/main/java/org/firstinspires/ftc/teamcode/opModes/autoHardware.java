@@ -63,16 +63,16 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
             case RED:
                 switch (side){
                     case LEFT:
-                        return new Pose2d(-36, -72+(robotLength/2), Math.toRadians(90));
+                        return new Pose2d(72-(robotLength/2),-36,  Math.toRadians(180));
                     case RIGHT:
-                        return new Pose2d(12, -72+(robotLength/2), Math.toRadians(90));
+                        return new Pose2d(72-(robotLength/2),12, Math.toRadians(180));
                 }
             case BLUE:
                 switch (side){
                     case LEFT:
-                        return new Pose2d(12, 72-(robotLength/2), Math.toRadians(-90));
+                        return new Pose2d(-72+(robotLength/2),12, Math.toRadians(0));
                     case RIGHT:
-                        return new Pose2d(-36, 72-(robotLength/2), Math.toRadians(-90));
+                        return new Pose2d(-72+(robotLength/2),-36,  Math.toRadians(0));
                 }
         }
         return new Pose2d(0,0,0);

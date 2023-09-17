@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-        Pose2d startPose = new Pose2d(12, 72-(18/2), Math.toRadians(-90));
+        Pose2d startPose = new Pose2d( -72+(18/2),-36,  Math.toRadians(0));
         int maxVel = 57;
         int maxAccel = 60;
         int maxAngVel = 360;
