@@ -37,7 +37,7 @@ USB -
 
 Expansion Hub
 Motor
-0 - 
+0 - airplane
 1 -
 2 -
 3 -
@@ -47,8 +47,8 @@ Encoder
 2 -
 3 -
 Servo
-0 -
-1 -
+0 - claw1
+1 - claw2
 2 -
 3 -
 4 -

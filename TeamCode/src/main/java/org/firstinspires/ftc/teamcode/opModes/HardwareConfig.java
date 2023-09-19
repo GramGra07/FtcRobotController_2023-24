@@ -5,6 +5,9 @@ import static org.firstinspires.ftc.teamcode.Drivers.*;
 import static org.firstinspires.ftc.teamcode.Sensors.*;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.*;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.*;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.baseServo;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.clawMovement;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -16,12 +19,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
+import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
@@ -33,6 +38,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean useFileWriter = true;
     public static boolean multipleDrivers = true;
     public String statusVal = "OFFLINE";
+    public static Servo claw1 = null, claw2 = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorPaperAirplane;
     public static DcMotor enc1 = null;
     public static RevBlinkinLedDriver lights;
@@ -115,6 +121,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
         motorPaperAirplane = ahwMap.get(DcMotor.class, "airplane");
+        claw1 = ahwMap.get(Servo.class,"claw1");
+        claw2 = ahwMap.get(Servo.class,"claw2");
         //encoders
         enc1 = ahwMap.get(DcMotor.class, "enc1");
         resetEncoder(enc1);
@@ -128,6 +136,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorFrontLeft);
         zeroPowerBrake(motorFrontRight);
         zeroPowerBrake(motorPaperAirplane);
+        claw1.setPosition(setServo(baseServo));
+        claw2.setPosition(setServo(baseServo));
         cRE = new Gamepad.RumbleEffect.Builder()
                 .addStep(1.0, 1.0, 250)  //  Rumble right motor 100% for 500 mSec
                 .build();

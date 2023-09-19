@@ -10,8 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 @TeleOp(name = "voltageMultTest", group = "Robot")
 @Disabled
 public class voltageMultTest extends LinearOpMode {
-    public double position = 0;//sets servo position to 0-1 multiplier
-    public final double degree_mult = 0.00555555554;//100/180
+
     public boolean slowModeIsOn = false;
     public boolean testRunning = true;
 
@@ -56,8 +55,5 @@ public class voltageMultTest extends LinearOpMode {
         }
     }
 
-    public double setServo(int degrees) {
-        position = degree_mult * degrees;
-        return position;
-    }
+
 }

@@ -1,8 +1,12 @@
 package org.firstinspires.ftc.teamcode;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 public class Drivers {
@@ -55,38 +59,68 @@ public class Drivers {
             myOpMode.gamepad2.runRumbleEffect(cRE);
         }
         if (currOther == otherControls[0]) {//Chase
-            if (myOpMode.gamepad1.circle && airplaneArmed){
+            if (myOpMode.gamepad2.circle && airplaneArmed){
                 airplanePower = airplaneMax;
             }else{
                 airplanePower = 0;
+            }
+            if (myOpMode.gamepad2.right_bumper){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                closeClaw(claw1);
             }
         }
         if (currOther == otherControls[1]) {//Camden
-            if (myOpMode.gamepad1.circle && airplaneArmed){
+            if (myOpMode.gamepad2.circle && airplaneArmed){
                 airplanePower = airplaneMax;
             }else{
                 airplanePower = 0;
+            }
+            if (myOpMode.gamepad2.right_bumper){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                closeClaw(claw1);
             }
         }
         if (currOther == otherControls[2]) {//Kian
-            if (myOpMode.gamepad1.circle && airplaneArmed){
+            if (myOpMode.gamepad2.circle && airplaneArmed){
                 airplanePower = airplaneMax;
             }else{
                 airplanePower = 0;
+            }
+            if (myOpMode.gamepad2.right_bumper){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                closeClaw(claw1);
             }
         }
         if (currOther == otherControls[3]) {//Grady
-            if (myOpMode.gamepad1.circle && airplaneArmed){
+            if (myOpMode.gamepad2.circle && airplaneArmed){
                 airplanePower = airplaneMax;
             }else{
                 airplanePower = 0;
             }
+            if (myOpMode.gamepad2.right_bumper){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                closeClaw(claw1);
+            }
         }
         if (currOther == otherControls[4]) {//Michael
-            if (myOpMode.gamepad1.circle && airplaneArmed){
+            if (myOpMode.gamepad2.circle && airplaneArmed){
                 airplanePower = airplaneMax;
             }else{
                 airplanePower = 0;
+            }
+            if (myOpMode.gamepad2.right_bumper){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                closeClaw(claw1);
             }
         }
     }

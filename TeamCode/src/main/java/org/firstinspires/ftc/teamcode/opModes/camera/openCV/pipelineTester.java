@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @TeleOp
-@Disabled
+//@Disabled
 public class pipelineTester extends LinearOpMode {
     OpenCvWebcam webcam;
     public static int x = 0;
