@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.auto;
 
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.extrapolateCenter;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRandom;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.delayIfNoOBJ;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.delayUntilTagFound;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
@@ -30,6 +32,10 @@ public class walkthrough extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap);
         if (isStopRequested()) return;
+        while(opModeIsActive()){
+            delayIfNoOBJ();
+            extrapolateCenter();
+        }
         runSpikeNav(drive, this);
         // do claw stuff to move & drop pixel
         navToBackdrop(drive);
