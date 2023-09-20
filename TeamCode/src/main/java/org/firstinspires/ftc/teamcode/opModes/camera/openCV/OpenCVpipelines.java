@@ -280,6 +280,9 @@ public class OpenCVpipelines {
                 case "bluecone":
                     aspectRatio = blueconeObjVars.aspectRatio;
                     break;
+                case "redprop":
+                    aspectRatio = redpropObjVars.aspectRatio;
+                    break;
                 default:
                     aspectRatio = 0;
                     break;
@@ -396,6 +399,15 @@ public class OpenCVpipelines {
                     maxHeight = blueconeObjVars.maxHeight;
                     maxArea = blueconeObjVars.maxArea;
                     break;
+                case "redprop":
+                    tolerance = redpropObjVars.tolerance;
+                    minWidth = redpropObjVars.minWidth;
+                    minHeight = redpropObjVars.minHeight;
+                    minArea = redpropObjVars.minArea;
+                    maxWidth = redpropObjVars.maxWidth;
+                    maxHeight = redpropObjVars.maxHeight;
+                    maxArea = redpropObjVars.maxArea;
+                    break;
                 default:
                     tolerance = 0.1;
                     minWidth = 0;
@@ -435,6 +447,10 @@ public class OpenCVpipelines {
                             xTranslation = xDist * blueconeObjVars.translationX;
                             yTranslation = botDist * blueconeObjVars.translationY;
                             break;
+                        case "redprop":
+                            xTranslation = xDist * redpropObjVars.translationX;
+                            yTranslation = botDist * redpropObjVars.translationY;
+                            break;
                         default:
                             xTranslation = 0;
                             yTranslation = 0;
@@ -451,6 +467,16 @@ public class OpenCVpipelines {
             telemetry.addData("x", centerX);
             telemetry.addData("y", centerY);
             telemetry.update();
+            if (centerX <= 106){
+                Imgproc.putText(input, "1", new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
+            }
+            if (centerX > 106 && centerX<=112){
+                Imgproc.putText(input, "2", new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
+            }
+            if (centerX >112 && centerX<= 320){
+                    Imgproc.putText(input, "3", new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
+
+            }
             return input;
         }
     }

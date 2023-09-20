@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.UtilClass;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+
 public class ServoUtil {
     public static int baseServo = 95;
     public static int clawMovement = 50;
@@ -12,7 +14,11 @@ public class ServoUtil {
         return position;
     }
     public static void openClaw(Servo servo){
-        servo.setPosition(setServo(baseServo+clawMovement));
+        if (servo == HardwareConfig.claw1) {
+            servo.setPosition(setServo(baseServo + clawMovement));
+        }else if (servo == HardwareConfig.claw2){
+            servo.setPosition(setServo(baseServo - clawMovement));
+        }
     }
     public static void closeClaw(Servo servo){
         servo.setPosition(setServo(baseServo));

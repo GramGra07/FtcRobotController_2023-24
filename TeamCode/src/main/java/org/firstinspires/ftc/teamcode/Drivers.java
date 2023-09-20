@@ -70,6 +70,12 @@ public class Drivers {
             if (myOpMode.gamepad2.left_bumper){
                 closeClaw(claw1);
             }
+            if (myOpMode.gamepad2.dpad_right){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.dpad_left){
+                closeClaw(claw2);
+            }
         }
         if (currOther == otherControls[1]) {//Camden
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -82,6 +88,12 @@ public class Drivers {
             }
             if (myOpMode.gamepad2.left_bumper){
                 closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.dpad_right){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.dpad_left){
+                closeClaw(claw2);
             }
         }
         if (currOther == otherControls[2]) {//Kian
@@ -96,6 +108,12 @@ public class Drivers {
             if (myOpMode.gamepad2.left_bumper){
                 closeClaw(claw1);
             }
+            if (myOpMode.gamepad2.dpad_right){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.dpad_left){
+                closeClaw(claw2);
+            }
         }
         if (currOther == otherControls[3]) {//Grady
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -109,6 +127,12 @@ public class Drivers {
             if (myOpMode.gamepad2.left_bumper){
                 closeClaw(claw1);
             }
+            if (myOpMode.gamepad2.dpad_right){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.dpad_left){
+                closeClaw(claw2);
+            }
         }
         if (currOther == otherControls[4]) {//Michael
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -121,6 +145,12 @@ public class Drivers {
             }
             if (myOpMode.gamepad2.left_bumper){
                 closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.dpad_right){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.dpad_left){
+                closeClaw(claw2);
             }
         }
     }
