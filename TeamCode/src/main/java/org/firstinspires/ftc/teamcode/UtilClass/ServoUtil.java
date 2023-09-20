@@ -14,11 +14,7 @@ public class ServoUtil {
         return position;
     }
     public static void openClaw(Servo servo){
-        if (servo == HardwareConfig.claw1) {
-            servo.setPosition(setServo(baseServo + clawMovement));
-        }else if (servo == HardwareConfig.claw2){
-            servo.setPosition(setServo(baseServo - clawMovement));
-        }
+        servo.setPosition(setServo(baseServo + clawMovement));
     }
     public static void closeClaw(Servo servo){
         servo.setPosition(setServo(baseServo));
