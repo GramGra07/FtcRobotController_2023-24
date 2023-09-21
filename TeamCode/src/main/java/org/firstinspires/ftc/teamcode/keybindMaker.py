@@ -110,3 +110,4 @@ if drive == "o":
     print("if (myOpMode.gamepad2."+button[4]+"){")
     print("     closeClaw(claw2);")
     print("}")
+    print("liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);")
