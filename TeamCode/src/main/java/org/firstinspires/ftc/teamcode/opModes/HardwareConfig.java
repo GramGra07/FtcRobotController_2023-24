@@ -39,12 +39,14 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean multipleDrivers = true;
     public String statusVal = "OFFLINE";
     public static Servo claw1 = null, claw2 = null;
-    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorPaperAirplane;
+    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorPaperAirplane = null, motorLift = null;
     public static DcMotor enc1 = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
+    public static double liftPower = 0;
+    public static double liftMax = 1;
     public static double airplanePower = 0;
     public static final double airplaneMax = 1;
     public static boolean airplaneArmed = false;
@@ -121,6 +123,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
         motorPaperAirplane = ahwMap.get(DcMotor.class, "airplane");
+        motorLift = ahwMap.get(DcMotor.class, "lift");
         claw1 = ahwMap.get(Servo.class,"claw1");
         claw2 = ahwMap.get(Servo.class,"claw2");
         //encoders
@@ -232,6 +235,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
         motorPaperAirplane.setPower(airplanePower);
+        motorLift.setPower(liftPower);
     }
 
     public void buildTelemetry() {

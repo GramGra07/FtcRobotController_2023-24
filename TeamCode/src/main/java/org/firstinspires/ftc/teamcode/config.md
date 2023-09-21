@@ -39,12 +39,12 @@ Expansion Hub
 Motor
 0 - airplane
 1 -
-2 -
+2 - lift
 3 -
 Encoder
 0 -
 1 - enc1
-2 -
+2 - same
 3 -
 Servo
 0 - claw1

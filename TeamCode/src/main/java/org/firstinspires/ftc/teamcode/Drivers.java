@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
+import org.firstinspires.ftc.teamcode.ggutil.pure.fromTutorial.com.company.Range;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 public class Drivers {
@@ -18,6 +19,7 @@ public class Drivers {
 
     public static boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public static boolean dDownHigh = false;
+
     public static void bindDriverButtons(OpMode myOpMode) {
         //"Chase", "Camden", "Kian", "Grady", "Michael"
         if (currDriver == driverControls[0]) {//Chase
@@ -76,6 +78,7 @@ public class Drivers {
             if (myOpMode.gamepad2.dpad_left){
                 closeClaw(claw2);
             }
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
         }
         if (currOther == otherControls[1]) {//Camden
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -95,6 +98,7 @@ public class Drivers {
             if (myOpMode.gamepad2.dpad_left){
                 closeClaw(claw2);
             }
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
         }
         if (currOther == otherControls[2]) {//Kian
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -114,6 +118,7 @@ public class Drivers {
             if (myOpMode.gamepad2.dpad_left){
                 closeClaw(claw2);
             }
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
         }
         if (currOther == otherControls[3]) {//Grady
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -133,6 +138,7 @@ public class Drivers {
             if (myOpMode.gamepad2.dpad_left){
                 closeClaw(claw2);
             }
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
         }
         if (currOther == otherControls[4]) {//Michael
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -152,6 +158,7 @@ public class Drivers {
             if (myOpMode.gamepad2.dpad_left){
                 closeClaw(claw2);
             }
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
         }
     }
 
