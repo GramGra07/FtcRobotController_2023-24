@@ -133,6 +133,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         runWithoutEncoder(motorPaperAirplane);
         //reversals
         setDirectionR(motorBackLeft);
+        setDirectionR(motorLift);
         //set all to brake when set 0 power
         zeroPowerBrake(motorBackRight);
         zeroPowerBrake(motorBackLeft);

@@ -12,7 +12,7 @@ Encoder (will only be different if a different encoder is in the same slot as a 
 Servo
 0 -
 1 - Blinkin Driver:blinkin
-2 - Servo:clawServo
+2 - 
 3 -
 4 - 
 5 -

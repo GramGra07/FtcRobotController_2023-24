@@ -81,7 +81,7 @@ public class Drivers {
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
         }
         if (currOther == otherControls[1]) {//Camden
-            if (myOpMode.gamepad2.circle && airplaneArmed){
+            if (myOpMode.gamepad2.cross && airplaneArmed){
                 airplanePower = airplaneMax;
             }else{
                 airplanePower = 0;
@@ -92,10 +92,10 @@ public class Drivers {
             if (myOpMode.gamepad2.left_bumper){
                 closeClaw(claw1);
             }
-            if (myOpMode.gamepad2.dpad_right){
+            if (myOpMode.gamepad2.dpad_down){
                 openClaw(claw2);
             }
-            if (myOpMode.gamepad2.dpad_left){
+            if (myOpMode.gamepad2.dpad_up){
                 closeClaw(claw2);
             }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
@@ -141,21 +141,21 @@ public class Drivers {
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
         }
         if (currOther == otherControls[4]) {//Michael
-            if (myOpMode.gamepad2.circle && airplaneArmed){
+            if (myOpMode.gamepad2.square && airplaneArmed){
                 airplanePower = airplaneMax;
             }else{
                 airplanePower = 0;
             }
-            if (myOpMode.gamepad2.right_bumper){
+            if (myOpMode.gamepad2.dpad_up){
                 openClaw(claw1);
             }
-            if (myOpMode.gamepad2.left_bumper){
+            if (myOpMode.gamepad2.dpad_down){
                 closeClaw(claw1);
             }
-            if (myOpMode.gamepad2.dpad_right){
+            if (myOpMode.gamepad2.left_bumper){
                 openClaw(claw2);
             }
-            if (myOpMode.gamepad2.dpad_left){
+            if (myOpMode.gamepad2.right_bumper){
                 closeClaw(claw2);
             }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
