@@ -66,16 +66,16 @@ public class Drivers {
             }else{
                 airplanePower = 0;
             }
-            if (myOpMode.gamepad2.right_bumper){
+            if (myOpMode.gamepad2.dpad_up){
                 openClaw(claw1);
             }
-            if (myOpMode.gamepad2.left_bumper){
+            if (myOpMode.gamepad2.dpad_down){
                 closeClaw(claw1);
             }
-            if (myOpMode.gamepad2.dpad_right){
+            if (myOpMode.gamepad2.triangle){
                 openClaw(claw2);
             }
-            if (myOpMode.gamepad2.dpad_left){
+            if (myOpMode.gamepad2.cross){
                 closeClaw(claw2);
             }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);

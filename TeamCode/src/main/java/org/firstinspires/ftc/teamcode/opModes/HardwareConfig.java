@@ -36,7 +36,7 @@ import java.io.FileWriter;
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
     public static boolean useFileWriter = true;
-    public static boolean multipleDrivers = true;
+    public static boolean multipleDrivers = false;
     public String statusVal = "OFFLINE";
     public static Servo claw1 = null, claw2 = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorPaperAirplane = null, motorLift = null;
@@ -49,7 +49,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static double liftMax = 1;
     public static double airplanePower = 0;
     public static final double airplaneMax = 1;
-    public static boolean airplaneArmed = false;
+    public static boolean airplaneArmed = true;
     public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
     boolean reverse = false;
