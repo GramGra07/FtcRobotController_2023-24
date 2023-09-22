@@ -38,7 +38,7 @@ USB -
 Expansion Hub
 Motor
 0 - airplane
-1 -
+1 - none
 2 - lift
 3 -
 Encoder
