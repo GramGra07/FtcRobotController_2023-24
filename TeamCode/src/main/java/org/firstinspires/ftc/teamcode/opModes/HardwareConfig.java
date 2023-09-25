@@ -1,12 +1,24 @@
 //import
 package org.firstinspires.ftc.teamcode.opModes;
 
-import static org.firstinspires.ftc.teamcode.Drivers.*;
-import static org.firstinspires.ftc.teamcode.Sensors.*;
-import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.*;
-import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.*;
+import static org.firstinspires.ftc.teamcode.Drivers.bindDriverButtons;
+import static org.firstinspires.ftc.teamcode.Drivers.bindOtherButtons;
+import static org.firstinspires.ftc.teamcode.Drivers.currDriver;
+import static org.firstinspires.ftc.teamcode.Drivers.currOther;
+import static org.firstinspires.ftc.teamcode.Drivers.fieldCentric;
+import static org.firstinspires.ftc.teamcode.Drivers.switchProfile;
+import static org.firstinspires.ftc.teamcode.Sensors.currentVoltage;
+import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
+import static org.firstinspires.ftc.teamcode.Sensors.getLimitSwitch;
+import static org.firstinspires.ftc.teamcode.Sensors.getPotentVal;
+import static org.firstinspires.ftc.teamcode.Sensors.lowVoltage;
+import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.setUpFile;
+import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.writeToFile;
+import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.resetEncoder;
+import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.runWithoutEncoder;
+import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionR;
+import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.zeroPowerBrake;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.baseServo;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.clawMovement;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -23,10 +35,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
-import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
@@ -67,7 +79,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public AnalogInput potentiometer;
     public DigitalChannel limitSwitch;
     public VoltageSensor vSensor;
-//    public TouchSensor touchSensor;
+    //    public TouchSensor touchSensor;
     public SampleMecanumDrive drive = null;
     public static double thisDist = 0;
     public static final ElapsedTime timer = new ElapsedTime();
@@ -124,8 +136,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
         motorPaperAirplane = ahwMap.get(DcMotor.class, "airplane");
         motorLift = ahwMap.get(DcMotor.class, "lift");
-        claw1 = ahwMap.get(Servo.class,"claw1");
-        claw2 = ahwMap.get(Servo.class,"claw2");
+        claw1 = ahwMap.get(Servo.class, "claw1");
+        claw2 = ahwMap.get(Servo.class, "claw2");
         //encoders
         enc1 = ahwMap.get(DcMotor.class, "enc1");
         resetEncoder(enc1);
@@ -146,10 +158,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 .addStep(1.0, 1.0, 250)  //  Rumble right motor 100% for 500 mSec
                 .build();
         timer.reset();//resetting the runtime variable
-        Sensors.ledIND(green1,red1,true);
-        Sensors.ledIND(green2,red2,true);
-        Sensors.ledIND(green3,red3,true);
-        Sensors.ledIND(green4,red4,true);
+        Sensors.ledIND(green1, red1, true);
+        Sensors.ledIND(green2, red2, true);
+        Sensors.ledIND(green3, red3, true);
+        Sensors.ledIND(green4, red4, true);
         Blink.setLights(null, true);
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Color", LEDcolor);
@@ -210,7 +222,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 xControl = -xControl;
             }
             double turn = -myOpMode.gamepad1.right_stick_x;
-            if (slowModeIsOn){ slowPower = slowMult;}else { slowPower = 1;}
+            if (slowModeIsOn) {
+                slowPower = slowMult;
+            } else {
+                slowPower = 1;
+            }
             frontRightPower = (yControl - xControl + turn) / slowPower;
             backRightPower = (yControl + xControl + turn) / slowPower;
             frontLeftPower = (yControl + xControl - turn) / slowPower;
@@ -218,7 +234,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         drive.update();
         updateDistTraveled(PoseStorage.currentPose, drive.getPoseEstimate());
-        writeToFile(fileWriter,(int) drive.getPoseEstimate().getX(), (int) drive.getPoseEstimate().getY());
+        writeToFile(fileWriter, (int) drive.getPoseEstimate().getX(), (int) drive.getPoseEstimate().getY());
         PoseStorage.currentPose = drive.getPoseEstimate();
     }
 
