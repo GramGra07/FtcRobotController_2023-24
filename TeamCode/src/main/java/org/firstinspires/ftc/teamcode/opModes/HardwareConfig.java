@@ -210,7 +210,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 xControl = -xControl;
             }
             double turn = -myOpMode.gamepad1.right_stick_x;
-            if (slowModeIsOn) slowPower = slowMult;
+            if (slowModeIsOn){ slowPower = slowMult;}else { slowPower = 1;}
             frontRightPower = (yControl - xControl + turn) / slowPower;
             backRightPower = (yControl + xControl + turn) / slowPower;
             frontLeftPower = (yControl + xControl - turn) / slowPower;
