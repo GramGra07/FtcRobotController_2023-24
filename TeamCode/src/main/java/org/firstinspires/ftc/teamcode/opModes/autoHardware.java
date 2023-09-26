@@ -44,8 +44,8 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
     public void initAuto(HardwareMap ahwMap) {
         hardwareMap = ahwMap;
         init(ahwMap);
-//        Vision.initVision(ahwMap);
-        EOCVWebcam.initEOCV(ahwMap,webcam);
+        Vision.initVision(ahwMap);
+        //EOCVWebcam.initEOCV(ahwMap,webcam);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         myOpMode.waitForStart();
         timer.reset();

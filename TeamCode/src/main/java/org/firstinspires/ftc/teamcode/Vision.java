@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Canvas;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -7,17 +9,23 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+import org.opencv.core.Mat;
 
 import java.util.List;
 
 public class Vision {
     public static AprilTagProcessor aprilTag;
+    public static TfodProcessor tFod;
     public static VisionPortal portal;
     public static double cameraWidth = 640;
     public static final int leftB = 1;
@@ -45,10 +53,28 @@ public class Vision {
                 // .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
                 // ... these parameters are fx, fy, cx, cy.
                 .build();
+        tFod = new TfodProcessor.Builder()
+                .setModelAssetName("")
+                .setModelLabels(new String[]{"", "", ""})
+                .build();
         VisionPortal.Builder builder = new VisionPortal.Builder();
         builder.setCamera(hardwareMap.get(WebcamName.class, EOCVWebcam.cam1_N));
-        builder.addProcessor(aprilTag);
+        builder.addProcessors(aprilTag,tFod);
         portal = builder.build();
+    }
+    private void telemetryTfod(OpMode myOpMode) {
+        List<Recognition> currentRecognitions = tFod.getRecognitions();
+        myOpMode.telemetry.addData("# Objects Detected", currentRecognitions.size());
+        for (Recognition recognition : currentRecognitions) {
+            double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+            double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+
+            myOpMode.telemetry.addData(""," ");
+            myOpMode.telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+            myOpMode.telemetry.addData("- Position", "%.0f / %.0f", x, y);
+            myOpMode.telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
+        }
+
     }
     public static void telemetryAprilTag(OpMode myOpMode) {
         List<AprilTagDetection> currentDetections = aprilTag.getDetections();
@@ -60,23 +86,6 @@ public class Vision {
                     myOpMode.telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
                     myOpMode.telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
                     myOpMode.telemetry.addData("width",cameraWidth);
-                } else {
-                    myOpMode.telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                    myOpMode.telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
-                }
-                myOpMode.telemetry.update();
-            }
-        }
-    }
-    public static void telemetryOneTag(OpMode myOpMode, int id) {
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        if (currentDetections.size()>0) {
-            for (AprilTagDetection detection : currentDetections) {
-                if (detection.metadata != null && detection.id == id) {
-                    myOpMode.telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                    myOpMode.telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
-                    myOpMode.telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
-                    myOpMode.telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
                 } else {
                     myOpMode.telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
                     myOpMode.telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
