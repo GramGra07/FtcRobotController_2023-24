@@ -42,6 +42,10 @@ public class Vision {
     public static final int blueSmall = 9;
     public static final int blueLarge = 10;
     public static final int ourTag = 12;
+    public static final String baseAsset = "CenterStage.tflite";
+    public static final String[] baseLabels = {
+            "Pixel"
+    };
     public static void initVision(HardwareMap hardwareMap) {
         aprilTag = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
@@ -57,8 +61,12 @@ public class Vision {
                 // ... these parameters are fx, fy, cx, cy.
                 .build();
         tFod = new TfodProcessor.Builder()
-                .setModelAssetName("")
-                .setModelLabels(new String[]{"", "", ""})
+                .setModelAssetName(baseAsset)
+                .setModelLabels(baseLabels)
+                .setIsModelQuantized(true)
+                .setModelAspectRatio(16.0/9.0)
+                .setIsModelTensorFlow2(true)
+                .setModelInputSize(300)
                 .build();
         VisionPortal.Builder builder = new VisionPortal.Builder();
         builder.setCamera(hardwareMap.get(WebcamName.class, EOCVWebcam.cam1_N));
