@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
@@ -20,6 +21,8 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import org.opencv.core.Mat;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.List;
 
@@ -61,8 +64,12 @@ public class Vision {
         builder.setCamera(hardwareMap.get(WebcamName.class, EOCVWebcam.cam1_N));
         builder.addProcessors(aprilTag,tFod);
         portal = builder.build();
+        CameraStreamSource source = (CameraStreamSource) portal;
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        FtcDashboard.getInstance().startCameraStream(source,cameraMonitorViewId);
+//        FtcDashboard.getInstance().startCameraStream(OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class,EOCVWebcam.cam1_N)),cameraMonitorViewId);
     }
-    private void telemetryTfod(OpMode myOpMode) {
+    public static void telemetryTfod(OpMode myOpMode) {
         List<Recognition> currentRecognitions = tFod.getRecognitions();
         myOpMode.telemetry.addData("# Objects Detected", currentRecognitions.size());
         for (Recognition recognition : currentRecognitions) {
@@ -90,7 +97,6 @@ public class Vision {
                     myOpMode.telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
                     myOpMode.telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
                 }
-                myOpMode.telemetry.update();
             }
         }
     }

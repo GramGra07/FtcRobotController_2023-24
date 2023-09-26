@@ -45,7 +45,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         hardwareMap = ahwMap;
         init(ahwMap);
         Vision.initVision(ahwMap);
-        //EOCVWebcam.initEOCV(ahwMap,webcam);
+//        EOCVWebcam.initEOCV(ahwMap,webcam);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         myOpMode.waitForStart();
         timer.reset();
@@ -181,7 +181,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
     public static void delayUntilTagFound(OpMode myOpMode, int tag){
         while (!Vision.searchAprilTags(tag)) {
             Vision.searchAprilTags(tag);
-            Vision.telemetryOneTag(myOpMode, tag);
+            Vision.telemetryAprilTag(myOpMode);
         }
     }
 }
