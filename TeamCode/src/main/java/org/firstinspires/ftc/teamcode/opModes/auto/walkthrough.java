@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode.opModes.auto;
 
-import static org.firstinspires.ftc.teamcode.EOCVWebcam.extrapolateCenter;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRandom;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.delayIfNoOBJ;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.delayUntilTagFound;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.targetTag;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.runSpikeNav;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.targetTag;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -16,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Trajectories.ShiftTrajectories;
+import org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
@@ -32,26 +31,22 @@ public class walkthrough extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap);
         if (isStopRequested()) return;
-        while(opModeIsActive()){
-            delayIfNoOBJ();
-            extrapolateCenter();
-        }
         runSpikeNav(drive, this);
         // do claw stuff to move & drop pixel
-        navToBackdrop(drive);
+        navToBackdrop(drive,telemetry);
         // drop pixel
         delayUntilTagFound(this, targetTag);
         // do we need new pose?
         // move claw up
         switch (autonomousRandom) {
             case left:
-                ShiftTrajectories.shiftLeft(drive).start();
+                drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
                 break;
             case mid:
                 // should already be lined up
                 break;
             case right:
-                ShiftTrajectories.shiftRight(drive).start();
+                drive.followTrajectorySequence(ShiftTrajectories.shiftRight(drive));
                 break;
         }
         // drop pixel

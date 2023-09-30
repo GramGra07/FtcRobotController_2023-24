@@ -64,7 +64,7 @@ Digital
 7 - 
 I2C
 0 - internal IMU BNO055:imu
-1 -
+1 - HuskyLens:huskylens
 2 -
 3 -
 Analog

@@ -3,11 +3,13 @@ package org.firstinspires.ftc.teamcode.opModes;
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.extrapolateCenter;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.EOCVWebcam;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.BackdropTrajectories;
 import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesLEFT;
 import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesRIGHT;
+import org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.Vision;
@@ -46,16 +49,13 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         init(ahwMap);
         Vision.initVision(ahwMap);
 //        EOCVWebcam.initEOCV(ahwMap,webcam);
+        HuskyLensUtil.initHuskyLens(hardwareMap,myOpMode, HuskyLens.Algorithm.FACE_RECOGNITION);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         myOpMode.waitForStart();
         timer.reset();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
-    public static void delayIfNoOBJ(){
-        while (EOCVWebcam.centerX == 0){
 
-        }
-    }
     public static Pose2d getStartPose(Alliance alliance, StartSide side){
         StartPose.alliance = alliance;
         StartPose.side = side;
@@ -78,8 +78,8 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
         return new Pose2d(0,0,0);
     }
     public static void runSpikeNav(SampleMecanumDrive drive, OpMode opMode){
-        delayIfNoOBJ();
-        extrapolateCenter();
+        HuskyLensUtil.delayIfNoOBJ(opMode.telemetry);
+        HuskyLensUtil.extrapolatePosition();
         switch (autoHardware.autonomousRandom) {
             case left:
                 // move to left side
@@ -93,12 +93,12 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
                     if (StartPose.alliance == Alliance.RED) {
-                        SpikeNavTrajectoriesLEFT.navToSpikeLeftLRed(drive).start();
+                        drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeLeftLRed(drive));
                     } else {
-                        SpikeNavTrajectoriesLEFT.navToSpikeLeftLBlue(drive).start();
+                        drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeLeftLBlue(drive));
                     }
                 } else {
-                    SpikeNavTrajectoriesRIGHT.navToSpikeLeftR(drive).start();
+                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeLeftR(drive));
                 }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
@@ -113,9 +113,9 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
-                    SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive).start();
+                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive));
                 } else {
-                    SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive).start();
+                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive));
                 }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
@@ -130,9 +130,9 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
                 if (StartPose.side == StartSide.LEFT) {
-                    SpikeNavTrajectoriesLEFT.navToSpikeRightL(drive).start();
+                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeRightL(drive));
                 } else {
-                    SpikeNavTrajectoriesRIGHT.navToSpikeRightR(drive).start();
+                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeRightR(drive));
                 }
                 PoseStorage.currentPose = drive.getPoseEstimate();
                 break;
@@ -146,33 +146,36 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
-                    SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive).start();
+                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive));
                 } else {
-                    SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive).start();
+                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive));
                 }
                 PoseStorage.currentPose = drive.getPoseEstimate();
         }
     }
-    public static void navToBackdrop(SampleMecanumDrive drive){
+    public static void navToBackdrop(SampleMecanumDrive drive, Telemetry telemetry){
         // move all the way to backdrop
+        telemetry.addData("alliance",StartPose.alliance);
+        telemetry.addData("side",StartPose.side);
+        telemetry.update();
         switch (StartPose.alliance){
             case RED:
                 switch (StartPose.side){
                     case LEFT:
-                        BackdropTrajectories.redShort(drive).start();
+                        drive.followTrajectorySequence(BackdropTrajectories.redShort(drive));
                         break;
                     case RIGHT:
-                        BackdropTrajectories.redLong(drive).start();
+                        drive.followTrajectorySequence(BackdropTrajectories.redLong(drive));
                         break;
                 }
                 break;
             case BLUE:
                 switch (StartPose.side){
                     case LEFT:
-                        BackdropTrajectories.blueShort(drive).start();
+                        drive.followTrajectorySequence(BackdropTrajectories.blueShort(drive));
                         break;
                     case RIGHT:
-                        BackdropTrajectories.blueLong(drive).start();
+                        drive.followTrajectorySequence(BackdropTrajectories.blueLong(drive));
                         break;
                 }
                 break;

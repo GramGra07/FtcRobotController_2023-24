@@ -72,10 +72,6 @@ public class Vision {
         builder.setCamera(hardwareMap.get(WebcamName.class, EOCVWebcam.cam1_N));
         builder.addProcessors(aprilTag,tFod);
         portal = builder.build();
-        CameraStreamSource source = (CameraStreamSource) portal;
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        FtcDashboard.getInstance().startCameraStream(source,cameraMonitorViewId);
-//        FtcDashboard.getInstance().startCameraStream(OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class,EOCVWebcam.cam1_N)),cameraMonitorViewId);
     }
     public static void telemetryTfod(OpMode myOpMode) {
         List<Recognition> currentRecognitions = tFod.getRecognitions();
@@ -109,8 +105,8 @@ public class Vision {
         }
     }
     public static boolean searchAprilTags(int id){
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        if (currentDetections.size()>0) {
+        if (aprilTag.getDetections().size()>0) {
+            List<AprilTagDetection> currentDetections = aprilTag.getDetections();
             for (AprilTagDetection detection : currentDetections) {
                 if (detection.id == id) {
                     return true;

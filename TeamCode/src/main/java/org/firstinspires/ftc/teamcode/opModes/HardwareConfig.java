@@ -58,7 +58,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
     public static double liftPower = 0;
-    public static double liftMax = 1;
+    public static double liftMax = 1, liftMin = -0.7;
     public static double airplanePower = 0;
     public static final double airplaneMax = 1;
     public static boolean airplaneArmed = true;

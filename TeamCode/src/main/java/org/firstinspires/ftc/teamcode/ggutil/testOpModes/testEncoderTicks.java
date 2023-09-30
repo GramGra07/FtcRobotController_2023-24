@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.ggutil.testOpModes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 @TeleOp
+@Disabled
 public class testEncoderTicks extends LinearOpMode {
     DcMotor enc1;
     @Override

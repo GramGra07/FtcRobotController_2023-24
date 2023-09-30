@@ -78,7 +78,7 @@ public class Drivers {
             if (myOpMode.gamepad2.cross){
                 closeClaw(claw2);
             }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[1]) {//Camden
             if (myOpMode.gamepad2.cross && airplaneArmed){
@@ -98,7 +98,7 @@ public class Drivers {
             if (myOpMode.gamepad2.dpad_up){
                 closeClaw(claw2);
             }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[2]) {//Kian
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -118,7 +118,7 @@ public class Drivers {
             if (myOpMode.gamepad2.dpad_left){
                 closeClaw(claw2);
             }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[3]) {//Grady
             if (myOpMode.gamepad2.circle && airplaneArmed){
@@ -138,7 +138,7 @@ public class Drivers {
             if (myOpMode.gamepad2.dpad_left){
                 closeClaw(claw2);
             }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[4]) {//Michael
             if (myOpMode.gamepad2.square && airplaneArmed){
@@ -158,7 +158,7 @@ public class Drivers {
             if (myOpMode.gamepad2.right_bumper){
                 closeClaw(claw2);
             }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, -liftMax, liftMax);
+            liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
     }
 

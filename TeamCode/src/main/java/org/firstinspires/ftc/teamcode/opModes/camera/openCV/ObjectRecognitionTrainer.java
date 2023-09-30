@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @TeleOp
-//@Disabled
+@Disabled
 @Config
 public class ObjectRecognitionTrainer extends LinearOpMode {
     OpenCvWebcam webcam;

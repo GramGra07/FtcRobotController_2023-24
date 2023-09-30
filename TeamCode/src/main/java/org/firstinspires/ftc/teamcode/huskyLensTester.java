@@ -32,47 +32,23 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import static org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil.huskyLensTelemetry;
+import static org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil.initHuskyLens;
+
+import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-
-import java.util.concurrent.TimeUnit;
-
 @TeleOp
 //@Disabled
-public class HuskyLens extends LinearOpMode {
-
-    private final int READ_PERIOD = 1;
-
-    private com.qualcomm.hardware.dfrobot.HuskyLens huskyLens;
-
+public class huskyLensTester extends LinearOpMode {
     @Override
     public void runOpMode() {
-        huskyLens = hardwareMap.get(com.qualcomm.hardware.dfrobot.HuskyLens.class, "huskylens");
-        Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS);
-        rateLimit.expire();
-        if (!huskyLens.knock()) {
-            telemetry.addData(">>", "Problem communicating with " + huskyLens.getDeviceName());
-        } else {
-            telemetry.addData(">>", "Press start to continue");
-        }
-        huskyLens.selectAlgorithm(com.qualcomm.hardware.dfrobot.HuskyLens.Algorithm.TAG_RECOGNITION);
+        initHuskyLens(hardwareMap,this,HuskyLens.Algorithm.FACE_RECOGNITION);
         telemetry.update();
         waitForStart();
         while (opModeIsActive()) {
-            if (!rateLimit.hasExpired()) {
-                continue;
-            }
-            rateLimit.reset();
-            com.qualcomm.hardware.dfrobot.HuskyLens.Block[] blocks = huskyLens.blocks();
-            telemetry.addData("Block count", blocks.length);
-            for (int i = 0; i < blocks.length; i++) {
-                telemetry.addData("Block", blocks[i].toString());
-            }
-
-            telemetry.update();
+            huskyLensTelemetry(telemetry,true);
         }
     }
 }
