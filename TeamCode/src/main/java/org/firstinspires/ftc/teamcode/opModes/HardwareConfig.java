@@ -50,7 +50,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean useFileWriter = true;
     public static boolean multipleDrivers = false;
     public String statusVal = "OFFLINE";
-    public static Servo claw1 = null, claw2 = null;
+    public static Servo claw1 = null, claw2 = null, airplaneServo = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorPaperAirplane = null, motorLift = null;
     public static DcMotor enc1 = null;
     public static RevBlinkinLedDriver lights;
@@ -138,6 +138,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorLift = ahwMap.get(DcMotor.class, "lift");
         claw1 = ahwMap.get(Servo.class, "claw1");
         claw2 = ahwMap.get(Servo.class, "claw2");
+        airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
         //encoders
         enc1 = ahwMap.get(DcMotor.class, "enc1");
         resetEncoder(enc1);
@@ -154,6 +155,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorPaperAirplane);
         claw1.setPosition(setServo(baseServo));
         claw2.setPosition(setServo(baseServo));
+        airplaneServo.setPosition(setServo(150));
         cRE = new Gamepad.RumbleEffect.Builder()
                 .addStep(1.0, 1.0, 250)  //  Rumble right motor 100% for 500 mSec
                 .build();

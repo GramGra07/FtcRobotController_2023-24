@@ -49,7 +49,7 @@ Encoder
 Servo
 0 - claw1
 1 - claw2
-2 -
+2 - airplaneServo
 3 -
 4 -
 5 -
