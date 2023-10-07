@@ -39,10 +39,10 @@ public class OpenCVpipelines {
     }
 
     public static class ColorDetection extends OpenCvPipeline {//isolation of color
-        Mat hsv = new Mat();
+        Mat ycrcbMat = new Mat();
         Mat mask1 = new Mat();
         Mat mask2 = new Mat();
-        Mat hsv2 = new Mat();
+        Mat ycrcbMat2 = new Mat();
         Mat end = new Mat();
 
         String color;
@@ -55,14 +55,14 @@ public class OpenCVpipelines {
         public Mat processFrame(Mat input) {
             EOCVWebcam.pipelineName = "Color Detection";
             Scalar scalarLow, scalarHigh;
-            Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
+            Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);//change to ycrcbMat
             if (!color.equals("red")) {
                 scalarLow = fetchScalar("l", color, 0);
                 scalarHigh = fetchScalar("h", color, 0);
-                Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
+                Core.inRange(ycrcbMat, scalarLow, scalarHigh, end);//detect color, output to end
             } else {
-                Core.inRange(hsv, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
-                Core.inRange(hsv2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
+                Core.inRange(ycrcbMat, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
+                Core.inRange(ycrcbMat2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
             return end;
@@ -71,9 +71,9 @@ public class OpenCVpipelines {
 
     public static class ColorEdgeDetection extends OpenCvPipeline {
         Mat edges = new Mat();
-        Mat hsv = new Mat();
+        Mat ycrcbMat = new Mat();
         Mat mask1 = new Mat();
-        Mat hsv2 = new Mat();
+        Mat ycrcbMat2 = new Mat();
         Mat mask2 = new Mat();
         Mat end = new Mat();
         String color;
@@ -89,14 +89,14 @@ public class OpenCVpipelines {
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
-            Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
+            Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);//change to ycrcbMat
             if (!color.equals("red")) {
                 scalarLow = fetchScalar("l", color, 0);
                 scalarHigh = fetchScalar("h", color, 0);
-                Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
+                Core.inRange(ycrcbMat, scalarLow, scalarHigh, end);//detect color, output to end
             } else {
-                Core.inRange(hsv, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
-                Core.inRange(hsv2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
+                Core.inRange(ycrcbMat, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
+                Core.inRange(ycrcbMat2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
             Imgproc.Canny(end, edges, 25, 50);
@@ -108,8 +108,8 @@ public class OpenCVpipelines {
         Mat end = new Mat();
         Mat edges = new Mat();
         Mat hierarchy = new Mat();
-        Mat hsv = new Mat();
-        Mat hsv2 = new Mat();
+        Mat ycrcbMat = new Mat();
+        Mat ycrcbMat2 = new Mat();
         Mat mask1 = new Mat();
         Mat mask2 = new Mat();
 
@@ -125,15 +125,15 @@ public class OpenCVpipelines {
             // color map below
             // https://i.stack.imgur.com/gyuw4.png
             Scalar scalarLow, scalarHigh;
-            Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
-            Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
+            Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);//change to ycrcbMat
+            Imgproc.cvtColor(input, ycrcbMat2, Imgproc.COLOR_RGB2YCrCb);
             if (!color.equals("red")) {
                 scalarLow = fetchScalar("l", color, 0);
                 scalarHigh = fetchScalar("h", color, 0);
-                Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
+                Core.inRange(ycrcbMat, scalarLow, scalarHigh, end);//detect color, output to end
             } else {
-                Core.inRange(hsv, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
-                Core.inRange(hsv2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
+                Core.inRange(ycrcbMat, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
+                Core.inRange(ycrcbMat2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
             Imgproc.Canny(end, edges, 25, 50);
@@ -290,8 +290,8 @@ public class OpenCVpipelines {
 
         }
 
-        Mat hsv = new Mat();
-        Mat hsv2 = new Mat();
+        Mat ycrcbMat = new Mat();
+        Mat ycrcbMat2 = new Mat();
         Mat mask1 = new Mat();
         Mat mask2 = new Mat();
         Mat end = new Mat();
@@ -302,15 +302,15 @@ public class OpenCVpipelines {
         public Mat processFrame(Mat input) {
             EOCVWebcam.pipelineName = "Recognize Object";
             Scalar scalarLow, scalarHigh;
-            Imgproc.cvtColor(input, hsv, Imgproc.COLOR_RGB2HSV);//change to hsv
-            Imgproc.cvtColor(input, hsv2, Imgproc.COLOR_RGB2HSV);
+            Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);//change to ycrcbMat
+            Imgproc.cvtColor(input, ycrcbMat2, Imgproc.COLOR_RGB2YCrCb);
             if (!color.equals("red")) {
                 scalarLow = fetchScalar("l", color, 0);
                 scalarHigh = fetchScalar("h", color, 0);
-                Core.inRange(hsv, scalarLow, scalarHigh, end);//detect color, output to end
+                Core.inRange(ycrcbMat, scalarLow, scalarHigh, end);//detect color, output to end
             } else {
-                Core.inRange(hsv, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
-                Core.inRange(hsv2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
+                Core.inRange(ycrcbMat, fetchScalar("l", color, 1), fetchScalar("h", color, 1), mask1);
+                Core.inRange(ycrcbMat2, fetchScalar("l", color, 2), fetchScalar("h", color, 2), mask2);
                 Core.bitwise_or(mask1, mask2, end);//takes both masks and combines them
             }
 
