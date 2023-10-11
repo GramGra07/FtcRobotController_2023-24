@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
 import com.acmerobotics.dashboard.config.Config;
 
-@Config
+//@Config
 public class blueconeObjVars {
     public static double aspectRatio = 0.7333333333333333;
     public static double minWidth = 53.0;

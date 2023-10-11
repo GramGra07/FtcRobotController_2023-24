@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 import com.acmerobotics.dashboard.config.Config;
-@Config
+//@Config
 public class redpropObjVars {
     public static double aspectRatio = 1;
     public static double minWidth = 109.0;

@@ -8,13 +8,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.eocvSim.ColorEdgeDetectionBounded;
+import org.firstinspires.ftc.teamcode.eocvSim.SimpleThresholdPipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @TeleOp
-@Disabled
+//@Disabled
 public class pipelineTester extends LinearOpMode {
     OpenCvWebcam webcam;
     public static int x = 0;
@@ -27,11 +29,12 @@ public class pipelineTester extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new OpenCVpipelines.RecognizeObject("red", "prop"));//!can switch pipelines here
+        webcam.setPipeline(new SimpleThresholdPipeline());//!can switch pipelines here
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
         // OpenCVpipelines.WhiteDotDetection()
         // OpenCVpipelines.ColorEdgeDetectionBounded("yellow")
         // RecognizeObject("red", "cone")
+        // OpenCVpipelines.RecognizeObject("red", "prop")
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override

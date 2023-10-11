@@ -18,7 +18,6 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
     Mat edges = new Mat();
     Mat hierarchy = new Mat();
     Mat ycrcbMat = new Mat();
-    public int farLeft = 100,farRight = 600,top = 240,lowTop = 200,highTop = 430,width = 50,topLeft = 150,topRight = 500;
     public Scalar scalarLow = new Scalar(0, 0, 0), scalarHigh = new Scalar(255, 255, 255);
     public Scalar c = new Scalar(255,255,255);
 
@@ -32,9 +31,9 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         // color map below
         // https://i.stack.imgur.com/gyuw4.png
 //        Scalar scalarLow, scalarHigh;
-        Imgproc.rectangle(input, new Point(farLeft-width, highTop), new Point(farLeft, top), new Scalar(0, 255, 0), 1);
-        Imgproc.rectangle(input, new Point(topLeft, lowTop), new Point(topRight, top), new Scalar(0, 255, 0), 1);
-        Imgproc.rectangle(input, new Point(farRight-width, highTop), new Point(farRight, top), new Scalar(0, 255, 0), 1);
+        Imgproc.rectangle(input, new Point(0, 215), new Point(50, 120), new Scalar(0, 255, 0), 1);
+        Imgproc.rectangle(input, new Point(75, 100), new Point(250, 120), new Scalar(0, 255, 0), 1);
+        Imgproc.rectangle(input, new Point(275, 215), new Point(320, 120), new Scalar(0, 255, 0), 1);
         Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);//change to hsv
         Core.inRange(ycrcbMat, scalarLow, scalarHigh, end);
         Core.bitwise_and(input, input, ycrcbMat, end);
