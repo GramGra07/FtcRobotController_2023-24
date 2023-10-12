@@ -18,12 +18,14 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
     Mat edges = new Mat();
     Mat hierarchy = new Mat();
     Mat ycrcbMat = new Mat();
-    public Scalar scalarLow = new Scalar(0, 0, 0), scalarHigh = new Scalar(255, 255, 255);
-    public Scalar c = new Scalar(255,255,255);
+    public Scalar scalarLow = new Scalar(SimpleThresholdPipeline.lower1, SimpleThresholdPipeline.lower2, SimpleThresholdPipeline.lower3), scalarHigh = new Scalar(SimpleThresholdPipeline.higher1, SimpleThresholdPipeline.higher2, SimpleThresholdPipeline.higher3);
+    public Scalar c = new Scalar(255, 0, 0);
 
-//    public ColorEdgeDetectionBounded(String color) {
+    //    public ColorEdgeDetectionBounded(String color) {
 //        this.color = color;
 //    }
+    int[] pointsX = new int[]{0, 50, 75, 250, 270, 320};
+    int[] pointsY = new int[]{120, 215, 100, 120, 120,215};
 
     @Override
     public Mat processFrame(Mat input) {
@@ -31,9 +33,9 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         // color map below
         // https://i.stack.imgur.com/gyuw4.png
 //        Scalar scalarLow, scalarHigh;
-        Imgproc.rectangle(input, new Point(0, 215), new Point(50, 120), new Scalar(0, 255, 0), 1);
-        Imgproc.rectangle(input, new Point(75, 100), new Point(250, 120), new Scalar(0, 255, 0), 1);
-        Imgproc.rectangle(input, new Point(275, 215), new Point(320, 120), new Scalar(0, 255, 0), 1);
+        Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
+        Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
+        Imgproc.rectangle(input, new Point(pointsX[4], pointsY[4]), new Point(pointsX[5], pointsY[5]), new Scalar(0, 255, 0), 1);
         Imgproc.cvtColor(input, ycrcbMat, Imgproc.COLOR_RGB2YCrCb);//change to hsv
         Core.inRange(ycrcbMat, scalarLow, scalarHigh, end);
         Core.bitwise_and(input, input, ycrcbMat, end);
@@ -49,7 +51,6 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
             Imgproc.approxPolyDP(new MatOfPoint2f(contours.get(i).toArray()), contoursPoly[i], 3, true);
             centers[i] = new Point();
             boundRect[i] = Imgproc.boundingRect(new MatOfPoint(contoursPoly[i].toArray()));
-
             Imgproc.minEnclosingCircle(contoursPoly[i], centers[i], radius[i]);
         }
         List<MatOfPoint> contoursPolyList = new ArrayList<>(contoursPoly.length);
@@ -58,24 +59,19 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         }
         int highIndex = 0;
         for (int i = 0; i < contours.size(); i++) {
-            if (((centers[i].x < 50 && centers[i].x > 100) && (centers[i].y < 430 && centers[i].y > 240)) || ((centers[i].x > 150 && centers[i].x < 500) && (centers[i].y < 240 && centers[i].y > 200)) || ((centers[i].x > 550 && centers[i].x < 600) && (centers[i].y < 430 && centers[i].y > 240))) {
+            if (((centers[i].x > pointsX[0] && centers[i].x < pointsX[1]) && (centers[i].y > pointsY[0] && centers[i].y < pointsY[1])) ||
+                    ((centers[i].x > pointsX[2] && centers[i].x < pointsX[3]) && (centers[i].y > pointsY[2] && centers[i].y < pointsY[3])) ||
+                    ((centers[i].x > pointsX[4] && centers[i].x < pointsX[5]) && (centers[i].y > pointsY[4] && centers[i].y < pointsY[5])))
+            {
                 Imgproc.drawContours(input, contoursPolyList, i, c);
                 Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 1);
+                double centerX = boundRect[i].tl().x + ((boundRect[i].br().x - boundRect[i].tl().x) / 2);
+                double centerY = boundRect[i].br().y + ((boundRect[i].tl().y - boundRect[i].br().y) / 2);
+                Imgproc.line(input, new Point(centerX - 5, centerY), new Point(centerX + 5, centerY), new Scalar(0, 255, 200));
+                Imgproc.line(input, new Point(centerX, centerY - 5), new Point(centerX, centerY + 5), new Scalar(0, 255, 200));
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
                     highIndex = i;
             }
-        }
-        if (boundRect.length > 0) {
-            double left = boundRect[highIndex].tl().x;
-            double right = boundRect[highIndex].br().x;
-            double top = boundRect[highIndex].tl().y;
-            double bottom = boundRect[highIndex].br().y;
-//            pipelineTester.left = left;
-//            pipelineTester.right = right;
-//            pipelineTester.top = top;
-//            pipelineTester.bottom = bottom;
-            int centerX = (int) (left + ((right - left) / 2));
-            Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, c, 1);
         }
         return input;
     }

@@ -29,7 +29,7 @@ public class pipelineTester extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new SimpleThresholdPipeline());//!can switch pipelines here
+        webcam.setPipeline(new ColorEdgeDetectionBounded());//!can switch pipelines here
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
         // OpenCVpipelines.WhiteDotDetection()
         // OpenCVpipelines.ColorEdgeDetectionBounded("yellow")

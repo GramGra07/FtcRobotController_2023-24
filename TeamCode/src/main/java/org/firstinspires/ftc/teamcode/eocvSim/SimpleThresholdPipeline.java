@@ -10,11 +10,11 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 public class SimpleThresholdPipeline extends OpenCvPipeline {
     public static int lower1 = 0;
-    public static int lower2 = 0;
+    public static int lower2 = 147;
     public static int lower3 = 0;
-    public static int higher1=170;
-    public static int higher2 = 200;
-    public static int higher3 = 240;
+    public static int higher1=255;
+    public static int higher2 = 255;
+    public static int higher3 = 255;
     public static Scalar lower = new Scalar(lower1, lower2, lower3);
     public static Scalar upper = new Scalar(higher1, higher2, higher3);
     private Mat ycrcbMat = new Mat();
