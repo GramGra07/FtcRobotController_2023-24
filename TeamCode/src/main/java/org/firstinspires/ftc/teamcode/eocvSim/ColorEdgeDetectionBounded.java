@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.eocvSim;
 
+import org.firstinspires.ftc.teamcode.Enums.Alliance;
+import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -18,21 +20,30 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
     Mat edges = new Mat();
     Mat hierarchy = new Mat();
     Mat ycrcbMat = new Mat();
-    public Scalar scalarLow = new Scalar(SimpleThresholdPipeline.lower1, SimpleThresholdPipeline.lower2, SimpleThresholdPipeline.lower3), scalarHigh = new Scalar(SimpleThresholdPipeline.higher1, SimpleThresholdPipeline.higher2, SimpleThresholdPipeline.higher3);
     public Scalar c = new Scalar(255, 0, 0);
+    public Alliance alliance;
 
-    //    public ColorEdgeDetectionBounded(String color) {
-//        this.color = color;
-//    }
+    public ColorEdgeDetectionBounded(Alliance color) {
+        this.alliance = color;
+    }
     int[] pointsX = new int[]{0, 50, 75, 250, 270, 320};
     int[] pointsY = new int[]{120, 215, 100, 120, 120,215};
+
+    Scalar scalarLow, scalarHigh;
 
     @Override
     public Mat processFrame(Mat input) {
 //        EOCVWebcam.pipelineName = "Color Edge Detection Bounded";
         // color map below
         // https://i.stack.imgur.com/gyuw4.png
-//        Scalar scalarLow, scalarHigh;
+        if (alliance == Alliance.RED){
+            scalarLow = new Scalar(0, 147,0);
+            scalarHigh = new Scalar(255,255,255);
+        }else if (alliance == Alliance.BLUE){
+            //todo change to blue
+            scalarLow = new Scalar(0, 147,0);
+            scalarHigh = new Scalar(255,255,255);
+        }
         Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
         Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
         Imgproc.rectangle(input, new Point(pointsX[4], pointsY[4]), new Point(pointsX[5], pointsY[5]), new Scalar(0, 255, 0), 1);

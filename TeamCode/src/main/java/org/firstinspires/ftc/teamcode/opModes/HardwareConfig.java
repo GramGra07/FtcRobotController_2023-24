@@ -164,7 +164,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         Sensors.ledIND(green2, red2, true);
         Sensors.ledIND(green3, red3, true);
         Sensors.ledIND(green4, red4, true);
-        Blink.setLights(null, true);
+        Blink.setLights(LEDcolor, true);
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("Version", currentVersion);
@@ -260,8 +260,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void buildTelemetry() {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         //Telemetry telemetry = myOpMode.telemetry;
-        telemetry.addData("potentiometer", "%.1f", getPotentVal(potentiometer));
-        telemetry.addData("limitSwitch", getLimitSwitch(limitSwitch));
 
         telemetry.addData("Drivers", currDriver + " " + currOther);
         getBatteryVoltage(vSensor);

@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.*;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.ggutil.pure.fromTutorial.com.company.Range;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
@@ -73,18 +74,18 @@ public class Drivers {
             }else if (myOpMode.gamepad2.dpad_down){
                 retractAirplane(airplaneServo);
             }
-//            if (myOpMode.gamepad2.dpad_up){
-//                openClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.dpad_down){
-//                closeClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.triangle){
-//                openClaw(claw2);
-//            }
-//            if (myOpMode.gamepad2.cross){
-//                closeClaw(claw2);
-//            }
+            if (myOpMode.gamepad2.dpad_up){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.dpad_down){
+                closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.triangle){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.cross){
+                closeClaw(claw2);
+            }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[1]) {//Camden
@@ -98,18 +99,18 @@ public class Drivers {
             }else if (myOpMode.gamepad2.dpad_down){
                 retractAirplane(airplaneServo);
             }
-//            if (myOpMode.gamepad2.right_bumper){
-//                openClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.left_bumper){
-//                closeClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.dpad_down){
-//                openClaw(claw2);
-//            }
-//            if (myOpMode.gamepad2.dpad_up){
-//                closeClaw(claw2);
-//            }
+            if (myOpMode.gamepad2.right_bumper){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.dpad_down){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.dpad_up){
+                closeClaw(claw2);
+            }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[2]) {//Kian
@@ -123,18 +124,18 @@ public class Drivers {
             }else if (myOpMode.gamepad2.dpad_down){
                 retractAirplane(airplaneServo);
             }
-//            if (myOpMode.gamepad2.right_bumper){
-//                openClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.left_bumper){
-//                closeClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.dpad_right){
-//                openClaw(claw2);
-//            }
-//            if (myOpMode.gamepad2.dpad_left){
-//                closeClaw(claw2);
-//            }
+            if (myOpMode.gamepad2.right_bumper){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.dpad_right){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.dpad_left){
+                closeClaw(claw2);
+            }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[3]) {//Grady
@@ -148,18 +149,18 @@ public class Drivers {
             }else if (myOpMode.gamepad2.dpad_down){
                 retractAirplane(airplaneServo);
             }
-//            if (myOpMode.gamepad2.right_bumper){
-//                openClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.left_bumper){
-//                closeClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.dpad_right){
-//                openClaw(claw2);
-//            }
-//            if (myOpMode.gamepad2.dpad_left){
-//                closeClaw(claw2);
-//            }
+            if (myOpMode.gamepad2.right_bumper){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.dpad_right){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.dpad_left){
+                closeClaw(claw2);
+            }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[4]) {//Michael
@@ -173,20 +174,21 @@ public class Drivers {
             }else if (myOpMode.gamepad2.dpad_down){
                 retractAirplane(airplaneServo);
             }
-//            if (myOpMode.gamepad2.dpad_up){
-//                openClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.dpad_down){
-//                closeClaw(claw1);
-//            }
-//            if (myOpMode.gamepad2.left_bumper){
-//                openClaw(claw2);
-//            }
-//            if (myOpMode.gamepad2.right_bumper){
-//                closeClaw(claw2);
-//            }
+            if (myOpMode.gamepad2.dpad_up){
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.dpad_down){
+                closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper){
+                openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.right_bumper){
+                closeClaw(claw2);
+            }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
+        Blink.selectLights(myOpMode);
     }
 
 

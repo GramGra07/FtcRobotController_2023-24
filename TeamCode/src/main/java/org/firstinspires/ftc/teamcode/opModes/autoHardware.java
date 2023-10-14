@@ -26,9 +26,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-public class autoHardware extends HardwareConfig {//auto version of hardware config
-    public static double robotWidth = 16;
-    public static double robotLength = 18;
+public class autoHardware extends HardwareConfig{
 
     public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
 //  public static Pose2d startPose = getStartPose(StartPose.redRight);
@@ -63,16 +61,16 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
             case RED:
                 switch (side){
                     case LEFT:
-                        return new Pose2d(72-(robotLength/2),-36,  Math.toRadians(180));
+                        return new Pose2d(72-(16/2),-36,  Math.toRadians(180));
                     case RIGHT:
-                        return new Pose2d(72-(robotLength/2),12, Math.toRadians(180));
+                        return new Pose2d(72-(16/2),12, Math.toRadians(180));
                 }
             case BLUE:
                 switch (side){
                     case LEFT:
-                        return new Pose2d(-72+(robotLength/2),12, Math.toRadians(0));
+                        return new Pose2d(-72+(16/2),12, Math.toRadians(0));
                     case RIGHT:
-                        return new Pose2d(-72+(robotLength/2),-36,  Math.toRadians(0));
+                        return new Pose2d(-72+(16/2),-36,  Math.toRadians(0));
                 }
         }
         return new Pose2d(0,0,0);
@@ -181,7 +179,7 @@ public class autoHardware extends HardwareConfig {//auto version of hardware con
                 break;
         }
     }
-    public static void delayUntilTagFound(OpMode myOpMode, int tag){
+    public static void delayUntilTagFound(OpMode myOpMode, int tag) {
         while (!Vision.searchAprilTags(tag)) {
             Vision.searchAprilTags(tag);
             Vision.telemetryAprilTag(myOpMode);

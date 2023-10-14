@@ -28,7 +28,7 @@ public class walkthrough extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
+        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
         robot.initAuto(hardwareMap);
         if (isStopRequested()) return;
         runSpikeNav(drive, this);

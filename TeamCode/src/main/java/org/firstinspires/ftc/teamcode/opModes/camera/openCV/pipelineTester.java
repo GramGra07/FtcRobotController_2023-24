@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.eocvSim.ColorEdgeDetectionBounded;
 import org.firstinspires.ftc.teamcode.eocvSim.SimpleThresholdPipeline;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -29,7 +30,7 @@ public class pipelineTester extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new ColorEdgeDetectionBounded());//!can switch pipelines here
+        webcam.setPipeline(new ColorEdgeDetectionBounded(StartPose.alliance));//!can switch pipelines here
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
         // OpenCVpipelines.WhiteDotDetection()
         // OpenCVpipelines.ColorEdgeDetectionBounded("yellow")

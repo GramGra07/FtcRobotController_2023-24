@@ -4,6 +4,7 @@ import static android.os.SystemClock.sleep;
 
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
@@ -13,6 +14,7 @@ public class Blink extends HardwareConfig {
     // change it with the screw holes
     // hold both strip select and mode button till it blinks blue
     private LinearOpMode myOpMode = null;
+    public static int once = 0;
 
     public Blink(LinearOpMode opmode) {
         super(opmode);
@@ -21,7 +23,6 @@ public class Blink extends HardwareConfig {
 
     public static final String[] favColors = {
             "RAINBOW_RAINBOW_PALETTE",
-            "RAINBOW_PARTY_PALETTE",
             "BEATS_PER_MINUTE_RAINBOW_PALETTE",
             "BEATS_PER_MINUTE_PARTY_PALETTE",
             "COLOR_WAVES_RAINBOW_PALETTE",
@@ -76,9 +77,7 @@ public class Blink extends HardwareConfig {
         int max = 100;
         final int random = (int) Math.floor(Math.random() * (max - min + 1) + min);
         final String[] commonColors = {
-                "RAINBOW_RAINBOW_PALETTE",
-                "RAINBOW_PARTY_PALETTE",
-                "BEATS_PER_MINUTE_RAINBOW_PALETTE",
+                "HOT_PINK",
                 "BEATS_PER_MINUTE_PARTY_PALETTE",
                 "COLOR_WAVES_RAINBOW_PALETTE",
                 "COLOR_WAVES_PARTY_PALETTE",
@@ -90,9 +89,8 @@ public class Blink extends HardwareConfig {
                 "CP1_2_END_TO_END_BLEND",
         };
         final String[] rareColors = {
-                "HOT_PINK",
-                "GOLD",
-                "VIOLET"
+                "RAINBOW_RAINBOW_PALETTE",
+                "BEATS_PER_MINUTE_RAINBOW_PALETTE",
         };
         if (random <= common) {
             // choose common
@@ -114,5 +112,28 @@ public class Blink extends HardwareConfig {
             LEDcolor = rareColors[rand];
         }
         return LEDcolor;
+    }
+
+    public static void selectLights(OpMode myOpMode) {
+        if (myOpMode.gamepad2.share) {
+            if (myOpMode.gamepad2.touchpad_finger_1_x < -0.5) {
+                Blink.setLights("WHITE", false);
+            }
+            if (myOpMode.gamepad2.touchpad_finger_1_x >= -0.5 && myOpMode.gamepad2.touchpad_finger_1_x < 0) {
+                Blink.setLights("GREEN", false);
+            }
+            if (myOpMode.gamepad2.touchpad_finger_1_x > 0 && myOpMode.gamepad2.touchpad_finger_1_x < 0.5) {
+                Blink.setLights("VIOLET", false);
+            }
+            if (myOpMode.gamepad2.touchpad_finger_1_x >= 0.5) {
+                Blink.setLights("GOLD", false);
+            }
+            once = 0;
+        } else {
+            if (once == 0) {
+                Blink.setLights(LEDcolor, true);
+                once = 1;
+            }
+        }
     }
 }
