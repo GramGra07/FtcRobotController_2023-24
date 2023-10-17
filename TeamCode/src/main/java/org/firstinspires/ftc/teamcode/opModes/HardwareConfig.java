@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
+import org.firstinspires.ftc.teamcode.UtilClass.variable;
 import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
@@ -47,8 +48,8 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import java.io.FileWriter;
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
-    public static boolean useFileWriter = true;
-    public static boolean multipleDrivers = false;
+    public static boolean useFileWriter = variable.useFileWriter;
+    public static boolean multipleDrivers = variable.multipleDrivers;
     public String statusVal = "OFFLINE";
     public static Servo claw1 = null, claw2 = null, airplaneServo = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorPaperAirplane = null, motorLift = null;
@@ -61,7 +62,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static double liftMax = 1, liftMin = -0.7;
     public static double airplanePower = 0;
     public static final double airplaneMax = 1;
-    public static boolean airplaneArmed = true;
+    public static boolean airplaneArmed = variable.airplaneArmed;
     public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
     boolean reverse = false;
@@ -134,16 +135,16 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
-        motorPaperAirplane = ahwMap.get(DcMotor.class, "airplane");
+//        motorPaperAirplane = ahwMap.get(DcMotor.class, "airplane");
         motorLift = ahwMap.get(DcMotor.class, "lift");
         claw1 = ahwMap.get(Servo.class, "claw1");
         claw2 = ahwMap.get(Servo.class, "claw2");
-        airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
+//        airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
         //encoders
         enc1 = ahwMap.get(DcMotor.class, "enc1");
         resetEncoder(enc1);
         runWithoutEncoder(enc1);
-        runWithoutEncoder(motorPaperAirplane);
+//        runWithoutEncoder(motorPaperAirplane);
         //reversals
         setDirectionR(motorBackLeft);
         setDirectionR(motorLift);
@@ -152,10 +153,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorBackLeft);
         zeroPowerBrake(motorFrontLeft);
         zeroPowerBrake(motorFrontRight);
-        zeroPowerBrake(motorPaperAirplane);
+//        zeroPowerBrake(motorPaperAirplane);
         claw1.setPosition(setServo(baseServo));
         claw2.setPosition(setServo(baseServo));
-        airplaneServo.setPosition(setServo(150));
+//        airplaneServo.setPosition(setServo(150));
         cRE = new Gamepad.RumbleEffect.Builder()
                 .addStep(1.0, 1.0, 250)  //  Rumble right motor 100% for 500 mSec
                 .build();
@@ -253,7 +254,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft.setPower(backLeftPower);
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
-        motorPaperAirplane.setPower(airplanePower);
+//        motorPaperAirplane.setPower(airplanePower);
         motorLift.setPower(liftPower);
     }
 

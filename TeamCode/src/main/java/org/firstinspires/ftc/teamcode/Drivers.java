@@ -64,16 +64,16 @@ public class Drivers {
             myOpMode.gamepad2.runRumbleEffect(cRE);
         }
         if (currOther == otherControls[0]) {//Chase
-            if (myOpMode.gamepad2.circle && airplaneArmed){
-                airplanePower = airplaneMax;
-            }else{
-                airplanePower = 0;
-            }
-            if (myOpMode.gamepad2.dpad_up){
-                shootAirplane(airplaneServo);
-            }else if (myOpMode.gamepad2.dpad_down){
-                retractAirplane(airplaneServo);
-            }
+//            if (myOpMode.gamepad2.circle && airplaneArmed){
+//                airplanePower = airplaneMax;
+//            }else{
+//                airplanePower = 0;
+//            }
+//            if (myOpMode.gamepad2.dpad_up){
+//                shootAirplane(airplaneServo);
+//            }else if (myOpMode.gamepad2.dpad_down){
+//                retractAirplane(airplaneServo);
+//            }
             if (myOpMode.gamepad2.dpad_up){
                 openClaw(claw1);
             }
@@ -89,16 +89,16 @@ public class Drivers {
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[1]) {//Camden
-            if (myOpMode.gamepad2.cross && airplaneArmed){
-                airplanePower = airplaneMax;
-            }else{
-                airplanePower = 0;
-            }
-            if (myOpMode.gamepad2.dpad_up){
-                shootAirplane(airplaneServo);
-            }else if (myOpMode.gamepad2.dpad_down){
-                retractAirplane(airplaneServo);
-            }
+//            if (myOpMode.gamepad2.cross && airplaneArmed){
+//                airplanePower = airplaneMax;
+//            }else{
+//                airplanePower = 0;
+//            }
+//            if (myOpMode.gamepad2.dpad_up){
+//                shootAirplane(airplaneServo);
+//            }else if (myOpMode.gamepad2.dpad_down){
+//                retractAirplane(airplaneServo);
+//            }
             if (myOpMode.gamepad2.right_bumper){
                 openClaw(claw1);
             }
@@ -114,16 +114,16 @@ public class Drivers {
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[2]) {//Kian
-            if (myOpMode.gamepad2.circle && airplaneArmed){
-                airplanePower = airplaneMax;
-            }else{
-                airplanePower = 0;
-            }
-            if (myOpMode.gamepad2.dpad_up){
-                shootAirplane(airplaneServo);
-            }else if (myOpMode.gamepad2.dpad_down){
-                retractAirplane(airplaneServo);
-            }
+//            if (myOpMode.gamepad2.circle && airplaneArmed){
+//                airplanePower = airplaneMax;
+//            }else{
+//                airplanePower = 0;
+//            }
+//            if (myOpMode.gamepad2.dpad_up){
+//                shootAirplane(airplaneServo);
+//            }else if (myOpMode.gamepad2.dpad_down){
+//                retractAirplane(airplaneServo);
+//            }
             if (myOpMode.gamepad2.right_bumper){
                 openClaw(claw1);
             }
@@ -139,16 +139,16 @@ public class Drivers {
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[3]) {//Grady
-            if (myOpMode.gamepad2.circle && airplaneArmed){
-                airplanePower = airplaneMax;
-            }else{
-                airplanePower = 0;
-            }
-            if (myOpMode.gamepad2.dpad_up){
-                shootAirplane(airplaneServo);
-            }else if (myOpMode.gamepad2.dpad_down){
-                retractAirplane(airplaneServo);
-            }
+//            if (myOpMode.gamepad2.circle && airplaneArmed){
+//                airplanePower = airplaneMax;
+//            }else{
+//                airplanePower = 0;
+//            }
+//            if (myOpMode.gamepad2.dpad_up){
+//                shootAirplane(airplaneServo);
+//            }else if (myOpMode.gamepad2.dpad_down){
+//                retractAirplane(airplaneServo);
+//            }
             if (myOpMode.gamepad2.right_bumper){
                 openClaw(claw1);
             }
@@ -164,16 +164,16 @@ public class Drivers {
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
         if (currOther == otherControls[4]) {//Michael
-            if (myOpMode.gamepad2.square && airplaneArmed){
-                airplanePower = airplaneMax;
-            }else{
-                airplanePower = 0;
-            }
-            if (myOpMode.gamepad2.dpad_up){
-                shootAirplane(airplaneServo);
-            }else if (myOpMode.gamepad2.dpad_down){
-                retractAirplane(airplaneServo);
-            }
+//            if (myOpMode.gamepad2.square && airplaneArmed){
+//                airplanePower = airplaneMax;
+//            }else{
+//                airplanePower = 0;
+//            }
+//            if (myOpMode.gamepad2.dpad_up){
+//                shootAirplane(airplaneServo);
+//            }else if (myOpMode.gamepad2.dpad_down){
+//                retractAirplane(airplaneServo);
+//            }
             if (myOpMode.gamepad2.dpad_up){
                 openClaw(claw1);
             }
