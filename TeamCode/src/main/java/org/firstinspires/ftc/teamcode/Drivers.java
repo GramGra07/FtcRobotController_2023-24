@@ -63,6 +63,7 @@ public class Drivers {
             airplaneArmed = true;
             myOpMode.gamepad2.runRumbleEffect(cRE);
         }
+        Blink.selectLights(myOpMode);
         if (currOther == otherControls[0]) {//Chase
 //            if (myOpMode.gamepad2.circle && airplaneArmed){
 //                airplanePower = airplaneMax;
@@ -188,7 +189,6 @@ public class Drivers {
             }
             liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
         }
-        Blink.selectLights(myOpMode);
     }
 
 

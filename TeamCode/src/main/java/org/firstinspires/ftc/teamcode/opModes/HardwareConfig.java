@@ -26,6 +26,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -178,7 +179,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     //code to run all drive functions
     public void doBulk() {
-        once();//runs once
+        once(myOpMode);//runs once
         bindDriverButtons(myOpMode);
         bindOtherButtons(myOpMode);
         if (multipleDrivers) {
@@ -189,12 +190,15 @@ public class HardwareConfig {//this is an external opMode that can have public v
         buildTelemetry();//makes telemetry
     }
 
-    public void once() {
+    public void once(OpMode myOpMode) {
         if (!once) {
             Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
             // Telemetry telemetry = myOpMode.telemetry;
             telemetry.clearAll();
             updateStatus("Running");
+            int duration = 500;
+            myOpMode.gamepad1.setLedColor(229, 74, 161,duration);
+            myOpMode.gamepad2.setLedColor(54,69,79,duration);
             once = true;
         }
     }
