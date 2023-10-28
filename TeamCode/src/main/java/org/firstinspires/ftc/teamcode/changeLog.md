@@ -1,3 +1,7 @@
+4.0.1 October 28th, 2023
+Updated to fit all motors, config, and keybinds for the 2023-2024 season
+Created new Operator class for second gamepad
+
 4.0.0 September 9th, 2023
 Updated to FTC 9.0 and start of season
 

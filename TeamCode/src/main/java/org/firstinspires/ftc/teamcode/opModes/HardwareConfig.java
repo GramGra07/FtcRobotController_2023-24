@@ -2,7 +2,6 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
 import static org.firstinspires.ftc.teamcode.Drivers.bindDriverButtons;
-import static org.firstinspires.ftc.teamcode.Drivers.bindOtherButtons;
 import static org.firstinspires.ftc.teamcode.Drivers.currDriver;
 import static org.firstinspires.ftc.teamcode.Drivers.currOther;
 import static org.firstinspires.ftc.teamcode.Drivers.fieldCentric;
@@ -52,17 +51,18 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean useFileWriter = variable.useFileWriter;
     public static boolean multipleDrivers = variable.multipleDrivers;
     public String statusVal = "OFFLINE";
-    public static Servo claw1 = null, claw2 = null, airplaneServo = null;
-    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorPaperAirplane = null, motorLift = null;
+    public static Servo claw1 = null, claw2 = null, flipperServo = null;
+    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorSlides = null, motorIntake = null;
     public static DcMotor enc1 = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
-    public static double liftPower = 0;
+    public static double liftPower = 0, slidePower = 0, intakePower = 0;
+    public static double intakeMin=-1, intakeMax = 1;
     public static double liftMax = 1, liftMin = -0.7;
-    public static double airplanePower = 0;
-    public static final double airplaneMax = 1;
+    public static double slideMax = 1, slideMin = -1;
+    public static boolean intakeOn = false;
     public static boolean airplaneArmed = variable.airplaneArmed;
     public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
@@ -81,7 +81,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public AnalogInput potentiometer;
     public DigitalChannel limitSwitch;
     public VoltageSensor vSensor;
-    //    public TouchSensor touchSensor;
     public SampleMecanumDrive drive = null;
     public static double thisDist = 0;
     public static final ElapsedTime timer = new ElapsedTime();
@@ -136,11 +135,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft = ahwMap.get(DcMotor.class, "motorBackLeft");//getting the motorBackLeft motor
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
-//        motorPaperAirplane = ahwMap.get(DcMotor.class, "airplane");
         motorLift = ahwMap.get(DcMotor.class, "lift");
+        motorSlides = ahwMap.get(DcMotor.class, "slideMotor");
+        motorIntake = ahwMap.get(DcMotor.class, "intakeMotor");
         claw1 = ahwMap.get(Servo.class, "claw1");
         claw2 = ahwMap.get(Servo.class, "claw2");
-//        airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
+        flipperServo = ahwMap.get(Servo.class, "flipperServo");
         //encoders
         enc1 = ahwMap.get(DcMotor.class, "enc1");
         resetEncoder(enc1);
@@ -154,10 +154,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorBackLeft);
         zeroPowerBrake(motorFrontLeft);
         zeroPowerBrake(motorFrontRight);
-//        zeroPowerBrake(motorPaperAirplane);
+        zeroPowerBrake(motorSlides);
         claw1.setPosition(setServo(baseServo));
         claw2.setPosition(setServo(baseServo));
-//        airplaneServo.setPosition(setServo(150));
         cRE = new Gamepad.RumbleEffect.Builder()
                 .addStep(1.0, 1.0, 250)  //  Rumble right motor 100% for 500 mSec
                 .build();
@@ -181,7 +180,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void doBulk() {
         once(myOpMode);//runs once
         bindDriverButtons(myOpMode);
-        bindOtherButtons(myOpMode);
+        bindDriverButtons(myOpMode);
         if (multipleDrivers) {
             switchProfile(myOpMode);
         }
@@ -258,8 +257,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackLeft.setPower(backLeftPower);
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
-//        motorPaperAirplane.setPower(airplanePower);
         motorLift.setPower(liftPower);
+        motorSlides.setPower(slidePower);
     }
 
     public void buildTelemetry() {

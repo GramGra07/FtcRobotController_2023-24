@@ -25,4 +25,10 @@ public class ServoUtil {
     public static void retractAirplane(Servo servo){
         servo.setPosition(setServo(150));
     }
+    public static void flipperDown(Servo servo){
+        servo.setPosition(setServo(0));
+    }
+    public static void flipperUp(Servo servo){
+        servo.setPosition(setServo(180));
+    }
 }

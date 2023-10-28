@@ -37,19 +37,19 @@ USB -
 
 Expansion Hub
 Motor
-0 - airplane
-1 - none
+0 - slideMotor
+1 - intakeMotor
 2 - lift
 3 -
 Encoder
-0 -
+0 - same
 1 - enc1
 2 - same
 3 -
 Servo
 0 - claw1
 1 - claw2
-2 - airplaneServo
+2 - flipperServo
 3 -
 4 -
 5 -
