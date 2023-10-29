@@ -142,7 +142,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipperServo = ahwMap.get(Servo.class, "flipperServo");
         //encoders
-        enc1 = ahwMap.get(DcMotor.class, "enc1");
+        enc1 = ahwMap.get(DcMotor.class, "intakeMotor");
         resetEncoder(enc1);
         runWithoutEncoder(enc1);
 //        runWithoutEncoder(motorPaperAirplane);

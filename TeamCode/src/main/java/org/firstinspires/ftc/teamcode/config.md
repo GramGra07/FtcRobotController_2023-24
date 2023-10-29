@@ -43,7 +43,7 @@ Motor
 3 -
 Encoder
 0 - same
-1 - enc1
+1 - same
 2 - same
 3 -
 Servo
