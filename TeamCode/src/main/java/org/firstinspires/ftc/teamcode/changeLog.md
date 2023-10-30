@@ -1,3 +1,8 @@
+4.1.0 October 30th, 2023
+Added disableRR.sh and enableRR.sh and documentation for these. They enable all Road Runner opModes
+or disable all of them. rrFiles.txt controls which files are changed. This is a shell script and
+should run natively on all devices without changing anything.
+
 4.0.1 October 28th, 2023
 Updated to fit all motors, config, and keybinds for the 2023-2024 season
 Created new Operator class for second gamepad

@@ -1,0 +1,16 @@
+opModes/rr/drive/opmode/AutomaticFeedforwardTuner.java
+opModes/rr/drive/opmode/BackAndForth.java
+opModes/rr/drive/opmode/DriveVelocityPIDTuner.java
+opModes/rr/drive/opmode/FollowerPIDTuner.java
+opModes/rr/drive/opmode/LocalizationTest.java
+opModes/rr/drive/opmode/ManualFeedforwardTuner.java
+opModes/rr/drive/opmode/MaxAngularVeloTuner.java
+opModes/rr/drive/opmode/MaxVelocityTuner.java
+opModes/rr/drive/opmode/MotorDirectionDebugger.java
+opModes/rr/drive/opmode/SplineTest.java
+opModes/rr/drive/opmode/StrafeTest.java
+opModes/rr/drive/opmode/StraightTest.java
+opModes/rr/drive/opmode/TrackingWheelForwardOffsetTuner.java
+opModes/rr/drive/opmode/TrackingWheelLateralDistanceTuner.java
+opModes/rr/drive/opmode/TrackWidthTuner.java
+opModes/rr/drive/opmode/TurnTest.java
