@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 @Autonomous
-//@Disabled
+@Disabled
 public class tester extends LinearOpMode {
     autoHardware robot = new autoHardware(this);
 

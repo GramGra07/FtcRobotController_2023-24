@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.eocvSim;
 
-import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;

@@ -19,16 +19,10 @@ public class ServoUtil {
     public static void closeClaw(Servo servo){
         servo.setPosition(setServo(baseServo));
     }
-    public static void shootAirplane(Servo servo){
+    public static void flipServoLeft(Servo servo){
         servo.setPosition(setServo(0));
     }
-    public static void retractAirplane(Servo servo){
-        servo.setPosition(setServo(150));
-    }
-    public static void flipperDown(Servo servo){
-        servo.setPosition(setServo(0));
-    }
-    public static void flipperUp(Servo servo){
+    public static void flipServoRight(Servo servo){
         servo.setPosition(setServo(180));
     }
 }

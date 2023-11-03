@@ -1,7 +1,9 @@
-package org.firstinspires.ftc.teamcode.eocvSim;
+package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
+
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRandom;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
-import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
+import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -37,12 +39,12 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         // color map below
         // https://i.stack.imgur.com/gyuw4.png
         if (alliance == Alliance.RED){
-            scalarLow = new Scalar(0, 147,0);
-            scalarHigh = new Scalar(255,255,255);
+            scalarLow = new Scalar(126, 131,100);
+            scalarHigh = new Scalar(221,255,184);
         }else if (alliance == Alliance.BLUE){
             //todo change to blue
-            scalarLow = new Scalar(0, 147,0);
-            scalarHigh = new Scalar(255,255,255);
+            scalarLow = new Scalar(0, 65,124);
+            scalarHigh = new Scalar(96,126,190);
         }
         Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
         Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
@@ -84,6 +86,31 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
                     highIndex = i;
             }
         }
+        // check which side it is actually on using centers
+        if (highIndex != 0) {
+            if (centers[highIndex].x > pointsX[0] && centers[highIndex].x < pointsX[1]) {
+                if (centers[highIndex].y > pointsY[0] && centers[highIndex].y < pointsY[1]) {
+                    Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
+                    Imgproc.putText(input, "left", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(0, 255, 0));
+                    autonomousRandom = AutoRandom.left;
+                }
+            }
+            if (centers[highIndex].x > pointsX[2] && centers[highIndex].x < pointsX[3]) {
+                if (centers[highIndex].y > pointsY[2] && centers[highIndex].y < pointsY[3]) {
+                    Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
+                    Imgproc.putText(input, "center", new Point(pointsX[2], pointsY[2]), 0, 1, new Scalar(0, 255, 0));
+                    autonomousRandom = AutoRandom.mid;
+                }
+            }
+            if (centers[highIndex].x > pointsX[4] && centers[highIndex].x < pointsX[5]) {
+                if (centers[highIndex].y > pointsY[4] && centers[highIndex].y < pointsY[5]) {
+                    Imgproc.rectangle(input, new Point(pointsX[4], pointsY[4]), new Point(pointsX[5], pointsY[5]), new Scalar(0, 255, 0), 1);
+                    Imgproc.putText(input, "right", new Point(pointsX[4], pointsY[4]), 0, 1, new Scalar(0, 255, 0));
+                    autonomousRandom = AutoRandom.right;
+                }
+            }
+        }
+
         return input;
     }
 }

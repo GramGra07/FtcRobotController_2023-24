@@ -6,10 +6,9 @@ import static org.firstinspires.ftc.teamcode.Drivers.currDriver;
 import static org.firstinspires.ftc.teamcode.Drivers.currOther;
 import static org.firstinspires.ftc.teamcode.Drivers.fieldCentric;
 import static org.firstinspires.ftc.teamcode.Drivers.switchProfile;
+import static org.firstinspires.ftc.teamcode.Operator.bindOtherButtons;
 import static org.firstinspires.ftc.teamcode.Sensors.currentVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
-import static org.firstinspires.ftc.teamcode.Sensors.getLimitSwitch;
-import static org.firstinspires.ftc.teamcode.Sensors.getPotentVal;
 import static org.firstinspires.ftc.teamcode.Sensors.lowVoltage;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.setUpFile;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.writeToFile;
@@ -51,18 +50,17 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean useFileWriter = variable.useFileWriter;
     public static boolean multipleDrivers = variable.multipleDrivers;
     public String statusVal = "OFFLINE";
-    public static Servo claw1 = null, claw2 = null, flipperServo = null;
-    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorSlides = null, motorIntake = null;
+    public static Servo claw1 = null, claw2 = null, flipServo = null;
+    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorSlides = null, motorFlipper = null;
     public static DcMotor enc1 = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
-    public static double liftPower = 0, slidePower = 0, intakePower = 0;
-    public static double intakeMin=-1, intakeMax = 1;
+    public static double liftPower = 0, slidePower = 0, flipperPower = 0;
+    public static double flipperMin =-1, flipperMax = 1;
     public static double liftMax = 1, liftMin = -0.7;
     public static double slideMax = 1, slideMin = -1;
-    public static boolean intakeOn = false;
     public static boolean airplaneArmed = variable.airplaneArmed;
     public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
@@ -94,7 +92,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public boolean once = false;
-    public final String currentVersion = "4.0.0";
+    public final String currentVersion = "4.1.0";
 
     //init
     public void init(HardwareMap ahwMap) {
@@ -137,10 +135,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
         motorLift = ahwMap.get(DcMotor.class, "lift");
         motorSlides = ahwMap.get(DcMotor.class, "slideMotor");
-        motorIntake = ahwMap.get(DcMotor.class, "intakeMotor");
+        motorFlipper = ahwMap.get(DcMotor.class, "flipperMotor");
         claw1 = ahwMap.get(Servo.class, "claw1");
         claw2 = ahwMap.get(Servo.class, "claw2");
-        flipperServo = ahwMap.get(Servo.class, "flipperServo");
+        flipServo = ahwMap.get(Servo.class, "flipServo");
         //encoders
         enc1 = ahwMap.get(DcMotor.class, "intakeMotor");
         resetEncoder(enc1);
@@ -180,7 +178,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void doBulk() {
         once(myOpMode);//runs once
         bindDriverButtons(myOpMode);
-        bindDriverButtons(myOpMode);
+        bindOtherButtons(myOpMode);
         if (multipleDrivers) {
             switchProfile(myOpMode);
         }
@@ -259,6 +257,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorBackRight.setPower(backRightPower);
         motorLift.setPower(liftPower);
         motorSlides.setPower(slidePower);
+        motorFlipper.setPower(flipperPower);
     }
 
     public void buildTelemetry() {

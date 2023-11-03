@@ -36,11 +36,12 @@ import static org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil.huskyLensTe
 import static org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil.initHuskyLens;
 
 import com.qualcomm.hardware.dfrobot.HuskyLens;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp
-//@Disabled
+@Disabled
 public class huskyLensTester extends LinearOpMode {
     @Override
     public void runOpMode() {

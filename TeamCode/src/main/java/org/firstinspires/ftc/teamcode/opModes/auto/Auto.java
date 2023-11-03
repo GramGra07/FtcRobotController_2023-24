@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
 @Autonomous
+@Disabled
 public class Auto extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     @Override

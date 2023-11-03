@@ -38,7 +38,7 @@ USB -
 Expansion Hub
 Motor
 0 - slideMotor
-1 - intakeMotor
+1 - flipperMotor
 2 - lift
 3 -
 Encoder
@@ -49,7 +49,7 @@ Encoder
 Servo
 0 - claw1
 1 - claw2
-2 - flipperServo
+2 - flipServo
 3 -
 4 -
 5 -

@@ -1,29 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneArmed;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.cRE;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipperServo;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.intakeMax;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.intakeMin;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.intakePower;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftMax;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftMin;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slideMax;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slideMin;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slidePower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.timer;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
-import org.firstinspires.ftc.teamcode.UtilClass.Blink;
-import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
-import org.firstinspires.ftc.teamcode.ggutil.pure.fromTutorial.com.company.Range;
 
 public class Drivers {
     public static final String[] driverControls = {"Chase", "Camden", "Kian", "Grady", "Michael","Graden"}, otherControls = driverControls;
