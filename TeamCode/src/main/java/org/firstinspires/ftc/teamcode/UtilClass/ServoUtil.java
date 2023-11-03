@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 public class ServoUtil {
     public static int baseServo = 95;
     public static int clawMovement = 50;
+    public static int offset = 5;
     public static double position = 0;
     public final static double degree_mult = 0.00555555554;
 
@@ -20,11 +21,12 @@ public class ServoUtil {
     }
 
     public static void openClaw(Servo servo) {
-        servo.setPosition(setServo(baseServo + clawMovement));
         if (servo == HardwareConfig.claw1) {
+            servo.setPosition(setServo(baseServo + clawMovement));
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
         } else if (servo == HardwareConfig.claw2) {
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
+            servo.setPosition(setServo(baseServo + clawMovement+offset));
         }
     }
 
