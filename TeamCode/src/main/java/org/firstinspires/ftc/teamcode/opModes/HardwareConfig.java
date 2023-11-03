@@ -17,6 +17,7 @@ import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.runWithoutEncod
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionR;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.zeroPowerBrake;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.baseServo;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipBase;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -58,9 +59,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
     public static double liftPower = 0, slidePower = 0, flipperPower = 0;
-    public static double flipperMin =-1, flipperMax = 1;
-    public static double liftMax = 1, liftMin = -0.7;
-    public static double slideMax = 1, slideMin = -1;
     public static boolean airplaneArmed = variable.airplaneArmed;
     public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
@@ -140,7 +138,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
         //encoders
-        enc1 = ahwMap.get(DcMotor.class, "intakeMotor");
+        enc1 = ahwMap.get(DcMotor.class, "flipperMotor");
         resetEncoder(enc1);
         runWithoutEncoder(enc1);
 //        runWithoutEncoder(motorPaperAirplane);
@@ -153,8 +151,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorFrontLeft);
         zeroPowerBrake(motorFrontRight);
         zeroPowerBrake(motorSlides);
+        zeroPowerBrake(motorFlipper);
         claw1.setPosition(setServo(baseServo));
         claw2.setPosition(setServo(baseServo));
+        flipServo.setPosition(setServo(servoFlipBase));
         cRE = new Gamepad.RumbleEffect.Builder()
                 .addStep(1.0, 1.0, 250)  //  Rumble right motor 100% for 500 mSec
                 .build();
