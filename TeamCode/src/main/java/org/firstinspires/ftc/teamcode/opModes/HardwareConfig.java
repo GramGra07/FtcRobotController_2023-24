@@ -90,7 +90,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public boolean once = false;
-    public final String currentVersion = "4.1.0";
+    public final String currentVersion = "4.2.0";
 
     //init
     public void init(HardwareMap ahwMap) {

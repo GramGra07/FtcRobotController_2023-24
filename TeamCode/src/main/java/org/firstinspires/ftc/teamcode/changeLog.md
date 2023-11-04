@@ -1,3 +1,6 @@
+4.2.0 November 4th, 2023
+Updated to FTC 9.0.1
+
 4.1.0 October 30th, 2023
 Added disableRR.sh and enableRR.sh and documentation for these. They enable all Road Runner opModes
 or disable all of them. rrFiles.txt controls which files are changed. This is a shell script and
