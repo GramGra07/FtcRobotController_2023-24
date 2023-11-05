@@ -57,7 +57,7 @@ public class purePursuit extends CommandOpMode {
 
         // calculate multiplier
         double GEAR_RATIO = 1 / (5.23 * 2.89);
-        double TICKS_PER_REV = 423.2116/4;
+        double TICKS_PER_REV = 423.2116 / 4;
         double WHEEL_DIAMETER = 3.89;
         double PulsePR = (GEAR_RATIO * TICKS_PER_REV);
         TICKS_TO_INCHES = PulsePR / ((PI * WHEEL_DIAMETER) * 2 * PI);
@@ -91,7 +91,7 @@ public class purePursuit extends CommandOpMode {
         Waypoint p2 = new PointTurnWaypoint(
                 0, 500, 0, moveSpeed,
                 turnSpeed, followRadius, 1, rotationBuffer);
-        Waypoint p9 = new EndWaypoint(endP,endR, moveSpeed, turnSpeed, followRadius, 10, rotationBuffer);
+        Waypoint p9 = new EndWaypoint(endP, endR, moveSpeed, turnSpeed, followRadius, 10, rotationBuffer);
         //Path m_path = new Path(p1,p2, p9);//, p3, p4, p5, p6, p8, p9);
         //m_path.init();
         //m_path.disableRetrace();
@@ -103,6 +103,7 @@ public class purePursuit extends CommandOpMode {
         );
         ppCommand.schedule();
     }
+
     @Override
     public void runOpMode() throws InterruptedException {
         ppCommand.execute();

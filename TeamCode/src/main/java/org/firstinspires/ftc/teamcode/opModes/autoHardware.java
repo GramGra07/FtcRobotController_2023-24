@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
-import static java.lang.Math.abs;
-
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -18,18 +16,18 @@ import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.BackdropTrajectories;
 import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesLEFT;
 import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesRIGHT;
+import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
-import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.Vision;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-public class autoHardware extends HardwareConfig{
+public class autoHardware extends HardwareConfig {
 
     public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
-//  public static Pose2d startPose = getStartPose(StartPose.redRight);
+    //  public static Pose2d startPose = getStartPose(StartPose.redRight);
     public static int targetTag = 0;
     HardwareMap hardwareMap = null;
     OpenCvWebcam webcam;
@@ -40,6 +38,7 @@ public class autoHardware extends HardwareConfig{
         super(opMode);
         myOpMode = opMode;
     }
+
     public static AutoRandom autonomousRandom = AutoRandom.mid;
 
     public void initAuto(HardwareMap ahwMap) {
@@ -53,40 +52,42 @@ public class autoHardware extends HardwareConfig{
         timer.reset();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
-    public static void driveByPotentVal(int target, AnalogInput potent, DcMotor motor){
+
+    public static void driveByPotentVal(int target, AnalogInput potent, DcMotor motor) {
         double dif = target - Sensors.getPotentVal(potent);
         double range = 1;
         // turn motor until dif > 1 or close
-        while (Math.abs(dif)>range){
-            double sign = dif/dif;
+        while (Math.abs(dif) > range) {
+            double sign = 1.0;
             dif = target - Sensors.getPotentVal(potent);
             motor.setPower(sign * 0.5);
         }
         motor.setPower(0);
     }
 
-    public static Pose2d getStartPose(Alliance alliance, StartSide side){
+    public static Pose2d getStartPose(Alliance alliance, StartSide side) {
         StartPose.alliance = alliance;
         StartPose.side = side;
-        switch (alliance){
+        switch (alliance) {
             case RED:
-                switch (side){
+                switch (side) {
                     case LEFT:
-                        return new Pose2d(72-(10),-36,  Math.toRadians(180));
+                        return new Pose2d(72 - (10), -36, Math.toRadians(180));
                     case RIGHT:
-                        return new Pose2d(72-(10),12, Math.toRadians(180));
+                        return new Pose2d(72 - (10), 12, Math.toRadians(180));
                 }
             case BLUE:
-                switch (side){
+                switch (side) {
                     case LEFT:
-                        return new Pose2d(-72+(10),12, Math.toRadians(0));
+                        return new Pose2d(-72 + (10), 12, Math.toRadians(0));
                     case RIGHT:
-                        return new Pose2d(-72+(10),-36,  Math.toRadians(0));
+                        return new Pose2d(-72 + (10), -36, Math.toRadians(0));
                 }
         }
-        return new Pose2d(0,0,0);
+        return new Pose2d(0, 0, 0);
     }
-    public static void runSpikeNav(MecanumDrive drive, OpMode opMode){
+
+    public static void runSpikeNav(MecanumDrive drive, OpMode opMode) {
         HuskyLensUtil.delayIfNoOBJ(opMode.telemetry);
         HuskyLensUtil.extrapolatePosition();
         switch (autoHardware.autonomousRandom) {
@@ -162,14 +163,15 @@ public class autoHardware extends HardwareConfig{
                 PoseStorage.currentPose = drive.getPoseEstimate();
         }
     }
-    public static void navToBackdrop(MecanumDrive drive, Telemetry telemetry){
+
+    public static void navToBackdrop(MecanumDrive drive, Telemetry telemetry) {
         // move all the way to backdrop
-        telemetry.addData("alliance",StartPose.alliance);
-        telemetry.addData("side",StartPose.side);
+        telemetry.addData("alliance", StartPose.alliance);
+        telemetry.addData("side", StartPose.side);
         telemetry.update();
-        switch (StartPose.alliance){
+        switch (StartPose.alliance) {
             case RED:
-                switch (StartPose.side){
+                switch (StartPose.side) {
                     case LEFT:
                         drive.followTrajectorySequence(BackdropTrajectories.redShort(drive));
                         break;
@@ -179,7 +181,7 @@ public class autoHardware extends HardwareConfig{
                 }
                 break;
             case BLUE:
-                switch (StartPose.side){
+                switch (StartPose.side) {
                     case LEFT:
                         drive.followTrajectorySequence(BackdropTrajectories.blueShort(drive));
                         break;
@@ -190,13 +192,15 @@ public class autoHardware extends HardwareConfig{
                 break;
         }
     }
+
     public static void delayUntilTagFound(OpMode myOpMode, int tag) {
         while (!Vision.searchAprilTags(tag)) {
             Vision.searchAprilTags(tag);
             Vision.telemetryAprilTag(myOpMode);
         }
     }
-    public static void SpikeNav(MecanumDrive drive){
+
+    public static void SpikeNav(MecanumDrive drive) {
         switch (autoHardware.autonomousRandom) {
             case left:
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);

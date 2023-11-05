@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.configVars;
 
 
-import com.acmerobotics.dashboard.config.Config;
-
-
 // these variables can be changed from FTC dashboard
 //@Config
 public class varConfig {

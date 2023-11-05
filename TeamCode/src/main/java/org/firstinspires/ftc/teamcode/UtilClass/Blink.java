@@ -49,7 +49,7 @@ public class Blink extends HardwareConfig {
 
     public void greenRed() {
         setLights("RED", false);
-        sleep(delay * 1000);
+        sleep(delay * 1000L);
         setLights("GREEN", false);
         isSolid = true;
     }

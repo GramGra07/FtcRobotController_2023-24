@@ -10,6 +10,7 @@ public class driveFTCLib extends LinearOpMode {
     public Motor motor2 = null;
     public Motor motor3 = null;
     public Motor motor4 = null;
+
     public void runOpMode() {
         // Initialize the gamepad
         new GamepadEx(gamepad1);//
@@ -19,7 +20,7 @@ public class driveFTCLib extends LinearOpMode {
         motor4 = new Motor(hardwareMap, "motorBackRight");
         // Initialize the mecanum drive
         MecanumDrive mecanumDrive = new MecanumDrive(
-                motor1,motor2,motor3,motor4
+                motor1, motor2, motor3, motor4
         );
 
 // Set the mecanum drive power based on the gamepad input

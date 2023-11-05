@@ -5,7 +5,7 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 public class Drivers {
-    public static final String[] driverControls = {"Chase", "Camden", "Kian", "Grady", "Michael","Graden"}, otherControls = driverControls;
+    public static final String[] driverControls = {"Chase", "Camden", "Kian", "Grady", "Michael", "Graden"}, otherControls = driverControls;
     public static final int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
     public static int dIndex = baseDriver, oIndex = baseOther;//list integer of driver and other controls
     public static String currDriver = driverControls[dIndex], currOther = otherControls[oIndex];//list string of driver and other controls

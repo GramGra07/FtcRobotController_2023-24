@@ -33,7 +33,7 @@ public class walkthrough extends LinearOpMode {
         if (isStopRequested()) return;
         runSpikeNav(drive, this);
         // do claw stuff to move & drop pixel
-        navToBackdrop(drive,telemetry);
+        navToBackdrop(drive, telemetry);
         // drop pixel
         delayUntilTagFound(this, targetTag);
         // do we need new pose?

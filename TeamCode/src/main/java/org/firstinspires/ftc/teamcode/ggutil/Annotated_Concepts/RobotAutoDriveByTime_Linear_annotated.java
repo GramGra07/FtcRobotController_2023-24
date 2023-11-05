@@ -15,7 +15,7 @@ public class RobotAutoDriveByTime_Linear_annotated extends LinearOpMode {
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
 
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
 
 
     static final double FORWARD_SPEED = 0.6;//you may want to edit these to make the robot go faster or slower

@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto;
 
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorFlipper;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.SpikeNav;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.driveByPotentVal;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -11,12 +9,11 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
-import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
-@Autonomous
+@Autonomous(group = "scrim")
 //@Disabled
 public class autoScrimRR extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;

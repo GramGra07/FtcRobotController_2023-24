@@ -15,7 +15,7 @@ public class teleOp extends LinearOpMode {//declaring the class
     public void runOpMode() {//if opmode is started
         robot.init(hardwareMap);
         waitForStart();
-        robot.timer.reset();
+        HardwareConfig.timer.reset();
         while (opModeIsActive()) {//while the op mode is active
             robot.doBulk();
         }

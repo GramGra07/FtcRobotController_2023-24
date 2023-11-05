@@ -9,24 +9,29 @@ public class SpikeNavTrajectoriesRIGHT {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .strafeRight(10)
                 .forward(24)
-                .addDisplacementMarker(()->{})
+                .addDisplacementMarker(() -> {
+                })
                 .back(16)
                 .build();
     }
+
     public static TrajectorySequence navToSpikeLeftR(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .forward(31)
                 .turn(Math.toRadians(90))
                 .forward(5)
-                .addDisplacementMarker(()->{})
+                .addDisplacementMarker(() -> {
+                })
                 .back(6)
                 .build();
     }
+
     public static TrajectorySequence navToSpikeCenterR(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .forward(36)
                 .strafeLeft(2)
-                .addDisplacementMarker(()->{})
+                .addDisplacementMarker(() -> {
+                })
                 .back(10)
                 .build();
     }

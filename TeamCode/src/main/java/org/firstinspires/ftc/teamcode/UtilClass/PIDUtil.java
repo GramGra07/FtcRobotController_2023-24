@@ -5,7 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class PIDUtil {
     public PIDController pidController;
-    public void initPIDController(double p, double i, double d, DcMotor motor, int target){
+
+    public void initPIDController(double p, double i, double d, DcMotor motor, int target) {
         pidController = new PIDController(
                 p, // Proportional gain
                 i, // Integral gain
@@ -15,7 +16,8 @@ public class PIDUtil {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-    public void runPIDController(DcMotor motor){
+
+    public void runPIDController(DcMotor motor) {
         motor.setPower(pidController.calculate(motor.getCurrentPosition(), motor.getTargetPosition()));
     }
 }

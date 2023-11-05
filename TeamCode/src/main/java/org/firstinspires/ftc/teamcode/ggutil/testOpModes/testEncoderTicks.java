@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @Disabled
 public class testEncoderTicks extends LinearOpMode {
     DcMotor enc1;
+
     @Override
     public void runOpMode() {//if opmode is started
 

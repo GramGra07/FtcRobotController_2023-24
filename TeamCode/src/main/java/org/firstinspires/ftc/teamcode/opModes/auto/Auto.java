@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySe
 @Disabled
 public class Auto extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
+
     @Override
     public void runOpMode() {
         // @link https://learnroadrunner.com/trajectorybuilder-functions.html#forward-distance-double
@@ -50,7 +51,7 @@ public class Auto extends LinearOpMode {
         //drive.forward(in)
         waitForStart();
 
-        if(isStopRequested()) return;
+        if (isStopRequested()) return;
 
         drive.followTrajectorySequence(traj1);
         PoseStorage.currentPose = drive.getPoseEstimate();

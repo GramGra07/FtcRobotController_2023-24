@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
-import com.acmerobotics.dashboard.config.Config;
+
 //@Config
 public class redpropObjVars {
     public static double aspectRatio = 1;

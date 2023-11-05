@@ -10,29 +10,32 @@ import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySe
 public class BackdropTrajectories {
     public static TrajectorySequence redShort(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineToLinearHeading(new Pose2d(46,-36,Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(46, -36, Math.toRadians(0)))
                 .build();
     }
+
     public static TrajectorySequence redLong(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .lineTo(new Vector2d(58, -36))
-                .lineTo(new Vector2d(58,36))
-                .lineToLinearHeading(new Pose2d(36,46,Math.toRadians(90)))
+                .lineTo(new Vector2d(58, 36))
+                .lineToLinearHeading(new Pose2d(36, 46, Math.toRadians(90)))
                 .build();
     }
+
     public static TrajectorySequence blueShort(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineToLinearHeading(new Pose2d(-36,46,Math.toRadians(90)))
-                .addSpatialMarker(new Vector2d(36,36), () -> {
+                .lineToLinearHeading(new Pose2d(-36, 46, Math.toRadians(90)))
+                .addSpatialMarker(new Vector2d(36, 36), () -> {
                     // put up arm
                 })
                 .build();
     }
+
     public static TrajectorySequence blueLong(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineTo(new Vector2d( -58,-36))
-                .lineTo(new Vector2d(-58,36))
-                .lineToLinearHeading(new Pose2d(-36,46,Math.toRadians(90)))
+                .lineTo(new Vector2d(-58, -36))
+                .lineTo(new Vector2d(-58, 36))
+                .lineToLinearHeading(new Pose2d(-36, 46, Math.toRadians(90)))
                 .build();
     }
 }

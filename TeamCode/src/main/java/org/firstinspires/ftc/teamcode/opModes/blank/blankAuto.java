@@ -24,7 +24,7 @@ public class blankAuto extends LinearOpMode {
 
         robot.initAuto(hardwareMap);
 
-        if(isStopRequested()) return;
+        if (isStopRequested()) return;
         //put drive.followTrajectory(traj1); here
         //update pose storage here
         PoseStorage.currentPose = drive.getPoseEstimate();

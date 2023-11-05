@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
-@Autonomous
+@Autonomous(group = "park")
 //@Disabled
 public class parkAutoBR extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
@@ -50,7 +50,7 @@ public class parkAutoBR extends LinearOpMode {
                                 .build()
                 );
             }
-            if (StartPose.side == StartSide.RIGHT){
+            if (StartPose.side == StartSide.RIGHT) {
                 drive.followTrajectorySequence(
                         drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .forward(50)

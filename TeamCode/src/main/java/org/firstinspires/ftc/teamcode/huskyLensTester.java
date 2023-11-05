@@ -45,11 +45,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class huskyLensTester extends LinearOpMode {
     @Override
     public void runOpMode() {
-        initHuskyLens(hardwareMap,this,HuskyLens.Algorithm.FACE_RECOGNITION);
+        initHuskyLens(hardwareMap, this, HuskyLens.Algorithm.FACE_RECOGNITION);
         telemetry.update();
         waitForStart();
         while (opModeIsActive()) {
-            huskyLensTelemetry(telemetry,true);
+            huskyLensTelemetry(telemetry, true);
         }
     }
 }

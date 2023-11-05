@@ -14,6 +14,7 @@ public class Sensors {
     public static boolean lowVoltage = false;
     public static final double minimumVoltage = 11.5;
     public static double currentVoltage;
+
     public static double getPotentVal(AnalogInput potentiometer) {
         return Range.clip(POTENTIOMETER_MAX / 3.3 * potentiometer.getVoltage(), POTENTIOMETER_MIN, POTENTIOMETER_MAX);
     }
@@ -32,11 +33,13 @@ public class Sensors {
         lowVoltage = result <= minimumVoltage;
         currentVoltage = result;
     }
-    public static void ledIND(DigitalChannel green, DigitalChannel red, boolean greenOn){
+
+    public static void ledIND(DigitalChannel green, DigitalChannel red, boolean greenOn) {
         green.setState(greenOn);
         red.setState(!greenOn);
     }
-    public static boolean getTouchSensor(TouchSensor touchSensor){
+
+    public static boolean getTouchSensor(TouchSensor touchSensor) {
         return touchSensor.isPressed();
     }
 }

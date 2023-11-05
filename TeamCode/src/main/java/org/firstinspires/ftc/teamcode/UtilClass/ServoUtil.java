@@ -26,7 +26,7 @@ public class ServoUtil {
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
         } else if (servo == HardwareConfig.claw2) {
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-            servo.setPosition(setServo(baseServo + clawMovement+offset));
+            servo.setPosition(setServo(baseServo + clawMovement + offset));
         }
     }
 

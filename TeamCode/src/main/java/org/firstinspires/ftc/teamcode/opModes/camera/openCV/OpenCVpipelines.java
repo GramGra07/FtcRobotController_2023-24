@@ -336,7 +336,7 @@ public class OpenCVpipelines {
             for (int i = 0; i < contours.size(); i++) {
                 Scalar c = scalarVals(color);
                 Imgproc.drawContours(input, contoursPolyList, i, c);
-                if (boundRect[i].area()>varConfig.minRectArea) {
+                if (boundRect[i].area() > varConfig.minRectArea) {
                     Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 2);
                 }
                 if (boundRect[i].height > boundRect[highIndex].height && boundRect[i].width > boundRect[highIndex].width)//get largest rectangle
@@ -430,8 +430,8 @@ public class OpenCVpipelines {
             if ((minWidth <= width && minHeight <= height) && (maxWidth >= width && maxHeight >= height) && (minArea <= width * height && width * height <= maxArea)) {
                 if (aspectRatio + tolerance >= newAspectRatio && aspectRatio - tolerance <= newAspectRatio) {
                     //should be a cone
-                    Imgproc.line(input,new Point(centerX-10,centerY), new Point(centerX+10,centerY),scalarVals("green"));
-                    Imgproc.line(input,new Point(centerX,centerY-10), new Point(centerX,centerY+10),scalarVals("green"));
+                    Imgproc.line(input, new Point(centerX - 10, centerY), new Point(centerX + 10, centerY), scalarVals("green"));
+                    Imgproc.line(input, new Point(centerX, centerY - 10), new Point(centerX, centerY + 10), scalarVals("green"));
                     Imgproc.rectangle(input, new Point(left, top), new Point(right, bottom), scalarVals("green"), 2);
                     double botDist = Math.abs(input.height() - bottom);
                     int middle = input.width() / 2;
@@ -467,14 +467,14 @@ public class OpenCVpipelines {
             telemetry.addData("x", centerX);
             telemetry.addData("y", centerY);
             telemetry.update();
-            if (centerX <= 106){
+            if (centerX <= 106) {
                 Imgproc.putText(input, "1", new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
             }
-            if (centerX > 106 && centerX<=112){
+            if (centerX > 106 && centerX <= 112) {
                 Imgproc.putText(input, "2", new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
             }
-            if (centerX >112 && centerX<= 320){
-                    Imgproc.putText(input, "3", new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
+            if (centerX > 112 && centerX <= 320) {
+                Imgproc.putText(input, "3", new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
 
             }
             return input;

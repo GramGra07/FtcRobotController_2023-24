@@ -1,5 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Limits.flipperMax;
+import static org.firstinspires.ftc.teamcode.Limits.flipperMin;
+import static org.firstinspires.ftc.teamcode.Limits.liftMax;
+import static org.firstinspires.ftc.teamcode.Limits.slideMax;
+import static org.firstinspires.ftc.teamcode.Limits.slideMin;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoFull;
@@ -10,7 +15,6 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.cRE;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
-import static org.firstinspires.ftc.teamcode.Limits.*;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipperPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slidePower;

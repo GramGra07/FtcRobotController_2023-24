@@ -75,7 +75,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static DigitalChannel red3;
     public static DigitalChannel red4;
     public static AnalogInput potentiometer;
-//    public DigitalChannel limitSwitch;
+    //    public DigitalChannel limitSwitch;
     public VoltageSensor vSensor;
     public MecanumDrive drive = null;
     public static double thisDist = 0;
@@ -267,7 +267,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         getBatteryVoltage(vSensor);
         telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
         telemetry.addData("lowBattery", lowVoltage);
-        telemetry.addData("potentiometer",Sensors.getPotentVal(potentiometer));
+        telemetry.addData("potentiometer", Sensors.getPotentVal(potentiometer));
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("reversed", reversed);
         telemetry.addData("slowMode", slowModeIsOn);

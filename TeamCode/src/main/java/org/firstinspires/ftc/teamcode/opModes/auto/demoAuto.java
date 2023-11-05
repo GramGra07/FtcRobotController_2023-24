@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 public class demoAuto extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
+
     @Override
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
@@ -26,7 +27,7 @@ public class demoAuto extends LinearOpMode {
 
         robot.initAuto(hardwareMap);
 
-        if(isStopRequested()) return;
+        if (isStopRequested()) return;
 
 
         drive.followTrajectory(traj1);

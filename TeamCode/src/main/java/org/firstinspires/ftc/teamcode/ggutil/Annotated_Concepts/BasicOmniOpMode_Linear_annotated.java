@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class BasicOmniOpMode_Linear_annotated extends LinearOpMode {//this means that this java class can use anything from linear op mode
 
     // Declare OpMode members for each of the 4 motors.
-    private ElapsedTime runtime = new ElapsedTime();//add ability to use runtime
+    private final ElapsedTime runtime = new ElapsedTime();//add ability to use runtime
     private DcMotor leftFrontDrive = null;//adds dc motor with no init yet
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;

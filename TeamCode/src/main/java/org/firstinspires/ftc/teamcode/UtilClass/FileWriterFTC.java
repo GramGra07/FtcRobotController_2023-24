@@ -9,7 +9,8 @@ import java.io.FileWriter;
 
 public class FileWriterFTC {
     public static final String file = String.format("%s/FIRST/matchlogs/log.txt", Environment.getExternalStorageDirectory().getAbsolutePath());
-    public static void setUpFile(FileWriter fileWriter){
+
+    public static void setUpFile(FileWriter fileWriter) {
         if (useFileWriter) {
             File myObj = new File(file);
             try {
@@ -26,6 +27,7 @@ public class FileWriterFTC {
             }
         }
     }
+
     public static void writeToFile(FileWriter fileWriter, int x, int y) {
         //  terminal
         //  clear

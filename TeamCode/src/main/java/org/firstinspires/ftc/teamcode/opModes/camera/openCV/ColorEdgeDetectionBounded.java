@@ -28,8 +28,9 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
     public ColorEdgeDetectionBounded(Alliance color) {
         this.alliance = color;
     }
+
     int[] pointsX = new int[]{0, 50, 75, 250, 270, 320};
-    int[] pointsY = new int[]{120, 215, 100, 120, 120,215};
+    int[] pointsY = new int[]{120, 215, 100, 120, 120, 215};
 
     Scalar scalarLow, scalarHigh;
 
@@ -38,13 +39,13 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
 //        EOCVWebcam.pipelineName = "Color Edge Detection Bounded";
         // color map below
         // https://i.stack.imgur.com/gyuw4.png
-        if (alliance == Alliance.RED){
-            scalarLow = new Scalar(126, 131,100);
-            scalarHigh = new Scalar(221,255,184);
-        }else if (alliance == Alliance.BLUE){
+        if (alliance == Alliance.RED) {
+            scalarLow = new Scalar(126, 131, 100);
+            scalarHigh = new Scalar(221, 255, 184);
+        } else if (alliance == Alliance.BLUE) {
             //todo change to blue
-            scalarLow = new Scalar(0, 65,124);
-            scalarHigh = new Scalar(96,126,190);
+            scalarLow = new Scalar(0, 65, 124);
+            scalarHigh = new Scalar(96, 126, 190);
         }
         Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
         Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
@@ -74,8 +75,7 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         for (int i = 0; i < contours.size(); i++) {
             if (((centers[i].x > pointsX[0] && centers[i].x < pointsX[1]) && (centers[i].y > pointsY[0] && centers[i].y < pointsY[1])) ||
                     ((centers[i].x > pointsX[2] && centers[i].x < pointsX[3]) && (centers[i].y > pointsY[2] && centers[i].y < pointsY[3])) ||
-                    ((centers[i].x > pointsX[4] && centers[i].x < pointsX[5]) && (centers[i].y > pointsY[4] && centers[i].y < pointsY[5])))
-            {
+                    ((centers[i].x > pointsX[4] && centers[i].x < pointsX[5]) && (centers[i].y > pointsY[4] && centers[i].y < pointsY[5]))) {
                 Imgproc.drawContours(input, contoursPolyList, i, c);
                 Imgproc.rectangle(input, boundRect[i].tl(), boundRect[i].br(), c, 1);
                 double centerX = boundRect[i].tl().x + ((boundRect[i].br().x - boundRect[i].tl().x) / 2);

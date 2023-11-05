@@ -41,7 +41,7 @@ public class voltageMultTest extends LinearOpMode {
         if (opModeIsActive()) {
 
             deadWheelR.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-            if (testRunning == true) {
+            if (testRunning) {
                 deadWheelR.setPower(1);
                 sleep(10 * 1000);
             } else {
@@ -50,7 +50,6 @@ public class voltageMultTest extends LinearOpMode {
 
             telemetry.addData("encoder ticks", "");
             telemetry.addData("", String.valueOf(deadWheelR.getCurrentPosition()));
-            ;
             telemetry.update();
         }
     }

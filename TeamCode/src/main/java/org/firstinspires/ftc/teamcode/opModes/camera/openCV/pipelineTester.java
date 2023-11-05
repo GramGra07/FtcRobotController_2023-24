@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
-import static org.firstinspires.ftc.teamcode.EOCVWebcam.*;
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.blackDots;
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.pipelineName;
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.whiteDots;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -8,7 +11,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
-import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;

@@ -17,9 +17,9 @@ public class tester extends LinearOpMode {
 
         robot.initAuto(hardwareMap);
 
-        if(isStopRequested()) return;
+        if (isStopRequested()) return;
         waitForStart();
-        while (opModeIsActive()){
+        while (opModeIsActive()) {
             Vision.telemetryAprilTag(this);
             Vision.telemetryTfod(this);
             telemetry.update();
