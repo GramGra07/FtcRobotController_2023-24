@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 /**
  * This opmode explains how you follow multiple trajectories in succession, asynchronously. This
@@ -59,7 +59,7 @@ public class AsyncFollowingFSM extends LinearOpMode {
         Lift lift = new Lift(hardwareMap);
 
         // Initialize SampleMecanumDrive
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        MecanumDrive drive = new MecanumDrive(hardwareMap);
 
         // Set inital pose
         drive.setPoseEstimate(startPose);

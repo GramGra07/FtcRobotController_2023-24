@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 @Autonomous
@@ -21,7 +21,7 @@ public class parkAutoRR extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
         robot.initAuto(hardwareMap);
         if (isStopRequested()) return;
@@ -29,7 +29,8 @@ public class parkAutoRR extends LinearOpMode {
             if (StartPose.side == StartSide.RIGHT) {
                 drive.followTrajectorySequence(
                         drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(60, 60, Math.toRadians(90)))
+                                .forward(50)
+                                .strafeRight(84)
                                 .build()
                 );
             }
@@ -45,14 +46,15 @@ public class parkAutoRR extends LinearOpMode {
             if (StartPose.side == StartSide.LEFT) {
                 drive.followTrajectorySequence(
                         drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(-60, 60, Math.toRadians(90)))
+                                .lineToLinearHeading(new Pose2d(-60, 60, Math.toRadians(0)))
                                 .build()
                 );
             }
             if (StartPose.side == StartSide.RIGHT){
                 drive.followTrajectorySequence(
                         drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(-36, 48, Math.toRadians(90)))
+                                .forward(50)
+                                .strafeLeft(84)
                                 .build()
                 );
             }

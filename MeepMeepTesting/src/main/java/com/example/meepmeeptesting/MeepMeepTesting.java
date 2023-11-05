@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 public class MeepMeepTesting {
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
-        Pose2d startPose = new Pose2d(-72+(18/2),-36,  Math.toRadians(0));
+        Pose2d startPose = new Pose2d(72-(10),-36,  Math.toRadians(180));
         int maxVel = 57;
         int maxAccel = 60;
         int maxAngVel = 360;
@@ -30,14 +30,8 @@ public class MeepMeepTesting {
                 .setDimensions(robotWidth, robotHeight)//bot width and height
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .strafeRight(10)
-                                .forward(24)
-                                .addDisplacementMarker(()->{})
-                                .back(16)
-
-                                .lineTo(new Vector2d( -58,-36))
-                                .lineTo(new Vector2d(-58,36))
-                                .lineToLinearHeading(new Pose2d(-36,46,Math.toRadians(90)))
+                                .forward(50)
+                                .strafeRight(84)
                                 .build()
                 );
 

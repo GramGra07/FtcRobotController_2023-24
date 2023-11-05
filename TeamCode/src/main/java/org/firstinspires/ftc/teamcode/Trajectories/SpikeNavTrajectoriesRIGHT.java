@@ -1,14 +1,11 @@
 package org.firstinspires.ftc.teamcode.Trajectories;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
 public class SpikeNavTrajectoriesRIGHT {
-    public static TrajectorySequence navToSpikeRightR(SampleMecanumDrive drive) {
+    public static TrajectorySequence navToSpikeRightR(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .strafeRight(10)
                 .forward(24)
@@ -16,7 +13,7 @@ public class SpikeNavTrajectoriesRIGHT {
                 .back(16)
                 .build();
     }
-    public static TrajectorySequence navToSpikeLeftR(SampleMecanumDrive drive) {
+    public static TrajectorySequence navToSpikeLeftR(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .forward(31)
                 .turn(Math.toRadians(90))
@@ -25,7 +22,7 @@ public class SpikeNavTrajectoriesRIGHT {
                 .back(6)
                 .build();
     }
-    public static TrajectorySequence navToSpikeCenterR(SampleMecanumDrive drive) {
+    public static TrajectorySequence navToSpikeCenterR(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .forward(36)
                 .strafeLeft(2)

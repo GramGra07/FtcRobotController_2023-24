@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
@@ -20,7 +20,7 @@ public class Auto extends LinearOpMode {
         // @link https://learnroadrunner.com/trajectorybuilder-functions.html#forward-distance-double
         //pause
         // @link https://learnroadrunner.com/markers.html#types-of-markers
-        SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+        MecanumDrive drive = new MecanumDrive(hardwareMap);
 
         drive.setPoseEstimate(startPose);
         TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)

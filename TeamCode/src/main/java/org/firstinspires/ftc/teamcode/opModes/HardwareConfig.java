@@ -16,7 +16,7 @@ import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.resetEncoder;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.runWithoutEncoder;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionR;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.zeroPowerBrake;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.baseServo;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipBase;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 
@@ -41,7 +41,7 @@ import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.variable;
 import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
@@ -74,10 +74,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static DigitalChannel red2;
     public static DigitalChannel red3;
     public static DigitalChannel red4;
-    public AnalogInput potentiometer;
-    public DigitalChannel limitSwitch;
+    public static AnalogInput potentiometer;
+//    public DigitalChannel limitSwitch;
     public VoltageSensor vSensor;
-    public SampleMecanumDrive drive = null;
+    public MecanumDrive drive = null;
     public static double thisDist = 0;
     public static final ElapsedTime timer = new ElapsedTime();
     FileWriter fileWriter;
@@ -98,7 +98,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         thisDist = 0;
         setUpFile(fileWriter);
         updateStatus("Initializing");
-        drive = new SampleMecanumDrive(ahwMap);
+        drive = new MecanumDrive(ahwMap);
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         drive.setPoseEstimate(PoseStorage.currentPose);
         ElapsedTime timer = new ElapsedTime();//declaring the runtime variable
@@ -108,7 +108,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         // rev potentiometer //analog
         potentiometer = ahwMap.get(AnalogInput.class, "potent");
         //magnetic limit switch //digital is pressed
-        limitSwitch = ahwMap.get(DigitalChannel.class, "limitSwitch");
+//        limitSwitch = ahwMap.get(DigitalChannel.class, "limitSwitch");
 //        touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
         green1 = ahwMap.get(DigitalChannel.class, "green1");
         green2 = ahwMap.get(DigitalChannel.class, "green2");
@@ -152,13 +152,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorFrontRight);
         zeroPowerBrake(motorSlides);
         zeroPowerBrake(motorFlipper);
-        claw1.setPosition(setServo(baseServo));
-        claw2.setPosition(setServo(baseServo));
+        openClaw(claw1);
+        openClaw(claw2);
         flipServo.setPosition(setServo(servoFlipBase));
         cRE = new Gamepad.RumbleEffect.Builder()
-                .addStep(1.0, 1.0, 250)  //  Rumble right motor 100% for 500 mSec
+                .addStep(1.0, 1.0, 250)
                 .build();
-        timer.reset();//resetting the runtime variable
+        timer.reset();
         Sensors.ledIND(green1, red1, true);
         Sensors.ledIND(green2, red2, true);
         Sensors.ledIND(green3, red3, true);
@@ -193,9 +193,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
             // Telemetry telemetry = myOpMode.telemetry;
             telemetry.clearAll();
             updateStatus("Running");
-            int duration = 500;
-            myOpMode.gamepad1.setLedColor(229, 74, 161,duration);
-            myOpMode.gamepad2.setLedColor(54,69,79,duration);
+//            int duration = 500;
+//            myOpMode.gamepad1.setLedColor(229, 74, 161,duration);
+//            myOpMode.gamepad2.setLedColor(54,69,79,duration);
             once = true;
         }
     }
@@ -263,11 +263,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void buildTelemetry() {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         //Telemetry telemetry = myOpMode.telemetry;
-
         telemetry.addData("Drivers", currDriver + " " + currOther);
         getBatteryVoltage(vSensor);
         telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
         telemetry.addData("lowBattery", lowVoltage);
+        telemetry.addData("potentiometer",Sensors.getPotentVal(potentiometer));
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("reversed", reversed);
         telemetry.addData("slowMode", slowModeIsOn);
