@@ -28,8 +28,6 @@ public class demoAuto extends LinearOpMode {
         robot.initAuto(hardwareMap);
 
         if (isStopRequested()) return;
-
-
         drive.followTrajectory(traj1);
         PoseStorage.currentPose = drive.getPoseEstimate();
     }

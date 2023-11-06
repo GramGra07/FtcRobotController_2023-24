@@ -4,10 +4,9 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class PIDUtil {
-    public PIDController pidController;
 
-    public void initPIDController(double p, double i, double d, DcMotor motor, int target) {
-        pidController = new PIDController(
+    public static void initPIDController(double p, double i, double d, DcMotor motor, int target) {
+        new PIDController(
                 p, // Proportional gain
                 i, // Integral gain
                 d // Derivative gain
@@ -16,9 +15,15 @@ public class PIDUtil {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+    public static void setupPIDMotor(DcMotor motor, int target){
+        motor.setTargetPosition(target);
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
 
-    public void runPIDController(DcMotor motor) {
+    public static void calculatePID(DcMotor motor,PIDController pidController) {
         motor.setPower(pidController.calculate(motor.getCurrentPosition(), motor.getTargetPosition()));
     }
+
 }
 
