@@ -32,10 +32,6 @@ public class pipelineTester extends LinearOpMode {
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
         webcam.setPipeline(new ColorEdgeDetectionBounded(Alliance.BLUE));//!can switch pipelines here
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
-        // OpenCVpipelines.WhiteDotDetection()
-        // OpenCVpipelines.ColorEdgeDetectionBounded("yellow")
-        // RecognizeObject("red", "cone")
-        // OpenCVpipelines.RecognizeObject("red", "prop")
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override

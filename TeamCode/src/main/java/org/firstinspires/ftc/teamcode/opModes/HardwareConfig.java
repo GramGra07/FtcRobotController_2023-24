@@ -192,6 +192,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
             // Telemetry telemetry = myOpMode.telemetry;
             telemetry.clearAll();
+
             updateStatus("Running");
 //            int duration = 500;
 //            myOpMode.gamepad1.setLedColor(229, 74, 161,duration);

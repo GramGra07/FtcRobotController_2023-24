@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.auto;
+package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
+import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
@@ -23,7 +24,7 @@ public class autoScrimRR extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
-        robot.initAuto(hardwareMap);
+        robot.initAuto(hardwareMap, StartPose.alliance);
         if (isStopRequested()) return;
 //        driveByPotentVal(180, HardwareConfig.potentiometer,motorFlipper);
         SpikeNav(drive);
