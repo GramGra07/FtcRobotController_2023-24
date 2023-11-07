@@ -36,10 +36,6 @@ import org.openftc.easyopencv.OpenCvWebcam;
 //@Config
 public class autoHardware extends HardwareConfig {
     public static OpenCvWebcam webcam;
-    public static int blueX = -72+10;
-    public static int redX = -36;
-    public static int leftY = -62;
-    public static int rightY = -62;
     public static int blueRotate = -90;
     public static int redRotate = 90;
 
@@ -159,83 +155,6 @@ public class autoHardware extends HardwareConfig {
                                 .build()
                 );
             }
-        }
-    }
-
-    public static void runSpikeNav(MecanumDrive drive, OpMode opMode) {
-        HuskyLensUtil.delayIfNoOBJ(opMode.telemetry);
-        HuskyLensUtil.extrapolatePosition();
-        switch (autoHardware.autonomousRandom) {
-            case left:
-                // move to left side
-                if (StartPose.alliance == Alliance.RED) {
-                    targetTag = Vision.leftR;
-                } else {
-                    targetTag = Vision.leftB;
-                }
-                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
-                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                if (StartPose.side == StartSide.LEFT) {
-                    if (StartPose.alliance == Alliance.RED) {
-                        drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeLeftLRed(drive));
-                    } else {
-                        drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeLeftLBlue(drive));
-                    }
-                } else {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeLeftR(drive));
-                }
-                PoseStorage.currentPose = drive.getPoseEstimate();
-                break;
-            case mid:
-                // move to mid side
-                if (StartPose.alliance == Alliance.RED) {
-                    targetTag = Vision.midR;
-                } else {
-                    targetTag = Vision.midB;
-                }
-                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
-                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                if (StartPose.side == StartSide.LEFT) {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive));
-                } else {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive));
-                }
-                PoseStorage.currentPose = drive.getPoseEstimate();
-                break;
-            case right:
-                // move to right side
-                if (StartPose.alliance == Alliance.RED) {
-                    targetTag = Vision.rightR;
-                } else {
-                    targetTag = Vision.rightB;
-                }
-                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
-                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
-                if (StartPose.side == StartSide.LEFT) {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeRightL(drive));
-                } else {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeRightR(drive));
-                }
-                PoseStorage.currentPose = drive.getPoseEstimate();
-                break;
-            default:
-                if (StartPose.alliance == Alliance.RED) {
-                    targetTag = Vision.midR;
-                } else {
-                    targetTag = Vision.midB;
-                }
-                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
-                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                if (StartPose.side == StartSide.LEFT) {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive));
-                } else {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive));
-                }
-                PoseStorage.currentPose = drive.getPoseEstimate();
         }
     }
 

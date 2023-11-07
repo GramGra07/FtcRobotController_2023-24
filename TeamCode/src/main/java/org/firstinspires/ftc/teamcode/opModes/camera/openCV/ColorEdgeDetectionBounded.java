@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRandom;
 
+import com.acmerobotics.dashboard.config.Config;
+
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.opencv.core.Core;
@@ -17,6 +19,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
+@Config
 public class ColorEdgeDetectionBounded extends OpenCvPipeline {
     Mat end = new Mat();
     Mat edges = new Mat();
@@ -29,8 +32,8 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         this.alliance = color;
     }
 
-    int[] pointsX = new int[]{0, 50, 75, 250, 270, 320};
-    int[] pointsY = new int[]{120, 215, 100, 120, 120, 215};
+    public static int[] pointsX = new int[]{0, 50, 75, 250, 270, 320};
+    public static int[] pointsY = new int[]{120, 215, 100, 120, 120, 215};
 
     Scalar scalarLow, scalarHigh;
 

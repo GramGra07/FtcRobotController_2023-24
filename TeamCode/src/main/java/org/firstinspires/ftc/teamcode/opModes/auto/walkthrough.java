@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.opModes.auto;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRandom;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.delayUntilTagFound;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.runSpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.targetTag;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -31,7 +31,7 @@ public class walkthrough extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
         robot.initAuto(hardwareMap,null);
         if (isStopRequested()) return;
-        runSpikeNav(drive, this);
+        SpikeNav(drive);
         // do claw stuff to move & drop pixel
         navToBackdrop(drive);
         // drop pixel
