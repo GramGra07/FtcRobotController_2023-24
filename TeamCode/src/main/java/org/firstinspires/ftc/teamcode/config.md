@@ -27,8 +27,8 @@ I2C
 2 -
 3 -
 Analog
-0 -
-1 -
+0 - potent
+1 - potent
 2 -
 3 -
 

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorFlipper;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.SpikeNav;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRandom;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.driveByPotentVal;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
@@ -12,9 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
-import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
-import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesLEFT;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
@@ -23,14 +20,14 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 @Autonomous(group = "scrim")
 //@Disabled
-public class autoScrimRR extends LinearOpMode {
+public class autoScrimBL extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
+        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap, StartPose.alliance);
         if (isStopRequested()) return;
         driveByPotentVal(75, HardwareConfig.potentiometer,motorFlipper);

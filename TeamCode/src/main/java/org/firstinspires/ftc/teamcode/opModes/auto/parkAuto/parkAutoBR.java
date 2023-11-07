@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.parkAuto;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.parkAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -25,40 +27,7 @@ public class parkAutoBR extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
         robot.initAuto(hardwareMap,null);
         if (isStopRequested()) return;
-        if (StartPose.alliance == Alliance.RED) {
-            if (StartPose.side == StartSide.RIGHT) {
-                drive.followTrajectorySequence(
-                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .forward(50)
-                                .strafeRight(84)
-                                .build()
-                );
-            }
-            if (StartPose.side == StartSide.LEFT) {
-                drive.followTrajectorySequence(
-                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(-60, 60, Math.toRadians(0)))
-                                .build()
-                );
-            }
-        }
-        if (StartPose.alliance == Alliance.BLUE) {
-            if (StartPose.side == StartSide.LEFT) {
-                drive.followTrajectorySequence(
-                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(-60, 60, Math.toRadians(0)))
-                                .build()
-                );
-            }
-            if (StartPose.side == StartSide.RIGHT) {
-                drive.followTrajectorySequence(
-                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .forward(50)
-                                .strafeLeft(84)
-                                .build()
-                );
-            }
-        }
+        parkAuto(drive);
         PoseStorage.currentPose = drive.getPoseEstimate();
     }
 }

@@ -16,26 +16,21 @@ public class BackdropTrajectories {
 
     public static TrajectorySequence redLong(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineTo(new Vector2d(58, -36))
-                .lineTo(new Vector2d(58, 36))
-                .lineToLinearHeading(new Pose2d(36, 46, Math.toRadians(90)))
+                .lineToLinearHeading(new Pose2d(48, -36,Math.toRadians(0)))
                 .build();
     }
 
     public static TrajectorySequence blueShort(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineToLinearHeading(new Pose2d(-36, 46, Math.toRadians(90)))
-                .addSpatialMarker(new Vector2d(36, 36), () -> {
-                    // put up arm
-                })
+                .lineToLinearHeading(new Pose2d(48, 36, Math.toRadians(0)))
                 .build();
     }
 
     public static TrajectorySequence blueLong(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineTo(new Vector2d(-58, -36))
-                .lineTo(new Vector2d(-58, 36))
-                .lineToLinearHeading(new Pose2d(-36, 46, Math.toRadians(90)))
+                .strafeLeft(24)
+                .forward(16)
+                .lineToLinearHeading(new Pose2d(48, 36, Math.toRadians(0)))
                 .build();
     }
 }

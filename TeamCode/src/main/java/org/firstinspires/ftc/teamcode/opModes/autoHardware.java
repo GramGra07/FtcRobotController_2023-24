@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes;
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -32,8 +33,16 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+//@Config
 public class autoHardware extends HardwareConfig {
     public static OpenCvWebcam webcam;
+    public static int blueX = -72+10;
+    public static int redX = -36;
+    public static int leftY = -62;
+    public static int rightY = -62;
+    public static int blueRotate = -90;
+    public static int redRotate = 90;
+
 
     public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
     //  public static Pose2d startPose = getStartPose(StartPose.redRight);
@@ -83,7 +92,7 @@ public class autoHardware extends HardwareConfig {
         double range = 1;
         // turn motor until dif > 1 or close
         while (Math.abs(dif) > range) {
-            double sign = 1.0;
+            double sign = -(dif/dif);
             dif = target - Sensors.getPotentVal(potent);
             motor.setPower(sign * 0.5);
         }
@@ -97,19 +106,60 @@ public class autoHardware extends HardwareConfig {
             case RED:
                 switch (side) {
                     case LEFT:
-                        return new Pose2d(72 - (10), -36, Math.toRadians(180));
+                        return new Pose2d(-36, -62, Math.toRadians(redRotate));
                     case RIGHT:
-                        return new Pose2d(72 - (10), 12, Math.toRadians(180));
+                        return new Pose2d(12, -62, Math.toRadians(redRotate));
                 }
             case BLUE:
                 switch (side) {
                     case LEFT:
-                        return new Pose2d(-72 + (10), 12, Math.toRadians(0));
+                        return new Pose2d(12, 62, Math.toRadians(blueRotate));
                     case RIGHT:
-                        return new Pose2d(-72 + (10), -36, Math.toRadians(0));
+                        return new Pose2d(-36, 62, Math.toRadians(blueRotate));
                 }
         }
         return new Pose2d(0, 0, 0);
+    }
+    public static void parkAuto(MecanumDrive drive){
+        if (StartPose.alliance == Alliance.BLUE) {
+            if (StartPose.side == StartSide.LEFT) {
+                drive.followTrajectorySequence(
+                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .strafeLeft(48)
+                                .build()
+                );
+            }
+        }
+        if (StartPose.alliance == Alliance.BLUE) {
+            if (StartPose.side == StartSide.RIGHT) {
+                drive.followTrajectorySequence(
+                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .forward(50)
+                                .strafeLeft(84)
+                                .build()
+                );
+            }
+        }
+        if (StartPose.alliance == Alliance.RED) {
+            if (StartPose.side == StartSide.LEFT) {
+                drive.followTrajectorySequence(
+                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .forward(50)
+                                .strafeRight(84)
+                                .build()
+                );
+            }
+        }
+        if (StartPose.alliance == Alliance.RED) {
+            if (StartPose.side == StartSide.RIGHT) {
+                drive.followTrajectorySequence(
+                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .forward(4)
+                                .strafeRight(48)
+                                .build()
+                );
+            }
+        }
     }
 
     public static void runSpikeNav(MecanumDrive drive, OpMode opMode) {
@@ -189,19 +239,15 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
-    public static void navToBackdrop(MecanumDrive drive, Telemetry telemetry) {
-        // move all the way to backdrop
-        telemetry.addData("alliance", StartPose.alliance);
-        telemetry.addData("side", StartPose.side);
-        telemetry.update();
+    public static void navToBackdrop(MecanumDrive drive) {
         switch (StartPose.alliance) {
             case RED:
                 switch (StartPose.side) {
                     case LEFT:
-                        drive.followTrajectorySequence(BackdropTrajectories.redShort(drive));
+                        drive.followTrajectorySequence(BackdropTrajectories.redLong(drive));
                         break;
                     case RIGHT:
-                        drive.followTrajectorySequence(BackdropTrajectories.redLong(drive));
+                        drive.followTrajectorySequence(BackdropTrajectories.redShort(drive));
                         break;
                 }
                 break;

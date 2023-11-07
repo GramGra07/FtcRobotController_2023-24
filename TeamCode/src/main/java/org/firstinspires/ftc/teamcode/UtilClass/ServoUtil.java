@@ -22,19 +22,20 @@ public class ServoUtil {
 
     public static void openClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
-            servo.setPosition(setServo(baseServo + clawMovement));
+            servo.setPosition(setServo(95 + 55));
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
         } else if (servo == HardwareConfig.claw2) {
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-            servo.setPosition(setServo(baseServo + clawMovement + offset));
+            servo.setPosition(setServo(60 + 50 + 33));
         }
     }
 
     public static void closeClaw(Servo servo) {
-        servo.setPosition(setServo(baseServo));
         if (servo == HardwareConfig.claw1) {
+            servo.setPosition(setServo(95));
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
         } else if (servo == HardwareConfig.claw2) {
+            servo.setPosition(setServo(60));
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
         }
     }
