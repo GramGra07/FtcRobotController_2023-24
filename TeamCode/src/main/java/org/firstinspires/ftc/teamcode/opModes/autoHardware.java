@@ -19,6 +19,7 @@ import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.BackdropTrajectories;
+import org.firstinspires.ftc.teamcode.Trajectories.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesLEFT;
 import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesRIGHT;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
@@ -60,25 +61,22 @@ public class autoHardware extends HardwareConfig {
         Vision.initVision(ahwMap);
 //        EOCVWebcam.initEOCV(ahwMap,webcam);
 //        HuskyLensUtil.initHuskyLens(hardwareMap,myOpMode, HuskyLens.Algorithm.FACE_RECOGNITION);
-        if (alliance != null) {
-            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-            webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
-            webcam.setPipeline(new ColorEdgeDetectionBounded(alliance));//!can switch pipelines here
-            FtcDashboard.getInstance().startCameraStream(webcam, 0);
-            webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
-            webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-                @Override
-                public void onOpened() {
-                    webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
-                }
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
+        webcam.setPipeline(new ColorEdgeDetectionBounded(alliance));//!can switch pipelines here
+        FtcDashboard.getInstance().startCameraStream(webcam, 0);
+        webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
+        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
+            @Override
+            public void onOpened() {
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+            }
 
-                @Override
-                public void onError(int errorCode) {
-                }
-            });
-        }
+            @Override
+            public void onError(int errorCode) {
+            }
+        });
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
-        myOpMode.waitForStart();
         timer.reset();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
@@ -93,6 +91,16 @@ public class autoHardware extends HardwareConfig {
             motor.setPower(sign * 0.5);
         }
         motor.setPower(0);
+    }
+    public static void shiftAuto(MecanumDrive drive){
+        switch (autonomousRandom) {
+            case left:
+                drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
+                break;
+            case right:
+                drive.followTrajectorySequence(ShiftTrajectories.shiftRight(drive));
+                break;
+        }
     }
 
     public static Pose2d getStartPose(Alliance alliance, StartSide side) {

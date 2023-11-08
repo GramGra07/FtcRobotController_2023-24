@@ -1,28 +1,47 @@
 package org.firstinspires.ftc.teamcode.Trajectories;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
 
+import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
+@Config
 public class BackdropTrajectories {
+    public static int endAngle = 0;
+    public static double displacementBlueLong = 20;
+    public static double displacementRedShort = 20;
+    public static double displacementRedLong = 20;
+    public static double displacementBlueShort = 20;
+    public static int potentBackTarget = 270;
+
     public static TrajectorySequence redShort(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineToLinearHeading(new Pose2d(46, -36, Math.toRadians(0)))
+                .addDisplacementMarker(displacementRedShort, () -> {
+                    ServoUtil.openClaw(HardwareConfig.claw2);
+                })
+                .lineToLinearHeading(new Pose2d(48, -36, Math.toRadians(endAngle)))
                 .build();
     }
 
     public static TrajectorySequence redLong(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineToLinearHeading(new Pose2d(48, -36,Math.toRadians(0)))
+                .addDisplacementMarker(displacementRedLong, () -> {
+                    ServoUtil.openClaw(HardwareConfig.claw2);
+                })
+                .lineToLinearHeading(new Pose2d(48, -36, Math.toRadians(endAngle)))
                 .build();
     }
 
     public static TrajectorySequence blueShort(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .lineToLinearHeading(new Pose2d(48, 36, Math.toRadians(0)))
+                .addDisplacementMarker(displacementBlueShort, () -> {
+                    ServoUtil.openClaw(HardwareConfig.claw2);
+                })
+                .lineToLinearHeading(new Pose2d(48, 36, Math.toRadians(endAngle)))
                 .build();
     }
 
@@ -30,7 +49,15 @@ public class BackdropTrajectories {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .strafeLeft(24)
                 .forward(16)
-                .lineToLinearHeading(new Pose2d(48, 36, Math.toRadians(0)))
+                .addDisplacementMarker(displacementBlueLong, () -> {
+                    ServoUtil.openClaw(HardwareConfig.claw2);
+                    // bring arm up
+                })
+                .lineToLinearHeading(new Pose2d(48, 36, Math.toRadians(endAngle)))
+//                .addDisplacementMarker(()->{
+//                    autoHardware.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorFlipper);
+//                    ServoUtil.closeClaw(HardwareConfig.claw1);
+//                })
                 .build();
     }
 }

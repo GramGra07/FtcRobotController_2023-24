@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoHardware.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.driveByPotentVal;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.shiftAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -28,11 +29,12 @@ public class autoScrimBR extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
-        robot.initAuto(hardwareMap, StartPose.alliance);
+        robot.initAuto(hardwareMap,StartPose.alliance);
         if (isStopRequested()) return;
         driveByPotentVal(75, HardwareConfig.potentiometer,motorFlipper);
         SpikeNav(drive);
         navToBackdrop(drive);
+        shiftAuto(drive);
         PoseStorage.currentPose = drive.getPoseEstimate();
     }
 }

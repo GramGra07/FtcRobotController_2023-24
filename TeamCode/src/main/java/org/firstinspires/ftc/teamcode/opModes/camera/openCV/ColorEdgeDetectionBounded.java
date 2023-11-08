@@ -19,7 +19,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-@Config
+//@Config
 public class ColorEdgeDetectionBounded extends OpenCvPipeline {
     Mat end = new Mat();
     Mat edges = new Mat();
@@ -32,10 +32,10 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         this.alliance = color;
     }
 
-    public static int[] pointsX = new int[]{0, 50, 75, 250, 270, 320};
-    public static int[] pointsY = new int[]{120, 215, 100, 120, 120, 215};
+    public static int[] pointsX = new int[]{0, 25, 75, 250, 270, 320};
+    public static int[] pointsY = new int[]{160, 240, 170, 210, 180, 220};
 
-    Scalar scalarLow, scalarHigh;
+    public Scalar scalarLow, scalarHigh;
 
     @Override
     public Mat processFrame(Mat input) {
@@ -43,12 +43,12 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         // color map below
         // https://i.stack.imgur.com/gyuw4.png
         if (alliance == Alliance.RED) {
-            scalarLow = new Scalar(126, 131, 100);
-            scalarHigh = new Scalar(221, 255, 184);
+            scalarLow = new Scalar(0, 147, 0);
+            scalarHigh = new Scalar(255, 255, 255);
         } else if (alliance == Alliance.BLUE) {
             //todo change to blue
-            scalarLow = new Scalar(0, 65, 124);
-            scalarHigh = new Scalar(96, 126, 190);
+            scalarLow = new Scalar(0, 0, 141);
+            scalarHigh = new Scalar(255, 255, 255);
         }
         Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
         Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
