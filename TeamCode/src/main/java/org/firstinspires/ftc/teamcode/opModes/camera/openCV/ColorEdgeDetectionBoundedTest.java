@@ -53,7 +53,6 @@ public class ColorEdgeDetectionBoundedTest extends OpenCvPipeline {
         Core.bitwise_and(input, input, ycrcbMat2, end2);
         Imgproc.Canny(end, edges, 25, 50);
         Imgproc.Canny(end2, edges2, 25, 50);
-        //
         List<MatOfPoint> contours = new ArrayList<>();
         Imgproc.findContours(edges, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
         MatOfPoint2f[] contoursPoly = new MatOfPoint2f[contours.size()];
@@ -91,22 +90,25 @@ public class ColorEdgeDetectionBoundedTest extends OpenCvPipeline {
             if (centers[highIndex].x > pointsX[0] && centers[highIndex].x < pointsX[1]) {
                 if (centers[highIndex].y > pointsY[0] && centers[highIndex].y < pointsY[1]) {
                     Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
-                    Imgproc.putText(input, "left", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(0, 255, 0));
-//                    autonomousRandom = AutoRandom.left;
+                    Imgproc.putText(input, "left", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(255, 0, 0));
+                    Imgproc.rectangle(input, boundRect[highIndex].tl(), boundRect[highIndex].br(), new Scalar(0,255,0), 2);
+                    autonomousRandom = AutoRandom.left;
                 }
             }
             if (centers[highIndex].x > pointsX[2] && centers[highIndex].x < pointsX[3]) {
                 if (centers[highIndex].y > pointsY[2] && centers[highIndex].y < pointsY[3]) {
                     Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
-                    Imgproc.putText(input, "center", new Point(pointsX[2], pointsY[2]), 0, 1, new Scalar(0, 255, 0));
-//                    autonomousRandom = AutoRandom.mid;
+                    Imgproc.putText(input, "center", new Point(pointsX[2], pointsY[2]), 0, 1, new Scalar(255, 0, 0));
+                    Imgproc.rectangle(input, boundRect[highIndex].tl(), boundRect[highIndex].br(), new Scalar(0,255,0), 2);
+                    autonomousRandom = AutoRandom.mid;
                 }
             }
             if (centers[highIndex].x > pointsX[4] && centers[highIndex].x < pointsX[5]) {
                 if (centers[highIndex].y > pointsY[4] && centers[highIndex].y < pointsY[5]) {
                     Imgproc.rectangle(input, new Point(pointsX[4], pointsY[4]), new Point(pointsX[5], pointsY[5]), new Scalar(0, 255, 0), 1);
-                    Imgproc.putText(input, "right", new Point(pointsX[4], pointsY[4]), 0, 1, new Scalar(0, 255, 0));
-//                    autonomousRandom = AutoRandom.right;
+                    Imgproc.putText(input, "right", new Point(pointsX[4], pointsY[4]), 0, 1, new Scalar(255, 0, 0));
+                    Imgproc.rectangle(input, boundRect[highIndex].tl(), boundRect[highIndex].br(), new Scalar(0,255,0), 2);
+                    autonomousRandom = AutoRandom.right;
                 }
             }
         }
@@ -148,22 +150,25 @@ public class ColorEdgeDetectionBoundedTest extends OpenCvPipeline {
             if (centers2[highIndex2].x > pointsX[0] && centers2[highIndex2].x < pointsX[1]) {
                 if (centers2[highIndex2].y > pointsY[0] && centers2[highIndex2].y < pointsY[1]) {
                     Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
-                    Imgproc.putText(input, "left", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(0, 255, 0));
-//                    autonomousRandom = AutoRandom.left;
+                    Imgproc.putText(input, "left", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(255, 0, 0));
+                    Imgproc.rectangle(input, boundRect[highIndex].tl(), boundRect[highIndex].br(), new Scalar(0,255,0), 2);
+                    autonomousRandom = AutoRandom.left;
                 }
             }
             if (centers2[highIndex2].x > pointsX[2] && centers2[highIndex2].x < pointsX[3]) {
                 if (centers2[highIndex2].y > pointsY[2] && centers2[highIndex2].y < pointsY[3]) {
                     Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
-                    Imgproc.putText(input, "center", new Point(pointsX[2], pointsY[2]), 0, 1, new Scalar(0, 255, 0));
-//                    autonomousRandom = AutoRandom.mid;
+                    Imgproc.putText(input, "center", new Point(pointsX[2], pointsY[2]), 0, 1, new Scalar(255, 0, 0));
+                    Imgproc.rectangle(input, boundRect[highIndex].tl(), boundRect[highIndex].br(), new Scalar(0,255,0), 2);
+                    autonomousRandom = AutoRandom.mid;
                 }
             }
             if (centers2[highIndex2].x > pointsX[4] && centers2[highIndex2].x < pointsX[5]) {
                 if (centers2[highIndex2].y > pointsY[4] && centers2[highIndex2].y < pointsY[5]) {
                     Imgproc.rectangle(input, new Point(pointsX[4], pointsY[4]), new Point(pointsX[5], pointsY[5]), new Scalar(0, 255, 0), 1);
-                    Imgproc.putText(input, "right", new Point(pointsX[4], pointsY[4]), 0, 1, new Scalar(0, 255, 0));
-//                    autonomousRandom = AutoRandom.right;
+                    Imgproc.putText(input, "right", new Point(pointsX[4], pointsY[4]), 0, 1, new Scalar(255, 0, 0));
+                    Imgproc.rectangle(input, boundRect[highIndex].tl(), boundRect[highIndex].br(), new Scalar(0,255,0), 2);
+                    autonomousRandom = AutoRandom.right;
                 }
             }
         }

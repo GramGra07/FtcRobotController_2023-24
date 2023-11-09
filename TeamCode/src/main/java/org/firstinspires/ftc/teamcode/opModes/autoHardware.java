@@ -27,6 +27,7 @@ import org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.Vision;
 import org.firstinspires.ftc.teamcode.opModes.camera.openCV.ColorEdgeDetectionBounded;
+import org.firstinspires.ftc.teamcode.opModes.camera.openCV.ColorEdgeDetectionBoundedTest;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -63,7 +64,7 @@ public class autoHardware extends HardwareConfig {
 //        HuskyLensUtil.initHuskyLens(hardwareMap,myOpMode, HuskyLens.Algorithm.FACE_RECOGNITION);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new ColorEdgeDetectionBounded(alliance));//!can switch pipelines here
+        webcam.setPipeline(new ColorEdgeDetectionBoundedTest());//!can switch pipelines here
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
