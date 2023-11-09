@@ -28,8 +28,8 @@ public class ServoUtil {
             servo.setPosition(setServo(openClaw2));
         }
     }
-    public static int closeClaw1 = 95;
-    public static int closeClaw2 = 60;
+    public static int closeClaw1 = 85;
+    public static int closeClaw2 = 50;
     public static void closeClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
             servo.setPosition(setServo(closeClaw1));
