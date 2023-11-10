@@ -167,10 +167,10 @@ public class OpenCVpipelines {
                 double right = boundRect[highIndex].br().x;
                 double top = boundRect[highIndex].tl().y;
                 double bottom = boundRect[highIndex].br().y;
-                pipelineTester.left = left;
-                pipelineTester.right = right;
-                pipelineTester.top = top;
-                pipelineTester.bottom = bottom;
+                OpenCVBlue.left = left;
+                OpenCVBlue.right = right;
+                OpenCVBlue.top = top;
+                OpenCVBlue.bottom = bottom;
                 int centerX = (int) (left + ((right - left) / 2));
                 Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
             }

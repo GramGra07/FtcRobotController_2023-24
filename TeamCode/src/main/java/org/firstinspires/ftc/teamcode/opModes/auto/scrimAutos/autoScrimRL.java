@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
-@Autonomous(group = "scrim")
+@Autonomous(group = "ascrim")
 //@Disabled
 public class autoScrimRL extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
@@ -34,7 +34,7 @@ public class autoScrimRL extends LinearOpMode {
         driveByPotentVal(75, HardwareConfig.potentiometer,motorFlipper);
         SpikeNav(drive);
         navToBackdrop(drive);
-        shiftAuto(drive);
+        if (isStopRequested())return;
         PoseStorage.currentPose = drive.getPoseEstimate();
     }
 }

@@ -32,8 +32,8 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
         this.alliance = color;
     }
 
-    public static int[] pointsX = new int[]{0, 25, 75, 250, 270, 320};
-    public static int[] pointsY = new int[]{160, 240, 170, 210, 180, 220};
+    public static int[] pointsX = new int[]{0, 35, 75, 250, 270, 320};
+    public static int[] pointsY = new int[]{160, 260, 170, 210, 180, 220};
 
     public Scalar scalarLow, scalarHigh;
 

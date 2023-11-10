@@ -25,7 +25,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.opModes.camera.openCV.pipelineTester;
+import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OpenCVBlue;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
@@ -56,7 +56,7 @@ public class InternalCamera2AdvancedFeaturesExample extends LinearOpMode {
          * NOTE: Many comments have been omitted from this sample for the
          * sake of conciseness. If you're just starting out with EasyOpenCV,
          * you should take a look at {@link InternalCamera1Example} or its
-         * webcam counterpart, {@link pipelineTester} first.
+         * webcam counterpart, {@link OpenCVBlue} first.
          */
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());

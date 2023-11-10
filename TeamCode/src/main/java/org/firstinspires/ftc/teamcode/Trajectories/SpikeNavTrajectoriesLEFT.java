@@ -33,14 +33,14 @@ public class SpikeNavTrajectoriesLEFT {
 
     public static TrajectorySequence navToSpikeLeftLBlue(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(32)
+                .forward(24)
                 .turn(Math.toRadians(90))
                 .forward(5)
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(HardwareConfig.claw2);
                 })
                 .back(6)
-                .strafeLeft(16)
+                .strafeLeft(18)
                 .forward(15)
                 .build();
     }

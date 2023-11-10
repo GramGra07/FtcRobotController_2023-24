@@ -32,7 +32,7 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-@Autonomous(group = "scrim")
+@Autonomous(group = "ascrim")
 //@Disabled
 public class autoScrimRR extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
@@ -45,11 +45,10 @@ public class autoScrimRR extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
         robot.initAuto(hardwareMap,StartPose.alliance);
         if (isStopRequested()) return;
-        waitForStart();
         driveByPotentVal(75, HardwareConfig.potentiometer,motorFlipper);
         SpikeNav(drive);
         navToBackdrop(drive);
-//        shiftAuto(drive);
+        if (isStopRequested())return;
         PoseStorage.currentPose = drive.getPoseEstimate();
     }
 }

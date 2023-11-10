@@ -57,16 +57,16 @@ public class Operator extends Drivers {
         }
         if (currOther == otherControls[1]) {//Camden
             if (myOpMode.gamepad2.right_bumper) {
-                openClaw(claw1);
+                closeClaw(claw2);
             }
             if (myOpMode.gamepad2.left_bumper) {
-                closeClaw(claw1);
+                openClaw(claw1);
             }
             if (myOpMode.gamepad2.right_trigger > 0) {
                 openClaw(claw2);
             }
             if (myOpMode.gamepad2.left_trigger > 0) {
-                closeClaw(claw2);
+                closeClaw(claw1);
             }
 //            liftPower = Range.clip(myOpMode.gamepad2.left_stick_x, -liftMax, liftMax);
             slidePower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);

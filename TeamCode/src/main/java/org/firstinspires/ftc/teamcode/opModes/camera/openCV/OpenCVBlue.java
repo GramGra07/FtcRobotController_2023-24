@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @TeleOp
 //@Disabled
-public class AutoTesterCV extends LinearOpMode {
+public class OpenCVBlue extends LinearOpMode {
     OpenCvWebcam webcam;
     public static int x = 0;
     public static double left = 0;
@@ -30,7 +30,7 @@ public class AutoTesterCV extends LinearOpMode {
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new ColorEdgeDetectionBounded(Alliance.RED));//!can switch pipelines here
+        webcam.setPipeline(new ColorEdgeDetectionBounded(Alliance.BLUE));//!can switch pipelines here
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {

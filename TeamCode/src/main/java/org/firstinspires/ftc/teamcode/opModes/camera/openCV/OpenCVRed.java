@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @TeleOp
 //@Disabled
-public class pipelineTester extends LinearOpMode {
+public class OpenCVRed extends LinearOpMode {
     OpenCvWebcam webcam;
     public static int x = 0;
     public static double left = 0;

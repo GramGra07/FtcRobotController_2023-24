@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Trajectories;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.blueRotate;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
@@ -47,8 +49,8 @@ public class BackdropTrajectories {
 
     public static TrajectorySequence blueLong(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .strafeLeft(24)
-                .forward(16)
+                .lineToLinearHeading(new Pose2d(-36, 62, Math.toRadians(blueRotate+90)))
+                .forward(56)
                 .addDisplacementMarker(displacementBlueLong, () -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                     // bring arm up
