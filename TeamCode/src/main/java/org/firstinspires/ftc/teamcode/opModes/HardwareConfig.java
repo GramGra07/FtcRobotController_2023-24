@@ -268,7 +268,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         getBatteryVoltage(vSensor);
         telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
         telemetry.addData("lowBattery", lowVoltage);
-        telemetry.addData("potentiometer", Sensors.getPotentVal(potentiometer));
+        telemetry.addData("potentiometer","%.1f", Sensors.getPotentVal(potentiometer));
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("reversed", reversed);
         telemetry.addData("slowMode", slowModeIsOn);

@@ -32,7 +32,7 @@ public class SpikeNavTrajectoriesRIGHT {
 
     public static TrajectorySequence navToSpikeCenterR(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(30)
+                .forward(28)
                 .strafeLeft(2)
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(HardwareConfig.claw2);

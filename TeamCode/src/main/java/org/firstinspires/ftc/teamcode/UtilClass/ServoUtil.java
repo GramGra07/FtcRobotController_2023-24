@@ -16,8 +16,8 @@ public class ServoUtil {
         position = degree_mult * degrees;
         return position;
     }
-    public static int openClaw1 = 190;
-    public static int openClaw2 = 90;
+    public static int openClaw1 = 150;
+    public static int openClaw2 = 143;
 
     public static void openClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
@@ -28,8 +28,8 @@ public class ServoUtil {
             servo.setPosition(setServo(openClaw2));
         }
     }
-    public static int closeClaw1 = 130;
-    public static int closeClaw2 = 30;
+    public static int closeClaw1 = 85;
+    public static int closeClaw2 = 50;
     public static void closeClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
             servo.setPosition(setServo(closeClaw1));
