@@ -1,11 +1,10 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
 
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorFlipper;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.driveByPotentVal;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.shiftAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -31,7 +30,7 @@ public class autoScrimBL extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap,StartPose.alliance);
         if (isStopRequested()) return;
-        driveByPotentVal(75, HardwareConfig.potentiometer,motorFlipper);
+        driveByPotentVal(75, HardwareConfig.potentiometer, motorRotation);
         SpikeNav(drive);
         navToBackdrop(drive);
         if (isStopRequested())return;

@@ -168,7 +168,7 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
-    public static void navToBackdrop(MecanumDrive drive) {
+    public static void navToBackdrop(MecanumDrive drive){
         switch (StartPose.alliance) {
             case RED:
                 switch (StartPose.side) {

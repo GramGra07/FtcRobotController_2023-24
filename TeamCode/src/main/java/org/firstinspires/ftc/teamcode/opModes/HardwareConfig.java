@@ -52,13 +52,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean multipleDrivers = variable.multipleDrivers;
     public String statusVal = "OFFLINE";
     public static Servo claw1 = null, claw2 = null, flipServo = null;
-    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorSlides = null, motorFlipper = null;
+    public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorExtension = null, motorRotation = null;
     public static DcMotor enc1 = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
-    public static double liftPower = 0, slidePower = 0, flipperPower = 0;
+    public static double liftPower = 0, extensionPower = 0, rotationPower = 0;
     public static boolean airplaneArmed = variable.airplaneArmed;
     public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
@@ -132,8 +132,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight = ahwMap.get(DcMotor.class, "motorFrontRight");//getting the motorFrontRight motor
         motorBackRight = ahwMap.get(DcMotor.class, "motorBackRight");//getting the motorBackRight motor
         motorLift = ahwMap.get(DcMotor.class, "lift");
-        motorSlides = ahwMap.get(DcMotor.class, "slideMotor");
-        motorFlipper = ahwMap.get(DcMotor.class, "flipperMotor");
+        motorExtension = ahwMap.get(DcMotor.class, "slideMotor");
+        motorRotation = ahwMap.get(DcMotor.class, "flipperMotor");
         claw1 = ahwMap.get(Servo.class, "claw1");
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
@@ -150,8 +150,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorBackLeft);
         zeroPowerBrake(motorFrontLeft);
         zeroPowerBrake(motorFrontRight);
-        zeroPowerBrake(motorSlides);
-        zeroPowerBrake(motorFlipper);
+        zeroPowerBrake(motorExtension);
+        zeroPowerBrake(motorRotation);
         openClaw(claw1);
         openClaw(claw2);
         flipServo.setPosition(setServo(servoFlipBase));
@@ -194,9 +194,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
             telemetry.clearAll();
 
             updateStatus("Running");
-//            int duration = 500;
-//            myOpMode.gamepad1.setLedColor(229, 74, 161,duration);
-//            myOpMode.gamepad2.setLedColor(54,69,79,duration);
+            int duration = 180000000;
+            myOpMode.gamepad1.setLedColor(229, 74, 161,duration);
+            myOpMode.gamepad2.setLedColor(54,69,79,duration);
             once = true;
         }
     }
@@ -257,8 +257,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorFrontRight.setPower(frontRightPower);
         motorBackRight.setPower(backRightPower);
         motorLift.setPower(liftPower);
-        motorSlides.setPower(slidePower);
-        motorFlipper.setPower(flipperPower);
+        motorExtension.setPower(extensionPower);
+        motorRotation.setPower(rotationPower);
     }
 
     public void buildTelemetry() {

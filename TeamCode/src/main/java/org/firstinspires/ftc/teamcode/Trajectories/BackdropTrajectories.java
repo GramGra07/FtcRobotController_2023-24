@@ -4,6 +4,8 @@ import static org.firstinspires.ftc.teamcode.opModes.autoHardware.blueRotate;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
@@ -26,6 +28,8 @@ public class BackdropTrajectories {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
                 .lineToLinearHeading(new Pose2d(48, -36, Math.toRadians(endAngle)))
+                .addDisplacementMarker(()->{
+                })
                 .build();
     }
 
@@ -57,7 +61,7 @@ public class BackdropTrajectories {
                 })
                 .lineToLinearHeading(new Pose2d(48, 36, Math.toRadians(endAngle)))
 //                .addDisplacementMarker(()->{
-//                    autoHardware.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorFlipper);
+//                    autoHardware.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
 //                    ServoUtil.closeClaw(HardwareConfig.claw1);
 //                })
                 .build();
