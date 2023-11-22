@@ -83,17 +83,7 @@ public class autoHardware extends HardwareConfig {
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
 
-    public static void driveByPotentVal(int target, AnalogInput potent, DcMotor motor) {
-        double dif = target - Sensors.getPotentVal(potent);
-        double range = 1;
-        // turn motor until dif > 1 or close
-        while (Math.abs(dif) > range) {
-            double sign = -(dif/dif);
-            dif = target - Sensors.getPotentVal(potent);
-            motor.setPower(sign * 0.5);
-        }
-        motor.setPower(0);
-    }
+
     public static void shiftAuto(MecanumDrive drive){
         switch (autonomousRandom) {
             case left:

@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.SpikeNav;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.driveByPotentVal;
+import static org.firstinspires.ftc.teamcode.Sensors.driveByPotentVal;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
 

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.UtilClass;
 
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
+
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -12,12 +14,17 @@ public class ServoUtil {
     public static double position = 0;
     public final static double degree_mult = 0.00555555554;
 
-    public static double setServo(int degrees) {
+    public static double setServo(double degrees) {
         position = degree_mult * degrees;
         return position;
     }
-    public static int openClaw1 = 150;
-    public static int openClaw2 = 143;
+
+    public static double convertToDegrees(double pose) {
+        return pose / degree_mult;
+    }
+
+    public static int openClaw1 = 140;
+    public static int openClaw2 = 70;
 
     public static void openClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
@@ -28,8 +35,10 @@ public class ServoUtil {
             servo.setPosition(setServo(openClaw2));
         }
     }
-    public static int closeClaw1 = 85;
-    public static int closeClaw2 = 50;
+
+    public static int closeClaw1 = 200;
+    public static int closeClaw2 = 30;
+
     public static void closeClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
             servo.setPosition(setServo(closeClaw1));
@@ -40,19 +49,34 @@ public class ServoUtil {
         }
     }
 
-    public static int servoFlipBase = 25;
-    public static int servoFlipFull = 157;
-    public static int servoFlipFullHalf = 90;
+    public static int servoFlipBase = 90;
+    public static int servoFlipFull = 62;
+    public static int servoFlipFullHalf = 75;
+    public static int servoFlipVal = servoFlipFull;
 
     public static void flipServoBase(Servo servo) {
         servo.setPosition(setServo(servoFlipBase));
+//        lastSetVal = servoFlipBase;
     }
 
     public static void flipServoFull(Servo servo) {
         servo.setPosition(setServo(servoFlipFull));
+//        lastSetVal = servoFlipFull;
     }
 
     public static void flipServoFullHalf(Servo servo) {
         servo.setPosition(setServo(servoFlipFullHalf));
+//        lastSetVal = servoFlipFullHalf;
     }
+
+    public static void calculateFlipPose(int pose, Servo servo) {
+        double theta = Sensors.getPotentVal(potentiometer);
+        PastPotent.pastPotentVal = theta;
+        double sig = Math.ceil((-0.26 * theta) + 63.259) + (pose / 2);
+        servo.setPosition(setServo(sig));
+        servoFlipVal = (int) sig;
+        lastSetVal = pose;
+    }
+
+    public static int lastSetVal;
 }

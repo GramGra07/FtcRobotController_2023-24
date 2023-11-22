@@ -16,13 +16,18 @@ import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.resetEncoder;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.runWithoutEncoder;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionR;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.zeroPowerBrake;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.convertToDegrees;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipBase;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -39,6 +44,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
+import org.firstinspires.ftc.teamcode.UtilClass.PastPotent;
 import org.firstinspires.ftc.teamcode.UtilClass.variable;
 import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
@@ -90,6 +96,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public boolean once = false;
+    public static PIDController pidExtension = new PIDController(
+            0.1, // Proportional gain
+            0.1, // Integral gain
+            0.1 // Derivative gain
+    );
+
     public final String currentVersion = "4.2.0";
 
     //init
@@ -152,9 +164,15 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorFrontRight);
         zeroPowerBrake(motorExtension);
         zeroPowerBrake(motorRotation);
-        openClaw(claw1);
-        openClaw(claw2);
-        flipServo.setPosition(setServo(servoFlipBase));
+        closeClaw(claw1);
+        closeClaw(claw2);
+        flipServoBase(flipServo);
+        PastPotent.pastPotentVal = Sensors.getPotentVal(potentiometer);
+
+        motorRotation.setTargetPosition(10);
+        motorRotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRotation.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         cRE = new Gamepad.RumbleEffect.Builder()
                 .addStep(1.0, 1.0, 250)
                 .build();
@@ -194,9 +212,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
             telemetry.clearAll();
 
             updateStatus("Running");
-            int duration = 180000000;
-            myOpMode.gamepad1.setLedColor(229, 74, 161,duration);
-            myOpMode.gamepad2.setLedColor(54,69,79,duration);
+//            int duration = 180000000;
+//            myOpMode.gamepad1.setLedColor(229, 74, 161, duration);
+//            myOpMode.gamepad2.setLedColor(54, 69, 79, duration);
             once = true;
         }
     }
@@ -259,6 +277,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorLift.setPower(liftPower);
         motorExtension.setPower(extensionPower);
         motorRotation.setPower(rotationPower);
+        flipServo.setPosition(setServo(servoFlipVal));
     }
 
     public void buildTelemetry() {
@@ -268,10 +287,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
         getBatteryVoltage(vSensor);
         telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
         telemetry.addData("lowBattery", lowVoltage);
-        telemetry.addData("potentiometer","%.1f", Sensors.getPotentVal(potentiometer));
+        telemetry.addData("potentiometer", "%.1f", Sensors.getPotentVal(potentiometer));
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("reversed", reversed);
         telemetry.addData("slowMode", slowModeIsOn);
+        telemetry.addData("servo", convertToDegrees(flipServo.getPosition()));
         teleSpace();
         telemetry.addData("x", "%.2f", drive.getPoseEstimate().getX());
         telemetry.addData("y", "%.2f", drive.getPoseEstimate().getY());

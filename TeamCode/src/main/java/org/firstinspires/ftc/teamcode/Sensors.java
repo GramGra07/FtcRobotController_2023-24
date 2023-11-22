@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -15,8 +16,32 @@ public class Sensors {
     public static final double minimumVoltage = 11.5;
     public static double currentVoltage;
 
+
     public static double getPotentVal(AnalogInput potentiometer) {
         return Range.clip(POTENTIOMETER_MAX / 3.3 * potentiometer.getVoltage(), POTENTIOMETER_MIN, POTENTIOMETER_MAX);
+    }
+    public static void driveByPotentVal(int target, AnalogInput potent, DcMotor motor) {
+        double dif = target - Sensors.getPotentVal(potent);
+        double range = 1;
+        // turn motor until dif > 1 or close
+        while (Math.abs(dif) > range) {
+            double sign = (dif/Math.abs(dif));
+            dif = target - Sensors.getPotentVal(potent);
+            motor.setPower(sign * 0.5);
+        }
+        motor.setPower(0);
+    }
+    public static double calculatePowerByPotent(int target, AnalogInput potent, DcMotor motor){
+        double dif = target - Sensors.getPotentVal(potent);
+        double range = 1;
+        // turn motor until dif > 1 or close
+        if (Math.abs(dif) > range) {
+            double sign = -(dif/Math.abs(dif));
+            dif = target - Sensors.getPotentVal(potent);
+            return sign*0.5;
+        }else {
+            return 0;
+        }
     }
 
     public static boolean getLimitSwitch(DigitalChannel limitSwitch) {
