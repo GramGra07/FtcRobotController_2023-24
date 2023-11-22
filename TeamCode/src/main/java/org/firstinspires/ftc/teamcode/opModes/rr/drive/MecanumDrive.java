@@ -132,7 +132,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
         List<Integer> lastTrackingEncVels = new ArrayList<>();
 
         // TODO: if desired, use setLocalizer() to change the localization method
-        // setLocalizer(new StandardTrackingWheelLocalizer(hardwareMap, lastTrackingEncPositions, lastTrackingEncVels));
+        setLocalizer(new TwoWheelTrackingLocalizer(hardwareMap, this));
 
         trajectorySequenceRunner = new TrajectorySequenceRunner(
                 follower, HEADING_PID, batteryVoltageSensor,
@@ -299,7 +299,24 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).zRotationRate;
+        // TODO: This must be changed to match your configuration
+        //                           | Z axis
+        //                           |
+        //     (Motor Port Side)     |   / X axis
+        //                       ____|__/____
+        //          Y axis     / *   | /    /|   (IO Side)
+        //          _________ /______|/    //      I2C
+        //                   /___________ //     Digital
+        //                  |____________|/      Analog
+        //
+        //                 (Servo Port Side)
+        //
+        // The positive x axis points toward the USB port(s)
+        //
+        // Adjust the axis rotation rate as necessary
+        // Rotate about the z axis is the default assuming your REV Hub/Control Hub is laying
+        // flat on a surface
+        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).xRotationRate;
     }
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
