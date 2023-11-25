@@ -47,16 +47,13 @@ public class autoHardware extends HardwareConfig {
     public static int targetTag = 0;
     HardwareMap hardwareMap = null;
 
-    private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
-
-    public autoHardware(LinearOpMode opMode) {
-        super(opMode);
-        myOpMode = opMode;
-    }
-
     public static AutoRandom autonomousRandom = AutoRandom.mid;
 
-    public void initAuto(HardwareMap ahwMap,Alliance alliance) {
+    public autoHardware(LinearOpMode opmode) {
+        super(opmode);
+    }
+
+    public void initAuto(HardwareMap ahwMap,LinearOpMode myOpMode,Alliance alliance) {
         hardwareMap = ahwMap;
         init(ahwMap);
         Vision.initVision(ahwMap);

@@ -30,7 +30,7 @@ public class autoScrimRR extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
-        robot.initAuto(hardwareMap,StartPose.alliance);
+        robot.initAuto(hardwareMap,this,StartPose.alliance);
         if (isStopRequested()) return;
         driveByPotentVal(75, HardwareConfig.potentiometer, motorRotation);
         SpikeNav(drive);

@@ -28,7 +28,7 @@ public class autoScrimBL extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
-        robot.initAuto(hardwareMap,StartPose.alliance);
+        robot.initAuto(hardwareMap,this,StartPose.alliance);
         if (opModeIsActive()) {
             driveByPotentVal(10, HardwareConfig.potentiometer, motorRotation);
             SpikeNav(drive);
