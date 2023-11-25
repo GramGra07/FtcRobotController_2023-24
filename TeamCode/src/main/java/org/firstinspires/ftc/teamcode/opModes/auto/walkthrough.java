@@ -30,7 +30,7 @@ public class walkthrough extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
-        robot.initAuto(hardwareMap,this,null);
+        robot.initAuto(hardwareMap,this);
         if (isStopRequested()) return;
         SpikeNav(drive);
         // do claw stuff to move & drop pixel

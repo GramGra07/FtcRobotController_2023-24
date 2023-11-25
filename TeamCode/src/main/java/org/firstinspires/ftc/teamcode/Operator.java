@@ -11,20 +11,14 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoFull;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.lastSetVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipFull;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipVal;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneArmed;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.cRE;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPower;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.timer;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -80,10 +74,10 @@ public class Operator extends Drivers {
                 servoFlipVal -= 1;
             } else if (myOpMode.gamepad2.dpad_up) {
                 servoFlipVal += 1;
-            } else if (myOpMode.gamepad2.dpad_left){
-                calculateFlipPose(30,flipServo);
-            } else if (myOpMode.gamepad2.dpad_right){
-                calculateFlipPose(0,flipServo);
+            } else if (myOpMode.gamepad2.dpad_left) {
+                calculateFlipPose(30, flipServo);
+            } else if (myOpMode.gamepad2.dpad_right) {
+                calculateFlipPose(0, flipServo);
             }
 //            if (myOpMode.gamepad2.dpad_left) {
 //                flipServoFull(flipServo);
@@ -114,16 +108,10 @@ public class Operator extends Drivers {
 //                    }
 //                }
 //            }
-            if (PastPotent.pastPotentVal!=Sensors.getPotentVal(potentiometer)){
-                calculateFlipPose(lastSetVal,flipServo);
+            if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
+                calculateFlipPose(lastSetVal, flipServo);
             }
-            if (Sensors.getPotentVal(potentiometer) <=10) {
-                rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, 0, flipperMax);
-            }else if (Sensors.getPotentVal(potentiometer) >= 36) {
-                rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, 0);
-            }else{
-                rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
-            }
+            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[2]) {//Kian
             if (myOpMode.gamepad2.right_bumper) {

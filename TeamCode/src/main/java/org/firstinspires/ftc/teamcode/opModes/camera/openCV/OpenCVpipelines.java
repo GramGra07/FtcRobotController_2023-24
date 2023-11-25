@@ -167,10 +167,6 @@ public class OpenCVpipelines {
                 double right = boundRect[highIndex].br().x;
                 double top = boundRect[highIndex].tl().y;
                 double bottom = boundRect[highIndex].br().y;
-                OpenCVBlue.left = left;
-                OpenCVBlue.right = right;
-                OpenCVBlue.top = top;
-                OpenCVBlue.bottom = bottom;
                 int centerX = (int) (left + ((right - left) / 2));
                 Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals(color), 2);
             }
@@ -348,7 +344,7 @@ public class OpenCVpipelines {
             int tIndex = 0;
             int bIndex = 0;
             if (boundRect.length > 0) {
-                // find furthest left
+                // find furthest middle
                 for (int i = 0; i < boundRect.length; i++) {
                     if (boundRect[i].area() > varConfig.minRectArea) {
                         if (boundRect[i].tl().x <= boundRect[lIndex].tl().x) {
@@ -372,7 +368,7 @@ public class OpenCVpipelines {
                 top = boundRect[tIndex].tl().y;
                 bottom = boundRect[bIndex].br().y;
                 centerX = (int) (left + ((right - left) / 2));
-                //Imgproc.putText(input, String.valueOf(centerX), new Point(left + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
+                //Imgproc.putText(input, String.valueOf(centerX), new Point(middle + 7, top - 10), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, scalarVals("white"), 1);
             }
             double height = Math.abs(top - bottom);
             double width = Math.abs(right - left);

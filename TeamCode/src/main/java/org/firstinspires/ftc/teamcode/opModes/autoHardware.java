@@ -1,19 +1,17 @@
 package org.firstinspires.ftc.teamcode.opModes;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
+import static org.firstinspires.ftc.teamcode.Vision.portal;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.EOCVWebcam;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
@@ -23,11 +21,9 @@ import org.firstinspires.ftc.teamcode.Trajectories.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesLEFT;
 import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesRIGHT;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
-import org.firstinspires.ftc.teamcode.UtilClass.HuskyLensUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.Vision;
-import org.firstinspires.ftc.teamcode.opModes.camera.openCV.ColorEdgeDetectionBounded;
-import org.firstinspires.ftc.teamcode.opModes.camera.openCV.ColorEdgeDetectionBoundedTest;
+import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OBJDetect2;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -53,21 +49,18 @@ public class autoHardware extends HardwareConfig {
         super(opmode);
     }
 
-    public void initAuto(HardwareMap ahwMap,LinearOpMode myOpMode,Alliance alliance) {
+    public void initAuto(HardwareMap ahwMap,LinearOpMode myOpMode) {
         hardwareMap = ahwMap;
-        init(ahwMap);
-        Vision.initVision(ahwMap);
-//        EOCVWebcam.initEOCV(ahwMap,webcam);
-//        HuskyLensUtil.initHuskyLens(hardwareMap,myOpMode, HuskyLens.Algorithm.FACE_RECOGNITION);
+        HardwareConfig.init(ahwMap);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new ColorEdgeDetectionBounded(alliance));//!can switch pipelines here
+        webcam.setPipeline(new OBJDetect2(StartPose.alliance));//!can switch pipelines here
         FtcDashboard.getInstance().startCameraStream(webcam, 0);
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -76,6 +69,7 @@ public class autoHardware extends HardwareConfig {
         });
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
         timer.reset();
+        if (myOpMode.isStopRequested())return;
         myOpMode.waitForStart();
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }

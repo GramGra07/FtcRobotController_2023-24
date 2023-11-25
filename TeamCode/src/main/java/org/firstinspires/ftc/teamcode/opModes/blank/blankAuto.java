@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.blank;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.webcam;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -18,15 +20,11 @@ public class blankAuto extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-
         drive.setPoseEstimate(startPose);
-        //create trajectories here
-
-        robot.initAuto(hardwareMap,this,null);
-
-        if (isStopRequested()) return;
-        //put drive.followTrajectory(traj1); here
-        //update pose storage here
-        PoseStorage.currentPose = drive.getPoseEstimate();
+        robot.initAuto(hardwareMap,this);
+        if (opModeIsActive()) {
+            PoseStorage.currentPose = drive.getPoseEstimate();
+        }
+        webcam.closeCameraDevice();
     }
 }

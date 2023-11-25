@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto.parkAuto;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.parkAuto;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.webcam;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -25,9 +26,11 @@ public class parkAutoBR extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
-        robot.initAuto(hardwareMap,this,null);
-        if (isStopRequested()) return;
-        parkAuto(drive);
-        PoseStorage.currentPose = drive.getPoseEstimate();
+        robot.initAuto(hardwareMap,this);
+        if (opModeIsActive()) {
+            parkAuto(drive);
+            PoseStorage.currentPose = drive.getPoseEstimate();
+        }
+        webcam.closeCameraDevice();
     }
 }

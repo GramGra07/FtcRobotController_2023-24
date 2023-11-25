@@ -25,7 +25,7 @@ public class demoAuto extends LinearOpMode {
                 .forward(20)
                 .build();
 
-        robot.initAuto(hardwareMap,this,null);
+        robot.initAuto(hardwareMap,this);
 
         if (isStopRequested()) return;
         drive.followTrajectory(traj1);

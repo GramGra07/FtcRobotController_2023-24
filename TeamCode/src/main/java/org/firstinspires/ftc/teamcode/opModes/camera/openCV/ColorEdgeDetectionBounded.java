@@ -94,7 +94,7 @@ public class ColorEdgeDetectionBounded extends OpenCvPipeline {
             if (centers[highIndex].x > pointsX[0] && centers[highIndex].x < pointsX[1]) {
                 if (centers[highIndex].y > pointsY[0] && centers[highIndex].y < pointsY[1]) {
                     Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
-                    Imgproc.putText(input, "left", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(0, 255, 0));
+                    Imgproc.putText(input, "middle", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(0, 255, 0));
                     autonomousRandom = AutoRandom.left;
                 }
             }

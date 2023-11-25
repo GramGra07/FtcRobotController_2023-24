@@ -56,7 +56,7 @@ import java.io.FileWriter;
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
     public static boolean useFileWriter = variable.useFileWriter;
     public static boolean multipleDrivers = variable.multipleDrivers;
-    public String statusVal = "OFFLINE";
+    public static String statusVal = "OFFLINE";
     public static Servo claw1 = null, claw2 = null, flipServo = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorExtension = null, motorRotation = null;
     public static DcMotor enc1 = null;
@@ -82,11 +82,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static DigitalChannel red4;
     public static AnalogInput potentiometer;
     //    public DigitalChannel limitSwitch;
-    public VoltageSensor vSensor;
-    public MecanumDrive drive = null;
+    public static VoltageSensor vSensor;
+    public static MecanumDrive drive = null;
     public static double thisDist = 0;
     public static final ElapsedTime timer = new ElapsedTime();
-    FileWriter fileWriter;
+    static FileWriter fileWriter;
     HardwareMap hardwareMap = null;
 
     private static LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
@@ -102,10 +102,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
             0.1 // Derivative gain
     );
 
-    public final String currentVersion = "4.2.0";
+    public static final String currentVersion = "4.2.0";
 
     //init
-    public void init(HardwareMap ahwMap) {
+    public static void init(HardwareMap ahwMap) {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         thisDist = 0;
         setUpFile(fileWriter);
@@ -316,7 +316,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.addLine(" ");
     }
 
-    public void updateStatus(String status) {
+    public static void updateStatus(String status) {
         statusVal = status;
     }
 
