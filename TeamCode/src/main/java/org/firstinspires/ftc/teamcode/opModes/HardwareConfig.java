@@ -171,7 +171,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
         motorRotation.setTargetPosition(10);
         motorRotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRotation.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorExtension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         cRE = new Gamepad.RumbleEffect.Builder()
                 .addStep(1.0, 1.0, 250)

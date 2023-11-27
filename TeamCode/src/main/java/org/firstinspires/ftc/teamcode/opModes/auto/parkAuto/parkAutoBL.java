@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.parkAuto;
 
+import static org.firstinspires.ftc.teamcode.opModes.auto.parkUtil.parkUtil.parkAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.parkAuto;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.webcam;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -28,7 +29,7 @@ public class parkAutoBL extends LinearOpMode {
         robot.initAuto(hardwareMap,this);
         if (opModeIsActive()) {
             parkAuto(drive);
-            PoseStorage.currentPose = drive.getPoseEstimate();
+            updatePose(drive);
         }
         webcam.closeCameraDevice();
     }

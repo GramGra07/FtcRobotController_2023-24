@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.parkAuto;
 
+import static org.firstinspires.ftc.teamcode.opModes.auto.parkUtil.parkUtil.parkAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.parkAuto;
+import static org.firstinspires.ftc.teamcode.opModes.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoHardware.webcam;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -10,10 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
-import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 @Autonomous(group = "park")
 //@Disabled
@@ -25,10 +24,10 @@ public class parkAutoRL extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
-        robot.initAuto(hardwareMap,this);
+        robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
             parkAuto(drive);
-            PoseStorage.currentPose = drive.getPoseEstimate();
+            updatePose(drive);
         }
         webcam.closeCameraDevice();
     }
