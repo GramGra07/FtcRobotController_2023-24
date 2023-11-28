@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.autonomousRandom;
-
-import com.acmerobotics.dashboard.config.Config;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;

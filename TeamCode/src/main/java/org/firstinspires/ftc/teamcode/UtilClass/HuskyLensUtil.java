@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
-import org.firstinspires.ftc.teamcode.opModes.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 
 import java.util.ArrayList;
 import java.util.List;

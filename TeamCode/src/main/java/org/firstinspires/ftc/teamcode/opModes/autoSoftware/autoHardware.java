@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes;
+package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 import static org.firstinspires.ftc.teamcode.Sensors.driveByPotentVal;
@@ -23,6 +23,7 @@ import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesRIGHT;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OBJDetect2;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
@@ -76,17 +77,6 @@ public class autoHardware extends HardwareConfig {
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
 
-    public static void halfAuto(MecanumDrive drive) {
-        driveByPotentVal(2, HardwareConfig.potentiometer, motorRotation);
-        SpikeNav(drive);
-        if (((StartPose.side == StartSide.LEFT) && (StartPose.alliance == Alliance.RED)) || ((StartPose.side == StartSide.RIGHT) && (StartPose.alliance == Alliance.BLUE))) {
-            // long side
-            getCycleSpot();
-
-        }
-        navToBackdrop(drive);
-        updatePose(drive);
-    }
 
     public static void cycle(MecanumDrive drive) {
         updatePose(drive);

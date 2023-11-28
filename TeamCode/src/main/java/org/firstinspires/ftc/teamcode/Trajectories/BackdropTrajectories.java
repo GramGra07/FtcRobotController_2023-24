@@ -1,14 +1,13 @@
 package org.firstinspires.ftc.teamcode.Trajectories;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.blueRotate;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.dropAndRaise;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.extendAndPlace;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.updatePose;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.blueRotate;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.extendAndPlace;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
-import org.firstinspires.ftc.teamcode.opModes.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;

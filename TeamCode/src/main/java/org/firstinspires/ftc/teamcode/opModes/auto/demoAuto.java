@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.opModes.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 

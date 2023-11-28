@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
-import org.firstinspires.ftc.teamcode.opModes.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OpenCVpipelines;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
