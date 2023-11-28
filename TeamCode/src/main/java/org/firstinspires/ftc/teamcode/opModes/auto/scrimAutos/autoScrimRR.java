@@ -1,15 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
 
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.timer;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.SpikeNav;
-import static org.firstinspires.ftc.teamcode.Sensors.driveByPotentVal;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.cycle;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.halfAuto;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.navToBackdrop;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.updatePose;
-import static org.firstinspires.ftc.teamcode.opModes.autoHardware.webcam;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -17,12 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
-import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
-import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
-import org.firstinspires.ftc.teamcode.opModes.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
-import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous(group = "ascrim")
 //@Disabled
@@ -37,7 +26,7 @@ public class autoScrimRR extends LinearOpMode {
         robot.initAuto(hardwareMap,this);
         if (opModeIsActive()) {
             halfAuto(drive);
-            cycle(drive);
+//            cycle(drive);
         }
         webcam.closeCameraDevice();
     }

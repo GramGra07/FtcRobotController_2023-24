@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.cycle;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.spot;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycle;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
 
@@ -27,7 +28,7 @@ public class autoScrimBR extends LinearOpMode {
         robot.initAuto(hardwareMap,this);
         if (opModeIsActive()) {
             halfAuto(drive);
-            cycle(drive);
+            cycle(drive,spot);
         }
         webcam.closeCameraDevice();
     }

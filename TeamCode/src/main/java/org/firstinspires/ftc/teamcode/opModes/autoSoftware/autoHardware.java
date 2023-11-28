@@ -77,20 +77,6 @@ public class autoHardware extends HardwareConfig {
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
     }
 
-
-    public static void cycle(MecanumDrive drive) {
-        updatePose(drive);
-        getCycleSpot();
-        for (int i = 0; i < 1; i++) {
-            if (((StartPose.side == StartSide.RIGHT) && (StartPose.alliance == Alliance.RED)) || ((StartPose.side == StartSide.LEFT) && (StartPose.alliance == Alliance.BLUE))) {
-                //short side
-                drive.followTrajectorySequence(CycleTrajectories.cycle(drive, spot, PoseStorage.currentPose));
-            } else {
-                //long side
-            }
-        }
-    }
-
     public static void getCycleSpot() {
         if (StartPose.alliance == Alliance.RED) {
             spot = new Pose2d(-60, 12, Math.toRadians(-90));
