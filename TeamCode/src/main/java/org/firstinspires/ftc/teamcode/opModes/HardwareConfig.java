@@ -150,9 +150,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
         //encoders
-        enc1 = ahwMap.get(DcMotor.class, "flipperMotor");
-        resetEncoder(enc1);
-        runWithoutEncoder(enc1);
+
 //        runWithoutEncoder(motorPaperAirplane);
         //reversals
         setDirectionR(motorBackLeft);
@@ -169,9 +167,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         flipServoBase(flipServo);
         PastPotent.pastPotentVal = Sensors.getPotentVal(potentiometer);
 
-        motorRotation.setTargetPosition(10);
-        motorRotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorExtension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorExtension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         cRE = new Gamepad.RumbleEffect.Builder()
                 .addStep(1.0, 1.0, 250)
@@ -291,7 +288,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("reversed", reversed);
         telemetry.addData("slowMode", slowModeIsOn);
-        telemetry.addData("servo", convertToDegrees(flipServo.getPosition()));
+        telemetry.addData("Extension",motorExtension.getCurrentPosition());
+//        telemetry.addData("Perpendicular",motorLift.getCurrentPosition());
+//        telemetry.addData("Parallel",motorRotation.getCurrentPosition());
         teleSpace();
         telemetry.addData("x", "%.2f", drive.getPoseEstimate().getX());
         telemetry.addData("y", "%.2f", drive.getPoseEstimate().getY());

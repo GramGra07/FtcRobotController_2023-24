@@ -24,7 +24,7 @@ public class ServoUtil {
     }
 
     public static int openClaw1 = 120;
-    public static int openClaw2 = 60;
+    public static int openClaw2 = 90;
 
     public static void openClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
@@ -36,8 +36,8 @@ public class ServoUtil {
         }
     }
 
-    public static int closeClaw1 = 170;
-    public static int closeClaw2 = 15;
+    public static int closeClaw1 = 180;
+    public static int closeClaw2 = 25;
 
     public static void closeClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
