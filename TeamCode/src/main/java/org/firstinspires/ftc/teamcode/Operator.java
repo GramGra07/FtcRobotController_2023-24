@@ -23,7 +23,7 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPowe
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
-import org.firstinspires.ftc.teamcode.UtilClass.PastPotent;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.ggutil.pure.fromTutorial.com.company.Range;
 
 public class Operator extends Drivers {

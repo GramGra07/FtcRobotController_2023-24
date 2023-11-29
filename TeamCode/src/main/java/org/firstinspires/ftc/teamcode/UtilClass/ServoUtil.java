@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Sensors;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 @Config

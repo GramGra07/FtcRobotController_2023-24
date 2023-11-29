@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto.parkUtil;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
-import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class parkUtil {

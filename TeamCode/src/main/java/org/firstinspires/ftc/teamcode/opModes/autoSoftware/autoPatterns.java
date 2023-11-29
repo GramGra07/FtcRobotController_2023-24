@@ -5,7 +5,6 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotatio
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getCycleSpot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.navToBackdrop;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.spot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -13,7 +12,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Trajectories.CycleTrajectories;
-import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.UtilClass;
+package org.firstinspires.ftc.teamcode.UtilClass.varStorage;
 
 public class variable {
     public static boolean useFileWriter = true;

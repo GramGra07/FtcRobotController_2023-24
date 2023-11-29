@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Trajectories.spikeNav.SpikeNavTrajectories
 import org.firstinspires.ftc.teamcode.Trajectories.spikeNav.SpikeNavTrajectoriesRIGHT;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
-import org.firstinspires.ftc.teamcode.UtilClass.StartPose;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OBJDetect2;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
