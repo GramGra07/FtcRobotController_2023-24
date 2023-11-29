@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.configVars;
+package org.firstinspires.ftc.teamcode.UtilClass.varStorage;
 
 
 // these variables can be changed from FTC dashboard

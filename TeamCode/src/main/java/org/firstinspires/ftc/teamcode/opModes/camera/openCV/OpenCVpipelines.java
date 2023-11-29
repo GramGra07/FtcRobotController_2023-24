@@ -8,7 +8,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.EOCVWebcam;
-import org.firstinspires.ftc.teamcode.opModes.configVars.varConfig;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
