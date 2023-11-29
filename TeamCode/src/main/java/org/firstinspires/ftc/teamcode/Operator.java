@@ -21,10 +21,10 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiomete
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPower;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
-import org.firstinspires.ftc.teamcode.ggutil.pure.fromTutorial.com.company.Range;
 
 public class Operator extends Drivers {
     public static void bindOtherButtons(OpMode myOpMode) {
