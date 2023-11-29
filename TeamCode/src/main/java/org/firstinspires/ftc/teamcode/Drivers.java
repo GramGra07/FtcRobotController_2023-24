@@ -3,13 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.util.Angle;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 public class Drivers {
     public static final String[] driverControls = {"Chase", "Camden", "Kian", "Grady", "Michael", "Graden"}, otherControls = driverControls;
@@ -33,27 +34,35 @@ public class Drivers {
             }
             dDownHigh = myOpMode.gamepad1.dpad_down;
             if (myOpMode.gamepad1.right_bumper) {
+                IsBusy.isAutoInTeleop = true;
+                drive.update();
                 if (StartPose.alliance == Alliance.RED) {
                     drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
-                            .lineToSplineHeading(new Pose2d(-57,-57,Math.toRadians(-135)))
+                            .splineToLinearHeading(new Pose2d(-50, 50,Math.toRadians(135)), Math.toRadians(135))
                             .build());
                 } else {
                     drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
-                            .lineToSplineHeading(new Pose2d(57,57,Math.toRadians(45)))
+                            .splineToLinearHeading(new Pose2d(-50, -50, Math.toRadians(-135)),Math.toRadians(-135))
                             .build());
                 }
             }
-            if (myOpMode.gamepad1.dpad_up){
-                drive.turnAsync(Angle.normDelta(90 - drive.getPoseEstimate().getHeading()));
+            if (myOpMode.gamepad1.dpad_up) {
+                IsBusy.isAutoInTeleop = true;
+                drive.turnAsync(Angle.normDelta(Math.toRadians(0) - drive.getPoseEstimate().getHeading()));
             }
-            if (myOpMode.gamepad1.dpad_left){
+            if (myOpMode.gamepad1.dpad_left) {
+                IsBusy.isAutoInTeleop = true;
                 if (StartPose.alliance == Alliance.RED) {
-                    drive.turnAsync(Angle.normDelta(-135 - drive.getPoseEstimate().getHeading()));
-                }else{
-                    drive.turnAsync(Angle.normDelta(45 - drive.getPoseEstimate().getHeading()));
+                    drive.turnAsync(Angle.normDelta(Math.toRadians(135) - drive.getPoseEstimate().getHeading()));
+                } else {
+                    drive.turnAsync(Angle.normDelta(Math.toRadians(-135) - drive.getPoseEstimate().getHeading()));
                 }
             }
+            if (!drive.isBusy()) {
+                IsBusy.isAutoInTeleop = false;
+            }
             if (myOpMode.gamepad1.cross) {
+                IsBusy.isAutoInTeleop = true;
                 drive.breakFollowing();
             }
         }

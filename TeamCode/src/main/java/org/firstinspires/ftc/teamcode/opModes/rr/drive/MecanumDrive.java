@@ -65,7 +65,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
     public static double OMEGA_WEIGHT = 1;
 
     private final TrajectorySequenceRunner trajectorySequenceRunner;
-    private final TrajectorySequenceRunnerCancelable trajectorySequenceRunnerCancelable;
+//    private final TrajectorySequenceRunnerCancelable trajectorySequenceRunnerCancelable;
 
     private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
     private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
@@ -138,7 +138,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
                 follower, HEADING_PID, batteryVoltageSensor,
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
         );
-        trajectorySequenceRunnerCancelable = new TrajectorySequenceRunnerCancelable(follower, HEADING_PID);
+//        trajectorySequenceRunnerCancelable = new TrajectorySequenceRunnerCancelable(follower, HEADING_PID);
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
@@ -202,12 +202,12 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
 
     public void update() {
         updatePoseEstimate();
-        DriveSignal signal = trajectorySequenceRunnerCancelable.update(getPoseEstimate(), getPoseVelocity());
+        DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
         if (signal != null) setDriveSignal(signal);
     }
-    public void breakFollowing() {
-        trajectorySequenceRunnerCancelable.breakFollowing();
-    }
+//    public void breakFollowing() {
+//        trajectorySequenceRunnerCancelable.breakFollowing();
+//    }
 
     public void waitForIdle() {
         while (!Thread.currentThread().isInterrupted() && isBusy())
@@ -215,7 +215,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
     }
 
     public boolean isBusy() {
-        return trajectorySequenceRunner.isBusy()||trajectorySequenceRunnerCancelable.isBusy();
+        return trajectorySequenceRunner.isBusy();
     }
 
     public void setMode(DcMotor.RunMode runMode) {
@@ -328,6 +328,9 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
                 new AngularVelocityConstraint(maxAngularVel),
                 new MecanumVelocityConstraint(maxVel, trackWidth)
         ));
+    }
+    public void breakFollowing(){
+        trajectorySequenceRunner.breakFollowing();
     }
 
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {

@@ -39,9 +39,10 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
-import org.firstinspires.ftc.teamcode.UtilClass.varStorage.variable;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.variable;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
@@ -183,7 +184,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //code to run all drive functions
     public void doBulk() {
         once(myOpMode);//runs once
-        bindDriverButtons(myOpMode,drive);
+        bindDriverButtons(myOpMode, drive);
         bindOtherButtons(myOpMode);
         if (multipleDrivers) {
             switchProfile(myOpMode);
@@ -258,10 +259,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public void power() {// put all set power here
-        motorFrontLeft.setPower(frontLeftPower);
-        motorBackLeft.setPower(backLeftPower);
-        motorFrontRight.setPower(frontRightPower);
-        motorBackRight.setPower(backRightPower);
+        if (!IsBusy.isAutoInTeleop) {
+            motorFrontLeft.setPower(frontLeftPower);
+            motorBackLeft.setPower(backLeftPower);
+            motorFrontRight.setPower(frontRightPower);
+            motorBackRight.setPower(backRightPower);
+        }
         motorLift.setPower(liftPower);
         motorExtension.setPower(extensionPower);
         motorRotation.setPower(rotationPower);
@@ -279,7 +282,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("reversed", reversed);
         telemetry.addData("slowMode", slowModeIsOn);
-        telemetry.addData("Extension",motorExtension.getCurrentPosition());
+        telemetry.addData("Extension", motorExtension.getCurrentPosition());
 //        telemetry.addData("Perpendicular",motorLift.getCurrentPosition());
 //        telemetry.addData("Parallel",motorRotation.getCurrentPosition());
         teleSpace();
