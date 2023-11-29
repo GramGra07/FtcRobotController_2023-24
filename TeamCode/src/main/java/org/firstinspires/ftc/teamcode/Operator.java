@@ -79,16 +79,6 @@ public class Operator extends Drivers {
             } else if (myOpMode.gamepad2.dpad_right) {
                 calculateFlipPose(0, flipServo);
             }
-//            if (myOpMode.gamepad2.dpad_left) {
-//                flipServoFull(flipServo);
-//            } else if (myOpMode.gamepad2.dpad_right) {
-//                flipServoBase(flipServo);
-//            } else if (myOpMode.gamepad2.dpad_down) {
-//                flipServoFullHalf(flipServo);
-//            }
-//            if (myOpMode.gamepad2.circle) {
-//                calculateFlipPose(0,flipServo);
-//            }
 //            if (myOpMode.gamepad2.circle) {
 //                int pose = 10;
 //                int range = 5;
