@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.ggutil.testOpModes;
+package org.firstinspires.ftc.teamcode.ggutil;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

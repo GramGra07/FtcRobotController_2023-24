@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
-import static org.firstinspires.ftc.teamcode.Sensors.driveByPotentVal;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -15,11 +14,10 @@ import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
-import org.firstinspires.ftc.teamcode.Trajectories.BackdropTrajectories;
-import org.firstinspires.ftc.teamcode.Trajectories.CycleTrajectories;
-import org.firstinspires.ftc.teamcode.Trajectories.ShiftTrajectories;
-import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesLEFT;
-import org.firstinspires.ftc.teamcode.Trajectories.SpikeNavTrajectoriesRIGHT;
+import org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories;
+import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
+import org.firstinspires.ftc.teamcode.Trajectories.spikeNav.SpikeNavTrajectoriesLEFT;
+import org.firstinspires.ftc.teamcode.Trajectories.spikeNav.SpikeNavTrajectoriesRIGHT;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.StartPose;

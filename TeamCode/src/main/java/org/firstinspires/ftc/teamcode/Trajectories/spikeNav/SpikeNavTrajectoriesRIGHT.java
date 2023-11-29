@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Trajectories;
+package org.firstinspires.ftc.teamcode.Trajectories.spikeNav;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
