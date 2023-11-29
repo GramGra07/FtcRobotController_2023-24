@@ -68,11 +68,11 @@ public class ServoUtil {
         servo.setPosition(setServo(servoFlipFullHalf));
 //        lastSetVal = servoFlipFullHalf;
     }
-
+    public static double hcalc = 63.259;
     public static void calculateFlipPose(int pose, Servo servo) {
         double theta = Sensors.getPotentVal(potentiometer);
         PastPotent.pastPotentVal = theta;
-        double sig = Math.ceil((-0.26 * theta) + 63.259) + (pose / 2);
+        double sig = Math.ceil((-0.26 * theta) + hcalc) + (pose / 2);
         servo.setPosition(setServo(sig));
         servoFlipVal = (int) sig;
         lastSetVal = pose;
