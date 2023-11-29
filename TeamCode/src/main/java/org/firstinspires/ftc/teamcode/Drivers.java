@@ -2,7 +2,14 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.util.Angle;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+import org.firstinspires.ftc.teamcode.Enums.Alliance;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 public class Drivers {
     public static final String[] driverControls = {"Chase", "Camden", "Kian", "Grady", "Michael", "Graden"}, otherControls = driverControls;
@@ -14,17 +21,41 @@ public class Drivers {
     public static boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public static boolean dDownHigh = false;
 
-    public static void bindDriverButtons(OpMode myOpMode) {
+    public static void bindDriverButtons(OpMode myOpMode, MecanumDrive drive) {
         //"Chase", "Camden", "Kian", "Grady", "Michael","Graden"
         if (currDriver == driverControls[0]) {//Chase
             fieldCentric = false;
             //slowmode
-            if (myOpMode.gamepad1.dpad_down && !dDownHigh && !slowModeIsOn) {
+            if (myOpMode.gamepad1.circle && !dDownHigh && !slowModeIsOn) {
                 slowModeIsOn = true;
-            } else if (myOpMode.gamepad1.dpad_down && !dDownHigh && slowModeIsOn) {
+            } else if (myOpMode.gamepad1.circle && !dDownHigh && slowModeIsOn) {
                 slowModeIsOn = false;
             }
             dDownHigh = myOpMode.gamepad1.dpad_down;
+            if (myOpMode.gamepad1.right_bumper) {
+                if (StartPose.alliance == Alliance.RED) {
+                    drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
+                            .lineToSplineHeading(new Pose2d(-57,-57,Math.toRadians(-135)))
+                            .build());
+                } else {
+                    drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
+                            .lineToSplineHeading(new Pose2d(57,57,Math.toRadians(45)))
+                            .build());
+                }
+            }
+            if (myOpMode.gamepad1.dpad_up){
+                drive.turnAsync(Angle.normDelta(90 - drive.getPoseEstimate().getHeading()));
+            }
+            if (myOpMode.gamepad1.dpad_left){
+                if (StartPose.alliance == Alliance.RED) {
+                    drive.turnAsync(Angle.normDelta(-135 - drive.getPoseEstimate().getHeading()));
+                }else{
+                    drive.turnAsync(Angle.normDelta(45 - drive.getPoseEstimate().getHeading()));
+                }
+            }
+            if (myOpMode.gamepad1.cross) {
+                drive.breakFollowing();
+            }
         }
         if (currDriver == driverControls[1]) {//Camden
             fieldCentric = false;

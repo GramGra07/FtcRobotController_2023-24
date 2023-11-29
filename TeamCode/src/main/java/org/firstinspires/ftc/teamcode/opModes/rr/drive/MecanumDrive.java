@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.TrajectorySequenceRunnerCancelable;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequenceRunner;
@@ -64,6 +65,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
     public static double OMEGA_WEIGHT = 1;
 
     private final TrajectorySequenceRunner trajectorySequenceRunner;
+    private final TrajectorySequenceRunnerCancelable trajectorySequenceRunnerCancelable;
 
     private static final TrajectoryVelocityConstraint VEL_CONSTRAINT = getVelocityConstraint(MAX_VEL, MAX_ANG_VEL, TRACK_WIDTH);
     private static final TrajectoryAccelerationConstraint ACCEL_CONSTRAINT = getAccelerationConstraint(MAX_ACCEL);
@@ -124,8 +126,6 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
         if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
             setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
-
-        //! TODO: reverse any motors using DcMotor.setDirection()
         leftRear.setDirection(DcMotor.Direction.REVERSE);
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
@@ -138,6 +138,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
                 follower, HEADING_PID, batteryVoltageSensor,
                 lastEncPositions, lastEncVels, lastTrackingEncPositions, lastTrackingEncVels
         );
+        trajectorySequenceRunnerCancelable = new TrajectorySequenceRunnerCancelable(follower, HEADING_PID);
     }
 
     public TrajectoryBuilder trajectoryBuilder(Pose2d startPose) {
@@ -201,8 +202,11 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
 
     public void update() {
         updatePoseEstimate();
-        DriveSignal signal = trajectorySequenceRunner.update(getPoseEstimate(), getPoseVelocity());
+        DriveSignal signal = trajectorySequenceRunnerCancelable.update(getPoseEstimate(), getPoseVelocity());
         if (signal != null) setDriveSignal(signal);
+    }
+    public void breakFollowing() {
+        trajectorySequenceRunnerCancelable.breakFollowing();
     }
 
     public void waitForIdle() {
@@ -211,7 +215,7 @@ public class MecanumDrive extends com.acmerobotics.roadrunner.drive.MecanumDrive
     }
 
     public boolean isBusy() {
-        return trajectorySequenceRunner.isBusy();
+        return trajectorySequenceRunner.isBusy()||trajectorySequenceRunnerCancelable.isBusy();
     }
 
     public void setMode(DcMotor.RunMode runMode) {

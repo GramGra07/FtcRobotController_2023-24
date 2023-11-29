@@ -54,7 +54,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static String statusVal = "OFFLINE";
     public static Servo claw1 = null, claw2 = null, flipServo = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorExtension = null, motorRotation = null;
-    public static DcMotor enc1 = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
     public static boolean slowModeIsOn = false, reversed;
@@ -82,7 +81,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static double thisDist = 0;
     public static final ElapsedTime timer = new ElapsedTime();
     static FileWriter fileWriter;
-    HardwareMap hardwareMap = null;
 
     private static LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
 
@@ -145,8 +143,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
         //encoders
-
-//        runWithoutEncoder(motorPaperAirplane);
         //reversals
         setDirectionR(motorBackLeft);
         setDirectionR(motorLift);
@@ -165,9 +161,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         motorExtension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorExtension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        cRE = new Gamepad.RumbleEffect.Builder()
-                .addStep(1.0, 1.0, 250)
-                .build();
+//        cRE = new Gamepad.RumbleEffect.Builder()
+//                .addStep(1.0, 1.0, 250)
+//                .build();
         timer.reset();
         Sensors.ledIND(green1, red1, true);
         Sensors.ledIND(green2, red2, true);
@@ -187,7 +183,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //code to run all drive functions
     public void doBulk() {
         once(myOpMode);//runs once
-        bindDriverButtons(myOpMode);
+        bindDriverButtons(myOpMode,drive);
         bindOtherButtons(myOpMode);
         if (multipleDrivers) {
             switchProfile(myOpMode);
