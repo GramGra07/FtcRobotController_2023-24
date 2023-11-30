@@ -58,16 +58,16 @@ public class Operator extends Drivers {
         }
         if (currOther == otherControls[1]) {//Camden
             if (myOpMode.gamepad2.right_bumper) {
-                closeClaw(claw2);
-            }
-            if (myOpMode.gamepad2.left_bumper) {
                 closeClaw(claw1);
             }
+            if (myOpMode.gamepad2.left_bumper) {
+                closeClaw(claw2);
+            }
             if (myOpMode.gamepad2.right_trigger > 0) {
-                openClaw(claw2);
+                openClaw(claw1);
             }
             if (myOpMode.gamepad2.left_trigger > 0) {
-                openClaw(claw1);
+                openClaw(claw2);
             }
             extensionPower = Range.clip(myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
             if (myOpMode.gamepad2.dpad_down) {
@@ -190,6 +190,12 @@ public class Operator extends Drivers {
                 flipServoBase(flipServo);
             }
             rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+        }
+        if (currOther == otherControls[6]){
+            calculateFlipPose(30,flipServo);
+        }
+        if (currOther == otherControls[7]){
+            calculateFlipPose(30,flipServo);
         }
     }
 }
