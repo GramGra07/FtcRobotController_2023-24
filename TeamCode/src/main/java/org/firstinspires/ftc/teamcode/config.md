@@ -43,8 +43,8 @@ Motor
 3 -
 Encoder
 0 - same
-1 - same
-2 - same
+1 - parallelEncoder
+2 - perpendicularEncoder
 3 -
 Servo
 0 - claw1

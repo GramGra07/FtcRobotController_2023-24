@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.MathFunctions.getQuadrant;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
@@ -40,14 +41,49 @@ public class Drivers {
                 slowModeIsOn = false;
                 IsBusy.isAutoInTeleop = true;
                 drive.update();
+                int poseX = 50, poseY = 50, turn = 135;
+                int quadrant = getQuadrant(drive.getPoseEstimate());
+                Pose2d redWing = new Pose2d(-poseX, poseY, Math.toRadians(turn));
+                Pose2d blueWing = new Pose2d(-poseX, -poseY, Math.toRadians(-turn));
+                Pose2d blueRiggingLeft = new Pose2d(-12, -36, Math.toRadians(0));
+                Pose2d redRiggingLeft = new Pose2d(-12, 36, Math.toRadians(0));
+                Pose2d zeroZero = new Pose2d(0, 0, Math.toRadians(0));
                 if (StartPose.alliance == Alliance.RED) {
-                    drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
-                            .splineToLinearHeading(new Pose2d(-50, 50, Math.toRadians(135)), Math.toRadians(135))
-                            .build());
+                    if (quadrant == 1) {
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .splineToLinearHeading(redRiggingLeft, redRiggingLeft.getHeading())
+                                .splineToLinearHeading(redWing, redWing.getHeading())
+                                .build());
+                    }
+                    if (quadrant == 2) {
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .splineToSplineHeading(zeroZero, zeroZero.getHeading())
+                                .splineToLinearHeading(redWing, redWing.getHeading())
+                                .build());
+                    }
+                    if ((quadrant == 3) || (quadrant == 4)) {
+                        drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
+                                .splineToLinearHeading(redWing, redWing.getHeading())
+                                .build());
+                    }
                 } else {
-                    drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
-                            .splineToLinearHeading(new Pose2d(-50, -50, Math.toRadians(-135)), Math.toRadians(-135))
-                            .build());
+                    if (quadrant == 1) {
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .splineToLinearHeading(blueRiggingLeft, blueRiggingLeft.getHeading())
+                                .splineToLinearHeading(blueWing, blueWing.getHeading())
+                                .build());
+                    }
+                    if (quadrant == 2) {
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .splineToSplineHeading(zeroZero, zeroZero.getHeading())
+                                .splineToLinearHeading(blueWing, blueWing.getHeading())
+                                .build());
+                    }
+                    if ((quadrant == 4) || (quadrant == 3)) {
+                        drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
+                                .splineToLinearHeading(blueWing, blueWing.getHeading())
+                                .build());
+                    }
                 }
             }
             if (myOpMode.gamepad1.dpad_up) {

@@ -79,29 +79,17 @@ public class Operator extends Drivers {
             } else if (myOpMode.gamepad2.dpad_right) {
                 calculateFlipPose(0, flipServo);
             }
-//            if (myOpMode.gamepad2.circle) {
-//                int pose = 10;
-//                int range = 5;
-//                int range2 = 5;
-//                int potentPose = 20;
-//                motorExtension.setTargetPosition(pose);
-//                if (!MathFunctions.inRange(Sensors.getPotentVal(potentiometer), potentPose - range2, potentPose + range2)) {
-//                    motorRotation.setPower(Sensors.calculatePowerByPotent(potentPose, potentiometer, motorRotation));
-//                } else {
-//                    motorRotation.setPower(0);
-//                    boolean armUp = MathFunctions.inRange(motorExtension.getCurrentPosition(), pose - range, pose + range);
-//                    if (!armUp) {
-//                        PIDUtil.calculatePID(motorExtension, pidExtension);
-//                    } else {
-//                        motorExtension.setPower(0);
-//                        //turn servo
-//                    }
-//                }
-//            }
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);
             }
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            if (myOpMode.gamepad2.cross){
+                liftPower = -1;
+            }else if (myOpMode.gamepad2.triangle){
+                liftPower = 1;
+            }else{
+                liftPower = 0;
+            }
         }
         if (currOther == otherControls[2]) {//Kian
             if (myOpMode.gamepad2.right_bumper) {
