@@ -87,6 +87,8 @@ public class Operator extends Drivers {
                 liftPower = -1;
             }else if (myOpMode.gamepad2.triangle){
                 liftPower = 1;
+            }else if (myOpMode.gamepad2.left_stick_y!=0){
+                liftPower = -extensionPower;
             }else{
                 liftPower = 0;
             }

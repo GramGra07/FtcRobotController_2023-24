@@ -28,7 +28,7 @@ public class autoScrimBR extends LinearOpMode {
         robot.initAuto(hardwareMap,this);
         if (opModeIsActive()) {
             halfAuto(drive);
-            cycle(drive,spot);
+//            cycle(drive,spot);
         }
         webcam.closeCameraDevice();
     }

@@ -53,14 +53,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean useFileWriter = variable.useFileWriter;
     public static boolean multipleDrivers = variable.multipleDrivers;
     public static String statusVal = "OFFLINE";
-    public static Servo claw1 = null, claw2 = null, flipServo = null;
+    public static Servo claw1 = null, claw2 = null, flipServo = null,airplaneServo = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorExtension = null, motorRotation = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
     public static double liftPower = 0, extensionPower = 0, rotationPower = 0;
-    public static boolean airplaneArmed = variable.airplaneArmed;
     public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
     boolean reverse = false;
@@ -143,6 +142,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw1 = ahwMap.get(Servo.class, "claw1");
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
+        airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
         //encoders
         //reversals
         setDirectionR(motorBackLeft);

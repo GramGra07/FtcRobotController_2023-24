@@ -26,8 +26,14 @@ public class MathFunctions {
     public static int getQuadrant(Pose2d pose){
         int x = (int)pose.getX();
         int y = (int)pose.getY();
-        int xSign = x/Math.abs(x);
-        int ySign = y/Math.abs(y);
+        if (x == 0){
+            x+=0.1;
+        }
+        if (y == 0){
+            y+=0.1;
+        }
+        double xSign = (double) x /Math.abs(x);
+        double ySign = (double) y /Math.abs(y);
         boolean xIsPositive = (xSign == 1);
         boolean yIsPositive = (ySign == 1);
         if(xIsPositive && !yIsPositive) {

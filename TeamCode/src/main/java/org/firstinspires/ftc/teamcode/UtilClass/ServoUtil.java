@@ -24,8 +24,8 @@ public class ServoUtil {
         return pose / degree_mult;
     }
 
-    public static int openClaw1 = 120;
-    public static int openClaw2 = 70;
+    public static int openClaw1 = 135;
+    public static int openClaw2 = 80;
 
     public static void openClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
@@ -38,7 +38,7 @@ public class ServoUtil {
     }
 
     public static int closeClaw1 = 180;
-    public static int closeClaw2 = 15;
+    public static int closeClaw2 = 30;
 
     public static void closeClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
@@ -80,4 +80,8 @@ public class ServoUtil {
     }
 
     public static int lastSetVal;
+    public static int releaseAirplane = 30;
+    public static void releaseAirplane(Servo servo){
+        servo.setPosition(setServo(releaseAirplane));
+    }
 }

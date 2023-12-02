@@ -21,10 +21,10 @@ public class autoPatterns {
     public static void halfAuto(MecanumDrive drive) {
         driveByPotentVal(2, HardwareConfig.potentiometer, motorRotation);
         SpikeNav(drive);
-        if (((StartPose.side == StartSide.LEFT) && (StartPose.alliance == Alliance.RED)) || ((StartPose.side == StartSide.RIGHT) && (StartPose.alliance == Alliance.BLUE))) {
-            // long side
-            getCycleSpot();
-        }
+//        if (((StartPose.side == StartSide.LEFT) && (StartPose.alliance == Alliance.RED)) || ((StartPose.side == StartSide.RIGHT) && (StartPose.alliance == Alliance.BLUE))) {
+//            // long side
+//            getCycleSpot();
+//        }
         navToBackdrop(drive);
         updatePose(drive);
     }

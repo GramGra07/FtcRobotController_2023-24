@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.MathFunctions.getQuadrant;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
@@ -24,7 +25,7 @@ public class Drivers {
     public static boolean fieldCentric;
 
     public static boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
-    public static boolean circleDownHigh = false;
+    public static boolean circleDownHigh = false,triangleDownHigh = false, planeReleased = true;
 
     public static void bindDriverButtons(OpMode myOpMode, MecanumDrive drive) {
         //"Chase", "Camden", "Kian", "Grady", "Michael","Graden", "Delaney", "Child"
@@ -107,6 +108,14 @@ public class Drivers {
                 IsBusy.isAutoInTeleop = true;
                 drive.breakFollowing();
             }
+            if (myOpMode.gamepad1.triangle && !triangleDownHigh && !planeReleased){
+                ServoUtil.releaseAirplane(airplaneServo);
+                planeReleased = true;
+            }else if (myOpMode.gamepad1.triangle && !triangleDownHigh && planeReleased){
+                airplaneServo.setPosition(ServoUtil.setServo(0));
+                planeReleased = false;
+            }
+            triangleDownHigh = myOpMode.gamepad1.triangle;
         }
         if (currDriver == driverControls[1]) {//Camden
             fieldCentric = false;
