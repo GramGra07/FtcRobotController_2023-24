@@ -1,3 +1,6 @@
+4.3.0 November 30th, 2023
+Added new autonomous in teleOp functionality with async trajectories
+
 4.2.0 November 4th, 2023
 Updated to FTC 9.0.1
 
