@@ -37,7 +37,7 @@ public class ServoUtil {
         }
     }
 
-    public static int closeClaw1 = 180;
+    public static int closeClaw1 = 200;
     public static int closeClaw2 = 30;
 
     public static void closeClaw(Servo servo) {
@@ -56,7 +56,7 @@ public class ServoUtil {
     public static int servoFlipVal = servoFlipFull;
 
     public static void flipServoBase(Servo servo) {
-        servo.setPosition(setServo(servoFlipBase));
+        servo.setPosition(setServo(servoFlipBase-3));
 //        lastSetVal = servoFlipBase;
     }
 

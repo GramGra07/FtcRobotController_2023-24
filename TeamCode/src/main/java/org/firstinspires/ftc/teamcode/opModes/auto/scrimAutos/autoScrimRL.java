@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.spot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycle;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAutoLong;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -27,7 +27,7 @@ public class autoScrimRL extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
         robot.initAuto(hardwareMap,this);
         if (opModeIsActive()) {
-            halfAuto(drive);
+            halfAutoLong(drive);
 //            cycle(drive,spot);
         }
         webcam.closeCameraDevice();

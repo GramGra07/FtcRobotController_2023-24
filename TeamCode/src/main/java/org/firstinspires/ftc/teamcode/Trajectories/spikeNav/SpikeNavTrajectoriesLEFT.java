@@ -11,9 +11,8 @@ public class SpikeNavTrajectoriesLEFT {
     public static TrajectorySequence navToSpikeRightL(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(31)
-                .turn(Math.toRadians(-90))
-                .forward(5)
+                .forward(22)
+                .turn(Math.toRadians(-45))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
@@ -24,9 +23,8 @@ public class SpikeNavTrajectoriesLEFT {
     public static TrajectorySequence navToSpikeLeftLRed(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(28)
-                .turn(Math.toRadians(90))
-                .forward(5)
+                .forward(22)
+                .turn(Math.toRadians(45))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
@@ -37,9 +35,8 @@ public class SpikeNavTrajectoriesLEFT {
     public static TrajectorySequence navToSpikeLeftLBlue(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(24)
-                .turn(Math.toRadians(90))
-                .forward(5)
+                .forward(22)
+                .turn(Math.toRadians(45))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
@@ -52,8 +49,7 @@ public class SpikeNavTrajectoriesLEFT {
     public static TrajectorySequence navToSpikeCenterL(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(29)
-                .strafeLeft(2)
+                .forward(25)
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })

@@ -25,8 +25,8 @@ public class OBJDetect2 extends OpenCvPipeline {
     }
     int current = 0;
 
-    public static int[] pointsX = new int[]{75, 250, 270, 320};
-    public static int[] pointsY = new int[]{ 170, 210, 180, 220};
+    public static int[] pointsX = new int[]{120, 165, 250, 300};
+    public static int[] pointsY = new int[]{180, 220, 190, 240};
 
     public Scalar scalarLow, scalarHigh;
 

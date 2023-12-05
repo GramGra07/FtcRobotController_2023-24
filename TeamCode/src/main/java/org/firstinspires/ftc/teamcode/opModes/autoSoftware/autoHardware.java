@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
@@ -94,17 +95,6 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
-    public static void shiftBack(MecanumDrive drive) {
-        switch (autonomousRandom) {
-            case left:
-                drive.followTrajectorySequence(ShiftTrajectories.shiftRight(drive));
-                break;
-            case right:
-                drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
-                break;
-        }
-    }
-
     public static Pose2d getStartPose(Alliance alliance, StartSide side) {
         StartPose.alliance = alliance;
         StartPose.side = side;
@@ -150,17 +140,17 @@ public class autoHardware extends HardwareConfig {
                 }
                 break;
         }
+        extendAndPlace(drive);
+        drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate()).forward(6).build());
     }
 
     public static void dropAndRaise() {
-        int potentBackTarget = 30;
-        ServoUtil.openClaw(HardwareConfig.claw2);
-        Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
         ServoUtil.calculateFlipPose(30, flipServo);
     }
 
     public static void extendAndPlace(MecanumDrive drive) {
-        shiftAuto(drive);
+        int potentBackTarget = 20;
+        Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
         HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         HardwareConfig.motorExtension.setTargetPosition(extensionBackdrop);
         HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -168,9 +158,6 @@ public class autoHardware extends HardwareConfig {
         while (HardwareConfig.motorExtension.isBusy()) {
         }
         HardwareConfig.motorExtension.setPower(0);
-
-        ServoUtil.openClaw(claw1);
-
         HardwareConfig.motorExtension.setTargetPosition(0);
         HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         HardwareConfig.motorExtension.setPower(-0.5);
@@ -178,7 +165,6 @@ public class autoHardware extends HardwareConfig {
         }
         HardwareConfig.motorExtension.setPower(0);
         HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        shiftBack(drive);
         updatePose(drive);
     }
 
@@ -205,6 +191,7 @@ public class autoHardware extends HardwareConfig {
                     drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeLeftR(drive));
                 }
                 updatePose(drive);
+                autoHardware.autonomousRandom = AutoRandom.left;
                 break;
             case mid:
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
@@ -216,6 +203,7 @@ public class autoHardware extends HardwareConfig {
                     drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive));
                 }
                 updatePose(drive);
+                autoHardware.autonomousRandom = AutoRandom.mid;
                 break;
             case right:
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
@@ -227,17 +215,8 @@ public class autoHardware extends HardwareConfig {
                     drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeRightR(drive));
                 }
                 updatePose(drive);
+                autoHardware.autonomousRandom = AutoRandom.right;
                 break;
-            default:
-                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
-                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                if (StartPose.side == StartSide.LEFT) {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive));
-                } else {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive));
-                }
-                updatePose(drive);
         }
     }
 

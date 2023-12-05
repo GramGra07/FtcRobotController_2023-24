@@ -156,7 +156,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorRotation);
         closeClaw(claw1);
         closeClaw(claw2);
-        flipServoBase(flipServo);
         PastPotent.pastPotentVal = Sensors.getPotentVal(potentiometer);
 
         motorExtension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
