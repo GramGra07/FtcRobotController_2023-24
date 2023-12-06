@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 public class autoPatterns {
     public static void halfAutoShort(MecanumDrive drive) {
         flipServoBase(flipServo);
-        driveByPotentVal(5, HardwareConfig.potentiometer, motorRotation);
+//        driveByPotentVal(5, HardwareConfig.potentiometer, motorRotation);
         SpikeNav(drive);
 //        if (((StartPose.side == StartSide.LEFT) && (StartPose.alliance == Alliance.RED)) || ((StartPose.side == StartSide.RIGHT) && (StartPose.alliance == Alliance.BLUE))) {
 //            // long side

@@ -154,6 +154,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorFrontRight);
         zeroPowerBrake(motorExtension);
         zeroPowerBrake(motorRotation);
+        zeroPowerBrake(motorLift);
         closeClaw(claw1);
         closeClaw(claw2);
         PastPotent.pastPotentVal = Sensors.getPotentVal(potentiometer);

@@ -24,7 +24,7 @@ public class ServoUtil {
         return pose / degree_mult;
     }
 
-    public static int openClaw1 = 135;
+    public static int openClaw1 = 100;
     public static int openClaw2 = 80;
 
     public static void openClaw(Servo servo) {
@@ -37,7 +37,7 @@ public class ServoUtil {
         }
     }
 
-    public static int closeClaw1 = 200;
+    public static int closeClaw1 = 150;
     public static int closeClaw2 = 30;
 
     public static void closeClaw(Servo servo) {

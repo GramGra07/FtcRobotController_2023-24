@@ -16,7 +16,6 @@ public class SpikeNavTrajectoriesLEFT {
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
-                .back(16)
                 .build();
     }
 
@@ -28,7 +27,6 @@ public class SpikeNavTrajectoriesLEFT {
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
-                .back(6)
                 .build();
     }
 
@@ -40,7 +38,6 @@ public class SpikeNavTrajectoriesLEFT {
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
-                .back(6)
                 .strafeLeft(18)
                 .forward(15)
                 .build();
@@ -53,7 +50,6 @@ public class SpikeNavTrajectoriesLEFT {
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
-                .back(5)
                 .build();
     }
 }

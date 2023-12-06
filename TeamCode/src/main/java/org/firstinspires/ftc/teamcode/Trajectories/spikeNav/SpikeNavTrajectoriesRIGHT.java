@@ -16,7 +16,7 @@ public class SpikeNavTrajectoriesRIGHT {
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
-                .back(12)
+                .back(1)
                 .build();
     }
 
@@ -28,18 +28,18 @@ public class SpikeNavTrajectoriesRIGHT {
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
-                .back(6)
+                .back(1)
                 .build();
     }
 
     public static TrajectorySequence navToSpikeCenterR(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(26)
+                .forward(24)
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                 })
-                .back(5)
+                .back(1)
                 .build();
     }
 }

@@ -46,6 +46,7 @@ public class autoHardware extends HardwareConfig {
     HardwareMap hardwareMap = null;
 
     public static AutoRandom autonomousRandom = AutoRandom.mid;
+    public static AutoRandom autoRandomReliable;
 
     public autoHardware(LinearOpMode opmode) {
         super(opmode);
@@ -85,7 +86,7 @@ public class autoHardware extends HardwareConfig {
     }
 
     public static void shiftAuto(MecanumDrive drive) {
-        switch (autonomousRandom) {
+        switch (autoRandomReliable) {
             case left:
                 drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
                 break;
@@ -118,6 +119,7 @@ public class autoHardware extends HardwareConfig {
     }
 
     public static void navToBackdrop(MecanumDrive drive) {
+        extendAndPlace(drive);
         switch (StartPose.alliance) {
             case RED:
                 switch (StartPose.side) {
@@ -140,31 +142,25 @@ public class autoHardware extends HardwareConfig {
                 }
                 break;
         }
-        extendAndPlace(drive);
-        drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate()).forward(6).build());
-    }
-
-    public static void dropAndRaise() {
-        ServoUtil.calculateFlipPose(30, flipServo);
     }
 
     public static void extendAndPlace(MecanumDrive drive) {
-        int potentBackTarget = 20;
+        int potentBackTarget = 10;
         Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
-        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        HardwareConfig.motorExtension.setTargetPosition(extensionBackdrop);
-        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        HardwareConfig.motorExtension.setPower(0.5);
-        while (HardwareConfig.motorExtension.isBusy()) {
-        }
-        HardwareConfig.motorExtension.setPower(0);
-        HardwareConfig.motorExtension.setTargetPosition(0);
-        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        HardwareConfig.motorExtension.setPower(-0.5);
-        while (HardwareConfig.motorExtension.isBusy()) {
-        }
-        HardwareConfig.motorExtension.setPower(0);
-        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        HardwareConfig.motorExtension.setTargetPosition(extensionBackdrop);
+//        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        HardwareConfig.motorExtension.setPower(0.5);
+//        while (HardwareConfig.motorExtension.isBusy()) {
+//        }
+//        HardwareConfig.motorExtension.setPower(0);
+//        HardwareConfig.motorExtension.setTargetPosition(0);
+//        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        HardwareConfig.motorExtension.setPower(-0.5);
+//        while (HardwareConfig.motorExtension.isBusy()) {
+//        }
+//        HardwareConfig.motorExtension.setPower(0);
+//        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         updatePose(drive);
     }
 
@@ -191,7 +187,7 @@ public class autoHardware extends HardwareConfig {
                     drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeLeftR(drive));
                 }
                 updatePose(drive);
-                autoHardware.autonomousRandom = AutoRandom.left;
+                autoHardware.autoRandomReliable = AutoRandom.left;
                 break;
             case mid:
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
@@ -203,7 +199,7 @@ public class autoHardware extends HardwareConfig {
                     drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive));
                 }
                 updatePose(drive);
-                autoHardware.autonomousRandom = AutoRandom.mid;
+                autoHardware.autoRandomReliable = AutoRandom.mid;
                 break;
             case right:
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
@@ -215,7 +211,7 @@ public class autoHardware extends HardwareConfig {
                     drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeRightR(drive));
                 }
                 updatePose(drive);
-                autoHardware.autonomousRandom = AutoRandom.right;
+                autoHardware.autoRandomReliable = AutoRandom.right;
                 break;
         }
     }
