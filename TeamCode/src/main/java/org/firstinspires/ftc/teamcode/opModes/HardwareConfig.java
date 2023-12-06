@@ -185,7 +185,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void doBulk() {
         once(myOpMode);//runs once
         bindDriverButtons(myOpMode, drive);
-        bindOtherButtons(myOpMode);
+        bindOtherButtons(myOpMode,drive);
         if (multipleDrivers) {
             switchProfile(myOpMode);
         }
