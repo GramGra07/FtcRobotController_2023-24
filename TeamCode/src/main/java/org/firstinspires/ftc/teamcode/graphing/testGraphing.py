@@ -89,33 +89,49 @@ def setup():
 
 def drawField():
     # x points, y points
-    xPoints, yPoints = [48, 72], [-72, -48]
+    xPoints, yPoints = [-72,-24], [48,48]
     plt.plot(xPoints, yPoints, color="blue")
-    xPoints, yPoints = [48, 72], [72, 48]
+    xPoints, yPoints = [24, 72], [48, 48]
     plt.plot(xPoints, yPoints, color="red")
-    xPoints, yPoints = [-48, -72], [-72, -48]
-    plt.plot(xPoints, yPoints, color="red")
-    xPoints, yPoints = [-48, -72], [72, 48]
+    xPoints, yPoints = [-24, 0], [48, 72]
     plt.plot(xPoints, yPoints, color="blue")
-    xPoints, yPoints = [-12, 0], [-72, -58]
+    xPoints, yPoints = [0, 24], [72, 48]
     plt.plot(xPoints, yPoints, color="red")
-    xPoints, yPoints = [0, 12], [-58, -72]
+    xPoints, yPoints = [-72,-24], [-12, -12]
+    plt.plot(xPoints, yPoints, color="blue")
+    xPoints, yPoints = [24, 72], [-12, -12]
     plt.plot(xPoints, yPoints, color="red")
-    xPoints, yPoints = [12, 0], [72, 58]
-    plt.plot(xPoints, yPoints, color="blue")
-    xPoints, yPoints = [0, -12], [58, 72]
-    plt.plot(xPoints, yPoints, color="blue")
-    xPoints, yPoints = [-72, -48], [-12, -12]
+    xPoints, yPoints = [-24, 24], [-12, -12]
+    plt.plot(xPoints, yPoints, color="yellow")
+    xPoints, yPoints = [-72, -48], [-6, -6]
+    plt.plot(xPoints, yPoints, color="yellow")
+    xPoints, yPoints = [-48, -24], [-18, -18]
+    plt.plot(xPoints, yPoints, color="yellow")
+    xPoints, yPoints = [24, 48], [-18, -18]
+    plt.plot(xPoints, yPoints, color="yellow")
+    xPoints, yPoints = [48, 72], [-6, -6]
+    plt.plot(xPoints, yPoints, color="yellow")
+    xPoints, yPoints = [-72, -48], [-48, -72]
     plt.plot(xPoints, yPoints, color="red")
-    xPoints, yPoints = [72, 48], [-12, -12]
-    plt.plot(xPoints, yPoints, color="red")
-    xPoints, yPoints = [-72, -48], [12, 12]
+    xPoints, yPoints = [72, 48], [-48, -72]
     plt.plot(xPoints, yPoints, color="blue")
-    xPoints, yPoints = [72, 48], [12, 12]
-    plt.plot(xPoints, yPoints, color="blue")
+    xPoints, yPoints = [-24, 24], [-6, -6]
+    plt.plot(xPoints, yPoints, color="yellow")
+    xPoints, yPoints = [-24, -24], [0, -24]
+    plt.plot(xPoints, yPoints,color="grey")
+    xPoints, yPoints = [-48, -48], [0, -24]
+    plt.plot(xPoints, yPoints,color="grey")
+    xPoints, yPoints = [24, 24], [0, -24]
+    plt.plot(xPoints, yPoints,color="grey")
+    xPoints, yPoints = [48, 48], [0, -24]
+    plt.plot(xPoints, yPoints,color="grey")
+    xPoints, yPoints = [-72, -72], [0, -24]
+    plt.plot(xPoints, yPoints,color="grey")
+    xPoints, yPoints = [72, 72], [0, -24]
+    plt.plot(xPoints, yPoints,color="grey")
 
 
 setup()
-graph(fileWrite,"")
+graph(fileWrite,"dec7Match10")
 # title is optional, if you want it to be saved,
 # put a title in, otherwise leave blank ("")
