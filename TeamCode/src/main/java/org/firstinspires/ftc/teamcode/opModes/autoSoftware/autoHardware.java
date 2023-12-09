@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
 import static org.firstinspires.ftc.teamcode.Vision.findAprilTagsAndSetPose;
 
@@ -104,6 +105,22 @@ public class autoHardware extends HardwareConfig {
         } else {
             spot = new Pose2d(-60, 12, Math.toRadians(180));
         }
+    }
+
+    public static void pickFromSpot(MecanumDrive drive){
+        getCycleSpot();
+        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .lineToLinearHeading(spot)
+                .addDisplacementMarker(() -> Sensors.driveByPotentVal(6, potentiometer, motorRotation))
+                .addDisplacementMarker(() -> calculateFlipPose(0, flipServo))
+                .back(1)
+                .build()
+        );
+        drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
+                .forward(4)
+                .build()
+        );
+        closeClaw(claw2);
     }
 
     public static void shiftAuto(MecanumDrive drive) {

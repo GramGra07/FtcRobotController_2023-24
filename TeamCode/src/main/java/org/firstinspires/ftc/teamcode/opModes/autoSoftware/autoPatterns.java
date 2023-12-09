@@ -10,6 +10,7 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiomete
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getCycleSpot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.navToBackdrop;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.pickFromSpot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.shiftAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.spot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
@@ -30,19 +31,7 @@ public class autoPatterns {
         SpikeNav(drive);
         if (((StartPose.side == StartSide.LEFT) && (StartPose.alliance == Alliance.RED)) || ((StartPose.side == StartSide.RIGHT) && (StartPose.alliance == Alliance.BLUE))) {
             // long side
-            getCycleSpot();
-            drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                    .lineToLinearHeading(spot)
-                    .addDisplacementMarker(() -> Sensors.driveByPotentVal(6, potentiometer, motorRotation))
-                    .addDisplacementMarker(() -> calculateFlipPose(0, flipServo))
-                    .back(1)
-                    .build()
-            );
-            drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate())
-                    .forward(4)
-                    .build()
-            );
-            closeClaw(claw2);
+            pickFromSpot(drive);
             updatePose(drive);
         }
         navToBackdrop(drive);
