@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.spot;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycle;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAutoShort;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -26,10 +25,12 @@ public class autoScrimBL extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap,this);
+        webcam.closeCameraDevice();
+        visionPortal.resumeStreaming();
         if (opModeIsActive()) {
-            halfAutoShort(drive);
+            halfAuto(drive);
 //            cycle(drive,spot);
         }
-        webcam.closeCameraDevice();
+        visionPortal.close();
     }
 }

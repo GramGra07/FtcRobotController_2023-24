@@ -1,36 +1,34 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
+package org.firstinspires.ftc.teamcode.opModes.auto;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Enums.Alliance;
-import org.firstinspires.ftc.teamcode.Enums.StartSide;
+import org.firstinspires.ftc.teamcode.Vision;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
-@Autonomous(group = "ascrim")
-//@Disabled
-public class autoScrimRR extends LinearOpMode {
+@Autonomous
+
+public class aprilTest extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
+        drive.setPoseEstimate(startPose);
         robot.initAuto(hardwareMap,this);
         webcam.closeCameraDevice();
         visionPortal.resumeStreaming();
-        if (opModeIsActive()) {
-            halfAuto(drive);
-//            cycle(drive,spot);
+        while (opModeIsActive()) {
+            Vision.telemetryAprilTag(this);
+            telemetry.update();
         }
-        visionPortal.close();
     }
 }

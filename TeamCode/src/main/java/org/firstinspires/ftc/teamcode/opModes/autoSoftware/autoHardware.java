@@ -1,24 +1,25 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
+import static org.firstinspires.ftc.teamcode.Vision.findAprilTagsAndSetPose;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
-import org.firstinspires.ftc.teamcode.Trajectories.spikeNav.SpikeNavTrajectoriesLEFT;
-import org.firstinspires.ftc.teamcode.Trajectories.spikeNav.SpikeNavTrajectoriesRIGHT;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
@@ -26,6 +27,9 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OBJDetect2;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -47,6 +51,8 @@ public class autoHardware extends HardwareConfig {
 
     public static AutoRandom autonomousRandom = AutoRandom.mid;
     public static AutoRandom autoRandomReliable;
+    public static VisionPortal visionPortal;
+    public static AprilTagProcessor aprilTagProcessor;
 
     public autoHardware(LinearOpMode opmode) {
         super(opmode);
@@ -55,6 +61,21 @@ public class autoHardware extends HardwareConfig {
     public void initAuto(HardwareMap ahwMap, LinearOpMode myOpMode) {
         hardwareMap = ahwMap;
         HardwareConfig.init(ahwMap);
+        aprilTagProcessor = new AprilTagProcessor.Builder()
+                .setDrawAxes(true)
+                .setDrawCubeProjection(false)
+                .setDrawTagOutline(true)
+                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
+                .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
+                .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
+                // ... these parameters are fx, fy, cx, cy.
+                .build();
+        VisionPortal.Builder builder = new VisionPortal.Builder();
+        builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        builder.addProcessor(aprilTagProcessor);
+        visionPortal = builder.build();
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
         webcam.setPipeline(new OBJDetect2(StartPose.alliance));//!can switch pipelines here
@@ -79,9 +100,9 @@ public class autoHardware extends HardwareConfig {
 
     public static void getCycleSpot() {
         if (StartPose.alliance == Alliance.RED) {
-            spot = new Pose2d(-60, 12, Math.toRadians(-90));
+            spot = new Pose2d(-50, -6, Math.toRadians(180));
         } else {
-            spot = new Pose2d(-60, -12, Math.toRadians(-90));
+            spot = new Pose2d(-60, 12, Math.toRadians(180));
         }
     }
 
@@ -119,7 +140,10 @@ public class autoHardware extends HardwareConfig {
     }
 
     public static void navToBackdrop(MecanumDrive drive) {
-        extendAndPlace(drive);
+        calculateFlipPose(60, flipServo);
+        if ((StartPose.alliance == Alliance.RED && StartPose.side == StartSide.RIGHT) || (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.RIGHT)) {
+            extendAndPlace(drive);
+        }
         switch (StartPose.alliance) {
             case RED:
                 switch (StartPose.side) {
@@ -142,11 +166,13 @@ public class autoHardware extends HardwareConfig {
                 }
                 break;
         }
+        findAprilTagsAndSetPose(drive);
     }
 
     public static void extendAndPlace(MecanumDrive drive) {
         int potentBackTarget = 10;
         Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
+
 //        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 //        HardwareConfig.motorExtension.setTargetPosition(extensionBackdrop);
 //        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -164,14 +190,8 @@ public class autoHardware extends HardwareConfig {
         updatePose(drive);
     }
 
-//    public static void delayUntilTagFound(OpMode myOpMode, int tag) {
-//        while (!Vision.searchAprilTags(tag)) {
-//            Vision.searchAprilTags(tag);
-//            Vision.telemetryAprilTag(myOpMode);
-//        }
-//    }
-
     public static void SpikeNav(MecanumDrive drive) {
+        flipServoBase(flipServo);
         switch (autoHardware.autonomousRandom) {
             case left:
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
@@ -179,12 +199,35 @@ public class autoHardware extends HardwareConfig {
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
                     if (StartPose.alliance == Alliance.RED) {
-                        drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeLeftLRed(drive));
+                        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .forward(22)
+                                .turn(Math.toRadians(45))
+                                .addDisplacementMarker(() -> {
+                                    ServoUtil.openClaw(HardwareConfig.claw2);
+                                })
+                                .back(1)
+                                .build()
+                        );
                     } else {
-                        drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeLeftLBlue(drive));
+                        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .forward(22)
+                                .turn(Math.toRadians(45))
+                                .addDisplacementMarker(() -> {
+                                    ServoUtil.openClaw(HardwareConfig.claw2);
+                                })
+                                .back(1)
+                                .build()
+                        );
                     }
                 } else {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeLeftR(drive));
+                    drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                            .forward(22)
+                            .turn(Math.toRadians(45))
+                            .addDisplacementMarker(() -> {
+                                ServoUtil.openClaw(HardwareConfig.claw2);
+                            })
+                            .back(1)
+                            .build());
                 }
                 updatePose(drive);
                 autoHardware.autoRandomReliable = AutoRandom.left;
@@ -194,9 +237,33 @@ public class autoHardware extends HardwareConfig {
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeCenterL(drive));
+                    if (StartPose.alliance == Alliance.RED) {
+                        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .forward(25)
+                                .turn(Math.toRadians(-45))
+                                .addDisplacementMarker(() -> {
+                                    ServoUtil.openClaw(HardwareConfig.claw2);
+                                })
+                                .back(1)
+                                .build()
+                        );
+                    } else {
+                        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .forward(25)
+                                .addDisplacementMarker(() -> {
+                                    ServoUtil.openClaw(HardwareConfig.claw2);
+                                })
+                                .back(1)
+                                .build());
+                    }
                 } else {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeCenterR(drive));
+                    drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                            .forward(24)
+                            .addDisplacementMarker(() -> {
+                                ServoUtil.openClaw(HardwareConfig.claw2);
+                            })
+                            .back(1)
+                            .build());
                 }
                 updatePose(drive);
                 autoHardware.autoRandomReliable = AutoRandom.mid;
@@ -206,9 +273,25 @@ public class autoHardware extends HardwareConfig {
                 Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                 Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
                 if (StartPose.side == StartSide.LEFT) {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesLEFT.navToSpikeRightL(drive));
+                    drive.followTrajectorySequence(
+                            drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                    .forward(22)
+                                    .turn(Math.toRadians(-45))
+                                    .addDisplacementMarker(() -> {
+                                        ServoUtil.openClaw(HardwareConfig.claw2);
+                                    })
+                                    .back(1)
+                                    .build());
                 } else {
-                    drive.followTrajectorySequence(SpikeNavTrajectoriesRIGHT.navToSpikeRightR(drive));
+                    drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                            .strafeRight(14)
+                            .forward(20)
+                            .addDisplacementMarker(() -> {
+                                ServoUtil.openClaw(HardwareConfig.claw2);
+                            })
+                            .back(1)
+                            .build()
+                    );
                 }
                 updatePose(drive);
                 autoHardware.autoRandomReliable = AutoRandom.right;

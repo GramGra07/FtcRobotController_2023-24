@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.u
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
@@ -27,15 +28,17 @@ public class BackdropTrajectories {
 
     public static TrajectorySequence redLong(MecanumDrive drive) {
         updatePose(drive);
-        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
-                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
-                .lineToLinearHeading(new Pose2d(54, -30, Math.toRadians(endAngle)))
+        return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .lineTo(new Vector2d(36,-12))
+                .addDisplacementMarker(()->extendAndPlace(drive))
+                .addDisplacementMarker(()->ServoUtil.calculateFlipPose(30,flipServo))
+                .splineToLinearHeading(new Pose2d(56, -36, Math.toRadians(endAngle)), Math.toRadians(endAngle))
                 .build();
     }
 
     public static TrajectorySequence blueShort(MecanumDrive drive) {
         updatePose(drive);
-        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+        return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
                 .lineToLinearHeading(new Pose2d(54, 36, Math.toRadians(endAngle)))
                 .build();
@@ -43,7 +46,7 @@ public class BackdropTrajectories {
 
     public static TrajectorySequence blueLong(MecanumDrive drive) {
         updatePose(drive);
-        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+        return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineToLinearHeading(new Pose2d(-36, 62, Math.toRadians(blueRotate + 90)))
                 .forward(56)
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))

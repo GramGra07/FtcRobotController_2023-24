@@ -1,17 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
@@ -38,34 +37,6 @@ public class Vision {
             "Pixel"
     };
 
-    public static void initVision(HardwareMap hardwareMap) {
-        aprilTag = new AprilTagProcessor.Builder()
-                .setDrawAxes(true)
-                .setDrawCubeProjection(false)
-                .setDrawTagOutline(true)
-                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-                .setDrawTagID(true)
-                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
-                .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
-                // If you do not manually specify calibration parameters, the SDK will attempt
-                // to load a predefined calibration for your camera.
-                // .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
-                // ... these parameters are fx, fy, cx, cy.
-                .build();
-        tFod = new TfodProcessor.Builder()
-                .setModelAssetName(baseAsset)
-                .setModelLabels(baseLabels)
-                .setIsModelQuantized(true)
-                .setModelAspectRatio(16.0 / 9.0)
-                .setIsModelTensorFlow2(true)
-                .setModelInputSize(300)
-                .build();
-        VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(hardwareMap.get(WebcamName.class, EOCVWebcam.cam1_N));
-        builder.addProcessors(aprilTag, tFod);
-        portal = builder.build();
-    }
-
     public static void telemetryTfod(OpMode myOpMode) {
         List<Recognition> currentRecognitions = tFod.getRecognitions();
         myOpMode.telemetry.addData("# Objects Detected", currentRecognitions.size());
@@ -82,7 +53,7 @@ public class Vision {
     }
 
     public static void telemetryAprilTag(OpMode myOpMode) {
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
         if (currentDetections.size() > 0) {
             for (AprilTagDetection detection : currentDetections) {
                 if (detection.metadata != null) {
@@ -133,5 +104,22 @@ public class Vision {
             autoHardware.autonomousRandom = AutoRandom.right;
         }
 
+    }
+    public static void findAprilTagsAndSetPose(MecanumDrive drive){
+        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
+
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.metadata != null && currentDetections.size() == 1) {
+                int id = detection.id;
+                double x = detection.ftcPose.x;
+                double y = detection.ftcPose.y;
+                double z = detection.ftcPose.z;
+                double pitch = detection.ftcPose.pitch;
+                double roll = detection.ftcPose.roll;
+                double yaw = detection.ftcPose.yaw;
+                drive.setPoseEstimate(new Pose2d(x,y,yaw));
+            }
+        }
     }
 }

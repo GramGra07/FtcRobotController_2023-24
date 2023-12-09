@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.blank;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -22,9 +23,11 @@ public class blankAuto extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
         robot.initAuto(hardwareMap,this);
+        webcam.closeCameraDevice();
+        visionPortal.resumeStreaming();
         if (opModeIsActive()) {
             PoseStorage.currentPose = drive.getPoseEstimate();
         }
-        webcam.closeCameraDevice();
+        visionPortal.close();
     }
 }
