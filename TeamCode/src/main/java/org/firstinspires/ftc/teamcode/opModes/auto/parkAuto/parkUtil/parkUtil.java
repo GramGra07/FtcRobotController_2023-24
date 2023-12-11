@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.parkUtil;
+package org.firstinspires.ftc.teamcode.opModes.auto.parkAuto.parkUtil;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;

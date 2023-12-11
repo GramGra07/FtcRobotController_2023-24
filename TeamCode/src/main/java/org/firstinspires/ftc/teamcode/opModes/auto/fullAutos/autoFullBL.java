@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.scrimAutos;
+package org.firstinspires.ftc.teamcode.opModes.auto.fullAutos;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
@@ -16,14 +16,14 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 @Autonomous(group = "ascrim")
 //@Disabled
-public class autoScrimBR extends LinearOpMode {
+public class autoFullBL extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
+        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap,this);
         webcam.closeCameraDevice();
         visionPortal.resumeStreaming();

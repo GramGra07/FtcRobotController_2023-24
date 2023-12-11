@@ -183,6 +183,9 @@ public class autoHardware extends HardwareConfig {
                 }
                 break;
         }
+        shiftAuto(drive);
+        ServoUtil.openClaw(claw1);
+        ServoUtil.openClaw(claw2);
         findAprilTagsAndSetPose(drive);
     }
 

@@ -26,18 +26,25 @@ import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class autoPatterns {
-    public static void halfAuto(MecanumDrive drive) {
+    public static void placePixel1 (MecanumDrive drive){
         ServoUtil.calculateFlipPose(60, flipServo);
         SpikeNav(drive);
+    }
+    public static void pixelPark(MecanumDrive drive){
+        placePixel1(drive);
+        navToBackdrop(drive);
+    }
+    public static void grabPixelLongSide(MecanumDrive drive){
         if (((StartPose.side == StartSide.LEFT) && (StartPose.alliance == Alliance.RED)) || ((StartPose.side == StartSide.RIGHT) && (StartPose.alliance == Alliance.BLUE))) {
             // long side
             pickFromSpot(drive);
             updatePose(drive);
         }
+    }
+    public static void halfAuto(MecanumDrive drive) {
+        placePixel1(drive);
+        grabPixelLongSide(drive);
         navToBackdrop(drive);
-        shiftAuto(drive);
-        ServoUtil.openClaw(claw1);
-        ServoUtil.openClaw(claw2);
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate()).back(10).build());
         updatePose(drive);
     }

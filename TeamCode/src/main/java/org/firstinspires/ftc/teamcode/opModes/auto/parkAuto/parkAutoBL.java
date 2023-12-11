@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.parkAuto;
 
-import static org.firstinspires.ftc.teamcode.opModes.auto.parkUtil.parkUtil.parkAuto;
+import static org.firstinspires.ftc.teamcode.opModes.auto.parkAuto.parkUtil.parkUtil.parkAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
