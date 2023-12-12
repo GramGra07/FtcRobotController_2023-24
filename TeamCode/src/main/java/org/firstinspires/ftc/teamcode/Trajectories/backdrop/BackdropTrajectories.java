@@ -26,6 +26,7 @@ public class BackdropTrajectories {
     public static TrajectorySequence redLong(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .lineTo(new Vector2d(-36, -12))
                 .lineTo(new Vector2d(36, -12))
                 .addDisplacementMarker(() -> extendAndPlace(drive))
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
@@ -44,6 +45,7 @@ public class BackdropTrajectories {
     public static TrajectorySequence blueLong(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .lineTo(new Vector2d(-36, 12))
                 .lineTo(new Vector2d(36, 12))
                 .addDisplacementMarker(() -> extendAndPlace(drive))
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
