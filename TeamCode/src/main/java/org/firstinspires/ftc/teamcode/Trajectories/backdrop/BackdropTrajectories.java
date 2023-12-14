@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.Trajectories.backdrop;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.extendAndPlace;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.raiseArm;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -28,7 +28,7 @@ public class BackdropTrajectories {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineTo(new Vector2d(-36, -12))
                 .lineTo(new Vector2d(36, -12))
-                .addDisplacementMarker(() -> extendAndPlace(drive))
+                .addDisplacementMarker(() -> raiseArm(drive))
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
                 .splineToLinearHeading(new Pose2d(56, -36, Math.toRadians(endAngle)), Math.toRadians(endAngle))
                 .build();
@@ -47,7 +47,7 @@ public class BackdropTrajectories {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineTo(new Vector2d(-36, 12))
                 .lineTo(new Vector2d(36, 12))
-                .addDisplacementMarker(() -> extendAndPlace(drive))
+                .addDisplacementMarker(() -> raiseArm(drive))
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
                 .splineToLinearHeading(new Pose2d(54, 36, Math.toRadians(endAngle)), Math.toRadians(endAngle))
                 .build();

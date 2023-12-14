@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Trajectories;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.extendAndPlace;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.raiseArm;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -24,7 +24,7 @@ public class CycleTrajectories {
                 .lineToLinearHeading(new Pose2d(36, spot.getY(), Math.toRadians(-90)))
                 .lineToLinearHeading(startPose)
                 .addDisplacementMarker(() -> {
-                    extendAndPlace(drive);
+                    raiseArm(drive);
                 })
                 .build();
     }

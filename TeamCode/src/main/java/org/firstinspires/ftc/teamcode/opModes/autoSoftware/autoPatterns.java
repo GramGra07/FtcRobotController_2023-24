@@ -24,7 +24,7 @@ public class autoPatterns {
 
     public static void pixelPark(MecanumDrive drive) {
         place1Pixel(drive);
-        navToBackdrop(drive);
+        navToBackdrop(drive,true);
         goToGenericEndPose(drive);
     }
 
@@ -47,10 +47,10 @@ public class autoPatterns {
         }
     }
 
-    public static void halfAuto(MecanumDrive drive) {
+    public static void place2Cycle(MecanumDrive drive) {
         place1Pixel(drive);
         grabPixelLongSide(drive);
-        navToBackdrop(drive);
+        navToBackdrop(drive,false);
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate()).back(10).build());
         updatePose(drive);
     }

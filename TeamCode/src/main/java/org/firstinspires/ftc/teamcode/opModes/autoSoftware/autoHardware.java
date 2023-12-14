@@ -4,7 +4,6 @@ import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
-import static org.firstinspires.ftc.teamcode.Vision.findAprilTagsAndSetPose;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -156,11 +155,14 @@ public class autoHardware extends HardwareConfig {
         return new Pose2d(0, 0, 0);
     }
 
-    public static void navToBackdrop(MecanumDrive drive) {
+    public static void navToBackdrop(MecanumDrive drive, boolean raiseArm) {
         calculateFlipPose(60, flipServo);
-        if ((StartPose.alliance == Alliance.RED && StartPose.side == StartSide.RIGHT) || (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.RIGHT)) {
-            extendAndPlace(drive);
+        if (raiseArm) {
+            raiseArm(drive);
         }
+//        if ((StartPose.alliance == Alliance.RED && StartPose.side == StartSide.RIGHT) || (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.LEFT)) {
+//            raiseArm(drive);
+//        }
         switch (StartPose.alliance) {
             case RED:
                 switch (StartPose.side) {
@@ -186,28 +188,11 @@ public class autoHardware extends HardwareConfig {
         shiftAuto(drive);
         ServoUtil.openClaw(claw1);
         ServoUtil.openClaw(claw2);
-//        findAprilTagsAndSetPose(drive);
     }
 
-    public static void extendAndPlace(MecanumDrive drive) {
+    public static void raiseArm(MecanumDrive drive) {
         int potentBackTarget = 10;
         Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
-
-//        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//        HardwareConfig.motorExtension.setTargetPosition(extensionBackdrop);
-//        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        HardwareConfig.motorExtension.setPower(0.5);
-//        while (HardwareConfig.motorExtension.isBusy()) {
-//        }
-//        HardwareConfig.motorExtension.setPower(0);
-//        HardwareConfig.motorExtension.setTargetPosition(0);
-//        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        HardwareConfig.motorExtension.setPower(-0.5);
-//        while (HardwareConfig.motorExtension.isBusy()) {
-//        }
-//        HardwareConfig.motorExtension.setPower(0);
-//        HardwareConfig.motorExtension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        updatePose(drive);
     }
 
     public static void SpikeNav(MecanumDrive drive) {

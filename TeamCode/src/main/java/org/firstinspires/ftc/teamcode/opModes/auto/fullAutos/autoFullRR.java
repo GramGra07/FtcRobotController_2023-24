@@ -4,7 +4,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.g
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAuto;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.place2Cycle;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -29,7 +29,7 @@ public class autoFullRR extends LinearOpMode {
         webcam.closeCameraDevice();
         visionPortal.resumeStreaming();
         if (opModeIsActive()) {
-            halfAuto(drive);
+            place2Cycle(drive);
 //            cycle(drive,spot);
         }updatePose(drive);
         visionPortal.close();
