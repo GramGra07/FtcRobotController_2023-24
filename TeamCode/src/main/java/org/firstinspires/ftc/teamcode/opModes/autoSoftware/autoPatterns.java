@@ -1,48 +1,54 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getCycleSpot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.navToBackdrop;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.pickFromSpot;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.shiftAuto;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.spot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
-import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.CycleTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class autoPatterns {
-    public static void placePixel1 (MecanumDrive drive){
+    public static void place1Pixel(MecanumDrive drive) {
         ServoUtil.calculateFlipPose(60, flipServo);
         SpikeNav(drive);
     }
-    public static void pixelPark(MecanumDrive drive){
-        placePixel1(drive);
+
+    public static void pixelPark(MecanumDrive drive) {
+        place1Pixel(drive);
         navToBackdrop(drive);
+        goToGenericEndPose(drive);
     }
-    public static void grabPixelLongSide(MecanumDrive drive){
+
+    public static void goToGenericEndPose(MecanumDrive drive) {
+        switch (StartPose.alliance) {
+            case RED:
+                drive.followTrajectorySequence(endPose.goToEndPose(endPose.endPoseRightRed, drive));
+                break;
+            case BLUE:
+                drive.followTrajectorySequence(endPose.goToEndPose(endPose.endPoseLeftBlue, drive));
+                break;
+        }
+    }
+
+    public static void grabPixelLongSide(MecanumDrive drive) {
         if (((StartPose.side == StartSide.LEFT) && (StartPose.alliance == Alliance.RED)) || ((StartPose.side == StartSide.RIGHT) && (StartPose.alliance == Alliance.BLUE))) {
             // long side
             pickFromSpot(drive);
             updatePose(drive);
         }
     }
+
     public static void halfAuto(MecanumDrive drive) {
-        placePixel1(drive);
+        place1Pixel(drive);
         grabPixelLongSide(drive);
         navToBackdrop(drive);
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate()).back(10).build());

@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.place1Auto;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.placePixel1;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.place1Pixel;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -28,8 +29,8 @@ public class auto1RR extends LinearOpMode {
         webcam.closeCameraDevice();
         visionPortal.resumeStreaming();
         if (opModeIsActive()) {
-            placePixel1(drive);
-        }
+            place1Pixel(drive);
+        }updatePose(drive);
         visionPortal.close();
     }
 }

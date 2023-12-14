@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelPark;
@@ -29,7 +30,7 @@ public class autoPiParkBR extends LinearOpMode {
         visionPortal.resumeStreaming();
         if (opModeIsActive()) {
             pixelPark(drive);
-        }
+        }updatePose(drive);
         visionPortal.close();
     }
 }

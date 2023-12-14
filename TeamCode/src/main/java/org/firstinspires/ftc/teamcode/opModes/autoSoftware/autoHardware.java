@@ -186,7 +186,7 @@ public class autoHardware extends HardwareConfig {
         shiftAuto(drive);
         ServoUtil.openClaw(claw1);
         ServoUtil.openClaw(claw2);
-        findAprilTagsAndSetPose(drive);
+//        findAprilTagsAndSetPose(drive);
     }
 
     public static void extendAndPlace(MecanumDrive drive) {

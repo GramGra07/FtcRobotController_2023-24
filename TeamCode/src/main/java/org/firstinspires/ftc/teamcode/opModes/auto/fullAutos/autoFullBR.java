@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.fullAutos;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.halfAuto;
@@ -30,7 +31,7 @@ public class autoFullBR extends LinearOpMode {
         if (opModeIsActive()) {
             halfAuto(drive);
 //            cycle(drive,spot);
-        }
+        }updatePose(drive);
         visionPortal.close();
     }
 }

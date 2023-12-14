@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.blank;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
 
@@ -27,7 +28,7 @@ public class blankAuto extends LinearOpMode {
         visionPortal.resumeStreaming();
         if (opModeIsActive()) {
             PoseStorage.currentPose = drive.getPoseEstimate();
-        }
+        }updatePose(drive);
         visionPortal.close();
     }
 }
