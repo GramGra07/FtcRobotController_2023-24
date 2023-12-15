@@ -86,7 +86,7 @@ public class Operator extends Drivers {
 //                }
 //            }
 
-            extensionPower = Range.clip(myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
+            extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
             if (myOpMode.gamepad2.dpad_down) {
                 servoFlipVal -= 1;
             } else if (myOpMode.gamepad2.dpad_up) {

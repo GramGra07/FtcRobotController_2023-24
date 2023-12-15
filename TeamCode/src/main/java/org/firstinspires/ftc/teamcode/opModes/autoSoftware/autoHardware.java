@@ -9,6 +9,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -106,7 +107,7 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
-    public static void pickFromSpot(MecanumDrive drive){
+    public static void pickFromSpot(MecanumDrive drive) {
         getCycleSpot();
         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineToLinearHeading(spot)
@@ -306,5 +307,16 @@ public class autoHardware extends HardwareConfig {
 
     public static void updatePose(MecanumDrive drive) {
         PoseStorage.currentPose = drive.getPoseEstimate();
+    }
+
+    public static void encoderDrive(DcMotor motor, int position, int countsPerInch, double speed) {
+        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setTargetPosition(motor.getCurrentPosition() + (position * countsPerInch));
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor.setPower(Math.abs(speed));
+        while (motor.isBusy()) {}
+        motor.setPower(0);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 }
