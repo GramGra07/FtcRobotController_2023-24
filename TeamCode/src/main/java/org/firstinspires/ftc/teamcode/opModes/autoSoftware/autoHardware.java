@@ -76,6 +76,7 @@ public class autoHardware extends HardwareConfig {
         builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
         builder.addProcessor(aprilTagProcessor);
         visionPortal = builder.build();
+        visionPortal.setProcessorEnabled(aprilTagProcessor, false);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
