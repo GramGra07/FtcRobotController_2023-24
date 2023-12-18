@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
 
@@ -26,6 +27,7 @@ public class aprilTest extends LinearOpMode {
         robot.initAuto(hardwareMap,this);
         webcam.closeCameraDevice();
         visionPortal.resumeStreaming();
+        visionPortal.setProcessorEnabled(aprilTagProcessor,true);
         while (opModeIsActive()) {
             Vision.telemetryAprilTag(this);
             telemetry.update();
