@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.fullAutos;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
@@ -18,20 +19,21 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 @Autonomous(group = "ascrim")
 //@Disabled
 public class autoFullRR extends LinearOpMode {
-    public Pose2d startPose = autoHardware.startPose;
-    autoHardware robot = new autoHardware(this);
+    public Pose2d startPose = autoHardware.startPose; // get the starting pose
+    autoHardware robot = new autoHardware(this); // initialize the robot class
 
     @Override
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
-        robot.initAuto(hardwareMap,this);
-        webcam.closeCameraDevice();
-        visionPortal.resumeStreaming();
+        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT)); // set the starting pose
+        robot.initAuto(hardwareMap,this); // initialize the robot
+        webcam.closeCameraDevice(); // close the webcam for opencv
+        visionPortal.resumeStreaming(); // resume the vision portal
+        visionPortal.setProcessorEnabled(aprilTagProcessor,true); // enable the april tag processor
         if (opModeIsActive()) {
             place2Cycle(drive);
-//            cycle(drive,spot);
-        }updatePose(drive);
+        }
+        updatePose(drive);
         visionPortal.close();
     }
 }

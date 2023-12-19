@@ -36,52 +36,52 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+//config can be enabled to change variables in real time through FTC Dash
 //@Config
 public class autoHardware extends HardwareConfig {
-    public static OpenCvWebcam webcam;
-    public static int blueRotate = -90;
-    public static int redRotate = 90;
+    public static OpenCvWebcam webcam; // the webcam public we are using
+    public static int blueRotate = -90; // final blue rotation
+    public static int redRotate = 90; // final red rotation
 
-
+    //default start position for RoadRunner
     public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
-    //  public static Pose2d startPose = getStartPose(StartPose.redRight);
-    public static int targetTag = 0;
-    public static int extensionBackdrop = 100;
-    public static Pose2d spot;
-    HardwareMap hardwareMap = null;
+    public static int targetTag = 0; // april tag target
+    public static int extensionBackdrop = 100; // how far the arm should extend to place on backdrop
+    public static Pose2d spot; // cycle position to be updated
+    HardwareMap hardwareMap = null; // first initialization of the hardware map
 
-    public static AutoRandom autonomousRandom = AutoRandom.mid;
-    public static AutoRandom autoRandomReliable;
-    public static VisionPortal visionPortal;
-    public static AprilTagProcessor aprilTagProcessor;
+    public static AutoRandom autonomousRandom = AutoRandom.mid; // default autonomous choice for spike mark
+    public static AutoRandom autoRandomReliable; // tracker for the AutoRandom enum
+    public static VisionPortal visionPortal; // vision portal for the webcam
+    public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
 
     public autoHardware(LinearOpMode opmode) {
         super(opmode);
-    }
+    } // constructor
 
     public void initAuto(HardwareMap ahwMap, LinearOpMode myOpMode) {
-        hardwareMap = ahwMap;
-        HardwareConfig.init(ahwMap);
-        aprilTagProcessor = new AprilTagProcessor.Builder()
-                .setDrawAxes(true)
-                .setDrawCubeProjection(false)
-                .setDrawTagOutline(true)
-                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
-                .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
+        hardwareMap = ahwMap; // hardware map initialization
+        HardwareConfig.init(ahwMap); // hardware config initialization
+        aprilTagProcessor = new AprilTagProcessor.Builder() // april tag processor initialization
+                .setDrawAxes(true) // draw axes on the april tag
+                .setDrawCubeProjection(false) // don't draw cube projection on the april tag
+                .setDrawTagOutline(true) // draw tag outline on the april tag
+                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11) // set the tag family to 36h11
+                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary()) // set the tag library to the center stage tag library
+                .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES) // set the output units to inches and degrees
                 .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
                 // ... these parameters are fx, fy, cx, cy.
                 .build();
-        VisionPortal.Builder builder = new VisionPortal.Builder();
-        builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
-        builder.addProcessor(aprilTagProcessor);
-        visionPortal = builder.build();
-        visionPortal.setProcessorEnabled(aprilTagProcessor, false);
+        VisionPortal.Builder builder = new VisionPortal.Builder(); // vision portal builder initialization
+        builder.setCamera(hardwareMap.get(WebcamName.class, cam1_N)); // set the camera to webcam 1
+        builder.addProcessor(aprilTagProcessor); // add the april tag processor to the vision portal
+        visionPortal = builder.build(); // build the vision portal
+        visionPortal.setProcessorEnabled(aprilTagProcessor, false); // disable the april tag processor
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
-        webcam.setPipeline(new OBJDetect2(StartPose.alliance));//!can switch pipelines here
-        FtcDashboard.getInstance().startCameraStream(webcam, 0);
+        webcam.setPipeline(new OBJDetect2(StartPose.alliance)); // set the webcam pipeline to the OBJDetect2 pipeline
+        FtcDashboard.getInstance().startCameraStream(webcam, 0); // start the camera stream on FTC Dash
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -93,13 +93,14 @@ public class autoHardware extends HardwareConfig {
             public void onError(int errorCode) {
             }
         });
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN);
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
         timer.reset();
         if (myOpMode.isStopRequested()) return;
-        myOpMode.waitForStart();
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
+        myOpMode.waitForStart(); // wait for the start button to be pressed
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor())); // set the lights to the blink pattern
     }
 
+    // method to get the cycle spot
     public static void getCycleSpot() {
         if (StartPose.alliance == Alliance.RED) {
             spot = new Pose2d(-50, -6, Math.toRadians(180));
@@ -108,6 +109,7 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
+    // method to pick up from the stack of pixels
     public static void pickFromSpot(MecanumDrive drive) {
         getCycleSpot();
         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -124,6 +126,7 @@ public class autoHardware extends HardwareConfig {
         closeClaw(claw2);
     }
 
+    // shifts left or right depending on the random
     public static void shiftAuto(MecanumDrive drive) {
         switch (autoRandomReliable) {
             case left:
@@ -135,6 +138,7 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
+    // method to get the start pose
     public static Pose2d getStartPose(Alliance alliance, StartSide side) {
         StartPose.alliance = alliance;
         StartPose.side = side;
@@ -157,7 +161,8 @@ public class autoHardware extends HardwareConfig {
         return new Pose2d(0, 0, 0);
     }
 
-    public static void navToBackdrop(MecanumDrive drive, boolean raiseArm) {
+    // method to go to the backdrop
+    public static void navToBackdrop_Place(MecanumDrive drive, boolean raiseArm) {
         calculateFlipPose(60, flipServo);
         if (raiseArm) {
             raiseArm(drive);
@@ -192,11 +197,13 @@ public class autoHardware extends HardwareConfig {
         ServoUtil.openClaw(claw2);
     }
 
+    // method to raise the arm with the potentiometer
     public static void raiseArm(MecanumDrive drive) {
         int potentBackTarget = 10;
         Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
     }
 
+    // drive and place first pixel
     public static void SpikeNav(MecanumDrive drive) {
         flipServoBase(flipServo);
         switch (autoHardware.autonomousRandom) {
@@ -306,10 +313,12 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
+    // method to update the pose
     public static void updatePose(MecanumDrive drive) {
         PoseStorage.currentPose = drive.getPoseEstimate();
     }
 
+    // method to use encoders to go to a point with encoder
     public static void encoderDrive(DcMotor motor, int position, int countsPerInch, double speed) {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);

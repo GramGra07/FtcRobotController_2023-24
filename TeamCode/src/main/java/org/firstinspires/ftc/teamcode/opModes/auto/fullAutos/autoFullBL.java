@@ -30,8 +30,8 @@ public class autoFullBL extends LinearOpMode {
         visionPortal.resumeStreaming();
         if (opModeIsActive()) {
             place2Cycle(drive);
-//            cycle(drive,spot);
-        }updatePose(drive);
+        }
+        updatePose(drive);
         visionPortal.close();
     }
 }
