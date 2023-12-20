@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneServ
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.updateStatus;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.Angle;
@@ -14,7 +15,6 @@ import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
-import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
@@ -26,7 +26,7 @@ public class Drivers {
     public static boolean fieldCentric;
 
     public static boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
-    public static boolean circleDownHigh = false,triangleDownHigh = false, planeReleased = true;
+    public static boolean circleDownHigh = false, triangleDownHigh = false, planeReleased = true;
 
     public static void bindDriverButtons(OpMode myOpMode, MecanumDrive drive) {
         //"Chase", "Camden", "Kian", "Grady", "Michael","Graden", "Delaney", "Child"
@@ -42,24 +42,27 @@ public class Drivers {
             if (myOpMode.gamepad1.right_bumper) {
                 slowModeIsOn = false;
                 IsBusy.isAutoInTeleop = true;
+                updateStatus("Auto-ing");
                 drive.update();
                 int poseX = 50, poseY = 50, turn = 135;
                 int quadrant = getQuadrant(drive.getPoseEstimate());
                 Pose2d redWing = new Pose2d(-poseX, poseY, Math.toRadians(turn));
                 Pose2d blueWing = new Pose2d(-poseX, -poseY, Math.toRadians(-turn));
-                Pose2d blueRiggingLeft = new Pose2d(-12, -36, Math.toRadians(0));
-                Pose2d redRiggingLeft = new Pose2d(-12, 36, Math.toRadians(0));
+                Pose2d blueRiggingInside = new Pose2d(-12, -36, Math.toRadians(0));
+                Pose2d redRiggingInside = new Pose2d(-12, 36, Math.toRadians(0));
                 Pose2d zeroZero = new Pose2d(0, 0, Math.toRadians(0));
                 if (StartPose.alliance == Alliance.RED) {
                     if (quadrant == 1) {
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToLinearHeading(redRiggingLeft, redRiggingLeft.getHeading())
+                                .splineToLinearHeading(zeroZero, Math.toRadians(180))
+                                .forward(30)
                                 .splineToLinearHeading(redWing, redWing.getHeading())
                                 .build());
                     }
                     if (quadrant == 2) {
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToSplineHeading(zeroZero, zeroZero.getHeading())
+                                .splineToSplineHeading(blueRiggingInside, Math.toRadians(180))
+                                .forward(30)
                                 .splineToLinearHeading(redWing, redWing.getHeading())
                                 .build());
                     }
@@ -71,13 +74,15 @@ public class Drivers {
                 } else {
                     if (quadrant == 1) {
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToLinearHeading(blueRiggingLeft, blueRiggingLeft.getHeading())
+                                .splineToLinearHeading(blueRiggingInside, Math.toRadians(180))
+                                .forward(30)
                                 .splineToLinearHeading(blueWing, blueWing.getHeading())
                                 .build());
                     }
                     if (quadrant == 2) {
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToSplineHeading(zeroZero, zeroZero.getHeading())
+                                .splineToSplineHeading(zeroZero, Math.toRadians(180))
+                                .forward(30)
                                 .splineToLinearHeading(blueWing, blueWing.getHeading())
                                 .build());
                     }
@@ -91,11 +96,13 @@ public class Drivers {
             if (myOpMode.gamepad1.dpad_up) {
                 slowModeIsOn = false;
                 IsBusy.isAutoInTeleop = true;
+                updateStatus("Auto-ing");
                 drive.turnAsync(Angle.normDelta(Math.toRadians(0) - drive.getPoseEstimate().getHeading()));
             }
             if (myOpMode.gamepad1.dpad_left) {
                 slowModeIsOn = false;
                 IsBusy.isAutoInTeleop = true;
+                updateStatus("Auto-ing");
                 if (StartPose.alliance == Alliance.RED) {
                     drive.turnAsync(Angle.normDelta(Math.toRadians(135) - drive.getPoseEstimate().getHeading()));
                 } else {
@@ -104,15 +111,17 @@ public class Drivers {
             }
             if (!drive.isBusy()) {
                 IsBusy.isAutoInTeleop = false;
+                updateStatus("Running");
             }
             if (myOpMode.gamepad1.cross) {
-                IsBusy.isAutoInTeleop = true;
+                IsBusy.isAutoInTeleop = false;
+                updateStatus("Running");
                 drive.breakFollowing();
             }
-            if (myOpMode.gamepad1.triangle && !triangleDownHigh && !planeReleased){
+            if (myOpMode.gamepad1.triangle && !triangleDownHigh && !planeReleased) {
                 ServoUtil.releaseAirplane(airplaneServo);
                 planeReleased = true;
-            }else if (myOpMode.gamepad1.triangle && !triangleDownHigh && planeReleased){
+            } else if (myOpMode.gamepad1.triangle && !triangleDownHigh && planeReleased) {
                 airplaneServo.setPosition(ServoUtil.setServo(0));
                 planeReleased = false;
             }

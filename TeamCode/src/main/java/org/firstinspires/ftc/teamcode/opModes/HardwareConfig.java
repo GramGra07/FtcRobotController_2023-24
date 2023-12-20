@@ -277,18 +277,22 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.addData("Drivers", currDriver + " " + currOther);
         getBatteryVoltage(vSensor);
         telemetry.addData("Voltage", "%.1f", currentVoltage);//shows current battery voltage
-        telemetry.addData("lowBattery", lowVoltage);
+        if (lowVoltage) {
+            telemetry.addData("", "We have a low battery");
+        }
         telemetry.addData("potentiometer", "%.1f", Sensors.getPotentVal(potentiometer));
         telemetry.addData("Color", LEDcolor);
-        telemetry.addData("reversed", reversed);
-        telemetry.addData("slowMode", slowModeIsOn);
+        if (reversed) {
+            telemetry.addData("reversed", "");
+        }
+        if (slowModeIsOn) {
+            telemetry.addData("slowMode", "");
+        }
         telemetry.addData("Extension", motorExtension.getCurrentPosition());
-//        telemetry.addData("Perpendicular",motorLift.getCurrentPosition());
-//        telemetry.addData("Parallel",motorRotation.getCurrentPosition());
         teleSpace();
-        telemetry.addData("x", "%.2f", drive.getPoseEstimate().getX());
-        telemetry.addData("y", "%.2f", drive.getPoseEstimate().getY());
-        telemetry.addData("heading", "%.2f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
+        telemetry.addData("x", "%.1f", drive.getPoseEstimate().getX());
+        telemetry.addData("y", "%.1f", drive.getPoseEstimate().getY());
+        telemetry.addData("heading", "%.1f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
         teleSpace();
         telemetry.addData("thisDistance (in)", "%.1f", thisDist);
         telemetry.addData("totalDistance (in)", "%.1f", DistanceStorage.totalDist);
