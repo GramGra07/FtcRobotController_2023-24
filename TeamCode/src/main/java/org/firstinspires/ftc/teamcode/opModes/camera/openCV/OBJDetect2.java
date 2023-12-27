@@ -36,7 +36,6 @@ public class OBJDetect2 extends OpenCvPipeline {
             scalarLow = new Scalar(0, 147, 0);
             scalarHigh = new Scalar(255, 255, 255);
         } else if (alliance == Alliance.BLUE) {
-            //todo change to blue
             scalarLow = new Scalar(0, 0, 141);
             scalarHigh = new Scalar(255, 255, 255);
         }
