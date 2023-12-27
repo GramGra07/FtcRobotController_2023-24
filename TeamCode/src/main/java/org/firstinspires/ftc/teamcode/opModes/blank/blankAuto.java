@@ -24,11 +24,9 @@ public class blankAuto extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
         robot.initAuto(hardwareMap,this);
-        webcam.closeCameraDevice();
-        visionPortal.resumeStreaming();
         if (opModeIsActive()) {
             PoseStorage.currentPose = drive.getPoseEstimate();
         }updatePose(drive);
-        visionPortal.close();
+        webcam.closeCameraDevice();
     }
 }

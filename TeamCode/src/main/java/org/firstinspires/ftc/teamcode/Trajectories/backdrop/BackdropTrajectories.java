@@ -17,6 +17,7 @@ public class BackdropTrajectories {
     public static int endAngle = 0;
 
     public static TrajectorySequence redShort(MecanumDrive drive) {
+        updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
                 .lineToLinearHeading(new Pose2d(54, -30, Math.toRadians(endAngle)))

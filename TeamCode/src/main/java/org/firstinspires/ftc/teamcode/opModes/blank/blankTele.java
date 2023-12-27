@@ -15,7 +15,6 @@ public class blankTele extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
         waitForStart();
-        HardwareConfig.timer.reset();
         while (opModeIsActive()) {//while the op mode is active
             robot.doBulk();
 
