@@ -70,7 +70,7 @@ public class ServoUtil {
 //        lastSetVal = servoFlipFullHalf;
     }
 
-    public static double hcalc = 84;
+    public static double hcalc = 68;
     public static void calculateFlipPose(int pose, Servo servo) {
         double theta = Sensors.getPotentVal(potentiometer);
         PastPotent.pastPotentVal = theta;

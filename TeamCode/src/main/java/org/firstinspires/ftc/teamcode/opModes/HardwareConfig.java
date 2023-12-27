@@ -225,8 +225,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
             frontLeftPower = (yControl * Math.abs(yControl) + xControl * Math.abs(xControl) - turn) / slowPower;
             backLeftPower = (yControl * Math.abs(yControl) - xControl * Math.abs(xControl) - turn) / slowPower;
         } else {
-            reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
-            reversed = reverse;
+//            reverse = myOpMode.gamepad1.touchpad_finger_1_x > 0.5;//0,1 left to right
+//            reversed = reverse;
             yControl = -myOpMode.gamepad1.left_stick_y;
             xControl = myOpMode.gamepad1.left_stick_x;
             if (reverse) {

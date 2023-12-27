@@ -26,11 +26,9 @@ public class auto1BL extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap,this);
-        webcam.closeCameraDevice();
-        visionPortal.resumeStreaming();
         if (opModeIsActive()) {
             place1Pixel(drive);
         }updatePose(drive);
-        visionPortal.close();
+        webcam.closeCameraDevice();
     }
 }

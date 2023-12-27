@@ -62,21 +62,21 @@ public class autoHardware extends HardwareConfig {
     public void initAuto(HardwareMap ahwMap, LinearOpMode myOpMode) {
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap); // hardware config initialization
-        aprilTagProcessor = new AprilTagProcessor.Builder() // april tag processor initialization
-                .setDrawAxes(true) // draw axes on the april tag
-                .setDrawCubeProjection(false) // don't draw cube projection on the april tag
-                .setDrawTagOutline(true) // draw tag outline on the april tag
-                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11) // set the tag family to 36h11
-                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary()) // set the tag library to the center stage tag library
-                .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES) // set the output units to inches and degrees
-                .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
-                // ... these parameters are fx, fy, cx, cy.
-                .build();
-        VisionPortal.Builder builder = new VisionPortal.Builder(); // vision portal builder initialization
-        builder.setCamera(hardwareMap.get(WebcamName.class, cam1_N)); // set the camera to webcam 1
-        builder.addProcessor(aprilTagProcessor); // add the april tag processor to the vision portal
-        visionPortal = builder.build(); // build the vision portal
-        visionPortal.setProcessorEnabled(aprilTagProcessor, false); // disable the april tag processor
+//        aprilTagProcessor = new AprilTagProcessor.Builder() // april tag processor initialization
+//                .setDrawAxes(true) // draw axes on the april tag
+//                .setDrawCubeProjection(false) // don't draw cube projection on the april tag
+//                .setDrawTagOutline(true) // draw tag outline on the april tag
+//                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11) // set the tag family to 36h11
+//                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary()) // set the tag library to the center stage tag library
+//                .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES) // set the output units to inches and degrees
+//                .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
+//                // ... these parameters are fx, fy, cx, cy.
+//                .build();
+//        VisionPortal.Builder builder = new VisionPortal.Builder(); // vision portal builder initialization
+//        builder.setCamera(hardwareMap.get(WebcamName.class, cam1_N)); // set the camera to webcam 1
+//        builder.addProcessor(aprilTagProcessor); // add the april tag processor to the vision portal
+//        visionPortal = builder.build(); // build the vision portal
+//        visionPortal.setProcessorEnabled(aprilTagProcessor, false); // disable the april tag processor
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);

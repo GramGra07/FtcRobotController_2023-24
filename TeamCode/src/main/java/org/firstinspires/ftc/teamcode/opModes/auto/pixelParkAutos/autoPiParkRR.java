@@ -26,11 +26,9 @@ public class autoPiParkRR extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
         robot.initAuto(hardwareMap,this);
-        webcam.closeCameraDevice();
-        visionPortal.resumeStreaming();
         if (opModeIsActive()) {
             pixelPark(drive);
         }updatePose(drive);
-        visionPortal.close();
+        webcam.closeCameraDevice();
     }
 }
