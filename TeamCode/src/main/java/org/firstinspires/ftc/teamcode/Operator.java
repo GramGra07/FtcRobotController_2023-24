@@ -35,28 +35,6 @@ public class Operator extends Drivers {
 //            myOpMode.gamepad2.runRumbleEffect(cRE);
 //        }
         Blink.selectLights(myOpMode);
-        if (currOther == otherControls[0]) {//Chase
-            if (myOpMode.gamepad2.right_bumper) {
-                openClaw(claw1);
-            }
-            if (myOpMode.gamepad2.left_bumper) {
-                closeClaw(claw1);
-            }
-            if (myOpMode.gamepad2.dpad_down) {
-                openClaw(claw2);
-            }
-            if (myOpMode.gamepad2.dpad_up) {
-                closeClaw(claw2);
-            }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_x, -liftMax, liftMax);
-            extensionPower = Range.clip(myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
-            if (myOpMode.gamepad2.right_stick_y > 0) {
-                flipServoFull(flipServo);
-            } else if (myOpMode.gamepad2.right_stick_y < 0) {
-                flipServoBase(flipServo);
-            }
-            rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
-        }
         if (currOther == otherControls[1]) {//Camden
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
                 if (myOpMode.gamepad2.right_bumper) {
@@ -110,7 +88,60 @@ public class Operator extends Drivers {
                 liftPower = 0;
             }
         }
-        if (currOther == otherControls[2]) {//Kian
+        if (currOther == otherControls[3]) {//Grady
+//            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
+            if (myOpMode.gamepad2.right_bumper) {
+                closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper) {
+                closeClaw(claw2);
+            }
+            if (myOpMode.gamepad2.right_trigger > 0) {
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_trigger > 0) {
+                openClaw(claw2);
+            }
+//            }else{
+//                if (myOpMode.gamepad2.right_bumper) {
+//                    closeClaw(claw2);
+//                }
+//                if (myOpMode.gamepad2.left_bumper) {
+//                    closeClaw(claw1);
+//                }
+//                if (myOpMode.gamepad2.right_trigger > 0) {
+//                    openClaw(claw2);
+//                }
+//                if (myOpMode.gamepad2.left_trigger > 0) {
+//                    openClaw(claw1);
+//                }
+//            }
+
+            extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
+            if (myOpMode.gamepad2.dpad_down) {
+                servoFlipVal -= 1;
+            } else if (myOpMode.gamepad2.dpad_up) {
+                servoFlipVal += 1;
+            } else if (myOpMode.gamepad2.dpad_left) {
+                calculateFlipPose(30, flipServo);
+            } else if (myOpMode.gamepad2.dpad_right) {
+                calculateFlipPose(0, flipServo);
+            }
+            if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
+                calculateFlipPose(lastSetVal, flipServo);
+            }
+            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            if (myOpMode.gamepad2.cross){
+                liftPower = -1;
+            }else if (myOpMode.gamepad2.triangle){
+                liftPower = 1;
+            }else if (myOpMode.gamepad2.left_stick_y!=0){
+                liftPower = -extensionPower;
+            }else{
+                liftPower = 0;
+            }
+        }
+        if (currOther == otherControls[0]) {//Chase
             if (myOpMode.gamepad2.right_bumper) {
                 openClaw(claw1);
             }
@@ -132,7 +163,7 @@ public class Operator extends Drivers {
             }
             rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
-        if (currOther == otherControls[3]) {//Grady
+        if (currOther == otherControls[2]) {//Kian
             if (myOpMode.gamepad2.right_bumper) {
                 openClaw(claw1);
             }

@@ -137,6 +137,110 @@ public class Drivers {
                 liftPower = 0;
             }
         }
+        if (currDriver == driverControls[3]) {//Grady
+            fieldCentric = false;
+            //slowmode
+            if (myOpMode.gamepad1.circle && !circleDownHigh && !slowModeIsOn) {
+                slowModeIsOn = true;
+            } else if (myOpMode.gamepad1.circle && !circleDownHigh && slowModeIsOn) {
+                slowModeIsOn = false;
+            }
+            circleDownHigh = myOpMode.gamepad1.circle;
+            if (myOpMode.gamepad1.right_bumper) {
+                slowModeIsOn = false;
+                IsBusy.isAutoInTeleop = true;
+                updateStatus("Auto-ing");
+                drive.update();
+                int poseX = 50, poseY = 50, turn = 135;
+                int quadrant = getQuadrant(drive.getPoseEstimate());
+                Pose2d redWing = new Pose2d(-poseX, poseY, Math.toRadians(turn));
+                Pose2d blueWing = new Pose2d(-poseX, -poseY, Math.toRadians(-turn));
+                Pose2d blueRiggingInside = new Pose2d(-12, -36, Math.toRadians(0));
+                Pose2d redRiggingInside = new Pose2d(-12, 36, Math.toRadians(0));
+                Pose2d zeroZero = new Pose2d(0, 0, Math.toRadians(0));
+                if (StartPose.alliance == Alliance.RED) {
+                    if (quadrant == 1) {
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .splineToLinearHeading(zeroZero, Math.toRadians(180))
+                                .forward(30)
+                                .splineToLinearHeading(redWing, redWing.getHeading())
+                                .build());
+                    }
+                    if (quadrant == 2) {
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .splineToSplineHeading(blueRiggingInside, Math.toRadians(180))
+                                .forward(30)
+                                .splineToLinearHeading(redWing, redWing.getHeading())
+                                .build());
+                    }
+                    if ((quadrant == 3) || (quadrant == 4)) {
+                        drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
+                                .splineToLinearHeading(redWing, redWing.getHeading())
+                                .build());
+                    }
+                } else {
+                    if (quadrant == 1) {
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .splineToLinearHeading(blueRiggingInside, Math.toRadians(180))
+                                .forward(30)
+                                .splineToLinearHeading(blueWing, blueWing.getHeading())
+                                .build());
+                    }
+                    if (quadrant == 2) {
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .splineToSplineHeading(zeroZero, Math.toRadians(180))
+                                .forward(30)
+                                .splineToLinearHeading(blueWing, blueWing.getHeading())
+                                .build());
+                    }
+                    if ((quadrant == 4) || (quadrant == 3)) {
+                        drive.followTrajectoryAsync(drive.trajectoryBuilder(drive.getPoseEstimate())
+                                .splineToLinearHeading(blueWing, blueWing.getHeading())
+                                .build());
+                    }
+                }
+            }
+            if (myOpMode.gamepad1.dpad_up) {
+                slowModeIsOn = false;
+                IsBusy.isAutoInTeleop = true;
+                updateStatus("Auto-ing");
+                drive.turnAsync(Angle.normDelta(Math.toRadians(0) - drive.getPoseEstimate().getHeading()));
+            }
+            if (myOpMode.gamepad1.dpad_right) {
+                slowModeIsOn = false;
+                IsBusy.isAutoInTeleop = true;
+                updateStatus("Auto-ing");
+                if (StartPose.alliance == Alliance.RED) {
+                    drive.turnAsync(Angle.normDelta(Math.toRadians(135) - drive.getPoseEstimate().getHeading()));
+                } else {
+                    drive.turnAsync(Angle.normDelta(Math.toRadians(-135) - drive.getPoseEstimate().getHeading()));
+                }
+            }
+            if (!drive.isBusy()) {
+                IsBusy.isAutoInTeleop = false;
+                updateStatus("Running");
+            }
+            if (myOpMode.gamepad1.cross) {
+                IsBusy.isAutoInTeleop = false;
+                updateStatus("Running");
+                drive.breakFollowing();
+            }
+            if (myOpMode.gamepad1.triangle && !triangleDownHigh && !planeReleased) {
+                ServoUtil.releaseAirplane(airplaneServo);
+                planeReleased = true;
+            } else if (myOpMode.gamepad1.triangle && !triangleDownHigh && planeReleased) {
+                airplaneServo.setPosition(ServoUtil.setServo(0));
+                planeReleased = false;
+            }
+            triangleDownHigh = myOpMode.gamepad1.triangle;
+            if (myOpMode.gamepad1.right_trigger>0){
+                liftPower = liftMax;
+            }else if (myOpMode.gamepad1.left_trigger>0){
+                liftPower = -liftMax;
+            }else{
+                liftPower = 0;
+            }
+        }
         if (currDriver == driverControls[1]) {//Camden
             fieldCentric = false;
             //no slow mode
@@ -150,9 +254,6 @@ public class Drivers {
                 slowModeIsOn = false;
             }
             circleDownHigh = myOpMode.gamepad1.dpad_down;
-        }
-        if (currDriver == driverControls[3]) {//Grady
-            fieldCentric = true;
         }
         if (currDriver == driverControls[4]) {//Michael
             fieldCentric = false;
