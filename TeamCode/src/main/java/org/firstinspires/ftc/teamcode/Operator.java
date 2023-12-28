@@ -65,11 +65,7 @@ public class Operator extends Drivers {
 //            }
 
             extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
-            if (myOpMode.gamepad2.dpad_down) {
-                servoFlipVal -= 1;
-            } else if (myOpMode.gamepad2.dpad_up) {
-                servoFlipVal += 1;
-            } else if (myOpMode.gamepad2.dpad_left) {
+            if (myOpMode.gamepad2.dpad_left) {
                 calculateFlipPose(30, flipServo);
             } else if (myOpMode.gamepad2.dpad_right) {
                 calculateFlipPose(0, flipServo);
@@ -78,29 +74,20 @@ public class Operator extends Drivers {
                 calculateFlipPose(lastSetVal, flipServo);
             }
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
-            if (myOpMode.gamepad2.cross){
-                liftPower = -1;
-            }else if (myOpMode.gamepad2.triangle){
-                liftPower = 1;
-            }else if (myOpMode.gamepad2.left_stick_y!=0){
-                liftPower = -extensionPower;
-            }else{
-                liftPower = 0;
-            }
         }
         if (currOther == otherControls[3]) {//Grady
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
             if (myOpMode.gamepad2.right_bumper) {
-                closeClaw(claw1);
-            }
-            if (myOpMode.gamepad2.left_bumper) {
-                closeClaw(claw2);
-            }
-            if (myOpMode.gamepad2.right_trigger > 0) {
                 openClaw(claw1);
             }
-            if (myOpMode.gamepad2.left_trigger > 0) {
+            if (myOpMode.gamepad2.left_bumper) {
                 openClaw(claw2);
+            }
+            if (myOpMode.gamepad2.right_trigger > 0) {
+                closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_trigger > 0) {
+                closeClaw(claw2);
             }
 //            }else{
 //                if (myOpMode.gamepad2.right_bumper) {
@@ -118,28 +105,15 @@ public class Operator extends Drivers {
 //            }
 
             extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
-            if (myOpMode.gamepad2.dpad_down) {
-                servoFlipVal -= 1;
-            } else if (myOpMode.gamepad2.dpad_up) {
-                servoFlipVal += 1;
-            } else if (myOpMode.gamepad2.dpad_left) {
-                calculateFlipPose(30, flipServo);
-            } else if (myOpMode.gamepad2.dpad_right) {
+            if (myOpMode.gamepad2.dpad_left) {
                 calculateFlipPose(0, flipServo);
+            } else if (myOpMode.gamepad2.dpad_right) {
+                calculateFlipPose(30, flipServo);
             }
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);
             }
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
-            if (myOpMode.gamepad2.cross){
-                liftPower = -1;
-            }else if (myOpMode.gamepad2.triangle){
-                liftPower = 1;
-            }else if (myOpMode.gamepad2.left_stick_y!=0){
-                liftPower = -extensionPower;
-            }else{
-                liftPower = 0;
-            }
         }
         if (currOther == otherControls[0]) {//Chase
             if (myOpMode.gamepad2.right_bumper) {
