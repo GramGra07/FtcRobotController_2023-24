@@ -1,3 +1,7 @@
+5.0.0 December 27th, 2023
+Added three new Autonomous Modes for competition use
+Added all of the preselect teleOp modes
+
 4.3.0 November 30th, 2023
 Added new autonomous in teleOp functionality with async trajectories
 

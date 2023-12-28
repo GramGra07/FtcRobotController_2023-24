@@ -95,7 +95,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             0.1 // Derivative gain
     );
 
-    public static final String currentVersion = "4.3.0";
+    public static final String currentVersion = "5.0.0";
 
     //init
     public static void init(HardwareMap ahwMap) {

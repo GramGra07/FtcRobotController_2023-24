@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Limits.liftMax;
+import static org.firstinspires.ftc.teamcode.Limits.liftMin;
 import static org.firstinspires.ftc.teamcode.MathFunctions.getQuadrant;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.updateStatus;
 
@@ -99,7 +102,7 @@ public class Drivers {
                 updateStatus("Auto-ing");
                 drive.turnAsync(Angle.normDelta(Math.toRadians(0) - drive.getPoseEstimate().getHeading()));
             }
-            if (myOpMode.gamepad1.dpad_left) {
+            if (myOpMode.gamepad1.dpad_right) {
                 slowModeIsOn = false;
                 IsBusy.isAutoInTeleop = true;
                 updateStatus("Auto-ing");
@@ -126,6 +129,13 @@ public class Drivers {
                 planeReleased = false;
             }
             triangleDownHigh = myOpMode.gamepad1.triangle;
+            if (myOpMode.gamepad1.right_trigger>0){
+                liftPower = liftMax;
+            }else if (myOpMode.gamepad1.left_trigger>0){
+                liftPower = -liftMax;
+            }else{
+                liftPower = 0;
+            }
         }
         if (currDriver == driverControls[1]) {//Camden
             fieldCentric = false;
