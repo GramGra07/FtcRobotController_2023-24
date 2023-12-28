@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
-@Autonomous(group = "cscrim")
+@Autonomous(group = "cscrim", preselectTeleOp="teleOp")
 @Disabled
 public class autoFullRR extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose; // get the starting pose
