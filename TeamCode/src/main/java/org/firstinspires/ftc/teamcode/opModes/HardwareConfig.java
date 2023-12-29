@@ -53,7 +53,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean useFileWriter = variable.useFileWriter;
     public static boolean multipleDrivers = variable.multipleDrivers;
     public static String statusVal = "OFFLINE";
-    public static Servo claw1 = null, claw2 = null, flipServo = null,airplaneServo = null;
+    public static Servo claw1 = null, claw2 = null, flipServo = null,airplaneServo = null, airplaneRotationServo = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorExtension = null, motorRotation = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
@@ -143,6 +143,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
         airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
+        airplaneRotationServo = ahwMap.get(Servo.class, "airplaneRotation");
         //encoders
         //reversals
         setDirectionR(motorBackLeft);

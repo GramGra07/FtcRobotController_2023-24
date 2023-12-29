@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.DriverIndex.dIndex;
+import static org.firstinspires.ftc.teamcode.DriverIndex.oIndex;
 import static org.firstinspires.ftc.teamcode.Limits.liftMax;
 import static org.firstinspires.ftc.teamcode.Limits.liftMin;
 import static org.firstinspires.ftc.teamcode.MathFunctions.getQuadrant;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneRotationServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
@@ -18,13 +21,13 @@ import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 
 public class Drivers {
     public static final String[] driverControls = {"Chase", "Camden", "Kian", "Grady", "Michael", "Graden", "Delaney", "Child"}, otherControls = driverControls;
     public static final int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
-    public static int dIndex = baseDriver, oIndex = baseOther;//list integer of driver and other controls
     public static String currDriver = driverControls[dIndex], currOther = otherControls[oIndex];//list string of driver and other controls
     public static boolean fieldCentric;
 
@@ -135,6 +138,11 @@ public class Drivers {
                 liftPower = -liftMax;
             }else{
                 liftPower = 0;
+            }
+            if (myOpMode.gamepad1.dpad_down){
+                ServoUtil.raiseAirplane(airplaneRotationServo);
+            }else if (myOpMode.gamepad1.dpad_left){
+                airplaneRotationServo.setPosition(ServoUtil.setServo(90));
             }
         }
         if (currDriver == driverControls[3]) {//Grady

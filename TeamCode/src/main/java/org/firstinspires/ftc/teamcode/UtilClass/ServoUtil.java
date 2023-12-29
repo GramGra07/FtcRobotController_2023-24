@@ -37,8 +37,8 @@ public class ServoUtil {
         }
     }
 
-    public static int closeClaw1 = 155;
-    public static int closeClaw2 = 45;
+    public static int closeClaw1 = 170;
+    public static int closeClaw2 = 15;
 
     public static void closeClaw(Servo servo) {
         if (servo == HardwareConfig.claw1) {
@@ -84,5 +84,9 @@ public class ServoUtil {
     public static int releaseAirplane = 30;
     public static void releaseAirplane(Servo servo){
         servo.setPosition(setServo(releaseAirplane));
+    }
+    public static int raiseAirplaneVal = 40;
+    public static void raiseAirplane(Servo servo){
+        servo.setPosition(setServo(raiseAirplaneVal));
     }
 }

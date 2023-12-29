@@ -10,7 +10,7 @@ Encoder (will only be different if a different encoder is in the same slot as a 
 2 - same
 3 - same
 Servo
-0 - Servo:airplaneServo
+0 - 
 1 - Blinkin Driver:blinkin
 2 -
 3 -
@@ -50,8 +50,8 @@ Servo
 0 - claw1
 1 - claw2
 2 - flipServo
-3 -
-4 -
+3 - airplaneRotation
+4 - airplaneServo
 5 -
 Digital
 0 -
