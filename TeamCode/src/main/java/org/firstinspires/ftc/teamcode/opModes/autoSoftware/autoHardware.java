@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -11,6 +12,7 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -95,6 +97,9 @@ public class autoHardware extends HardwareConfig {
         });
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
         timer.reset();
+//        ServoUtil.calculateFlipPose(60,flipServo);
+        ServoUtil.closeClaw(claw1);
+        ServoUtil.closeClaw(claw2);
         if (myOpMode.isStopRequested()) return;
         myOpMode.waitForStart(); // wait for the start button to be pressed
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor())); // set the lights to the blink pattern
@@ -165,7 +170,7 @@ public class autoHardware extends HardwareConfig {
     public static void navToBackdrop_Place(MecanumDrive drive, boolean raiseArm) {
         calculateFlipPose(60, flipServo);
         if (raiseArm) {
-            raiseArm(drive);
+            raiseArm();
         }
 //        if ((StartPose.alliance == Alliance.RED && StartPose.side == StartSide.RIGHT) || (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.LEFT)) {
 //            raiseArm(drive);
@@ -195,17 +200,19 @@ public class autoHardware extends HardwareConfig {
         shiftAuto(drive);
         ServoUtil.openClaw(claw1);
         ServoUtil.openClaw(claw2);
+        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .back(5)
+                .build());
     }
 
     // method to raise the arm with the potentiometer
-    public static void raiseArm(MecanumDrive drive) {
-        int potentBackTarget = 10;
+    public static void raiseArm() {
+        int potentBackTarget = 40;
         Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
     }
 
     // drive and place first pixel
     public static void SpikeNav(MecanumDrive drive) {
-        flipServoBase(flipServo);
         switch (autoHardware.autonomousRandom) {
             case left:
                 Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
@@ -229,7 +236,10 @@ public class autoHardware extends HardwareConfig {
                                 .addDisplacementMarker(() -> {
                                     ServoUtil.openClaw(HardwareConfig.claw2);
                                 })
-                                .back(1)
+                                .addDisplacementMarker(()->{
+                                    ServoUtil.calculateFlipPose(30,flipServo);
+                                })
+                                .strafeLeft(10)
                                 .build()
                         );
                     }
@@ -272,7 +282,7 @@ public class autoHardware extends HardwareConfig {
                     }
                 } else {
                     drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                            .forward(24)
+                            .forward(26)
                             .addDisplacementMarker(() -> {
                                 ServoUtil.openClaw(HardwareConfig.claw2);
                             })

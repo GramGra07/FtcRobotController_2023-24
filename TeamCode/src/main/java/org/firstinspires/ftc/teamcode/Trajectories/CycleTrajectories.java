@@ -24,7 +24,7 @@ public class CycleTrajectories {
                 .lineToLinearHeading(new Pose2d(36, spot.getY(), Math.toRadians(-90)))
                 .lineToLinearHeading(startPose)
                 .addDisplacementMarker(() -> {
-                    raiseArm(drive);
+                    raiseArm();
                 })
                 .build();
     }

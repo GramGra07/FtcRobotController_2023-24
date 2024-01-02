@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.p
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 public class autoPatterns {
     // contains different auto patterns for different tasks
     public static void place1Pixel(MecanumDrive drive) {
-        ServoUtil.calculateFlipPose(60, flipServo);
+        ServoUtil.calculateFlipPose(0,flipServo);
         SpikeNav(drive);
     }
 

@@ -29,7 +29,7 @@ public class BackdropTrajectories {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineTo(new Vector2d(-36, -12))
                 .lineTo(new Vector2d(36, -12))
-                .addDisplacementMarker(() -> raiseArm(drive))
+                .addDisplacementMarker(() -> raiseArm())
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
                 .splineToLinearHeading(new Pose2d(56, -36, Math.toRadians(endAngle)), Math.toRadians(endAngle))
                 .build();
@@ -39,7 +39,7 @@ public class BackdropTrajectories {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
-                .lineToLinearHeading(new Pose2d(54, 36, Math.toRadians(endAngle)))
+                .lineToLinearHeading(new Pose2d(50, 28, Math.toRadians(endAngle)))
                 .build();
     }
 
@@ -48,7 +48,7 @@ public class BackdropTrajectories {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineTo(new Vector2d(-36, 12))
                 .lineTo(new Vector2d(36, 12))
-                .addDisplacementMarker(() -> raiseArm(drive))
+                .addDisplacementMarker(() -> raiseArm())
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
                 .splineToLinearHeading(new Pose2d(54, 36, Math.toRadians(endAngle)), Math.toRadians(endAngle))
                 .build();
