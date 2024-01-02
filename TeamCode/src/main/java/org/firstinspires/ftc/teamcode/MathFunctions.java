@@ -27,15 +27,15 @@ public class MathFunctions {
         int x = (int)pose.getX();
         int y = (int)pose.getY();
         if (x == 0){
-            x+=0.1;
+            x+=0.1; // compensates for divide by 0 error
         }
         if (y == 0){
-            y+=0.1;
+            y+=0.1; // compensates for divide by 0 error
         }
-        double xSign = (double) x /Math.abs(x);
-        double ySign = (double) y /Math.abs(y);
-        boolean xIsPositive = (xSign == 1);
-        boolean yIsPositive = (ySign == 1);
+        double xSign = (double) x /Math.abs(x); // gets sign of x
+        double ySign = (double) y /Math.abs(y); // gets sign of y
+        boolean xIsPositive = (xSign == 1); // checks if x is positive
+        boolean yIsPositive = (ySign == 1); // checks if y is positive
         if(xIsPositive && !yIsPositive) {
             return 1;
         } else if(xIsPositive && yIsPositive) {
