@@ -37,14 +37,16 @@ public class Blink extends HardwareConfig {
     };
 
     public static void setLights(String color, boolean freq) {
-        if (color != null) {
-            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(color));
-            LEDcolor = color;
-        }
-        if (color == null && !freq)
-            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
-        if (color == null && freq)
-            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColorFreq()));
+        LEDcolor = "HOT_PINK";
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK);
+//        if (color != null) {
+//            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(color));
+//            LEDcolor = color;
+//        }
+//        if (color == null && !freq)
+//            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor()));
+//        if (color == null && freq)
+//            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColorFreq()));
     }
 
     public void greenRed() {

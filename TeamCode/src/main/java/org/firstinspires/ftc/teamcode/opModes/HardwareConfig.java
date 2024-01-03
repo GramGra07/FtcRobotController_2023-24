@@ -171,7 +171,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         Sensors.ledIND(green2, red2, true);
         Sensors.ledIND(green3, red3, true);
         Sensors.ledIND(green4, red4, true);
-        Blink.setLights(LEDcolor, true);
+        Blink.setLights("HOT_PINK", true);
         telemetry.addData("Status", "Initialized");
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("Version", currentVersion);

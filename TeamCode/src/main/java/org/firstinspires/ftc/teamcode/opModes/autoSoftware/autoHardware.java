@@ -102,7 +102,8 @@ public class autoHardware extends HardwareConfig {
         ServoUtil.closeClaw(claw2);
         if (myOpMode.isStopRequested()) return;
         myOpMode.waitForStart(); // wait for the start button to be pressed
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.valueOf(Blink.getColor())); // set the lights to the blink pattern
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
+        LEDcolor = "HOT_PINK";
     }
 
     // method to get the cycle spot
