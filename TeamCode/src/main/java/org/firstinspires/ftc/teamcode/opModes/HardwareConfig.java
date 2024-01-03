@@ -12,6 +12,7 @@ import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.lowVoltage;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.setUpFile;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.writeToFile;
+import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionF;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionR;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.zeroPowerBrake;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
@@ -28,6 +29,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -147,6 +149,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         //encoders
         //reversals
         setDirectionR(motorBackLeft);
+        setDirectionR(motorRotation);
         setDirectionR(motorLift);
         //set all to brake when set 0 power
         zeroPowerBrake(motorBackRight);

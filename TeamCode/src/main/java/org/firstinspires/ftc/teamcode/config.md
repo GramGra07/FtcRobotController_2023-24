@@ -28,7 +28,7 @@ I2C
 3 -
 Analog
 0 - potent
-1 - potent
+1 - 
 2 -
 3 -
 
@@ -40,12 +40,7 @@ Motor
 0 - slideMotor
 1 - flipperMotor
 2 - lift
-3 -
-Encoder
-0 - same
-1 - parallelEncoder
-2 - perpendicularEncoder
-3 -
+3 - 
 Servo
 0 - claw1
 1 - claw2
