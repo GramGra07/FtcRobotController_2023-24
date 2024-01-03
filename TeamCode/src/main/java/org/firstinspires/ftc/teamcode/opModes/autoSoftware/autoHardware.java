@@ -199,16 +199,17 @@ public class autoHardware extends HardwareConfig {
                 break;
         }
         shiftAuto(drive);
+        ServoUtil.calculateFlipPose(25,flipServo);
         ServoUtil.openClaw(claw1);
         ServoUtil.openClaw(claw2);
         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .back(5)
+                .back(8)
                 .build());
     }
 
     // method to raise the arm with the potentiometer
     public static void raiseArm() {
-        int potentBackTarget = 40;
+        int potentBackTarget = 38;
         Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
     }
 
@@ -216,9 +217,6 @@ public class autoHardware extends HardwareConfig {
     public static void SpikeNav(MecanumDrive drive) {
         switch (autoHardware.autonomousRandom) {
             case left:
-                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
-                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
                     if (StartPose.alliance == Alliance.RED) {
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -258,9 +256,6 @@ public class autoHardware extends HardwareConfig {
                 autoHardware.autoRandomReliable = AutoRandom.left;
                 break;
             case mid:
-                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
-                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                 if (StartPose.side == StartSide.LEFT) {
                     if (StartPose.alliance == Alliance.RED) {
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -283,7 +278,7 @@ public class autoHardware extends HardwareConfig {
                     }
                 } else {
                     drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                            .forward(26)
+                            .forward(24)
                             .addDisplacementMarker(() -> {
                                 ServoUtil.openClaw(HardwareConfig.claw2);
                             })
@@ -294,14 +289,11 @@ public class autoHardware extends HardwareConfig {
                 autoHardware.autoRandomReliable = AutoRandom.mid;
                 break;
             case right:
-                Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
-                Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
                 if (StartPose.side == StartSide.LEFT) {
                     drive.followTrajectorySequence(
                             drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                     .forward(22)
-                                    .turn(Math.toRadians(-45))
+                                    .turn(Math.toRadians(-60))
                                     .addDisplacementMarker(() -> {
                                         ServoUtil.openClaw(HardwareConfig.claw2);
                                     })

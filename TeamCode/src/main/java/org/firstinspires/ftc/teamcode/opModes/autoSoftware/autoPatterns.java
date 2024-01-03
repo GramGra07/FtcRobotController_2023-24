@@ -38,7 +38,7 @@ public class autoPatterns {
                 drive.followTrajectorySequence(endPose.goToEndPose(endPose.endPoseRightRed, drive));
                 break;
             case BLUE:
-                drive.followTrajectorySequence(endPose.goToEndPose(endPose.endPoseLeftBlue, drive));
+                drive.followTrajectorySequence(endPose.goToEndPose(endPose.endPoseRightBlue, drive));
                 break;
         }
     }

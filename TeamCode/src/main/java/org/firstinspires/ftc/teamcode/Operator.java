@@ -24,6 +24,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
+import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
@@ -44,9 +45,11 @@ public class Operator extends Drivers {
                     closeClaw(claw2);
                 }
                 if (myOpMode.gamepad2.right_trigger > 0) {
+//                    ServoUtil.calculateFlipPose(25,flipServo);
                     openClaw(claw1);
                 }
                 if (myOpMode.gamepad2.left_trigger > 0) {
+//                    ServoUtil.calculateFlipPose(25,flipServo);
                     openClaw(claw2);
                 }
 //            }else{
@@ -69,6 +72,9 @@ public class Operator extends Drivers {
                 calculateFlipPose(30, flipServo);
             } else if (myOpMode.gamepad2.dpad_right) {
                 calculateFlipPose(0, flipServo);
+            }
+            if (myOpMode.gamepad2.dpad_up){
+                calculateFlipPose(25,flipServo);
             }
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);

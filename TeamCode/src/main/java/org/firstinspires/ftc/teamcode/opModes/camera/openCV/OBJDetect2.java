@@ -4,6 +4,8 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.a
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
+import org.firstinspires.ftc.teamcode.Sensors;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
@@ -36,7 +38,7 @@ public class OBJDetect2 extends OpenCvPipeline {
             scalarLow = new Scalar(0, 147, 0);
             scalarHigh = new Scalar(255, 255, 255);
         } else if (alliance == Alliance.BLUE) {
-            scalarLow = new Scalar(0, 0, 141);
+            scalarLow = new Scalar(0, 0, 130);
             scalarHigh = new Scalar(255, 255, 255);
         }
         Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
@@ -55,6 +57,10 @@ public class OBJDetect2 extends OpenCvPipeline {
                     Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
                     Imgproc.putText(input, "right", new Point(pointsX[2], pointsY[2]), 0, 1, new Scalar(0, 255, 0));
                     autonomousRandom = AutoRandom.right;
+                    Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
+                    Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
+                    Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
+                    Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
                     current = 1;
                 }
             }
@@ -66,6 +72,10 @@ public class OBJDetect2 extends OpenCvPipeline {
                         Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
                         Imgproc.putText(input, "middle", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(0, 255, 0));
                         autonomousRandom = AutoRandom.mid;
+                        Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
+                        Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
+                        Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
+                        Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, true);
                         current = 1;
                     }
                 }
@@ -74,6 +84,10 @@ public class OBJDetect2 extends OpenCvPipeline {
         if (current ==0){
             Imgproc.putText(input, "left", new Point(input.width() / 2, 50), 0, 1, new Scalar(0, 255, 0));
             autonomousRandom = AutoRandom.left;
+            Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
+            Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
+            Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
+            Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, false);
         }
         current = 0;
         ycrcbMat.release();
