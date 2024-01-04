@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Trajectories.backdrop;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autoRandomReliable;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.raiseArm;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
@@ -8,6 +10,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
+import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
@@ -39,7 +42,13 @@ public class BackdropTrajectories {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
-                .lineToLinearHeading(new Pose2d(46, 28, Math.toRadians(endAngle)))
+                .lineToLinearHeading(new Pose2d(46, 34, Math.toRadians(endAngle)))
+//                .addDisplacementMarker(()->{
+//                    if (autoRandomReliable == AutoRandom.left){
+////                        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).strafeRight(9).build());
+//                    }
+//                })
+//                .back(1)
                 .build();
     }
 

@@ -45,8 +45,8 @@ Servo
 0 - claw1
 1 - claw2
 2 - flipServo
-3 - airplaneRotation
-4 - airplaneServo
+3 - airplaneServo
+4 - airplaneRotation
 5 -
 Digital
 0 -

@@ -3,8 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
+import static java.lang.Thread.sleep;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -12,18 +11,14 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
-import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
@@ -31,7 +26,6 @@ import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OBJDetect2;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -95,11 +89,16 @@ public class autoHardware extends HardwareConfig {
             public void onError(int errorCode) {
             }
         });
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
         timer.reset();
-//        ServoUtil.calculateFlipPose(60,flipServo);
         ServoUtil.closeClaw(claw1);
         ServoUtil.closeClaw(claw2);
+        try {
+            sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        ServoUtil.calculateFlipPose(80, flipServo);
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
         if (myOpMode.isStopRequested()) return;
         myOpMode.waitForStart(); // wait for the start button to be pressed
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
@@ -198,10 +197,15 @@ public class autoHardware extends HardwareConfig {
                 }
                 break;
         }
+        if (StartPose.alliance == Alliance.BLUE) {
+            if (StartPose.side == StartSide.LEFT) {
+                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).forward(12).build());
+            }
+        }
         shiftAuto(drive);
-        ServoUtil.calculateFlipPose(25,flipServo);
+        ServoUtil.calculateFlipPose(25, flipServo);
         ServoUtil.openClaw(claw1);
-        ServoUtil.openClaw(claw2);
+//        ServoUtil.openClaw(claw2);
         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .back(8)
                 .build());
@@ -231,21 +235,23 @@ public class autoHardware extends HardwareConfig {
                     } else {
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .forward(22)
-                                .turn(Math.toRadians(45))
+                                .turn(Math.toRadians(50))
                                 .addDisplacementMarker(() -> {
                                     ServoUtil.openClaw(HardwareConfig.claw2);
                                 })
-                                .addDisplacementMarker(()->{
-                                    ServoUtil.calculateFlipPose(30,flipServo);
+                                .addDisplacementMarker(() -> {
+                                    ServoUtil.calculateFlipPose(30, flipServo);
                                 })
-                                .strafeLeft(10)
+                                .strafeLeft(13)
+//                                .forward(15)
                                 .build()
                         );
+                        updatePose(drive);
                     }
                 } else {
                     drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                             .forward(22)
-                            .turn(Math.toRadians(45))
+                            .turn(Math.toRadians(60))
                             .addDisplacementMarker(() -> {
                                 ServoUtil.openClaw(HardwareConfig.claw2);
                             })
@@ -269,16 +275,17 @@ public class autoHardware extends HardwareConfig {
                         );
                     } else {
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .forward(25)
+                                .forward(26)
                                 .addDisplacementMarker(() -> {
                                     ServoUtil.openClaw(HardwareConfig.claw2);
                                 })
-                                .back(1)
+                                .back(10)
+                                .strafeLeft(1)
                                 .build());
                     }
                 } else {
                     drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                            .forward(24)
+                            .forward(26)
                             .addDisplacementMarker(() -> {
                                 ServoUtil.openClaw(HardwareConfig.claw2);
                             })
@@ -328,7 +335,8 @@ public class autoHardware extends HardwareConfig {
         motor.setTargetPosition(motor.getCurrentPosition() + (position * countsPerInch));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));
-        while (motor.isBusy()) {}
+        while (motor.isBusy()) {
+        }
         motor.setPower(0);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }

@@ -81,7 +81,7 @@ public class ServoUtil {
     }
 
     public static int lastSetVal;
-    public static int releaseAirplane = 30;
+    public static int releaseAirplane = 120;
     public static void releaseAirplane(Servo servo){
         servo.setPosition(setServo(releaseAirplane));
     }

@@ -128,7 +128,7 @@ public class Drivers {
                 ServoUtil.releaseAirplane(airplaneServo);
                 planeReleased = true;
             } else if (myOpMode.gamepad1.triangle && !triangleDownHigh && planeReleased) {
-                airplaneServo.setPosition(ServoUtil.setServo(0));
+                airplaneServo.setPosition(ServoUtil.setServo(30));
                 planeReleased = false;
             }
             triangleDownHigh = myOpMode.gamepad1.triangle;
