@@ -197,11 +197,11 @@ public class autoHardware extends HardwareConfig {
                 }
                 break;
         }
-        if (StartPose.alliance == Alliance.BLUE) {
-            if (StartPose.side == StartSide.LEFT) {
-                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).forward(12).build());
-            }
-        }
+//        if (StartPose.alliance == Alliance.BLUE) {
+//            if (StartPose.side == StartSide.LEFT) {
+//                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).forward(12).build());
+//            }
+//        }
         shiftAuto(drive);
         ServoUtil.calculateFlipPose(25, flipServo);
         ServoUtil.openClaw(claw1);
@@ -280,7 +280,6 @@ public class autoHardware extends HardwareConfig {
                                     ServoUtil.openClaw(HardwareConfig.claw2);
                                 })
                                 .back(10)
-                                .strafeLeft(1)
                                 .build());
                     }
                 } else {

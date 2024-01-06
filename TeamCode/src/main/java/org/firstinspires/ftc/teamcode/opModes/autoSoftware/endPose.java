@@ -10,7 +10,7 @@ public class endPose {
     // contains positions for the robot to go to at the end of the auto
     public static Pose2d endPoseRightRed = new Pose2d(50,-58,Math.toRadians(0));
     public static Pose2d endPoseLeftRed = new Pose2d(50,-12,Math.toRadians(0));
-    public static Pose2d endPoseRightBlue = new Pose2d(45,12,Math.toRadians(0));
+    public static Pose2d endPoseRightBlue = new Pose2d(50,12,Math.toRadians(0));
     public static Pose2d endPoseLeftBlue = new Pose2d(54,48,Math.toRadians(0));
 
     // returns a trajectory sequence to go to the end pose

@@ -42,7 +42,7 @@ public class BackdropTrajectories {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
-                .lineToLinearHeading(new Pose2d(46, 34, Math.toRadians(endAngle)))
+                .lineToLinearHeading(new Pose2d(54, 28, Math.toRadians(endAngle)))
 //                .addDisplacementMarker(()->{
 //                    if (autoRandomReliable == AutoRandom.left){
 ////                        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).strafeRight(9).build());
