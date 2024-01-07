@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.SpikeNav;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autoRandomReliable;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getCycleSpot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.navToBackdrop_Place;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.pickFromSpot;
@@ -11,6 +13,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
+import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Trajectories.CycleTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
@@ -38,7 +41,16 @@ public class autoPatterns {
                 drive.followTrajectorySequence(endPose.goToEndPose(endPose.endPoseRightRed, drive));
                 break;
             case BLUE:
-                drive.followTrajectorySequence(endPose.goToEndPose(endPose.endPoseRightBlue, drive));
+                if (autoRandomReliable== AutoRandom.mid){
+                    drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).strafeRight(20).build());
+                }if (autoRandomReliable== AutoRandom.left){
+                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).strafeRight(30).build());
+            }
+                if (autoRandomReliable== AutoRandom.right
+                ){
+                    drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).strafeRight(10   ).build());
+                }
+//                drive.followTrajectorySequence(endPose.goToEndPose(endPose.endPoseRightBlue, drive));
                 break;
         }
     }

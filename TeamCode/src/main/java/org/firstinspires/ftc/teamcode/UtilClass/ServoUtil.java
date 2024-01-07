@@ -37,7 +37,7 @@ public class ServoUtil {
         }
     }
 
-    public static int closeClaw1 = 180;
+    public static int closeClaw1 = 200;
     public static int closeClaw2 = 15;
 
     public static void closeClaw(Servo servo) {
@@ -70,7 +70,7 @@ public class ServoUtil {
 //        lastSetVal = servoFlipFullHalf;
     }
 
-    public static double hcalc = 76;
+    public static double hcalc = 78;
     public static void calculateFlipPose(int pose, Servo servo) {
         double theta = Sensors.getPotentVal(potentiometer);
         PastPotent.pastPotentVal = theta;

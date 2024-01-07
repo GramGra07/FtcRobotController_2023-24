@@ -29,6 +29,7 @@ public class auto1BR extends LinearOpMode {
         if (opModeIsActive()) {
             place1Pixel(drive);
         }updatePose(drive);
+        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).back(15).build());
         webcam.closeCameraDevice();
     }
 }

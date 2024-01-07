@@ -74,7 +74,7 @@ public class Operator extends Drivers {
                 calculateFlipPose(0, flipServo);
             }
             if (myOpMode.gamepad2.dpad_up){
-                calculateFlipPose(25,flipServo);
+                calculateFlipPose(70,flipServo);
             }
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);

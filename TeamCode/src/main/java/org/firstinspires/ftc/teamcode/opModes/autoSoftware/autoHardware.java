@@ -213,7 +213,7 @@ public class autoHardware extends HardwareConfig {
 
     // method to raise the arm with the potentiometer
     public static void raiseArm() {
-        int potentBackTarget = 38;
+        int potentBackTarget = 31;
         Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
     }
 
