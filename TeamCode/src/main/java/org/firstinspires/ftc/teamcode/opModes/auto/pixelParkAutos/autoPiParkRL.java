@@ -28,7 +28,8 @@ public class autoPiParkRL extends LinearOpMode {
         robot.initAuto(hardwareMap,this);
         if (opModeIsActive()) {
             pixelPark(drive);
-        }updatePose(drive);
+        }
+        updatePose(drive);
         webcam.closeCameraDevice();
     }
 }

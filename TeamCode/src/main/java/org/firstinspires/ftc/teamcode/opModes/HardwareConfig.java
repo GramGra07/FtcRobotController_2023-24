@@ -6,17 +6,16 @@ import static org.firstinspires.ftc.teamcode.Drivers.currDriver;
 import static org.firstinspires.ftc.teamcode.Drivers.currOther;
 import static org.firstinspires.ftc.teamcode.Drivers.fieldCentric;
 import static org.firstinspires.ftc.teamcode.Drivers.switchProfile;
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
 import static org.firstinspires.ftc.teamcode.Operator.bindOtherButtons;
 import static org.firstinspires.ftc.teamcode.Sensors.currentVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.lowVoltage;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.setUpFile;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.writeToFile;
-import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionF;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionR;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.zeroPowerBrake;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 
@@ -29,7 +28,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -39,23 +37,30 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig;
-import org.firstinspires.ftc.teamcode.UtilClass.varStorage.variable;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.io.FileWriter;
+import java.util.List;
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
-    public static boolean useFileWriter = variable.useFileWriter;
-    public static boolean multipleDrivers = variable.multipleDrivers;
+    public static boolean useFileWriter = varConfig.useFileWriter;
+    public static boolean multipleDrivers = varConfig.multipleDrivers;
     public static String statusVal = "OFFLINE";
-    public static Servo claw1 = null, claw2 = null, flipServo = null,airplaneServo = null, airplaneRotationServo = null;
+    public static Servo claw1 = null, claw2 = null, flipServo = null, airplaneServo = null, airplaneRotationServo = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorExtension = null, motorRotation = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
@@ -96,11 +101,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
             0.1, // Integral gain
             0.1 // Derivative gain
     );
+    public static VisionPortal visionPortal; // vision portal for the webcam
+    public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
 
     public static final String currentVersion = "5.0.0";
 
     //init
-    public static void init(HardwareMap ahwMap) {
+    public static void init(HardwareMap ahwMap, boolean auto) {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         thisDist = 0;
         setUpFile(fileWriter);
@@ -169,6 +176,24 @@ public class HardwareConfig {//this is an external opMode that can have public v
 //        cRE = new Gamepad.RumbleEffect.Builder()
 //                .addStep(1.0, 1.0, 250)
 //                .build();
+        if (!auto) {
+            aprilTagProcessor = new AprilTagProcessor.Builder() // april tag processor initialization
+                    .setDrawAxes(true) // draw axes on the april tag
+                    .setDrawCubeProjection(false) // don't draw cube projection on the april tag
+                    .setDrawTagOutline(true) // draw tag outline on the april tag
+                    .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11) // set the tag family to 36h11
+                    .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary()) // set the tag library to the center stage tag library
+                    .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES) // set the output units to inches and degrees
+                    .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
+                    // ... these parameters are fx, fy, cx, cy.
+                    .build();
+            VisionPortal.Builder builder = new VisionPortal.Builder(); // vision portal builder initialization
+            builder.setCamera(ahwMap.get(WebcamName.class, cam2_N)); // set the camera to webcam 1
+            builder.addProcessor(aprilTagProcessor); // add the april tag processor to the vision portal
+            visionPortal = builder.build(); // build the vision portal
+            visionPortal.setProcessorEnabled(aprilTagProcessor, false); // disable the april tag processor
+        }
+
         timer.reset();
         Sensors.ledIND(green1, red1, true);
         Sensors.ledIND(green2, red2, true);
@@ -182,14 +207,16 @@ public class HardwareConfig {//this is an external opMode that can have public v
         if (lowVoltage) {
             telemetry.addData("lowBattery", "true");
         }
-        telemetry.update();
+        if (!auto) {
+            telemetry.update();
+        }
     }
 
     //code to run all drive functions
     public void doBulk() {
         once(myOpMode);//runs once
         bindDriverButtons(myOpMode, drive);
-        bindOtherButtons(myOpMode,drive);
+        bindOtherButtons(myOpMode, drive);
         if (multipleDrivers) {
             switchProfile(myOpMode);
         }
@@ -277,6 +304,27 @@ public class HardwareConfig {//this is an external opMode that can have public v
 
     public void buildTelemetry() {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
+        //////////
+
+        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
+        telemetry.addData("# AprilTags Detected", currentDetections.size());
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.metadata != null) {
+                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+            } else {
+                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+            }
+        }
+        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
+        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+        telemetry.addLine("RBE = Range, Bearing & Elevation");
+        teleSpace();
+        teleSpace();
+        //////////
         //Telemetry telemetry = myOpMode.telemetry;
         telemetry.addData("Drivers", currDriver + " " + currOther);
         getBatteryVoltage(vSensor);

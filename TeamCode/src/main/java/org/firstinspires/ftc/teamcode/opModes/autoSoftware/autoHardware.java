@@ -6,12 +6,14 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static java.lang.Thread.sleep;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
@@ -25,8 +27,6 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OBJDetect2;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -48,31 +48,17 @@ public class autoHardware extends HardwareConfig {
 
     public static AutoRandom autonomousRandom = AutoRandom.mid; // default autonomous choice for spike mark
     public static AutoRandom autoRandomReliable; // tracker for the AutoRandom enum
-    public static VisionPortal visionPortal; // vision portal for the webcam
-    public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
+//    public static VisionPortal visionPortal; // vision portal for the webcam
+//    public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
 
     public autoHardware(LinearOpMode opmode) {
         super(opmode);
     } // constructor
 
     public void initAuto(HardwareMap ahwMap, LinearOpMode myOpMode) {
+        Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         hardwareMap = ahwMap; // hardware map initialization
-        HardwareConfig.init(ahwMap); // hardware config initialization
-//        aprilTagProcessor = new AprilTagProcessor.Builder() // april tag processor initialization
-//                .setDrawAxes(true) // draw axes on the april tag
-//                .setDrawCubeProjection(false) // don't draw cube projection on the april tag
-//                .setDrawTagOutline(true) // draw tag outline on the april tag
-//                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11) // set the tag family to 36h11
-//                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary()) // set the tag library to the center stage tag library
-//                .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES) // set the output units to inches and degrees
-//                .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
-//                // ... these parameters are fx, fy, cx, cy.
-//                .build();
-//        VisionPortal.Builder builder = new VisionPortal.Builder(); // vision portal builder initialization
-//        builder.setCamera(hardwareMap.get(WebcamName.class, cam1_N)); // set the camera to webcam 1
-//        builder.addProcessor(aprilTagProcessor); // add the april tag processor to the vision portal
-//        visionPortal = builder.build(); // build the vision portal
-//        visionPortal.setProcessorEnabled(aprilTagProcessor, false); // disable the april tag processor
+        HardwareConfig.init(ahwMap, true); // hardware config initialization
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
@@ -99,6 +85,8 @@ public class autoHardware extends HardwareConfig {
         }
         ServoUtil.calculateFlipPose(80, flipServo);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
+        LEDcolor = "GREEN";
+        telemetry.update();
         if (myOpMode.isStopRequested()) return;
         myOpMode.waitForStart(); // wait for the start button to be pressed
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
@@ -234,17 +222,17 @@ public class autoHardware extends HardwareConfig {
                         );
                     } else {
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .forward(22)
-                                .turn(Math.toRadians(50))
-                                .addDisplacementMarker(() -> {
-                                    ServoUtil.openClaw(HardwareConfig.claw2);
-                                })
-                                .addDisplacementMarker(() -> {
-                                    ServoUtil.calculateFlipPose(30, flipServo);
-                                })
-                                .strafeLeft(13)
+                                        .forward(22)
+                                        .turn(Math.toRadians(50))
+                                        .addDisplacementMarker(() -> {
+                                            ServoUtil.openClaw(HardwareConfig.claw2);
+                                        })
+                                        .addDisplacementMarker(() -> {
+                                            ServoUtil.calculateFlipPose(30, flipServo);
+                                        })
+                                        .strafeLeft(13)
 //                                .forward(15)
-                                .build()
+                                        .build()
                         );
                         updatePose(drive);
                     }

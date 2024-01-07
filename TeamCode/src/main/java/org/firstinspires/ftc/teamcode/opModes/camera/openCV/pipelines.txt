@@ -1,8 +1,0 @@
-SamplePipeline
-EdgeDetection
-ColorDetection
-ColorEdgeDetection
-ColorEdgeDetectionBounded
-WhiteDotDetection
-BlackDotDetection
-RecognizeObject

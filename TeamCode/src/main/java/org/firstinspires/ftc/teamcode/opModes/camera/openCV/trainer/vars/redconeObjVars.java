@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
+package org.firstinspires.ftc.teamcode.opModes.camera.openCV.trainer.vars;
 
 //@Config
 public class redconeObjVars {

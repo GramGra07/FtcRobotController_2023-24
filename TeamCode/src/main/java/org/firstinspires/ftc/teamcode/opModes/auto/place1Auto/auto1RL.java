@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
@@ -29,7 +30,9 @@ public class auto1RL extends LinearOpMode {
         if (opModeIsActive()) {
             place1Pixel(drive);
         }updatePose(drive);
-        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate()).back(15).build());
+        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                .splineToLinearHeading(getStartPose(StartPose.alliance,StartPose.side),getStartPose(StartPose.alliance,StartPose.side).getHeading())
+                .build());
         webcam.closeCameraDevice();
     }
 }

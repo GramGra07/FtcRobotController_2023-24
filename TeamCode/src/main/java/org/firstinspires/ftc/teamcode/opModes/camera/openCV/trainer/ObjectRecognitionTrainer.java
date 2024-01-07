@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
+package org.firstinspires.ftc.teamcode.opModes.camera.openCV.trainer;
 
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
