@@ -158,8 +158,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
         airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
-        colorSensorC1 = ahwMap.get(NormalizedColorSensor.class, "colorSensorC1");
-        colorSensorC2 = ahwMap.get(NormalizedColorSensor.class, "colorSensorC2");
+        colorSensorC1 = ahwMap.get(NormalizedColorSensor.class, "C1");
+        colorSensorC2 = ahwMap.get(NormalizedColorSensor.class, "C2");
         if (colorSensorC1 instanceof SwitchableLight) {
             ((SwitchableLight) colorSensorC1).enableLight(true);
         }

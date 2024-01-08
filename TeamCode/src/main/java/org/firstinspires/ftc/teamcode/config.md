@@ -10,7 +10,7 @@ Encoder (will only be different if a different encoder is in the same slot as a 
 2 - same
 3 - same
 Servo
-0 - 
+0 -
 1 - Blinkin Driver:blinkin
 2 -
 3 -
@@ -28,7 +28,7 @@ I2C
 3 -
 Analog
 0 - potent
-1 - 
+1 -
 2 -
 3 -
 
@@ -40,7 +40,7 @@ Motor
 0 - slideMotor
 1 - flipperMotor
 2 - lift
-3 - 
+3 -
 Servo
 0 - claw1
 1 - claw2
@@ -59,8 +59,8 @@ Digital
 7 -
 I2C
 0 - internal IMU BNO055:imu
-1 - HuskyLens:huskylens
-2 -
+1 - Rev Color Sensor V3:C1
+2 - Rev Color Sensor V3:C2
 3 -
 Analog
 0:1 -
