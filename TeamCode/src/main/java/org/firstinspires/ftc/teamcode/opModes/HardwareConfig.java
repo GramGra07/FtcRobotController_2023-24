@@ -31,7 +31,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -60,7 +62,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean useFileWriter = varConfig.useFileWriter;
     public static boolean multipleDrivers = varConfig.multipleDrivers;
     public static String statusVal = "OFFLINE";
-    public static Servo claw1 = null, claw2 = null, flipServo = null, airplaneServo = null, airplaneRotationServo = null;
+    public static Servo claw1 = null, claw2 = null, flipServo = null, airplaneServo = null;
     public static DcMotor motorFrontLeft = null, motorBackLeft = null, motorFrontRight = null, motorBackRight = null, motorLift = null, motorExtension = null, motorRotation = null;
     public static RevBlinkinLedDriver lights;
     public int slowMult = varConfig.slowMult, slowPower;
@@ -103,6 +105,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
     );
     public static VisionPortal visionPortal; // vision portal for the webcam
     public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
+    public static NormalizedColorSensor colorSensorC1;
+    public static NormalizedColorSensor colorSensorC2;
+    public static double gain1 = 0;
+    public static double gain2 = 0;
 
     public static final String currentVersion = "5.0.0";
 
@@ -152,7 +158,14 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
         airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
-        airplaneRotationServo = ahwMap.get(Servo.class, "airplaneRotation");
+        colorSensorC1 = ahwMap.get(NormalizedColorSensor.class, "colorSensorC1");
+        colorSensorC2 = ahwMap.get(NormalizedColorSensor.class, "colorSensorC2");
+        if (colorSensorC1 instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensorC1).enableLight(true);
+        }
+        if (colorSensorC2 instanceof SwitchableLight) {
+            ((SwitchableLight) colorSensorC2).enableLight(true);
+        }
         //encoders
         //reversals
         setDirectionR(motorBackLeft);
