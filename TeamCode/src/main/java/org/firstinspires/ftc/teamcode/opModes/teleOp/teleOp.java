@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.teleOp;
 
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.aprilTagProcessor;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.visionPortal;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -16,8 +13,8 @@ public class teleOp extends LinearOpMode {//declaring the class
 
     @Override
     public void runOpMode() {//if opmode is started
-        robot.init(hardwareMap, false);
-        visionPortal.setProcessorEnabled(aprilTagProcessor, true);
+        robot.init(hardwareMap, true);
+//        visionPortal.setProcessorEnabled(aprilTagProcessor, true);
         waitForStart();
         HardwareConfig.timer.reset();
         while (opModeIsActive()) {//while the op mode is active

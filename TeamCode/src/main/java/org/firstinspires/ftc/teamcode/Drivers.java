@@ -4,7 +4,6 @@ import static org.firstinspires.ftc.teamcode.DriverIndex.dIndex;
 import static org.firstinspires.ftc.teamcode.DriverIndex.oIndex;
 import static org.firstinspires.ftc.teamcode.Limits.liftMax;
 import static org.firstinspires.ftc.teamcode.MathFunctions.getQuadrant;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneRotationServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
@@ -49,7 +48,7 @@ public class Drivers {
                 updateStatus("Auto-ing");
                 drive.update();
                 // go to drone scoring position
-                
+
             }
             if (myOpMode.gamepad1.dpad_up) {
                 slowModeIsOn = false;
@@ -90,11 +89,6 @@ public class Drivers {
                 liftPower = -liftMax;
             } else {
                 liftPower = 0;
-            }
-            if (myOpMode.gamepad1.dpad_down) {
-                ServoUtil.raiseAirplane(airplaneRotationServo);
-            } else if (myOpMode.gamepad1.dpad_left) {
-                airplaneRotationServo.setPosition(ServoUtil.setServo(90));
             }
         }
         if (currDriver == driverControls[3]) {//Grady

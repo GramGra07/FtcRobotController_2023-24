@@ -320,24 +320,25 @@ public class HardwareConfig {//this is an external opMode that can have public v
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         //////////
 
-        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
-        telemetry.addData("# AprilTags Detected", currentDetections.size());
-        for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null) {
-                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
-                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
-            } else {
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
-            }
-        }
-        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
-        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
-        telemetry.addLine("RBE = Range, Bearing & Elevation");
-        teleSpace();
-        teleSpace();
+//        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
+//        telemetry.addData("# AprilTags Detected", currentDetections.size());
+//        for (AprilTagDetection detection : currentDetections) {
+//            if (detection.metadata != null) {
+//                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+//                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+//                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+//                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+//            } else {
+//                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+//                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+//            }
+//        }
+//        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
+//        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+//        telemetry.addLine("RBE = Range, Bearing & Elevation");
+//        teleSpace();
+//        teleSpace();
+
         //////////
         //Telemetry telemetry = myOpMode.telemetry;
         telemetry.addData("Drivers", currDriver + " " + currOther);
@@ -347,6 +348,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
             telemetry.addData("", "We have a low battery");
         }
         telemetry.addData("potentiometer", "%.1f", Sensors.getPotentVal(potentiometer));
+        telemetry.addData("Color Sensor 1", Sensors.getColors(colorSensorC1)[0] + ',' + Sensors.getColors(colorSensorC1)[1] + ',' + Sensors.getColors(colorSensorC1)[2]);
+        telemetry.addData("Color Sensor 2", Sensors.getColors(colorSensorC2)[0] + ',' + Sensors.getColors(colorSensorC2)[1] + ',' + Sensors.getColors(colorSensorC2)[2]);
+        telemetry.addData("Distance 1", Sensors.getDistance(colorSensorC1));
+        telemetry.addData("Distance 2", Sensors.getDistance(colorSensorC2));
         telemetry.addData("Color", LEDcolor);
         if (reversed) {
             telemetry.addData("reversed", "");

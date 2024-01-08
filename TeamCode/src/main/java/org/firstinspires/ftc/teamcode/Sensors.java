@@ -2,13 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -82,12 +81,11 @@ public class Sensors {
 
     public static double[] loadColorDistSensor(NormalizedColorSensor colorSensor) {
         double distance = 0;
-        final float[] hsvValues = new float[3];
-        Color.colorToHSV(colorSensor.getNormalizedColors().toColor(), hsvValues);
+        NormalizedRGBA colors = colorSensor.getNormalizedColors();
         if (colorSensor instanceof DistanceSensor) {
             distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         }
-        return new double[]{hsvValues[0], hsvValues[1], hsvValues[2], distance};
+        return new double[]{colors.red, colors.green, colors.blue, distance / 2};
     }
 
     public static double[] getColors(NormalizedColorSensor colorSensor) {
