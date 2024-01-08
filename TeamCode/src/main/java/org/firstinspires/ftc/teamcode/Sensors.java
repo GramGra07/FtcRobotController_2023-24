@@ -3,11 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
-import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -79,24 +78,24 @@ public class Sensors {
         return touchSensor.isPressed();
     }
 
-    public static double[] loadColorDistSensor(NormalizedColorSensor colorSensor) {
+    public static double[] loadColorDistSensor(ColorSensor colorSensor) {
         double distance = 0;
-        NormalizedRGBA colors = colorSensor.getNormalizedColors();
+        ColorSensor colors = colorSensor;
         if (colorSensor instanceof DistanceSensor) {
             distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         }
-        return new double[]{colors.red, colors.green, colors.blue, distance / 2};
+        return new double[]{colors.red(), colors.green(), colors.blue(), distance / 2};
     }
 
-    public static double[] getColors(NormalizedColorSensor colorSensor) {
+    public static double[] getColors(ColorSensor colorSensor) {
         return new double[]{loadColorDistSensor(colorSensor)[0], loadColorDistSensor(colorSensor)[1], loadColorDistSensor(colorSensor)[2]};
     }
 
-    public static double getDistance(NormalizedColorSensor colorSensor) {
+    public static double getDistance(ColorSensor colorSensor) {
         return loadColorDistSensor(colorSensor)[3];
     }
 
-    public static void operateClawByDist(NormalizedColorSensor colorSensor) {
+    public static void operateClawByDist(ColorSensor colorSensor) {
         Servo claw = null;
         if (colorSensor == HardwareConfig.colorSensorC1) {
             claw = HardwareConfig.claw1;

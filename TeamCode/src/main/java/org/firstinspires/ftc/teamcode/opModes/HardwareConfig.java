@@ -27,11 +27,11 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.SwitchableLight;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
@@ -105,8 +105,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
     );
     public static VisionPortal visionPortal; // vision portal for the webcam
     public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
-    public static NormalizedColorSensor colorSensorC1;
-    public static NormalizedColorSensor colorSensorC2;
+    public static ColorSensor colorSensorC1;
+    public static ColorSensor colorSensorC2;
     public static double gain1 = 0;
     public static double gain2 = 0;
 
@@ -158,8 +158,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
         claw2 = ahwMap.get(Servo.class, "claw2");
         flipServo = ahwMap.get(Servo.class, "flipServo");
         airplaneServo = ahwMap.get(Servo.class, "airplaneServo");
-        colorSensorC1 = ahwMap.get(NormalizedColorSensor.class, "C1");
-        colorSensorC2 = ahwMap.get(NormalizedColorSensor.class, "C2");
+        colorSensorC1 = ahwMap.get(ColorSensor.class, "C1");
+        colorSensorC2 = ahwMap.get(ColorSensor.class, "C2");
         if (colorSensorC1 instanceof SwitchableLight) {
             ((SwitchableLight) colorSensorC1).enableLight(true);
         }
@@ -348,10 +348,12 @@ public class HardwareConfig {//this is an external opMode that can have public v
             telemetry.addData("", "We have a low battery");
         }
         telemetry.addData("potentiometer", "%.1f", Sensors.getPotentVal(potentiometer));
+        
         telemetry.addData("Color Sensor 1", Sensors.getColors(colorSensorC1)[0] + ',' + Sensors.getColors(colorSensorC1)[1] + ',' + Sensors.getColors(colorSensorC1)[2]);
         telemetry.addData("Color Sensor 2", Sensors.getColors(colorSensorC2)[0] + ',' + Sensors.getColors(colorSensorC2)[1] + ',' + Sensors.getColors(colorSensorC2)[2]);
         telemetry.addData("Distance 1", Sensors.getDistance(colorSensorC1));
         telemetry.addData("Distance 2", Sensors.getDistance(colorSensorC2));
+
         telemetry.addData("Color", LEDcolor);
         if (reversed) {
             telemetry.addData("reversed", "");
