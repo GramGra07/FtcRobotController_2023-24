@@ -98,7 +98,7 @@ public class Sensors {
         return loadColorDistSensor(colorSensor)[3];
     }
 
-    public static void operateClawByColor(NormalizedColorSensor colorSensor) {
+    public static void operateClawByDist(NormalizedColorSensor colorSensor) {
         Servo claw = null;
         if (colorSensor == HardwareConfig.colorSensorC1) {
             claw = HardwareConfig.claw1;

@@ -5,15 +5,17 @@ import static org.firstinspires.ftc.teamcode.Limits.flipperMin;
 import static org.firstinspires.ftc.teamcode.Limits.liftMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMin;
+import static org.firstinspires.ftc.teamcode.Sensors.operateClawByDist;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoFull;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.lastSetVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipVal;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.colorSensorC1;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.colorSensorC2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
@@ -24,7 +26,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
-import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
@@ -38,20 +39,20 @@ public class Operator extends Drivers {
         Blink.selectLights(myOpMode);
         if (currOther == otherControls[1]) {//Camden
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
-                if (myOpMode.gamepad2.right_bumper) {
-                    closeClaw(claw1);
-                }
-                if (myOpMode.gamepad2.left_bumper) {
-                    closeClaw(claw2);
-                }
-                if (myOpMode.gamepad2.right_trigger > 0) {
+            if (myOpMode.gamepad2.right_bumper) {
+                closeClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_bumper) {
+                closeClaw(claw2);
+            }
+            if (myOpMode.gamepad2.right_trigger > 0) {
 //                    ServoUtil.calculateFlipPose(25,flipServo);
-                    openClaw(claw1);
-                }
-                if (myOpMode.gamepad2.left_trigger > 0) {
+                openClaw(claw1);
+            }
+            if (myOpMode.gamepad2.left_trigger > 0) {
 //                    ServoUtil.calculateFlipPose(25,flipServo);
-                    openClaw(claw2);
-                }
+                openClaw(claw2);
+            }
 //            }else{
 //                if (myOpMode.gamepad2.right_bumper) {
 //                    closeClaw(claw2);
@@ -73,13 +74,15 @@ public class Operator extends Drivers {
             } else if (myOpMode.gamepad2.dpad_right) {
                 calculateFlipPose(0, flipServo);
             }
-            if (myOpMode.gamepad2.dpad_up){
-                calculateFlipPose(70,flipServo);
+            if (myOpMode.gamepad2.dpad_up) {
+                calculateFlipPose(70, flipServo);
             }
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);
             }
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            operateClawByDist(colorSensorC1);
+            operateClawByDist(colorSensorC2);
         }
         if (currOther == otherControls[3]) {//Grady
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
@@ -209,11 +212,11 @@ public class Operator extends Drivers {
             }
             rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
-        if (currOther == otherControls[6]){
-            calculateFlipPose(30,flipServo);
+        if (currOther == otherControls[6]) {
+            calculateFlipPose(30, flipServo);
         }
-        if (currOther == otherControls[7]){
-            calculateFlipPose(30,flipServo);
+        if (currOther == otherControls[7]) {
+            calculateFlipPose(30, flipServo);
         }
     }
 }
