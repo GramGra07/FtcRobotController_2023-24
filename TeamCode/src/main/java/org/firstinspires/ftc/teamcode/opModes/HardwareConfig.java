@@ -221,6 +221,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             switchProfile(myOpMode);
         }
         drive(fieldCentric);
+//        updatePoseByAprilTag(drive);
         power();//sets power to power variables
         buildTelemetry();//makes telemetry
     }
@@ -363,6 +364,29 @@ public class HardwareConfig {//this is an external opMode that can have public v
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         //Telemetry telemetry = myOpMode.telemetry;
         telemetry.addLine(" ");
+    }
+
+    public void updatePoseByAprilTag(MecanumDrive drive) {
+        List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
+        if (currentDetections.size() > 0) {
+            if (currentDetections.size() == 1) {
+                for (AprilTagDetection detection : currentDetections) {
+                    drive.setPoseEstimate(new Pose2d(detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw));
+                    PoseStorage.currentPose = drive.getPoseEstimate();
+                }
+            } else {
+                Pose2d pose = new Pose2d();
+                for (AprilTagDetection detection : currentDetections) {
+                    if (pose.equals(new Pose2d())) {
+                        pose = new Pose2d(detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.yaw);
+                    } else {
+                        pose = new Pose2d((pose.getX() + detection.ftcPose.x) / 2, (pose.getY() + detection.ftcPose.y) / 2, (pose.getHeading() + detection.ftcPose.yaw) / 2);
+                    }
+                }
+                drive.setPoseEstimate(pose);
+                PoseStorage.currentPose = drive.getPoseEstimate();
+            }
+        }
     }
 
     public static void updateStatus(String status) {
