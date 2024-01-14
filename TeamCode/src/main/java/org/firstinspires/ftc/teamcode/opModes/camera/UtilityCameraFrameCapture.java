@@ -37,7 +37,6 @@ import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 
 import android.util.Size;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -46,8 +45,8 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.Locale;
 
-@TeleOp(name = "Utility: Camera Frame Capture", group = "Utility")
-@Disabled
+@TeleOp(name = "Utility: Camera Frame Capture", group = "aaa")
+//@Disabled
 public class UtilityCameraFrameCapture extends LinearOpMode {
     final int RESOLUTION_WIDTH = 640;
     final int RESOLUTION_HEIGHT = 480;

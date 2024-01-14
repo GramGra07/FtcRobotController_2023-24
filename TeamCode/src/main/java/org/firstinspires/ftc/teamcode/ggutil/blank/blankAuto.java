@@ -1,14 +1,13 @@
-package org.firstinspires.ftc.teamcode.opModes.blank;
+package org.firstinspires.ftc.teamcode.ggutil.blank;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
@@ -23,10 +22,10 @@ public class blankAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
-        robot.initAuto(hardwareMap,this);
+        robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
             PoseStorage.currentPose = drive.getPoseEstimate();
-        }updatePose(drive);
-        webcam.closeCameraDevice();
+        }
+        endAuto(EndPose.NONE, drive);
     }
 }

@@ -1,24 +1,24 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.place1Auto;
+package org.firstinspires.ftc.teamcode.opModes.auto.constant.place1Auto;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.webcam;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.place1Pixel;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.place1Sort;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
+import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
-import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
-@Autonomous(group = "bscrim", preselectTeleOp="teleOp")
+@Autonomous(group = place1Sort, preselectTeleOp = preselect)
 //@Disabled
-public class auto1BL extends LinearOpMode {
+public class BLS extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
@@ -26,13 +26,10 @@ public class auto1BL extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
-        robot.initAuto(hardwareMap,this);
+        robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
             place1Pixel(drive);
-        }updatePose(drive);
-        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .splineToLinearHeading(getStartPose(StartPose.alliance,StartPose.side),getStartPose(StartPose.alliance,StartPose.side).getHeading())
-                .build());
-        webcam.closeCameraDevice();
+        }
+        endAuto(EndPose.StartingPosition, drive);
     }
 }

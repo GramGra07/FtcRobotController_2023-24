@@ -14,8 +14,8 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.lastSetVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.colorSensorC1;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.colorSensorC2;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.distanceSensor1;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.distanceSensor2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
@@ -72,17 +72,18 @@ public class Operator extends Drivers {
             if (myOpMode.gamepad2.dpad_left) {
                 calculateFlipPose(30, flipServo);
             } else if (myOpMode.gamepad2.dpad_right) {
-                calculateFlipPose(0, flipServo);
-            }
-            if (myOpMode.gamepad2.dpad_up) {
+                calculateFlipPose(45, flipServo);
+            } else if (myOpMode.gamepad2.dpad_up) {
                 calculateFlipPose(70, flipServo);
+            } else if (myOpMode.gamepad2.dpad_down) {
+                calculateFlipPose(0, flipServo);
             }
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);
             }
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
-            operateClawByDist(colorSensorC1);
-            operateClawByDist(colorSensorC2);
+            operateClawByDist(distanceSensor1);
+            operateClawByDist(distanceSensor2);
         }
         if (currOther == otherControls[3]) {//Grady
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
@@ -114,9 +115,9 @@ public class Operator extends Drivers {
 //            }
 
             extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
-            if (myOpMode.gamepad2.dpad_left) {
+            if (myOpMode.gamepad2.dpad_down) {
                 calculateFlipPose(0, flipServo);
-            } else if (myOpMode.gamepad2.dpad_right) {
+            } else if (myOpMode.gamepad2.dpad_left) {
                 calculateFlipPose(30, flipServo);
             }
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {

@@ -91,15 +91,15 @@ public class Sensors {
         return new double[]{loadColorDistSensor(colorSensor)[0], loadColorDistSensor(colorSensor)[1], loadColorDistSensor(colorSensor)[2]};
     }
 
-    public static double getDistance(ColorSensor colorSensor) {
-        return loadColorDistSensor(colorSensor)[3];
+    public static double getDistance(DistanceSensor sensor) {
+        return sensor.getDistance(DistanceUnit.CM);
     }
 
-    public static void operateClawByDist(ColorSensor colorSensor) {
+    public static void operateClawByDist(DistanceSensor colorSensor) {
         Servo claw = null;
-        if (colorSensor == HardwareConfig.colorSensorC1) {
+        if (colorSensor == HardwareConfig.distanceSensor1) {
             claw = HardwareConfig.claw1;
-        } else if (colorSensor == HardwareConfig.colorSensorC2) {
+        } else if (colorSensor == HardwareConfig.distanceSensor2) {
             claw = HardwareConfig.claw2;
         }
         double distance = getDistance(colorSensor);
