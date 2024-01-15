@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.u
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
+import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class generalPatterns {
     // method to go to the backdrop
-    public static void navToBackdrop_Place(MecanumDrive drive, boolean raiseArm) {
+    public static void navToBackdrop_Place(MecanumDrive drive, boolean raiseArm, PathLong pathLong) {
         calculateFlipPose(60, flipServo);
         if (raiseArm) {
             raiseArm();
@@ -27,7 +28,7 @@ public class generalPatterns {
             case RED:
                 switch (StartPose.side) {
                     case LEFT:
-                        drive.followTrajectorySequence(BackdropTrajectories.redLong(drive));
+                        drive.followTrajectorySequence(BackdropTrajectories.redLong(drive, pathLong));
                         break;
                     case RIGHT:
                         drive.followTrajectorySequence(BackdropTrajectories.redShort(drive));
@@ -40,7 +41,7 @@ public class generalPatterns {
                         drive.followTrajectorySequence(BackdropTrajectories.blueShort(drive));
                         break;
                     case RIGHT:
-                        drive.followTrajectorySequence(BackdropTrajectories.blueLong(drive));
+                        drive.followTrajectorySequence(BackdropTrajectories.blueLong(drive, pathLong));
                         break;
                 }
                 break;
@@ -57,20 +58,26 @@ public class generalPatterns {
     public static void SpikeNav(MecanumDrive drive) {
         switch (autoHardware.autonomousRandom) {
             case left:
-                //LEFT RED
-                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                        .forward(22)
-                        .turn(Math.toRadians(50))
-                        .addDisplacementMarker(() -> {
-                            ServoUtil.openClaw(HardwareConfig.claw2);
-                            ServoUtil.calculateFlipPose(30, flipServo);
-                        })
-                        .back(1)
-                        .build()
-                );
                 if (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.LEFT) {
                     drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                            .strafeLeft(13)
+                            .strafeLeft(14)
+                            .forward(20)
+                            .addDisplacementMarker(() -> {
+                                ServoUtil.openClaw(HardwareConfig.claw2);
+                                ServoUtil.calculateFlipPose(30, flipServo);
+                            })
+                            .back(1)
+                            .build()
+                    );
+                } else {
+                    drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                            .forward(22)
+                            .turn(Math.toRadians(50))
+                            .addDisplacementMarker(() -> {
+                                ServoUtil.openClaw(HardwareConfig.claw2);
+                                ServoUtil.calculateFlipPose(30, flipServo);
+                            })
+                            .back(1)
                             .build()
                     );
                 }
@@ -91,17 +98,29 @@ public class generalPatterns {
                 autoHardware.autoRandomReliable = AutoRandom.mid;
                 break;
             case right:
-                // all left sides
-                drive.followTrajectorySequence(
-                        drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .forward(22)
-                                .turn(Math.toRadians(-60))
-                                .addDisplacementMarker(() -> {
-                                    ServoUtil.openClaw(HardwareConfig.claw2);
-                                    ServoUtil.calculateFlipPose(30, flipServo);
-                                })
-                                .back(1)
-                                .build());
+                if ((StartPose.alliance == Alliance.RED && StartPose.side == StartSide.RIGHT)) {
+                    drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                            .strafeRight(14)
+                            .forward(20)
+                            .addDisplacementMarker(() -> {
+                                ServoUtil.openClaw(HardwareConfig.claw2);
+                                ServoUtil.calculateFlipPose(30, flipServo);
+                            })
+                            .back(1)
+                            .build()
+                    );
+                } else {
+                    drive.followTrajectorySequence(
+                            drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                    .forward(22)
+                                    .turn(Math.toRadians(-60))
+                                    .addDisplacementMarker(() -> {
+                                        ServoUtil.openClaw(HardwareConfig.claw2);
+                                        ServoUtil.calculateFlipPose(30, flipServo);
+                                    })
+                                    .back(1)
+                                    .build());
+                }
                 updatePose(drive);
                 autoHardware.autoRandomReliable = AutoRandom.right;
                 break;

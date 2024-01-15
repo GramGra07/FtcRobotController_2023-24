@@ -213,7 +213,7 @@ public class Drivers {
             fieldCentric = false;
         }
         if (currDriver == driverControls[5]) {//Graden
-            fieldCentric = false;
+            fieldCentric = true;
         }
         if (currDriver == driverControls[6]) {//Delaney
             fieldCentric = false;

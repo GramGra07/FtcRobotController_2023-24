@@ -8,6 +8,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
+import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
@@ -24,7 +25,7 @@ public class BackdropTrajectories {
                 .build();
     }
 
-    public static TrajectorySequence redLong(MecanumDrive drive) {
+    public static TrajectorySequence redLong(MecanumDrive drive, PathLong pathLong) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineTo(new Vector2d(-36, -12))
@@ -43,7 +44,7 @@ public class BackdropTrajectories {
                 .build();
     }
 
-    public static TrajectorySequence blueLong(MecanumDrive drive) {
+    public static TrajectorySequence blueLong(MecanumDrive drive, PathLong pathLong) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineTo(new Vector2d(-36, 12))

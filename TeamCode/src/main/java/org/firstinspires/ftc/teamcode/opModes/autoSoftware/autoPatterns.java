@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.navToBackdrop_Place;
 
+import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
@@ -15,9 +16,9 @@ public class autoPatterns {
     }
 
     // does two pixel and then goes to the end pose
-    public static void pixelPark(MecanumDrive drive) {
+    public static void pixelPark(MecanumDrive drive, PathLong pathLong) {
         place1Pixel(drive);
-        navToBackdrop_Place(drive, true);
+        navToBackdrop_Place(drive, true, pathLong);
     }
 
 }

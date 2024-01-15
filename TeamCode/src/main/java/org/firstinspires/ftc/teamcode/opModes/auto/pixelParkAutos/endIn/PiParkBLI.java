@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
+import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
@@ -28,7 +29,7 @@ public class PiParkBLI extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
-            pixelPark(drive);
+            pixelPark(drive, PathLong.NONE);
         }
         endAuto(EndPose.RIGHT, drive);
     }
