@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.UtilClass;
 
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1Possessed;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2Possessed;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -31,9 +33,11 @@ public class ServoUtil {
         if (servo == HardwareConfig.claw1) {
             servo.setPosition(setServo(openClaw1));
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
+            claw1Possessed = false;
         } else if (servo == HardwareConfig.claw2) {
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
             servo.setPosition(setServo(openClaw2));
+            claw2Possessed = false;
         }
     }
 
@@ -44,9 +48,11 @@ public class ServoUtil {
         if (servo == HardwareConfig.claw1) {
             servo.setPosition(setServo(closeClaw1));
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
+            claw1Possessed = true;
         } else if (servo == HardwareConfig.claw2) {
             servo.setPosition(setServo(closeClaw2));
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
+            claw2Possessed = true;
         }
     }
 
@@ -71,6 +77,7 @@ public class ServoUtil {
     }
 
     public static double hcalc = 78;
+
     public static void calculateFlipPose(int pose, Servo servo) {
         double theta = Sensors.getPotentVal(potentiometer);
         PastPotent.pastPotentVal = theta;
@@ -82,11 +89,14 @@ public class ServoUtil {
 
     public static int lastSetVal;
     public static int releaseAirplane = 120;
-    public static void releaseAirplane(Servo servo){
+
+    public static void releaseAirplane(Servo servo) {
         servo.setPosition(setServo(releaseAirplane));
     }
+
     public static int raiseAirplaneVal = 40;
-    public static void raiseAirplane(Servo servo){
+
+    public static void raiseAirplane(Servo servo) {
         servo.setPosition(setServo(raiseAirplaneVal));
     }
 }

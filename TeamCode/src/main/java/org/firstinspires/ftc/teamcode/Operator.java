@@ -5,17 +5,15 @@ import static org.firstinspires.ftc.teamcode.Limits.flipperMin;
 import static org.firstinspires.ftc.teamcode.Limits.liftMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMin;
-import static org.firstinspires.ftc.teamcode.Sensors.operateClawByDist;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoFull;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.lastSetVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig.useAutoClose;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.distanceSensor1;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.distanceSensor2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
@@ -25,19 +23,26 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPowe
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class Operator extends Drivers {
+    public static boolean touchPressed = false;
+
     public static void bindOtherButtons(OpMode myOpMode, MecanumDrive drive) {
         //"Chase", "Camden", "Kian", "Grady", "Michael","Graden"
 //        if (!airplaneArmed && timer.seconds() > 80) {
 //            airplaneArmed = true;
 //            myOpMode.gamepad2.runRumbleEffect(cRE);
 //        }
-        Blink.selectLights(myOpMode);
+//        Blink.selectLights(myOpMode);
         if (currOther == otherControls[1]) {//Camden
+            if (!touchPressed && myOpMode.gamepad2.touchpad && useAutoClose) {
+                useAutoClose = false;
+            } else if (!touchPressed && myOpMode.gamepad2.touchpad && !useAutoClose) {
+                useAutoClose = true;
+            }
+            touchPressed = myOpMode.gamepad2.touchpad;
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
             if (myOpMode.gamepad2.right_bumper) {
                 closeClaw(claw1);
@@ -46,11 +51,9 @@ public class Operator extends Drivers {
                 closeClaw(claw2);
             }
             if (myOpMode.gamepad2.right_trigger > 0) {
-//                    ServoUtil.calculateFlipPose(25,flipServo);
                 openClaw(claw1);
             }
             if (myOpMode.gamepad2.left_trigger > 0) {
-//                    ServoUtil.calculateFlipPose(25,flipServo);
                 openClaw(claw2);
             }
 //            }else{
@@ -82,8 +85,6 @@ public class Operator extends Drivers {
                 calculateFlipPose(lastSetVal, flipServo);
             }
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
-            operateClawByDist(distanceSensor1);
-            operateClawByDist(distanceSensor2);
         }
         if (currOther == otherControls[3]) {//Grady
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {

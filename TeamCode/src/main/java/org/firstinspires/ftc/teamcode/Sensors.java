@@ -1,13 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig.useAutoClose;
 
 import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.Range;
@@ -78,36 +76,29 @@ public class Sensors {
         return touchSensor.isPressed();
     }
 
-    public static double[] loadColorDistSensor(ColorSensor colorSensor) {
-        double distance = 0;
-        ColorSensor colors = colorSensor;
-        if (colorSensor instanceof DistanceSensor) {
-            distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
-        }
-        return new double[]{colors.red(), colors.green(), colors.blue(), distance / 2};
+//    public static double[] loadColorDistSensor(ColorSensor colorSensor) {
+//        double distance = 0;
+//        ColorSensor colors = colorSensor;
+//        if (colorSensor instanceof DistanceSensor) {
+//            distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
+//        }
+//        return new double[]{colors.red(), colors.green(), colors.blue(), distance / 2};
+//    }
+
+    //    public static double[] getColors(ColorSensor colorSensor) {
+//        return new double[]{loadColorDistSensor(colorSensor)[0], loadColorDistSensor(colorSensor)[1], loadColorDistSensor(colorSensor)[2]};
+//    }
+    public static void loadDistance() {
+        HardwareConfig.distance1 = HardwareConfig.distanceSensor1.getDistance(DistanceUnit.CM);
+        HardwareConfig.distance2 = HardwareConfig.distanceSensor2.getDistance(DistanceUnit.CM);
     }
 
-    public static double[] getColors(ColorSensor colorSensor) {
-        return new double[]{loadColorDistSensor(colorSensor)[0], loadColorDistSensor(colorSensor)[1], loadColorDistSensor(colorSensor)[2]};
-    }
-
-    public static double getDistance(DistanceSensor sensor) {
-        return sensor.getDistance(DistanceUnit.CM);
-    }
-
-    public static void operateClawByDist(DistanceSensor colorSensor) {
-        Servo claw = null;
-        if (colorSensor == HardwareConfig.distanceSensor1) {
-            claw = HardwareConfig.claw1;
-        } else if (colorSensor == HardwareConfig.distanceSensor2) {
-            claw = HardwareConfig.claw2;
-        }
-        double distance = getDistance(colorSensor);
-        if (claw != null) {
-            if (distance < 2) {
-                closeClaw(claw);
-            } else {
-                closeClaw(claw);
+    public static void operateClawByDist() {
+        if (useAutoClose) {
+            if (HardwareConfig.distance1 < 2 && !HardwareConfig.claw1Possessed) {
+                closeClaw(HardwareConfig.claw1);
+            } else if (HardwareConfig.distance2 < 2 && !HardwareConfig.claw2Possessed) {
+                closeClaw(HardwareConfig.claw2);
             }
         }
     }

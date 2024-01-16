@@ -8,6 +8,7 @@ public class varConfig {
     public static int slowMult = 3;
     public static double minConfidence = 0.5;
     public static double minRectArea = 300;
+    public static boolean useAutoClose = true;
     public static boolean useFileWriter = true;
     public static boolean multipleDrivers = true;
 }

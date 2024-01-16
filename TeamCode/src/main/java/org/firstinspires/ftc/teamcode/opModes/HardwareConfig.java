@@ -10,7 +10,9 @@ import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
 import static org.firstinspires.ftc.teamcode.Operator.bindOtherButtons;
 import static org.firstinspires.ftc.teamcode.Sensors.currentVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
+import static org.firstinspires.ftc.teamcode.Sensors.loadDistance;
 import static org.firstinspires.ftc.teamcode.Sensors.lowVoltage;
+import static org.firstinspires.ftc.teamcode.Sensors.operateClawByDist;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.setUpFile;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.writeToFile;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionR;
@@ -18,6 +20,9 @@ import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.zeroPowerBrake;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.regularLoopTime;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.useLoopTime;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig.useAutoClose;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -68,6 +73,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
     public static double liftPower = 0, extensionPower = 0, rotationPower = 0;
+    public static double loops = 0;
+    public static double distance1 = 0, distance2 = 0;
+    public static boolean claw1Possessed = false, claw2Possessed = false;
     public static Gamepad.RumbleEffect cRE;
     double gamepadX, gamepadY, gamepadHypot, controllerAngle, robotDegree, movementDegree;
     boolean reverse = false;
@@ -219,6 +227,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     //code to run all drive functions
     public void doBulk() {
         once(myOpMode);//runs once
+        periodically();//runs every loop
         bindDriverButtons(myOpMode, drive);
         bindOtherButtons(myOpMode, drive);
         if (multipleDrivers) {
@@ -228,6 +237,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
 //        updatePoseByAprilTag(drive);
         power();//sets power to power variables
         buildTelemetry();//makes telemetry
+        loops++;
     }
 
     public void once(OpMode myOpMode) {
@@ -240,7 +250,20 @@ public class HardwareConfig {//this is an external opMode that can have public v
 //            int duration = 180000000;
 //            myOpMode.gamepad1.setLedColor(229, 74, 161, duration);
 //            myOpMode.gamepad2.setLedColor(54, 69, 79, duration);
+            loadDistance();
             once = true;
+        }
+    }
+
+    public void periodically() {
+        if (useLoopTime) {
+            if (loops % regularLoopTime == 0) { // happens every regularLoopTime, loops
+                loadDistance();
+                operateClawByDist();
+            }
+        } else {
+            loadDistance();
+            operateClawByDist();
         }
     }
 
@@ -251,7 +274,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             gamepadHypot = Range.clip(Math.hypot(gamepadX, gamepadY), 0, 1);//get the
             // hypotenuse of the x and y values,clip it to a max of 1 and store
             controllerAngle = Math.toDegrees(Math.atan2(gamepadY, gamepadX));//Get the angle of the controller stick using arc tangent
-            robotDegree = Math.toDegrees(drive.getPoseEstimate().getHeading());
+            robotDegree = Math.toDegrees(drive.getPoseEstimate().getHeading()); // change to imu
             movementDegree = (controllerAngle - robotDegree);//get the movement degree based on the controller vs robot angle
             xControl = Math.cos(Math.toRadians(movementDegree)) * gamepadHypot;//get the x value of the movement
             yControl = Math.sin(Math.toRadians(movementDegree)) * gamepadHypot;//get the y value of the movement
@@ -339,8 +362,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
             telemetry.addData("", "We have a low battery");
         }
         telemetry.addData("potentiometer", "%.1f", Sensors.getPotentVal(potentiometer));
-        telemetry.addData("Distance 1", Sensors.getDistance(distanceSensor1));
-        telemetry.addData("Distance 2", Sensors.getDistance(distanceSensor2));
+        telemetry.addData("Distance 1", distance1);
+        telemetry.addData("Distance 2", distance2);
 
         telemetry.addData("Color", LEDcolor);
         if (reversed) {
@@ -348,6 +371,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         if (slowModeIsOn) {
             telemetry.addData("slowMode", "");
+        }
+        if (useAutoClose) {
+            telemetry.addData("autoClose", "");
         }
         telemetry.addData("Extension", motorExtension.getCurrentPosition());
         teleSpace();
@@ -359,6 +385,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.addData("totalDistance (in)", "%.1f", DistanceStorage.totalDist);
         teleSpace();
         telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
+        telemetry.addData("Loops", "%.1f", loops);
         teleSpace();
         updateStatus("Running");
         telemetry.addData("Status", statusVal);//shows current status
