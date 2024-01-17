@@ -14,6 +14,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPattern
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
+import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.CycleTrajectories;
@@ -35,7 +36,7 @@ public class cyclePatterns {
     public static void place2Cycle(MecanumDrive drive) {
         place1Pixel(drive);
         grabPixelLongSide(drive);
-        navToBackdrop_Place(drive, false);
+        navToBackdrop_Place(drive, false, PathLong.NONE);
         drive.followTrajectory(drive.trajectoryBuilder(drive.getPoseEstimate()).back(10).build());
         updatePose(drive);
     }

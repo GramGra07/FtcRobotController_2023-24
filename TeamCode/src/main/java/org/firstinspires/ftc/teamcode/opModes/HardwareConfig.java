@@ -262,8 +262,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 operateClawByDist();
             }
         } else {
-            loadDistance();
-            operateClawByDist();
+//            loadDistance();
+//            operateClawByDist();
         }
     }
 
@@ -386,6 +386,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         teleSpace();
         telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         telemetry.addData("Loops", "%.1f", loops);
+        telemetry.addData("FPS", "%.1f", loops / timer.seconds());
         teleSpace();
         updateStatus("Running");
         telemetry.addData("Status", statusVal);//shows current status

@@ -84,7 +84,7 @@ public class Operator extends Drivers {
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);
             }
-            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[3]) {//Grady
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
