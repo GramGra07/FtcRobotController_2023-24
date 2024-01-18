@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.UtilClass;
 
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.updateStatus;
 
@@ -8,9 +10,21 @@ import com.acmerobotics.roadrunner.util.Angle;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
+import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class DriverAid {
+    public static void operateClawByDist() {
+        double val = ServoUtil.autoCloseDist;
+        if (useAutoClose) {
+            if (HardwareConfig.distance1 < val && !HardwareConfig.claw1Possessed) {
+                closeClaw(HardwareConfig.claw1);
+            } else if (HardwareConfig.distance2 < val && !HardwareConfig.claw2Possessed) {
+                closeClaw(HardwareConfig.claw2);
+            }
+        }
+    }
+
     public static void doDriverAid(MecanumDrive drive, boolean goToDrone, boolean turnStraight, boolean turnWing, boolean breakFollowing) {
         if (goToDrone) {
             slowModeIsOn = false;

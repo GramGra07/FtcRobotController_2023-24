@@ -12,7 +12,7 @@ import static org.firstinspires.ftc.teamcode.Sensors.currentVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.loadDistance;
 import static org.firstinspires.ftc.teamcode.Sensors.lowVoltage;
-import static org.firstinspires.ftc.teamcode.Sensors.operateClawByDist;
+import static org.firstinspires.ftc.teamcode.UtilClass.DriverAid.operateClawByDist;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.setUpFile;
 import static org.firstinspires.ftc.teamcode.UtilClass.FileWriterFTC.writeToFile;
 import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.setDirectionR;
@@ -20,9 +20,9 @@ import static org.firstinspires.ftc.teamcode.UtilClass.MotorUtil.zeroPowerBrake;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.servoFlipVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.regularLoopTime;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.loopInterval;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.useLoopTime;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig.useAutoClose;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -73,7 +73,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
     public static double liftPower = 0, extensionPower = 0, rotationPower = 0;
-    public static double loops = 0;
+    public static double loops = 0, LPS = 0, refreshRate = 0, rrPS = 0, pastRefreshRate = refreshRate, pastSecondLoops = 0, pastTimeRR = 0;
+    public static boolean pastUseLoopTime = useLoopTime;
     public static double distance1 = 0, distance2 = 0;
     public static boolean claw1Possessed = false, claw2Possessed = false;
     public static Gamepad.RumbleEffect cRE;
@@ -104,7 +105,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         myOpMode = opmode;
     }
 
-    public boolean once = false;
+    public static boolean once = false;
     public static PIDController pidRotation = new PIDController(
             0.1, // Proportional gain
             0.1, // Integral gain
@@ -115,12 +116,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static DistanceSensor distanceSensor1;
     public static DistanceSensor distanceSensor2;
 
-    public static final String currentVersion = "5.0.0";
+    public static final String currentVersion = "5.1.0";
 
     //init
     public static void init(HardwareMap ahwMap, boolean auto) {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         thisDist = 0;
+        once = false;
         setUpFile(fileWriter);
         updateStatus("Initializing");
         drive = new MecanumDrive(ahwMap);
@@ -228,6 +230,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void doBulk() {
         once(myOpMode);//runs once
         periodically();//runs every loop
+        loopTimeCalculations();
         bindDriverButtons(myOpMode, drive);
         bindOtherButtons(myOpMode, drive);
         if (multipleDrivers) {
@@ -245,26 +248,46 @@ public class HardwareConfig {//this is an external opMode that can have public v
             Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
             // Telemetry telemetry = myOpMode.telemetry;
             telemetry.clearAll();
-
             updateStatus("Running");
-//            int duration = 180000000;
-//            myOpMode.gamepad1.setLedColor(229, 74, 161, duration);
-//            myOpMode.gamepad2.setLedColor(54, 69, 79, duration);
+            myOpMode.gamepad1.setLedColor(229, 74, 161, -1);
+            myOpMode.gamepad2.setLedColor(0, 0, 0, -1);
             once = true;
         }
     }
 
     public void periodically() {
         if (useLoopTime) {
-            if (loops % regularLoopTime == 0) { // happens every regularLoopTime, loops
+            if (loops % loopInterval == 0) { // happens every loopInterval, loops
                 loadDistance();
                 operateClawByDist();
+                refreshRate++;
             }
         } else {
             if (useAutoClose) {
                 loadDistance();
                 operateClawByDist();
             }
+        }
+    }
+
+    public static void loopTimeCalculations() {
+        if (pastSecondLoops != loopInterval) {
+            timer.reset();
+            loops = 0;
+            refreshRate = 0;
+            pastSecondLoops = loopInterval;
+        }
+        if (useLoopTime != pastUseLoopTime) {
+            timer.reset();
+            loops = 0;
+            refreshRate = 0;
+            pastUseLoopTime = useLoopTime;
+        }
+        LPS = loops / timer.seconds();
+        if (refreshRate != pastRefreshRate) {
+            rrPS = timer.seconds() - pastTimeRR;
+            pastRefreshRate = refreshRate;
+            pastTimeRR = timer.seconds();
         }
     }
 
@@ -365,8 +388,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.addData("potentiometer", "%.1f", Sensors.getPotentVal(potentiometer));
         telemetry.addData("Distance 1", distance1);
         telemetry.addData("Distance 2", distance2);
-
-        telemetry.addData("Color", LEDcolor);
         if (reversed) {
             telemetry.addData("reversed", "");
         }
@@ -387,9 +408,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         teleSpace();
         telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         telemetry.addData("Loops", "%.1f", loops);
-        telemetry.addData("FPS", "%.1f", loops / timer.seconds());
+        telemetry.addData("LPS", "%.1f", LPS);
+        telemetry.addData("Refresh Rate", "%.1f", rrPS);
         teleSpace();
-        updateStatus("Running");
+        telemetry.addData("Color", LEDcolor);
         telemetry.addData("Status", statusVal);//shows current status
         teleSpace();
         telemetry.addData("Version", currentVersion);

@@ -8,7 +8,8 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPo
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.lastSetVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig.useAutoClose;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.useLoopTime;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
@@ -35,8 +36,10 @@ public class Operator extends Drivers {
         if (currOther == otherControls[1]) {//Camden
             if (!touchPressed && myOpMode.gamepad2.touchpad && useAutoClose) {
                 useAutoClose = false;
+                useLoopTime = false;
             } else if (!touchPressed && myOpMode.gamepad2.touchpad && !useAutoClose) {
                 useAutoClose = true;
+                useLoopTime = true;
             }
             touchPressed = myOpMode.gamepad2.touchpad;
 //            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {

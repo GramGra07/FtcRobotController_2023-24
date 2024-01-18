@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig.useAutoClose;
-
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -91,15 +88,5 @@ public class Sensors {
     public static void loadDistance() {
         HardwareConfig.distance1 = HardwareConfig.distanceSensor1.getDistance(DistanceUnit.CM);
         HardwareConfig.distance2 = HardwareConfig.distanceSensor2.getDistance(DistanceUnit.CM);
-    }
-
-    public static void operateClawByDist() {
-        if (useAutoClose) {
-            if (HardwareConfig.distance1 < 2 && !HardwareConfig.claw1Possessed) {
-                closeClaw(HardwareConfig.claw1);
-            } else if (HardwareConfig.distance2 < 2 && !HardwareConfig.claw2Possessed) {
-                closeClaw(HardwareConfig.claw2);
-            }
-        }
     }
 }

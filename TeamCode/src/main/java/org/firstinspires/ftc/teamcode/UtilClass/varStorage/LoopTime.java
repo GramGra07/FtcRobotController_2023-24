@@ -4,6 +4,6 @@ import com.acmerobotics.dashboard.config.Config;
 
 @Config
 public class LoopTime {
-    public static double regularLoopTime = 1;
+    public static double loopInterval = 18;
     public static boolean useLoopTime = true;
 }

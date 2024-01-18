@@ -1,3 +1,7 @@
+5.1.0 January 18th, 2024
+Added LoopTime class to calculate loops per second and the refresh rate of the robot systems,
+specifically distance sensors
+
 5.0.0 December 27th, 2023
 Added three new Autonomous Modes for competition use
 Added all of the preselect teleOp modes

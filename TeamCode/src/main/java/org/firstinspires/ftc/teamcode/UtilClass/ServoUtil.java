@@ -14,6 +14,8 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 @Config
 
 public class ServoUtil {
+    public static boolean useAutoClose = true;
+    public static double autoCloseDist = 6;
     public static double position = 0;
     public final static double degree_mult = 0.00555555554;
 
@@ -56,26 +58,7 @@ public class ServoUtil {
         }
     }
 
-    public static int servoFlipBase = 87;
-    public static int servoFlipFull = 62;
-    public static int servoFlipFullHalf = 75;
-    public static int servoFlipVal = servoFlipFull;
-
-    public static void flipServoBase(Servo servo) {
-        servo.setPosition(setServo(servoFlipBase));
-//        lastSetVal = servoFlipBase;
-    }
-
-    public static void flipServoFull(Servo servo) {
-        servo.setPosition(setServo(servoFlipFull));
-//        lastSetVal = servoFlipFull;
-    }
-
-    public static void flipServoFullHalf(Servo servo) {
-        servo.setPosition(setServo(servoFlipFullHalf));
-//        lastSetVal = servoFlipFullHalf;
-    }
-
+    public static int servoFlipVal = 62;
     public static double hcalc = 78;
 
     public static void calculateFlipPose(int pose, Servo servo) {
