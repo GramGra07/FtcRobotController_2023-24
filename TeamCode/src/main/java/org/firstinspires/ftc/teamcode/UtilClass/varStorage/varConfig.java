@@ -10,5 +10,5 @@ public class varConfig {
     public static double minRectArea = 300;
     public static boolean useAutoClose = true;
     public static boolean useFileWriter = true;
-    public static boolean multipleDrivers = true;
+    public static boolean multipleDrivers = false;
 }
