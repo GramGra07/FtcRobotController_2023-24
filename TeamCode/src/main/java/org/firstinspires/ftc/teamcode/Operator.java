@@ -2,13 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Limits.flipperMax;
 import static org.firstinspires.ftc.teamcode.Limits.flipperMin;
-import static org.firstinspires.ftc.teamcode.Limits.liftMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMin;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoBase;
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.flipServoFull;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.lastSetVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig.useAutoClose;
@@ -16,7 +13,6 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPower;
 
@@ -87,7 +83,6 @@ public class Operator extends Drivers {
             rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[3]) {//Grady
-//            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
             if (myOpMode.gamepad2.right_bumper) {
                 openClaw(claw1);
             }
@@ -100,20 +95,6 @@ public class Operator extends Drivers {
             if (myOpMode.gamepad2.left_trigger > 0) {
                 closeClaw(claw2);
             }
-//            }else{
-//                if (myOpMode.gamepad2.right_bumper) {
-//                    closeClaw(claw2);
-//                }
-//                if (myOpMode.gamepad2.left_bumper) {
-//                    closeClaw(claw1);
-//                }
-//                if (myOpMode.gamepad2.right_trigger > 0) {
-//                    openClaw(claw2);
-//                }
-//                if (myOpMode.gamepad2.left_trigger > 0) {
-//                    openClaw(claw1);
-//                }
-//            }
 
             extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
             if (myOpMode.gamepad2.dpad_down) {
@@ -127,97 +108,54 @@ public class Operator extends Drivers {
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[0]) {//Chase
-            if (myOpMode.gamepad2.right_bumper) {
-                openClaw(claw1);
-            }
-            if (myOpMode.gamepad2.left_bumper) {
-                closeClaw(claw1);
-            }
-            if (myOpMode.gamepad2.dpad_down) {
-                openClaw(claw2);
-            }
-            if (myOpMode.gamepad2.dpad_up) {
-                closeClaw(claw2);
-            }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_x, -liftMax, liftMax);
-            extensionPower = Range.clip(myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
-            if (myOpMode.gamepad2.right_stick_y > 0) {
-                flipServoFull(flipServo);
-            } else if (myOpMode.gamepad2.right_stick_y < 0) {
-                flipServoBase(flipServo);
-            }
-            rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[2]) {//Kian
-            if (myOpMode.gamepad2.right_bumper) {
-                openClaw(claw1);
-            }
-            if (myOpMode.gamepad2.left_bumper) {
-                closeClaw(claw1);
-            }
-            if (myOpMode.gamepad2.dpad_down) {
-                openClaw(claw2);
-            }
-            if (myOpMode.gamepad2.dpad_up) {
-                closeClaw(claw2);
-            }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_x, -liftMax, liftMax);
-            extensionPower = Range.clip(myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
-            if (myOpMode.gamepad2.right_stick_y > 0) {
-                flipServoFull(flipServo);
-            } else if (myOpMode.gamepad2.right_stick_y < 0) {
-                flipServoBase(flipServo);
-            }
-            rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[4]) {//Michael
-            if (myOpMode.gamepad2.right_bumper) {
-                openClaw(claw1);
-            }
-            if (myOpMode.gamepad2.left_bumper) {
-                closeClaw(claw1);
-            }
-            if (myOpMode.gamepad2.dpad_down) {
-                openClaw(claw2);
-            }
-            if (myOpMode.gamepad2.dpad_up) {
-                closeClaw(claw2);
-            }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_x, -liftMax, liftMax);
-            extensionPower = Range.clip(myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
-            if (myOpMode.gamepad2.right_stick_y > 0) {
-                flipServoFull(flipServo);
-            } else if (myOpMode.gamepad2.right_stick_y < 0) {
-                flipServoBase(flipServo);
-            }
-            rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[5]) {//Graden
-            if (myOpMode.gamepad2.right_bumper) {
-                openClaw(claw1);
+            if (!touchPressed && myOpMode.gamepad2.touchpad && useAutoClose) {
+                useAutoClose = false;
+            } else if (!touchPressed && myOpMode.gamepad2.touchpad && !useAutoClose) {
+                useAutoClose = true;
             }
+            touchPressed = myOpMode.gamepad2.touchpad;
+
             if (myOpMode.gamepad2.left_bumper) {
                 closeClaw(claw1);
             }
-            if (myOpMode.gamepad2.dpad_down) {
-                openClaw(claw2);
+
+            if (myOpMode.gamepad2.right_bumper) {
+                openClaw(claw1);
             }
-            if (myOpMode.gamepad2.dpad_up) {
+
+            if (myOpMode.gamepad2.left_trigger > 0) {
                 closeClaw(claw2);
             }
-            liftPower = Range.clip(myOpMode.gamepad2.left_stick_x, -liftMax, liftMax);
-            extensionPower = Range.clip(myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
-            if (myOpMode.gamepad2.right_stick_y > 0) {
-                flipServoFull(flipServo);
-            } else if (myOpMode.gamepad2.right_stick_y < 0) {
-                flipServoBase(flipServo);
+
+            if (myOpMode.gamepad2.right_trigger > 0) {
+                openClaw(claw2);
             }
+
+            extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
+            if (myOpMode.gamepad2.dpad_left) {
+                calculateFlipPose(30, flipServo);
+            } else if (myOpMode.gamepad2.dpad_right) {
+                calculateFlipPose(45, flipServo);
+            } else if (myOpMode.gamepad2.dpad_up) {
+                calculateFlipPose(70, flipServo);
+            } else if (myOpMode.gamepad2.dpad_down) {
+                calculateFlipPose(0, flipServo);
+            }
+
             rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
+                calculateFlipPose(lastSetVal, flipServo);
+            }
         }
-        if (currOther == otherControls[6]) {
-            calculateFlipPose(30, flipServo);
+        if (currOther == otherControls[6]) { // Delaney
         }
-        if (currOther == otherControls[7]) {
+        if (currOther == otherControls[7]) { // Child
             calculateFlipPose(30, flipServo);
         }
     }

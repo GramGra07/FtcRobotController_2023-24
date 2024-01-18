@@ -105,7 +105,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public boolean once = false;
-    public static PIDController pidExtension = new PIDController(
+    public static PIDController pidRotation = new PIDController(
             0.1, // Proportional gain
             0.1, // Integral gain
             0.1 // Derivative gain

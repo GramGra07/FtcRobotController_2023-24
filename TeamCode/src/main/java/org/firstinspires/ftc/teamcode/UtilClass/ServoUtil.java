@@ -95,6 +95,11 @@ public class ServoUtil {
     }
 
     public static int raiseAirplaneVal = 40;
+    public static int airplaneReset = 30;
+
+    public static void resetAirplane(Servo servo) {
+        servo.setPosition(setServo(airplaneReset));
+    }
 
     public static void raiseAirplane(Servo servo) {
         servo.setPosition(setServo(raiseAirplaneVal));
