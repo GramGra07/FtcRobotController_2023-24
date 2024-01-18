@@ -250,7 +250,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
 //            int duration = 180000000;
 //            myOpMode.gamepad1.setLedColor(229, 74, 161, duration);
 //            myOpMode.gamepad2.setLedColor(54, 69, 79, duration);
-            loadDistance();
             once = true;
         }
     }
@@ -262,8 +261,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
                 operateClawByDist();
             }
         } else {
-//            loadDistance();
-//            operateClawByDist();
+            if (useAutoClose) {
+                loadDistance();
+                operateClawByDist();
+            }
         }
     }
 
