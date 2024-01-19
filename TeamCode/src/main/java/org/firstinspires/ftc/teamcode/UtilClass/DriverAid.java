@@ -16,15 +16,23 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class DriverAid {
-    public static void operateClawByDist() {
+    public static void operateClawByDist(boolean inAuto) {
         double val = ServoUtil.autoCloseDist;
-        if (useAutoClose) {
-            if (lastTimeOpen + autoCloseDelay < HardwareConfig.timer.seconds()) {
-                if (HardwareConfig.distance1 < val && !HardwareConfig.claw1Possessed) {
-                    closeClaw(HardwareConfig.claw1);
-                } else if (HardwareConfig.distance2 < val && !HardwareConfig.claw2Possessed) {
-                    closeClaw(HardwareConfig.claw2);
+        if (!inAuto) {
+            if (useAutoClose) {
+                if (lastTimeOpen + autoCloseDelay < HardwareConfig.timer.seconds()) {
+                    if (HardwareConfig.distance1 < val && !HardwareConfig.claw1Possessed) {
+                        closeClaw(HardwareConfig.claw1);
+                    } else if (HardwareConfig.distance2 < val && !HardwareConfig.claw2Possessed) {
+                        closeClaw(HardwareConfig.claw2);
+                    }
                 }
+            }
+        } else {
+            if (HardwareConfig.distance1 < val && !HardwareConfig.claw1Possessed) {
+                closeClaw(HardwareConfig.claw1);
+            } else if (HardwareConfig.distance2 < val && !HardwareConfig.claw2Possessed) {
+                closeClaw(HardwareConfig.claw2);
             }
         }
     }

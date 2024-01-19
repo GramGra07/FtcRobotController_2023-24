@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
+import static org.firstinspires.ftc.teamcode.UtilClass.DriverAid.operateClawByDist;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
-import static java.lang.Thread.sleep;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -67,7 +67,7 @@ public class autoHardware extends HardwareConfig {
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(1280, 800, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -75,12 +75,8 @@ public class autoHardware extends HardwareConfig {
             }
         });
         timer.reset();
-        ServoUtil.closeClaw(claw1);
-        ServoUtil.closeClaw(claw2);
-        try {
-            sleep(1500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        while (!claw1Possessed || !claw2Possessed) {
+            operateClawByDist(true);
         }
         ServoUtil.calculateFlipPose(80, flipServo);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
@@ -89,7 +85,7 @@ public class autoHardware extends HardwareConfig {
         if (myOpMode.isStopRequested()) return;
         myOpMode.waitForStart(); // wait for the start button to be pressed
         webcam.closeCameraDevice();
-        visionPortal.setProcessorEnabled(aprilTagProcessor, true); // enable the april tag processor
+//        visionPortal.setProcessorEnabled(aprilTagProcessor, true); // enable the april tag processor
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
     }

@@ -262,13 +262,13 @@ public class HardwareConfig {//this is an external opMode that can have public v
         if (useLoopTime) {
             if (loops % loopInterval == 0) { // happens every loopInterval, loops
                 loadDistance();
-                operateClawByDist();
+                operateClawByDist(false);
                 refreshRate++;
             }
         } else {
             if (useAutoClose) {
                 loadDistance();
-                operateClawByDist();
+                operateClawByDist(false);
             }
         }
     }
@@ -287,11 +287,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
             pastUseLoopTime = useLoopTime;
         }
         LPS = loops / timer.seconds();
-        if (LPS != lastLPS) {
-            LPSList.add(LPS);
-            LPSAverage = LPSList.stream().mapToDouble(val -> val).average().orElse(0.0);
-            lastLPS = LPS;
-        }
+//        if (LPS != lastLPS) {
+//            LPSList.add(LPS);
+//            LPSAverage = LPSList.stream().mapToDouble(val -> val).average().orElse(0.0);
+//            lastLPS = LPS;
+//        }
         if (refreshRate != pastRefreshRate) {
             rrPS = timer.seconds() - pastTimeRR;
             pastRefreshRate = refreshRate;
@@ -417,7 +417,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         telemetry.addData("Loops", "%.1f", loops);
         telemetry.addData("Current LPS", "%.1f", LPS);
-        telemetry.addData("Average LPS", "%.1f", LPSAverage);
+//        telemetry.addData("Average LPS", "%.1f", LPSAverage);
         telemetry.addData("Refresh Rate", "%.1f", rrPS);
         teleSpace();
         telemetry.addData("Color", LEDcolor);
