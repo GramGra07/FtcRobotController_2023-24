@@ -73,8 +73,6 @@ public class Operator extends Drivers {
             extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
             if (myOpMode.gamepad2.dpad_left) {
                 calculateFlipPose(30, flipServo);
-            } else if (myOpMode.gamepad2.dpad_right) {
-                calculateFlipPose(45, flipServo);
             } else if (myOpMode.gamepad2.dpad_up) {
                 calculateFlipPose(70, flipServo);
             } else if (myOpMode.gamepad2.dpad_down) {
@@ -83,7 +81,7 @@ public class Operator extends Drivers {
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);
             }
-            rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[3]) {//Grady
             if (myOpMode.gamepad2.right_bumper) {

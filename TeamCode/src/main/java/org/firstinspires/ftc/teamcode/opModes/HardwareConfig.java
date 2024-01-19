@@ -60,6 +60,7 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HardwareConfig {//this is an external opMode that can have public variables used by everything
@@ -73,7 +74,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean slowModeIsOn = false, reversed;
     public double xControl, yControl, frontRightPower, frontLeftPower, backRightPower, backLeftPower;
     public static double liftPower = 0, extensionPower = 0, rotationPower = 0;
-    public static double loops = 0, LPS = 0, refreshRate = 0, rrPS = 0, pastRefreshRate = refreshRate, pastSecondLoops = 0, pastTimeRR = 0;
+    public static double loops = 0, LPS = 0, lastLPS = LPS, LPSAverage = 0, refreshRate = 0, rrPS = 0, pastRefreshRate = refreshRate, pastSecondLoops = 0, pastTimeRR = 0;
+    public static ArrayList<Double> LPSList = new ArrayList<Double>();
+    public static double lastTimeOpen = 0;
     public static boolean pastUseLoopTime = useLoopTime;
     public static double distance1 = 0, distance2 = 0;
     public static boolean claw1Possessed = false, claw2Possessed = false;
@@ -284,6 +287,11 @@ public class HardwareConfig {//this is an external opMode that can have public v
             pastUseLoopTime = useLoopTime;
         }
         LPS = loops / timer.seconds();
+        if (LPS != lastLPS) {
+            LPSList.add(LPS);
+            LPSAverage = LPSList.stream().mapToDouble(val -> val).average().orElse(0.0);
+            lastLPS = LPS;
+        }
         if (refreshRate != pastRefreshRate) {
             rrPS = timer.seconds() - pastTimeRR;
             pastRefreshRate = refreshRate;
@@ -399,16 +407,17 @@ public class HardwareConfig {//this is an external opMode that can have public v
         }
         telemetry.addData("Extension", motorExtension.getCurrentPosition());
         teleSpace();
-        telemetry.addData("x", "%.1f", drive.getPoseEstimate().getX());
-        telemetry.addData("y", "%.1f", drive.getPoseEstimate().getY());
-        telemetry.addData("heading", "%.1f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
-        teleSpace();
+//        telemetry.addData("x", "%.1f", drive.getPoseEstimate().getX());
+//        telemetry.addData("y", "%.1f", drive.getPoseEstimate().getY());
+//        telemetry.addData("heading", "%.1f", Math.toDegrees(drive.getPoseEstimate().getHeading()));
+//        teleSpace();
         telemetry.addData("thisDistance (in)", "%.1f", thisDist);
         telemetry.addData("totalDistance (in)", "%.1f", DistanceStorage.totalDist);
         teleSpace();
         telemetry.addData("Timer", "%.1f", timer.seconds());//shows current time
         telemetry.addData("Loops", "%.1f", loops);
-        telemetry.addData("LPS", "%.1f", LPS);
+        telemetry.addData("Current LPS", "%.1f", LPS);
+        telemetry.addData("Average LPS", "%.1f", LPSAverage);
         telemetry.addData("Refresh Rate", "%.1f", rrPS);
         teleSpace();
         telemetry.addData("Color", LEDcolor);
@@ -418,7 +427,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.update();
     }
 
-    //random
     public void teleSpace() {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         //Telemetry telemetry = myOpMode.telemetry;

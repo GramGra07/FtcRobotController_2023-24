@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode.UtilClass;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1Possessed;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2Possessed;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.lastTimeOpen;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.timer;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -41,6 +43,7 @@ public class ServoUtil {
             servo.setPosition(setServo(openClaw2));
             claw2Possessed = false;
         }
+        lastTimeOpen = timer.seconds();
     }
 
     public static int closeClaw1 = 200;

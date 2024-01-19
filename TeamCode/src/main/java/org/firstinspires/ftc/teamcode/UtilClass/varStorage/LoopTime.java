@@ -6,4 +6,5 @@ import com.acmerobotics.dashboard.config.Config;
 public class LoopTime {
     public static double loopInterval = 18;
     public static boolean useLoopTime = true;
+    public static double autoCloseDelay = 5;
 }
