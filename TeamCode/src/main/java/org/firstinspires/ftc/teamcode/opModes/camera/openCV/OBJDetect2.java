@@ -25,10 +25,11 @@ public class OBJDetect2 extends OpenCvPipeline {
     public OBJDetect2(Alliance color) {
         this.alliance = color;
     }
+
     int current = 0;
 
-    public static int[] pointsX = new int[]{80, 120, 210, 255};
-    public static int[] pointsY = new int[]{140, 180, 155, 200};
+    public static int[] pointsX = new int[]{560, 560 + 120, 100, 250};
+    public static int[] pointsY = new int[]{70, 200, 40, 190};
 
     public Scalar scalarLow, scalarHigh;
 
@@ -55,7 +56,7 @@ public class OBJDetect2 extends OpenCvPipeline {
             if (rightMean[1] > scalarLow.val[1] && rightMean[1] < scalarHigh.val[1]) {
                 if (rightMean[2] > scalarLow.val[2] && rightMean[2] < scalarHigh.val[2]) {
                     Imgproc.rectangle(input, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
-                    Imgproc.putText(input, "right", new Point(pointsX[2], pointsY[2]), 0, 1, new Scalar(0, 255, 0));
+                    Imgproc.putText(input, "right", new Point(input.width() / 2, input.height() / 2), 0, 5, new Scalar(0, 255, 0));
                     autonomousRandom = AutoRandom.right;
                     Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
                     Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
@@ -70,7 +71,7 @@ public class OBJDetect2 extends OpenCvPipeline {
                 if (middleMean[1] > scalarLow.val[1] && middleMean[1] < scalarHigh.val[1]) {
                     if (middleMean[2] > scalarLow.val[2] && middleMean[2] < scalarHigh.val[2]) {
                         Imgproc.rectangle(input, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
-                        Imgproc.putText(input, "middle", new Point(pointsX[0], pointsY[0]), 0, 1, new Scalar(0, 255, 0));
+                        Imgproc.putText(input, "middle", new Point(input.width() / 2, input.height() / 2), 0, 5, new Scalar(0, 255, 0));
                         autonomousRandom = AutoRandom.mid;
                         Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
                         Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
@@ -81,8 +82,8 @@ public class OBJDetect2 extends OpenCvPipeline {
                 }
             }
         }
-        if (current ==0){
-            Imgproc.putText(input, "left", new Point(input.width() / 2, 50), 0, 1, new Scalar(0, 255, 0));
+        if (current == 0) {
+            Imgproc.putText(input, "left", new Point(input.width() / 2, input.height() / 2), 0, 5, new Scalar(0, 255, 0));
             autonomousRandom = AutoRandom.left;
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);

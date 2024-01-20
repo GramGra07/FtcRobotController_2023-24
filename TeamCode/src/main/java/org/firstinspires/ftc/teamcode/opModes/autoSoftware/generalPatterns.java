@@ -60,7 +60,7 @@ public class generalPatterns {
             case left:
                 if (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.LEFT) {
                     drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                            .strafeLeft(14)
+                            .strafeLeft(10)
                             .forward(20)
                             .addDisplacementMarker(() -> {
                                 ServoUtil.openClaw(HardwareConfig.claw2);
@@ -106,7 +106,7 @@ public class generalPatterns {
                                 ServoUtil.openClaw(HardwareConfig.claw2);
                                 ServoUtil.calculateFlipPose(30, flipServo);
                             })
-                            .back(1)
+                            .strafeRight(5)
                             .build()
                     );
                 } else {

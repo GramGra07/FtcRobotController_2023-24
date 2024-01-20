@@ -18,14 +18,14 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 @Autonomous(group = place1Sort, preselectTeleOp = preselect)
 //@Disabled
-public class BLS extends LinearOpMode {
+public class RL extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
     @Override
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
+        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
         robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
             place1Pixel(drive);

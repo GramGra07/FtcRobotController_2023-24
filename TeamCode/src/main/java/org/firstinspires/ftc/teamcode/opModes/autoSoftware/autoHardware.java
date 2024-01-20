@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
-import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
-import static org.firstinspires.ftc.teamcode.UtilClass.DriverAid.operateClawByDist;
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -17,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
+import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
@@ -58,16 +58,19 @@ public class autoHardware extends HardwareConfig {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap, true); // hardware config initialization
-
+        if (myOpMode.isStopRequested()) {
+            webcam.closeCameraDevice();
+            return;
+        }
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam1_N), cameraMonitorViewId);
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam2_N), cameraMonitorViewId);
         webcam.setPipeline(new OBJDetect2(StartPose.alliance)); // set the webcam pipeline to the OBJDetect2 pipeline
         FtcDashboard.getInstance().startCameraStream(webcam, 0); // start the camera stream on FTC Dash
         webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                webcam.startStreaming(1280, 800, OpenCvCameraRotation.UPRIGHT);
+                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -75,16 +78,17 @@ public class autoHardware extends HardwareConfig {
             }
         });
         timer.reset();
-        while (!claw1Possessed || !claw2Possessed) {
-            operateClawByDist(true);
-        }
+        ServoUtil.closeClaw(HardwareConfig.claw1);
+        ServoUtil.closeClaw(HardwareConfig.claw2);
         ServoUtil.calculateFlipPose(80, flipServo);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
         LEDcolor = "GREEN";
         telemetry.update();
-        if (myOpMode.isStopRequested()) return;
+        if (myOpMode.isStopRequested()) {
+            webcam.closeCameraDevice();
+            return;
+        }
         myOpMode.waitForStart(); // wait for the start button to be pressed
-        webcam.closeCameraDevice();
 //        visionPortal.setProcessorEnabled(aprilTagProcessor, true); // enable the april tag processor
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
@@ -95,7 +99,8 @@ public class autoHardware extends HardwareConfig {
             goToEndPose(endPose, drive, StartPose.alliance, StartPose.side);
         }
         updatePose(drive);
-        visionPortal.close();
+        webcam.closeCameraDevice();
+//        visionPortal.close();
     }
 
     // shifts left or right depending on the random
@@ -118,15 +123,19 @@ public class autoHardware extends HardwareConfig {
             case RED:
                 switch (side) {
                     case LEFT:
+                        startDist = StartDist.LONG_SIDE;
                         return new Pose2d(-36, -62, Math.toRadians(redRotate));
                     case RIGHT:
+                        startDist = StartDist.SHORT_SIDE;
                         return new Pose2d(12, -62, Math.toRadians(redRotate));
                 }
             case BLUE:
                 switch (side) {
                     case LEFT:
+                        startDist = StartDist.SHORT_SIDE;
                         return new Pose2d(12, 62, Math.toRadians(blueRotate));
                     case RIGHT:
+                        startDist = StartDist.LONG_SIDE;
                         return new Pose2d(-36, 62, Math.toRadians(blueRotate));
                 }
         }

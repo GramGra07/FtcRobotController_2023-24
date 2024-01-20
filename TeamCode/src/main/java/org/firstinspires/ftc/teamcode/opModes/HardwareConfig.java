@@ -6,7 +6,7 @@ import static org.firstinspires.ftc.teamcode.Drivers.currDriver;
 import static org.firstinspires.ftc.teamcode.Drivers.currOther;
 import static org.firstinspires.ftc.teamcode.Drivers.fieldCentric;
 import static org.firstinspires.ftc.teamcode.Drivers.switchProfile;
-import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 import static org.firstinspires.ftc.teamcode.Operator.bindOtherButtons;
 import static org.firstinspires.ftc.teamcode.Sensors.currentVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
@@ -46,6 +46,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
@@ -118,6 +119,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
     public static DistanceSensor distanceSensor1;
     public static DistanceSensor distanceSensor2;
+    public static StartDist startDist;
 
     public static final String currentVersion = "5.1.0";
 
@@ -205,7 +207,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
                     // ... these parameters are fx, fy, cx, cy.
                     .build();
             VisionPortal.Builder builder = new VisionPortal.Builder(); // vision portal builder initialization
-            builder.setCamera(ahwMap.get(WebcamName.class, cam2_N)); // set the camera to webcam 1
+            builder.setCamera(ahwMap.get(WebcamName.class, cam1_N)); // set the camera to webcam 1
             builder.addProcessor(aprilTagProcessor); // add the april tag processor to the vision portal
             visionPortal = builder.build(); // build the vision portal
             visionPortal.setProcessorEnabled(aprilTagProcessor, false); // disable the april tag processor
@@ -261,8 +263,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public void periodically() {
         if (useLoopTime) {
             if (loops % loopInterval == 0) { // happens every loopInterval, loops
-                loadDistance();
-                operateClawByDist(false);
+                if (useAutoClose) {
+                    loadDistance();
+                    operateClawByDist(false);
+                }
                 refreshRate++;
             }
         } else {

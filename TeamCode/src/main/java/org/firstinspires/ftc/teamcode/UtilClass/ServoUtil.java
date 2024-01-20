@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 @Config
 
 public class ServoUtil {
-    public static boolean useAutoClose = true;
+    public static boolean useAutoClose = false;
     public static double autoCloseDist = 6;
     public static double position = 0;
     public final static double degree_mult = 0.00555555554;
