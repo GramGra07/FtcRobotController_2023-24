@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.auto;
+package org.firstinspires.ftc.teamcode.opModes.camera;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;

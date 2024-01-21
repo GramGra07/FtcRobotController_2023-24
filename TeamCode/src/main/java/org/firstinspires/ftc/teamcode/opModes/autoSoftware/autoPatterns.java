@@ -26,7 +26,7 @@ public class autoPatterns {
         place1Pixel(drive, pathLong);
         navToBackdrop_Place(drive, true, pathLong);
         for (int i = 0; i < 1; i++) {
-            pickFromSpot(drive);
+            pickFromSpot(drive, pathLong);
             navToBackdrop_Place(drive, true, pathLong);
         }
     }

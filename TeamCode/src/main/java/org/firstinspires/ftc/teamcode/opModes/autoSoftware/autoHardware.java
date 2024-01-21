@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
-import org.firstinspires.ftc.teamcode.opModes.camera.openCV.OBJDetect2;
+import org.firstinspires.ftc.teamcode.opModes.camera.OBJDetect2;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.openftc.easyopencv.OpenCvCamera;
