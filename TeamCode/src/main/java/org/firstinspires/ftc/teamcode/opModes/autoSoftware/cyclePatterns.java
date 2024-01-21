@@ -16,10 +16,10 @@ public class cyclePatterns {
     public static void getCycleSpot() {
         switch (StartPose.alliance) {
             case RED:
-                spot = new Pose2d(-50, -6, Math.toRadians(180));
+                spot = new Pose2d(-50, -10, Math.toRadians(180));
                 break;
             case BLUE:
-                spot = new Pose2d(-50, 6, Math.toRadians(180));
+                spot = new Pose2d(-50, 10, Math.toRadians(180));
                 break;
         }
     }

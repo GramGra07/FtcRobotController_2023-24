@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.fullAutos.endOut.outsideBackPath;
+package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endOut.outsideBackPath;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
