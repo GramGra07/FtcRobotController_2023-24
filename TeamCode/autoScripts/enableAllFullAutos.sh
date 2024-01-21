@@ -1,6 +1,6 @@
 cd ..
 cd src/main/java/org/firstinspires/ftc/teamcode
-for listfile in $(find OutsideFullAutos.txt); do
+for listfile in $(find AllFullAutos.txt); do
   for file in $(cat $listfile); do
     echo $file
     cat $file | sed 's/@Disabled/\/\/@Disabled/' > /tmp/enabled

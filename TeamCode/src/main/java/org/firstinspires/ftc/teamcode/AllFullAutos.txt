@@ -1,0 +1,16 @@
+opModes/auto/cycleAutos/endIn/outsideBackPath/FullBLIO.java
+opModes/auto/cycleAutos/endIn/outsideBackPath/FullBRIO.java
+opModes/auto/cycleAutos/endIn/outsideBackPath/FullRLIO.java
+opModes/auto/cycleAutos/endIn/outsideBackPath/FullRRIO.java
+opModes/auto/cycleAutos/endOut/outsideBackPath/FullBLOO.java
+opModes/auto/cycleAutos/endOut/outsideBackPath/FullBROO.java
+opModes/auto/cycleAutos/endOut/outsideBackPath/FullRLOO.java
+opModes/auto/cycleAutos/endOut/outsideBackPath/FullRROO.java
+opModes/auto/cycleAutos/endIn/insideBackPath/FullBLII.java
+opModes/auto/cycleAutos/endIn/insideBackPath/FullBRII.java
+opModes/auto/cycleAutos/endIn/insideBackPath/FullRLII.java
+opModes/auto/cycleAutos/endIn/insideBackPath/FullRRII.java
+opModes/auto/cycleAutos/endOut/insideBackPath/FullBLOI.java
+opModes/auto/cycleAutos/endOut/insideBackPath/FullBROI.java
+opModes/auto/cycleAutos/endOut/insideBackPath/FullRLOI.java
+opModes/auto/cycleAutos/endOut/insideBackPath/FullRROI.java
