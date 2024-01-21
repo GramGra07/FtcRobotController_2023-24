@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endOut;
+package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endOut.shortSide;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
@@ -19,14 +19,14 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 @Autonomous(group = piParkOSort, preselectTeleOp = preselect)
 //@Disabled
-public class PiParkRLO extends LinearOpMode {
+public class PiParkRRO extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
     @Override
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
+        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
         robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
             pixelPark(drive, PathLong.NONE);

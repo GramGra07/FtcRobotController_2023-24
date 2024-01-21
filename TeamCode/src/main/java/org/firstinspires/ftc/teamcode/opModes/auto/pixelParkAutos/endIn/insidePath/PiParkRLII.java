@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endIn;
+package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endIn.insidePath;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelPark;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkISort;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkI_IP_Sort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -17,9 +17,9 @@ import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
-@Autonomous(group = piParkISort, preselectTeleOp = preselect)
+@Autonomous(group = piParkI_IP_Sort, preselectTeleOp = preselect)
 //@Disabled
-public class PiParkRLI extends LinearOpMode {
+public class PiParkRLII extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
@@ -29,7 +29,7 @@ public class PiParkRLI extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
         robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
-            pixelPark(drive, PathLong.NONE);
+            pixelPark(drive, PathLong.INSIDE);
         }
         endAuto(EndPose.LEFT, drive);
     }

@@ -35,6 +35,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 //@Config
 public class autoHardware extends HardwareConfig {
     public static OpenCvWebcam webcam; // the webcam public we are using
+    public static Pose2d START_POSE = new Pose2d(0, 0, 0); // the start pose
     public static int blueRotate = -90; // final blue rotation
     public static int redRotate = 90; // final red rotation
 
@@ -96,7 +97,7 @@ public class autoHardware extends HardwareConfig {
 
     public static void endAuto(EndPose endPose, MecanumDrive drive) {
         if (endPose != EndPose.NONE) {
-            goToEndPose(endPose, drive, StartPose.alliance, StartPose.side);
+            goToEndPose(endPose, drive);
         }
         updatePose(drive);
         webcam.closeCameraDevice();
@@ -124,18 +125,22 @@ public class autoHardware extends HardwareConfig {
                 switch (side) {
                     case LEFT:
                         startDist = StartDist.LONG_SIDE;
+                        START_POSE = new Pose2d(-36, -62, Math.toRadians(redRotate));
                         return new Pose2d(-36, -62, Math.toRadians(redRotate));
                     case RIGHT:
                         startDist = StartDist.SHORT_SIDE;
+                        START_POSE = new Pose2d(12, -62, Math.toRadians(redRotate));
                         return new Pose2d(12, -62, Math.toRadians(redRotate));
                 }
             case BLUE:
                 switch (side) {
                     case LEFT:
                         startDist = StartDist.SHORT_SIDE;
+                        START_POSE = new Pose2d(12, 62, Math.toRadians(blueRotate));
                         return new Pose2d(12, 62, Math.toRadians(blueRotate));
                     case RIGHT:
                         startDist = StartDist.LONG_SIDE;
+                        START_POSE = new Pose2d(-36, 62, Math.toRadians(blueRotate));
                         return new Pose2d(-36, 62, Math.toRadians(blueRotate));
                 }
         }
