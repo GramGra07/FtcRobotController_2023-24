@@ -65,14 +65,15 @@ public class generalPatterns {
         Pose2d farSwingPoseRED = new Pose2d(-60, -24, Math.toRadians(0));
         Pose2d farSwingPoseBLUE = new Pose2d(farSwingPoseRED.getX(), -farSwingPoseRED.getY(), farSwingPoseRED.getHeading());
         Placement placement;
-        boolean RedRight = (startDist == StartDist.LONG_SIDE && StartPose.alliance == Alliance.RED);
+        boolean RedRight = (startDist == StartDist.SHORT_SIDE && StartPose.alliance == Alliance.RED);
         boolean BlueLeft = (startDist == StartDist.SHORT_SIDE && StartPose.alliance == Alliance.BLUE);
         boolean BlueRight = (startDist == StartDist.LONG_SIDE && StartPose.alliance == Alliance.BLUE);
-        boolean RedLeft = (startDist == StartDist.SHORT_SIDE && StartPose.alliance == Alliance.RED);
+        boolean RedLeft = (startDist == StartDist.LONG_SIDE && StartPose.alliance == Alliance.RED);
         if (RedRight) placement = Placement.RED_RIGHT;
         else if (BlueLeft) placement = Placement.BLUE_LEFT;
         else if (BlueRight) placement = Placement.BLUE_RIGHT;
-        else placement = Placement.RED_LEFT;
+        else if (RedLeft) placement = Placement.RED_LEFT;
+        else placement = Placement.RED_RIGHT;
         switch (autoHardware.autonomousRandom) {
             case left:
                 switch (placement) {
@@ -82,7 +83,7 @@ public class generalPatterns {
                         break;
                     case BLUE_LEFT:
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .strafeLeft(10)
+                                .strafeLeft(12)
                                 .forward(20)
                                 .addDisplacementMarker(() ->
                                         ServoUtil.openClaw(HardwareConfig.claw2)
@@ -95,16 +96,10 @@ public class generalPatterns {
                         switch (pathLong) {
                             case NONE:
                             case OUTSIDE:
-                                drive.followTrajectorySequence(fwdTLeft(drive));
-                                break;
                             case INSIDE:
+                                drive.followTrajectorySequence(fwdTLeft(drive));
                                 drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                        .splineToLinearHeading(farSwingPoseRED, farSwingPoseRED.getHeading())
-                                        .addDisplacementMarker(() -> {
-                                            ServoUtil.openClaw(HardwareConfig.claw2);
-                                            ServoUtil.calculateFlipPose(30, flipServo);
-                                        })
-                                        .back(1)
+                                        .turn(Math.toRadians(-50))
                                         .build()
                                 );
                                 break;
@@ -139,6 +134,7 @@ public class generalPatterns {
                                 );
                                 break;
                         }
+                        break;
                     case RED_LEFT:
                         switch (pathLong) {
                             case NONE:

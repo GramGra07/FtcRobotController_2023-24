@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 @Autonomous(group = piParkO_IP_Sort, preselectTeleOp = preselect)
 //@Disabled
-public class PiParkRLOI extends LinearOpMode {
+public class PiParkRLIpO extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 

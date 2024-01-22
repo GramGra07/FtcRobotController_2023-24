@@ -11,10 +11,12 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 public class endPose {
 
     // contains positions for the robot to go to at the end of the auto
-    public static Pose2d endPoseRightRed = new Pose2d(50, -58, Math.toRadians(0));
-    public static Pose2d endPoseLeftRed = new Pose2d(50, -12, Math.toRadians(0));
-    public static Pose2d endPoseRightBlue = new Pose2d(50, 12, Math.toRadians(0));
-    public static Pose2d endPoseLeftBlue = new Pose2d(54, 48, Math.toRadians(0));
+    public static int outside = 66;
+    public static int inside = 10;
+    public static Pose2d endPoseRightRed = new Pose2d(50, -outside, Math.toRadians(0));
+    public static Pose2d endPoseLeftRed = new Pose2d(50, -inside, Math.toRadians(0));
+    public static Pose2d endPoseRightBlue = new Pose2d(50, inside, Math.toRadians(0));
+    public static Pose2d endPoseLeftBlue = new Pose2d(50, outside, Math.toRadians(0));
 
     // returns a trajectory sequence to go to the end pose
     public static void goToEndPose(EndPose endPose, MecanumDrive drive) {
@@ -32,6 +34,7 @@ public class endPose {
                         pose = endPoseLeftBlue;
                         break;
                 }
+                break;
             case RIGHT:
                 switch (StartPose.alliance) {
                     case RED:
@@ -41,6 +44,7 @@ public class endPose {
                         pose = endPoseRightBlue;
                         break;
                 }
+                break;
         }
         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .lineToLinearHeading(pose)

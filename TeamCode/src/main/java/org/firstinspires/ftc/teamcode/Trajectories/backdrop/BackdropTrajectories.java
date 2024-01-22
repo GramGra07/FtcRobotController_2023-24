@@ -17,10 +17,11 @@ import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySe
 @Config
 public class BackdropTrajectories {
     public static int endAngle = 0;
-    public static int offset = 12;
-    public static int startOffset = 4;
+    public static int offset = 8;
+    public static int startOffset = 3;
+    public static int xOffset = 4;
     public static Pose2d backRed = new Pose2d(56, -30, Math.toRadians(endAngle));
-    public static Pose2d backBlue = new Pose2d(56, 30, Math.toRadians(endAngle));
+    public static Pose2d backBlue = new Pose2d(58, 38, Math.toRadians(endAngle));
 
     public static TrajectorySequence redShort(MecanumDrive drive) {
         updatePose(drive);
@@ -47,13 +48,14 @@ public class BackdropTrajectories {
             case OUTSIDE:
                 return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                         .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
-                        .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffset, Math.toRadians(endAngle)))
+                        .lineToLinearHeading(new Pose2d(START_POSE.getX() - xOffset, START_POSE.getY() + startOffset, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffset, Math.toRadians(endAngle)))
                         .addDisplacementMarker(() -> {
                             raiseArm();
                             ServoUtil.calculateFlipPose(30, flipServo);
                         })
                         .splineToLinearHeading(backRed, Math.toRadians(endAngle))
+                        .strafeLeft(8)
                         .build();
             default:
                 return null;

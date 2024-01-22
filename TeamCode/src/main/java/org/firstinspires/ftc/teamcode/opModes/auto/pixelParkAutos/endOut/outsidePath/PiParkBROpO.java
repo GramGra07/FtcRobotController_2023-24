@@ -19,18 +19,18 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 @Autonomous(group = piParkO_OP_Sort, preselectTeleOp = preselect)
 //@Disabled
-public class PiParkRLOO extends LinearOpMode {
+public class PiParkBROpO extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
     @Override
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
+        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
         robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
             pixelPark(drive, PathLong.OUTSIDE);
         }
-        endAuto(EndPose.RIGHT, drive);
+        endAuto(EndPose.LEFT, drive);
     }
 }
