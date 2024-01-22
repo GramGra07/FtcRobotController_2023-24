@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endOut.shortS
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelPark;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkOSort;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkShort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
-@Autonomous(group = piParkOSort, preselectTeleOp = preselect)
+@Autonomous(group = piParkShort, preselectTeleOp = preselect)
 //@Disabled
 public class PiParkRRO extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
