@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endIn.outsideBackPath;
+package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endOut.insideBackPath;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycleAuto;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.fullAutoI_OP_Sort;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.fullAutoO_IP_Sort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -18,20 +18,20 @@ import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
-@Autonomous(group = fullAutoI_OP_Sort, preselectTeleOp = preselect)
+@Autonomous(group = fullAutoO_IP_Sort, preselectTeleOp = preselect)
 @Disabled
-public class FullBRIO extends LinearOpMode {
+public class FullBLIpO extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
+        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
-            cycleAuto(drive, PathLong.OUTSIDE);
+            cycleAuto(drive, PathLong.INSIDE);
         }
-        endAuto(EndPose.RIGHT, drive);
+        endAuto(EndPose.LEFT, drive);
     }
 }

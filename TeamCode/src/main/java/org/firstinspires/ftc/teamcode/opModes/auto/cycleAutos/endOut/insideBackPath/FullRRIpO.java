@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endIn.outsideBackPath;
+package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endOut.insideBackPath;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycleAuto;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.fullAutoI_OP_Sort;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.fullAutoO_OP_Sort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -18,20 +18,20 @@ import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
-@Autonomous(group = fullAutoI_OP_Sort, preselectTeleOp = preselect)
+@Autonomous(group = fullAutoO_OP_Sort, preselectTeleOp = preselect)
 @Disabled
-public class FullRLIO extends LinearOpMode {
-    public Pose2d startPose = autoHardware.startPose;
-    autoHardware robot = new autoHardware(this);
+public class FullRRIpO extends LinearOpMode {
+    public Pose2d startPose = autoHardware.startPose; // get the starting pose
+    autoHardware robot = new autoHardware(this); // initialize the robot class
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
-        robot.initAuto(hardwareMap, this);
+        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT)); // set the starting pose
+        robot.initAuto(hardwareMap, this); // initialize the robot
         if (opModeIsActive()) {
-            cycleAuto(drive, PathLong.OUTSIDE);
+            cycleAuto(drive, PathLong.INSIDE);
         }
-        endAuto(EndPose.LEFT, drive);
+        endAuto(EndPose.RIGHT, drive);
     }
 }

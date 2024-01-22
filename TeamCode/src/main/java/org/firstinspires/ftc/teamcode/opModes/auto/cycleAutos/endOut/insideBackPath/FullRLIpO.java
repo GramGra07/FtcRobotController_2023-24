@@ -20,18 +20,18 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 @Autonomous(group = fullAutoO_IP_Sort, preselectTeleOp = preselect)
 @Disabled
-public class FullBROI extends LinearOpMode {
+public class FullRLIpO extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
 
     @Override
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
+        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
         robot.initAuto(hardwareMap, this);
         if (opModeIsActive()) {
             cycleAuto(drive, PathLong.INSIDE);
         }
-        endAuto(EndPose.LEFT, drive);
+        endAuto(EndPose.RIGHT, drive);
     }
 }

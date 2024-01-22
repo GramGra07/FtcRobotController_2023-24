@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 @Autonomous(group = fullAutoI_IP_Sort, preselectTeleOp = preselect)
 @Disabled
-public class FullRRII extends LinearOpMode {
+public class FullRRIpI extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose; // get the starting pose
     autoHardware robot = new autoHardware(this); // initialize the robot class
 

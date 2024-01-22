@@ -20,15 +20,15 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 @Autonomous(group = fullAutoO_OP_Sort, preselectTeleOp = preselect)
 @Disabled
-public class FullRLOO extends LinearOpMode {
-    public Pose2d startPose = autoHardware.startPose;
-    autoHardware robot = new autoHardware(this);
+public class FullRROpO extends LinearOpMode {
+    public Pose2d startPose = autoHardware.startPose; // get the starting pose
+    autoHardware robot = new autoHardware(this); // initialize the robot class
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
-        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
-        robot.initAuto(hardwareMap, this);
+        drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT)); // set the starting pose
+        robot.initAuto(hardwareMap, this); // initialize the robot
         if (opModeIsActive()) {
             cycleAuto(drive, PathLong.OUTSIDE);
         }
