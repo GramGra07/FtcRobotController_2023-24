@@ -98,10 +98,6 @@ public class generalPatterns {
                             case OUTSIDE:
                             case INSIDE:
                                 drive.followTrajectorySequence(fwdTLeft(drive));
-                                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                        .turn(Math.toRadians(-50))
-                                        .build()
-                                );
                                 break;
                         }
                 }

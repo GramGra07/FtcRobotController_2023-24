@@ -30,7 +30,7 @@ public class spikeNavTraj {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                     ServoUtil.calculateFlipPose(30, flipServo);
                 })
-                .back(1)
+                .turn(Math.toRadians(-50))
                 .build();
     }
 
