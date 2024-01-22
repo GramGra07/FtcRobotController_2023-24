@@ -150,6 +150,11 @@ public class autoHardware extends HardwareConfig {
         Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
     }
 
+    public static void raiseArmHigh() {
+        int potentBackTarget = 41;
+        Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
+    }
+
     // method to update the pose
     public static void updatePose(MecanumDrive drive) {
         PoseStorage.currentPose = drive.getPoseEstimate();

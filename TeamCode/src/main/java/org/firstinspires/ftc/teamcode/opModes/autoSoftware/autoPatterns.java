@@ -19,7 +19,7 @@ public class autoPatterns {
     // does two pixel and then goes to the end pose
     public static void pixelPark(MecanumDrive drive, PathLong pathLong) {
         place1Pixel(drive, pathLong);
-        navToBackdrop_Place(drive, true, pathLong);
+        navToBackdrop_Place(drive, false, pathLong);
     }
 
     public static void cycleAuto(MecanumDrive drive, PathLong pathLong) {

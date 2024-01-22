@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Trajectories.backdrop;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.raiseArm;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.raiseArmHigh;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -20,6 +21,7 @@ public class BackdropTrajectories {
     public static int offset = 8;
     public static int startOffset = 3;
     public static int xOffset = 4;
+    public static int backdropOffset = 6;
     public static Pose2d backRed = new Pose2d(56, -30, Math.toRadians(endAngle));
     public static Pose2d backBlue = new Pose2d(58, 38, Math.toRadians(endAngle));
 
@@ -31,7 +33,7 @@ public class BackdropTrajectories {
                 .build();
     }
 
-    public static TrajectorySequence redLong(MecanumDrive drive, PathLong pathLong) {
+    public static TrajectorySequence redLong(MecanumDrive drive, PathLong pathLong, boolean isCycling) {
         updatePose(drive);
         switch (pathLong) {
             case INSIDE:
@@ -40,10 +42,15 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(-48, -12, Math.toRadians(endAngle)))
                         .lineTo(new Vector2d(36, -12))
                         .addDisplacementMarker(() -> {
-                            raiseArm();
+                            if (isCycling) {
+                                raiseArmHigh();
+                            } else {
+                                raiseArm();
+                            }
                             ServoUtil.calculateFlipPose(30, flipServo);
                         })
-                        .splineToLinearHeading(backRed, Math.toRadians(endAngle))
+                        .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY(), backRed.getHeading()), Math.toRadians(endAngle))
+                        .forward(backdropOffset)
                         .build();
             case OUTSIDE:
                 return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -51,11 +58,15 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(START_POSE.getX() - xOffset, START_POSE.getY() + startOffset, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffset, Math.toRadians(endAngle)))
                         .addDisplacementMarker(() -> {
-                            raiseArm();
+                            if (isCycling) {
+                                raiseArmHigh();
+                            } else {
+                                raiseArm();
+                            }
                             ServoUtil.calculateFlipPose(30, flipServo);
                         })
-                        .splineToLinearHeading(backRed, Math.toRadians(endAngle))
-                        .strafeLeft(8)
+                        .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY(), backRed.getHeading()), Math.toRadians(endAngle))
+                        .forward(backdropOffset)
                         .build();
             default:
                 return null;
@@ -70,7 +81,7 @@ public class BackdropTrajectories {
                 .build();
     }
 
-    public static TrajectorySequence blueLong(MecanumDrive drive, PathLong pathLong) {
+    public static TrajectorySequence blueLong(MecanumDrive drive, PathLong pathLong, boolean isCycling) {
         updatePose(drive);
         switch (pathLong) {
             case INSIDE:
@@ -79,10 +90,15 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(-48, 12, Math.toRadians(endAngle)))
                         .lineTo(new Vector2d(36, 12))
                         .addDisplacementMarker(() -> {
-                            raiseArm();
+                            if (isCycling) {
+                                raiseArmHigh();
+                            } else {
+                                raiseArm();
+                            }
                             ServoUtil.calculateFlipPose(30, flipServo);
                         })
-                        .splineToLinearHeading(backBlue, Math.toRadians(endAngle))
+                        .splineToLinearHeading(new Pose2d(backBlue.getX() - backdropOffset, backBlue.getY(), backBlue.getHeading()), Math.toRadians(endAngle))
+                        .forward(backdropOffset)
                         .build();
             case OUTSIDE:
                 return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -90,10 +106,15 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffset, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffset, Math.toRadians(endAngle)))
                         .addDisplacementMarker(() -> {
-                            raiseArm();
+                            if (isCycling) {
+                                raiseArmHigh();
+                            } else {
+                                raiseArm();
+                            }
                             ServoUtil.calculateFlipPose(30, flipServo);
                         })
-                        .splineToLinearHeading(backBlue, Math.toRadians(endAngle))
+                        .splineToLinearHeading(new Pose2d(backBlue.getX() - backdropOffset, backBlue.getY(), backBlue.getHeading()), Math.toRadians(endAngle))
+                        .forward(backdropOffset)
                         .build();
             default:
                 return null;

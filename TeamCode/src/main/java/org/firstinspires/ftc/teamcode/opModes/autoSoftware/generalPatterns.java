@@ -25,15 +25,15 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class generalPatterns {
     // method to go to the backdrop
-    public static void navToBackdrop_Place(MecanumDrive drive, boolean raiseArm, PathLong pathLong) {
-        if (raiseArm) {
+    public static void navToBackdrop_Place(MecanumDrive drive, boolean isCycling, PathLong pathLong) {
+        if (!isCycling) {
             raiseArm();
         }
         switch (StartPose.alliance) {
             case RED:
                 switch (StartPose.side) {
                     case LEFT:
-                        drive.followTrajectorySequence(BackdropTrajectories.redLong(drive, pathLong));
+                        drive.followTrajectorySequence(BackdropTrajectories.redLong(drive, pathLong, isCycling));
                         break;
                     case RIGHT:
                         drive.followTrajectorySequence(BackdropTrajectories.redShort(drive));
@@ -46,7 +46,7 @@ public class generalPatterns {
                         drive.followTrajectorySequence(BackdropTrajectories.blueShort(drive));
                         break;
                     case RIGHT:
-                        drive.followTrajectorySequence(BackdropTrajectories.blueLong(drive, pathLong));
+                        drive.followTrajectorySequence(BackdropTrajectories.blueLong(drive, pathLong, isCycling));
                         break;
                 }
                 break;
