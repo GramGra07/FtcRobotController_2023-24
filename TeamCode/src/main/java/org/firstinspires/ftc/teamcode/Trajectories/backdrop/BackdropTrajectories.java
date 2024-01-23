@@ -92,7 +92,7 @@ public class BackdropTrajectories {
                             }
                             ServoUtil.calculateFlipPose(30, flipServo);
                         })
-                        .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY() - 7 //just added -7
+                        .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY()// - 7
                                 , backRed.getHeading()), Math.toRadians(endAngle))
                         .forward(backdropOffset)
 //                        .strafeLeft(7)

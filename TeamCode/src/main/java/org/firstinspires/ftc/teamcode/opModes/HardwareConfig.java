@@ -23,6 +23,7 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.loopInterval;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.useLoopTime;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -198,6 +199,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         telemetry.addData("Color", LEDcolor);
         telemetry.addData("Version", currentVersion);
         telemetry.addData("Voltage", "%.2f", currentVoltage);
+        if (auto) {
+            telemetry.addData("Random", autonomousRandom);
+        }
         if (lowVoltage) {
             telemetry.addData("lowBattery", "true");
         }
