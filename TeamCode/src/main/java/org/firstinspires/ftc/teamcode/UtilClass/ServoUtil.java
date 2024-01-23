@@ -94,6 +94,6 @@ public class ServoUtil {
     public static int liftOpen = openClaw1 + 75;
 
     public static void setupLift(Servo servo) {
-        servo.setPosition(setServo(liftOpen));
+        servo.setPosition(setServo(openClaw1));
     }
 }

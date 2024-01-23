@@ -29,6 +29,7 @@ import org.firstinspires.ftc.teamcode.opModes.camera.VPObjectDetect;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 //config can be enabled to change variables in real time through FTC Dash
@@ -61,12 +62,23 @@ public class autoHardware extends HardwareConfig {
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap, true); // hardware config initialization
         objProcessor = new VPObjectDetect(StartPose.alliance);
+        aprilTagProcessor = new AprilTagProcessor.Builder()
+                .setLensIntrinsics(400, 400, 400, 400)
+                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+                .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
+                .setDrawAxes(false)
+                .setDrawTagOutline(true)
+                .setDrawTagID(true)
+                .build();
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
                 .setCameraResolution(new Size(1280, 720))
-                .addProcessors(objProcessor)
+                .addProcessors(objProcessor
+//                ,aprilTagProcessor
+                )
                 .build();
-        FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
+        FtcDashboard.getInstance().startCameraStream(objProcessor
+                , 0); // start the camera stream on FTC Dash
         timer.reset();
         ServoUtil.closeClaw(HardwareConfig.claw1);
         ServoUtil.closeClaw(HardwareConfig.claw2);
