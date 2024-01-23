@@ -29,8 +29,11 @@ import org.firstinspires.ftc.teamcode.opModes.camera.VPObjectDetect;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.List;
 
 //config can be enabled to change variables in real time through FTC Dash
 //@Config
@@ -94,6 +97,32 @@ public class autoHardware extends HardwareConfig {
 //        visionPortal.setProcessorEnabled(aprilTagProcessor,true);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
+    }
+
+    public static void doAprilTagPoseCorrection(AprilTagProcessor processor, Telemetry telemetry, MecanumDrive drive) {
+        List<AprilTagDetection> currentDetections = processor.getDetections();
+        telemetry.addData("# AprilTags Detected", currentDetections.size());
+        Pose2d pose = new Pose2d(0, 0, drive.getPoseEstimate().getHeading());
+
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections) {
+            if (detection.metadata != null) {
+                if (detection.id == 7 || detection.id == 10) {
+                    telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                    telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                    telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                    telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+                    pose = new Pose2d(detection.ftcPose.x, detection.ftcPose.y, drive.getPoseEstimate().getHeading());
+                }
+            } else {
+                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+            }
+        }
+        if (pose.getX() != 0 && pose.getY() != 0) {
+            telemetry.update();
+            drive.setPoseEstimate(pose);
+        }
     }
 
     public static void endAuto(EndPose endPose, MecanumDrive drive) {

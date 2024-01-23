@@ -18,16 +18,18 @@ import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class cyclePatterns {
-
     // method to pick up from the stack of pixels
     public static void pickFromSpot(MecanumDrive drive, PathLong pathLong) {
         switch (pathLong) {
             case INSIDE:
                 switch (StartPose.alliance) {
                     case RED:
-                        spot = new Pose2d(-60, -10, Math.toRadians(180));
+                        spot = new Pose2d(-54, -10, Math.toRadians(180));
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineTo(new Vector2d(36, -12))
+                                .addSpatialMarker(new Vector2d(-30, -10), () -> {
+                                    // do april tag pose correction
+                                })
                                 .lineToLinearHeading(spot)
                                 .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
                                 .addDisplacementMarker(() -> closeClaw(claw2))
@@ -39,6 +41,9 @@ public class cyclePatterns {
                         spot = new Pose2d(-60, 10, Math.toRadians(180));
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineTo(new Vector2d(36, 12))
+                                .addSpatialMarker(new Vector2d(-30, 10), () -> {
+                                    // do april tag pose correction
+                                })
                                 .lineToLinearHeading(spot)
                                 .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
                                 .addDisplacementMarker(() -> closeClaw(claw2))
@@ -55,6 +60,9 @@ public class cyclePatterns {
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
+                                .addSpatialMarker(new Vector2d(START_POSE.getX(), START_POSE.getY()), () -> {
+                                    // do april tag pose correction
+                                })
                                 .lineToLinearHeading(spot)
                                 .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
                                 .addDisplacementMarker(() -> closeClaw(claw2))
@@ -67,6 +75,9 @@ public class cyclePatterns {
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetRed, Math.toRadians(endAngle)))
+                                .addSpatialMarker(new Vector2d(START_POSE.getX(), START_POSE.getY()), () -> {
+                                    // do april tag pose correction
+                                })
                                 .lineToLinearHeading(spot)
                                 .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
                                 .addDisplacementMarker(() -> closeClaw(claw2))
