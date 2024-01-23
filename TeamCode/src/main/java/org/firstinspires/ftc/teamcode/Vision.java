@@ -52,7 +52,7 @@ public class Vision {
 
     }
 
-    public static void telemetryAprilTag(OpMode myOpMode) {
+    public static void telemetryAprilTag(OpMode myOpMode, AprilTagProcessor aprilTagProcessor) {
         List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
         if (currentDetections.size() > 0) {
             for (AprilTagDetection detection : currentDetections) {
@@ -105,7 +105,8 @@ public class Vision {
         }
 
     }
-    public static void findAprilTagsAndSetPose(MecanumDrive drive){
+
+    public static void findAprilTagsAndSetPose(MecanumDrive drive) {
         List<AprilTagDetection> currentDetections = aprilTagProcessor.getDetections();
 
         // Step through the list of detections and display info for each one.
@@ -118,7 +119,7 @@ public class Vision {
                 double pitch = detection.ftcPose.pitch;
                 double roll = detection.ftcPose.roll;
                 double yaw = detection.ftcPose.yaw;
-                drive.setPoseEstimate(new Pose2d(x,y,yaw));
+                drive.setPoseEstimate(new Pose2d(x, y, yaw));
             }
         }
     }

@@ -76,11 +76,9 @@ public class autoHardware extends HardwareConfig {
         visionPortal = new VisionPortal.Builder()
                 .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
                 .setCameraResolution(new Size(1280, 720))
-                .addProcessors(objProcessor
-//                ,aprilTagProcessor
-                )
+                .addProcessors(objProcessor, aprilTagProcessor)
                 .build();
-//        visionPortal.setProcessorEnabled(aprilTagProcessor,false);
+        visionPortal.setProcessorEnabled(aprilTagProcessor, false);
         FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
         timer.reset();
         ServoUtil.closeClaw(HardwareConfig.claw1);
@@ -94,7 +92,7 @@ public class autoHardware extends HardwareConfig {
         }
         myOpMode.waitForStart(); // wait for the start button to be pressed
         visionPortal.setProcessorEnabled(objProcessor, false);
-//        visionPortal.setProcessorEnabled(aprilTagProcessor,true);
+        visionPortal.setProcessorEnabled(aprilTagProcessor, true);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
     }

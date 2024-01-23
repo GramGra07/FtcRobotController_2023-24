@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.camera;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.visionPortal;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -20,11 +23,10 @@ public class aprilTest extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
         robot.initAuto(hardwareMap, this);
-//        webcam.closeCameraDevice();
-//        visionPortal.resumeStreaming();
-//        visionPortal.setProcessorEnabled(aprilTagProcessor, true);
+        visionPortal.resumeStreaming();
+        visionPortal.setProcessorEnabled(aprilTagProcessor, true);
         while (opModeIsActive()) {
-            Vision.telemetryAprilTag(this);
+            Vision.telemetryAprilTag(this, aprilTagProcessor);
             telemetry.update();
         }
     }
