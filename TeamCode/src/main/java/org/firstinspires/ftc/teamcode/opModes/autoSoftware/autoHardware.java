@@ -77,8 +77,8 @@ public class autoHardware extends HardwareConfig {
 //                ,aprilTagProcessor
                 )
                 .build();
-        FtcDashboard.getInstance().startCameraStream(objProcessor
-                , 0); // start the camera stream on FTC Dash
+//        visionPortal.setProcessorEnabled(aprilTagProcessor,false);
+        FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
         timer.reset();
         ServoUtil.closeClaw(HardwareConfig.claw1);
         ServoUtil.closeClaw(HardwareConfig.claw2);
@@ -90,6 +90,8 @@ public class autoHardware extends HardwareConfig {
             return;
         }
         myOpMode.waitForStart(); // wait for the start button to be pressed
+        visionPortal.setProcessorEnabled(objProcessor, false);
+//        visionPortal.setProcessorEnabled(aprilTagProcessor,true);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
     }
