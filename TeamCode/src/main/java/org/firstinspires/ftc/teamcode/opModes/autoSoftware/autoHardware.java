@@ -52,9 +52,9 @@ public class autoHardware extends HardwareConfig {
 
     public static AutoRandom autonomousRandom = AutoRandom.mid; // default autonomous choice for spike mark
     public static AutoRandom autoRandomReliable; // tracker for the AutoRandom enum
-    public static VisionPortal visionPortal; // vision portal for the webcam
-    public static VPObjectDetect objProcessor; // april tag processor for the vision portal
-    public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
+    public static VisionPortal visionPortal = null; // vision portal for the webcam
+    public static VPObjectDetect objProcessor = null; // april tag processor for the vision portal
+    public static AprilTagProcessor aprilTagProcessor = null; // april tag processor for the vision portal
 
     public autoHardware(LinearOpMode opmode) {
         super(opmode);
@@ -64,20 +64,26 @@ public class autoHardware extends HardwareConfig {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap, true); // hardware config initialization
-        objProcessor = new VPObjectDetect(StartPose.alliance);
-        aprilTagProcessor = new AprilTagProcessor.Builder()
-                .setLensIntrinsics(400, 400, 400, 400)
-                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-                .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
-                .setDrawAxes(false)
-                .setDrawTagOutline(true)
-                .setDrawTagID(true)
-                .build();
-        visionPortal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
-                .setCameraResolution(new Size(1280, 720))
-                .addProcessors(objProcessor, aprilTagProcessor)
-                .build();
+        if (objProcessor == null) {
+            objProcessor = new VPObjectDetect(StartPose.alliance);
+        }
+        if (aprilTagProcessor == null) {
+            aprilTagProcessor = new AprilTagProcessor.Builder()
+                    .setLensIntrinsics(400, 400, 400, 400)
+                    .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+                    .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
+                    .setDrawAxes(false)
+                    .setDrawTagOutline(true)
+                    .setDrawTagID(true)
+                    .build();
+        }
+        if (visionPortal == null) {
+            visionPortal = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
+                    .setCameraResolution(new Size(1280, 720))
+                    .addProcessors(objProcessor, aprilTagProcessor)
+                    .build();
+        }
         visionPortal.setProcessorEnabled(aprilTagProcessor, false);
         FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
         timer.reset();
