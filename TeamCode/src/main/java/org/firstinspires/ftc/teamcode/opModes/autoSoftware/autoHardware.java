@@ -59,9 +59,6 @@ public class autoHardware extends HardwareConfig {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap, true); // hardware config initialization
-        if (myOpMode.isStopRequested()) {
-            return;
-        }
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam2_N), cameraMonitorViewId);
         webcam.setPipeline(new OBJDetect2(StartPose.alliance)); // set the webcam pipeline to the OBJDetect2 pipeline
@@ -98,6 +95,7 @@ public class autoHardware extends HardwareConfig {
             goToEndPose(endPose, drive);
         }
         updatePose(drive);
+        webcam.closeCameraDevice();
 //        visionPortal.close();
     }
 

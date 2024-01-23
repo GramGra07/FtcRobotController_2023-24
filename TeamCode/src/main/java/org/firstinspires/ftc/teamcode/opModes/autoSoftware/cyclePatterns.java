@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.endAngle;
 import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.offset;
-import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.startOffset;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.startOffsetRed;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
@@ -53,8 +53,8 @@ public class cyclePatterns {
                     case RED:
                         spot = new Pose2d(-60, -36, Math.toRadians(180));
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffset, Math.toRadians(endAngle)))
-                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffset, Math.toRadians(endAngle)))
+                                .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
+                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(spot)
                                 .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
                                 .addDisplacementMarker(() -> closeClaw(claw2))
@@ -65,8 +65,8 @@ public class cyclePatterns {
                     case BLUE:
                         spot = new Pose2d(-60, 36, Math.toRadians(180));
                         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffset, Math.toRadians(endAngle)))
-                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffset, Math.toRadians(endAngle)))
+                                .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetRed, Math.toRadians(endAngle)))
+                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(spot)
                                 .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
                                 .addDisplacementMarker(() -> closeClaw(claw2))

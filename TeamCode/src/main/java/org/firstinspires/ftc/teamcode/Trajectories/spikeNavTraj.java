@@ -25,12 +25,13 @@ public class spikeNavTraj {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .forward(22)
-                .turn(Math.toRadians(50))
+                .turn(Math.toRadians(60))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                     ServoUtil.calculateFlipPose(30, flipServo);
                 })
-                .turn(Math.toRadians(-50))
+                .back(1)
+                .turn(Math.toRadians(-60))
                 .build();
     }
 
