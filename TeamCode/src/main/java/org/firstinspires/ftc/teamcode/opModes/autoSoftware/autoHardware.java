@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
 
+import android.util.Size;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -59,8 +61,11 @@ public class autoHardware extends HardwareConfig {
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap, true); // hardware config initialization
         objProcessor = new VPObjectDetect(StartPose.alliance);
-        visionPortal = VisionPortal.easyCreateWithDefaults(
-                hardwareMap.get(WebcamName.class, cam2_N), objProcessor);
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
+                .setCameraResolution(new Size(1280, 720))
+                .addProcessors(objProcessor)
+                .build();
         FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
         timer.reset();
         ServoUtil.closeClaw(HardwareConfig.claw1);

@@ -52,12 +52,12 @@ public class Drivers {
             }
             planeButtonDown = myOpMode.gamepad1.triangle;
             if (myOpMode.gamepad1.right_trigger > 0) {
-                liftPower = liftMax;
-            } else if (myOpMode.gamepad1.left_trigger > 0) {
                 liftPower = -liftMax;
+            } else if (myOpMode.gamepad1.left_trigger > 0) {
+                liftPower = liftMax;
             } else {
                 if (liftHeld) {
-                    liftPower = Range.clip(-myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
+                    liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
                 } else {
                     liftPower = 0;
                 }
