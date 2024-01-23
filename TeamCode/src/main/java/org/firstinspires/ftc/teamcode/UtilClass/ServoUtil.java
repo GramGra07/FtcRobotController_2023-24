@@ -90,4 +90,10 @@ public class ServoUtil {
     public static void raiseAirplane(Servo servo) {
         servo.setPosition(setServo(raiseAirplaneVal));
     }
+
+    public static int liftOpen = openClaw1 + 75;
+
+    public static void setupLift(Servo servo) {
+        servo.setPosition(setServo(liftOpen));
+    }
 }

@@ -23,18 +23,16 @@ import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
-import org.firstinspires.ftc.teamcode.opModes.camera.OBJDetect2;
+import org.firstinspires.ftc.teamcode.opModes.camera.VPObjectDetect;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvWebcam;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 //config can be enabled to change variables in real time through FTC Dash
 //@Config
 public class autoHardware extends HardwareConfig {
-    public static OpenCvWebcam webcam; // the webcam public we are using
+    //    public static OpenCvWebcam webcam; // the webcam public we are using
     public static Pose2d START_POSE = new Pose2d(0, 0, 0); // the start pose
     public static int blueRotate = -90; // final blue rotation
     public static int redRotate = 90; // final red rotation
@@ -48,8 +46,9 @@ public class autoHardware extends HardwareConfig {
 
     public static AutoRandom autonomousRandom = AutoRandom.mid; // default autonomous choice for spike mark
     public static AutoRandom autoRandomReliable; // tracker for the AutoRandom enum
-//    public static VisionPortal visionPortal; // vision portal for the webcam
-//    public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
+    public static VisionPortal visionPortal; // vision portal for the webcam
+    public static VPObjectDetect objProcessor; // april tag processor for the vision portal
+    public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
 
     public autoHardware(LinearOpMode opmode) {
         super(opmode);
@@ -59,21 +58,10 @@ public class autoHardware extends HardwareConfig {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap, true); // hardware config initialization
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, cam2_N), cameraMonitorViewId);
-        webcam.setPipeline(new OBJDetect2(StartPose.alliance)); // set the webcam pipeline to the OBJDetect2 pipeline
-        FtcDashboard.getInstance().startCameraStream(webcam, 0); // start the camera stream on FTC Dash
-        webcam.setMillisecondsPermissionTimeout(5000); // Timeout for obtaining permission is configurable. Set before opening.
-        webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
-            @Override
-            public void onOpened() {
-                webcam.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode) {
-            }
-        });
+        objProcessor = new VPObjectDetect(StartPose.alliance);
+        visionPortal = VisionPortal.easyCreateWithDefaults(
+                hardwareMap.get(WebcamName.class, cam2_N), objProcessor);
+        FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
         timer.reset();
         ServoUtil.closeClaw(HardwareConfig.claw1);
         ServoUtil.closeClaw(HardwareConfig.claw2);
@@ -85,7 +73,6 @@ public class autoHardware extends HardwareConfig {
             return;
         }
         myOpMode.waitForStart(); // wait for the start button to be pressed
-//        visionPortal.setProcessorEnabled(aprilTagProcessor, true); // enable the april tag processor
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
     }
@@ -95,8 +82,6 @@ public class autoHardware extends HardwareConfig {
             goToEndPose(endPose, drive);
         }
         updatePose(drive);
-        webcam.closeCameraDevice();
-//        visionPortal.close();
     }
 
     // shifts left or right depending on the random

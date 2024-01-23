@@ -6,7 +6,6 @@ import static org.firstinspires.ftc.teamcode.Drivers.currDriver;
 import static org.firstinspires.ftc.teamcode.Drivers.currOther;
 import static org.firstinspires.ftc.teamcode.Drivers.fieldCentric;
 import static org.firstinspires.ftc.teamcode.Drivers.switchProfile;
-import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
 import static org.firstinspires.ftc.teamcode.Operator.bindOtherButtons;
 import static org.firstinspires.ftc.teamcode.Sensors.currentVoltage;
 import static org.firstinspires.ftc.teamcode.Sensors.getBatteryVoltage;
@@ -23,6 +22,7 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.loopInterval;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.useLoopTime;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -43,9 +43,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
@@ -55,10 +52,7 @@ import org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
-import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -115,8 +109,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
             0.1, // Integral gain
             0.1 // Derivative gain
     );
-    public static VisionPortal visionPortal; // vision portal for the webcam
-    public static AprilTagProcessor aprilTagProcessor; // april tag processor for the vision portal
     public static DistanceSensor distanceSensor1;
     public static DistanceSensor distanceSensor2;
     public static StartDist startDist;
@@ -195,23 +187,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
 //        cRE = new Gamepad.RumbleEffect.Builder()
 //                .addStep(1.0, 1.0, 250)
 //                .build();
-        if (!auto) {
-            aprilTagProcessor = new AprilTagProcessor.Builder() // april tag processor initialization
-                    .setDrawAxes(true) // draw axes on the april tag
-                    .setDrawCubeProjection(false) // don't draw cube projection on the april tag
-                    .setDrawTagOutline(true) // draw tag outline on the april tag
-                    .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11) // set the tag family to 36h11
-                    .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary()) // set the tag library to the center stage tag library
-                    .setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES) // set the output units to inches and degrees
-                    .setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
-                    // ... these parameters are fx, fy, cx, cy.
-                    .build();
-            VisionPortal.Builder builder = new VisionPortal.Builder(); // vision portal builder initialization
-            builder.setCamera(ahwMap.get(WebcamName.class, cam1_N)); // set the camera to webcam 1
-            builder.addProcessor(aprilTagProcessor); // add the april tag processor to the vision portal
-            visionPortal = builder.build(); // build the vision portal
-            visionPortal.setProcessorEnabled(aprilTagProcessor, false); // disable the april tag processor
-        }
 
         timer.reset();
         Sensors.ledIND(green1, red1, true);

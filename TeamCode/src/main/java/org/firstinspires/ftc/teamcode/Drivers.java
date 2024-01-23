@@ -3,17 +3,20 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.teamcode.DriverIndex.dIndex;
 import static org.firstinspires.ftc.teamcode.DriverIndex.oIndex;
 import static org.firstinspires.ftc.teamcode.Limits.liftMax;
+import static org.firstinspires.ftc.teamcode.Limits.liftMin;
 import static org.firstinspires.ftc.teamcode.UtilClass.DriverAid.doDriverAid;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.resetAirplane;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.util.Angle;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
@@ -25,7 +28,7 @@ public class Drivers {
     public static final int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
     public static String currDriver = driverControls[dIndex], currOther = otherControls[oIndex];//list string of driver and other controls
     public static boolean fieldCentric;
-
+    public static boolean liftHeld = false;
     public static boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public static boolean slowModeButtonDown = false, planeButtonDown = false, planeReleased = true;
 
@@ -53,7 +56,16 @@ public class Drivers {
             } else if (myOpMode.gamepad1.left_trigger > 0) {
                 liftPower = -liftMax;
             } else {
-                liftPower = 0;
+                if (liftHeld) {
+                    liftPower = Range.clip(-myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
+                } else {
+                    liftPower = 0;
+                }
+            }
+            if (myOpMode.gamepad1.square) {
+                ServoUtil.calculateFlipPose(-20, flipServo);
+                ServoUtil.setupLift(claw1);
+                liftHeld = true;
             }
             doDriverAid(drive, myOpMode.gamepad1.right_bumper, myOpMode.gamepad1.dpad_up, myOpMode.gamepad1.dpad_right, myOpMode.gamepad1.cross);
         }
