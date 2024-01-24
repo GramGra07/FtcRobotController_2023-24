@@ -117,7 +117,7 @@ public class BackdropTrajectories {
                 switch (autoRandomReliable) {
                     case left:
                     case mid:
-                        int strafeOffset = 3; // - goes right, + goes left
+                        int strafeOffset = 5; // - goes right, + goes left
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
                                 .lineToLinearHeading(new Pose2d(-50, 12, Math.toRadians(endAngle)))
@@ -155,11 +155,12 @@ public class BackdropTrajectories {
                                 .build();
                 }
             case OUTSIDE:
-                int strafeOffset = 5; // - goes right, + goes left
+                int strafeOffset = -4; // - goes right, + goes left
                 return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                         .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
                         .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
+                        .lineTo(new Vector2d(36, 30))
                         .addDisplacementMarker(() -> {
                             if (isCycling) {
                                 raiseArmHigh();

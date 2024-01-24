@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 public class endPose {
 
     // contains positions for the robot to go to at the end of the auto
-    public static int outside = 64;
+    public static int outside = 60;
     public static int inside = 12;
     public static Pose2d endPoseRightRed = new Pose2d(50, -outside, Math.toRadians(0));
     public static Pose2d endPoseLeftRed = new Pose2d(50, -inside, Math.toRadians(0));
@@ -47,8 +47,10 @@ public class endPose {
                 break;
         }
         drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .lineToLinearHeading(pose)
-                .build()
+                        .lineToLinearHeading(pose)
+//                .addDisplacementMarker(() ->
+//                        visionPortal.close())
+                        .build()
         );
     }
 }

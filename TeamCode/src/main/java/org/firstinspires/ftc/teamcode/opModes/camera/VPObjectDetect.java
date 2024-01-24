@@ -92,7 +92,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
                         Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
                         Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                         Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                        Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, true);
+                        Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, false);
                         current = 1;
                     }
                 }
@@ -102,9 +102,9 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
             Imgproc.putText(frame, "left", new Point(frame.width() / 2, frame.height() / 2), 0, 5, new Scalar(0, 255, 0));
             autonomousRandom = AutoRandom.left;
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
-            Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
+            Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
             Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-            Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, false);
+            Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, true);
         }
         current = 0;
         ycrcbMat.release();

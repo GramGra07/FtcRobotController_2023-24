@@ -30,7 +30,6 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
 import java.util.List;
@@ -64,29 +63,22 @@ public class autoHardware extends HardwareConfig {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap, true); // hardware config initialization
-        if (objProcessor == null) {
-            objProcessor = new VPObjectDetect(StartPose.alliance);
-        }
-        if (aprilTagProcessor == null && cycling == true) {
-            aprilTagProcessor = new AprilTagProcessor.Builder()
-                    .setLensIntrinsics(972.571, 972.571, 667.598, 309.012)
-                    .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-                    .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
-                    .setDrawAxes(false)
-                    .setDrawTagOutline(true)
-                    .setDrawTagID(true)
-                    .build();
-        }
-        if (visionPortal == null) {
-            visionPortal = new VisionPortal.Builder()
-                    .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
-                    .setCameraResolution(new Size(1280, 720))
-                    .addProcessors(objProcessor)
-                    .build();
-        }
-        if (cycling) {
-            visionPortal.setProcessorEnabled(aprilTagProcessor, false);
-        }
+        objProcessor = new VPObjectDetect(StartPose.alliance);
+//        if (aprilTagProcessor == null && cycling == true) {
+//            aprilTagProcessor = new AprilTagProcessor.Builder()
+//                    .setLensIntrinsics(972.571, 972.571, 667.598, 309.012)
+//                    .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+//                    .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
+//                    .setDrawAxes(false)
+//                    .setDrawTagOutline(true)
+//                    .setDrawTagID(true)
+//                    .build();
+//        }
+        visionPortal = new VisionPortal.Builder()
+                .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
+                .setCameraResolution(new Size(1280, 720))
+                .addProcessors(objProcessor)
+                .build();
         FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
         timer.reset();
         ServoUtil.closeClaw(HardwareConfig.claw1);
@@ -98,8 +90,12 @@ public class autoHardware extends HardwareConfig {
         if (myOpMode.isStopRequested()) {
             return;
         }
+        Sensors.ledIND(green1, red1, false);
+        Sensors.ledIND(green2, red2, false);
+        Sensors.ledIND(green3, red3, false);
+        Sensors.ledIND(green4, red4, false);
         myOpMode.waitForStart(); // wait for the start button to be pressed
-        visionPortal.setProcessorEnabled(objProcessor, false);
+//        visionPortal.setProcessorEnabled(objProcessor, false);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
     }
@@ -143,7 +139,7 @@ public class autoHardware extends HardwareConfig {
         if (endPose != EndPose.NONE) {
             goToEndPose(endPose, drive);
         }
-        visionPortal.close();
+//        visionPortal.close();
         updatePose(drive);
     }
 
