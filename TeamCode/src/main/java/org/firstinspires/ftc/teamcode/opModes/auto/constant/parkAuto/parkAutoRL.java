@@ -27,7 +27,7 @@ public class parkAutoRL extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
-        robot.initAuto(hardwareMap, this);
+        robot.initAuto(hardwareMap, this, false);
         if (opModeIsActive()) {
             parkUtil.parkAuto(drive);
         }

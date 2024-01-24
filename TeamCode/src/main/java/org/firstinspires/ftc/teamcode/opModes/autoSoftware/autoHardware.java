@@ -60,16 +60,16 @@ public class autoHardware extends HardwareConfig {
         super(opmode);
     } // constructor
 
-    public void initAuto(HardwareMap ahwMap, LinearOpMode myOpMode) {
+    public void initAuto(HardwareMap ahwMap, LinearOpMode myOpMode, boolean cycling) {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         hardwareMap = ahwMap; // hardware map initialization
         HardwareConfig.init(ahwMap, true); // hardware config initialization
         if (objProcessor == null) {
             objProcessor = new VPObjectDetect(StartPose.alliance);
         }
-        if (aprilTagProcessor == null) {
+        if (aprilTagProcessor == null && cycling == true) {
             aprilTagProcessor = new AprilTagProcessor.Builder()
-                    .setLensIntrinsics(400, 400, 400, 400)
+                    .setLensIntrinsics(972.571, 972.571, 667.598, 309.012)
                     .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
                     .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
                     .setDrawAxes(false)
@@ -81,10 +81,12 @@ public class autoHardware extends HardwareConfig {
             visionPortal = new VisionPortal.Builder()
                     .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
                     .setCameraResolution(new Size(1280, 720))
-                    .addProcessors(objProcessor, aprilTagProcessor)
+                    .addProcessors(objProcessor)
                     .build();
         }
-        visionPortal.setProcessorEnabled(aprilTagProcessor, false);
+        if (cycling) {
+            visionPortal.setProcessorEnabled(aprilTagProcessor, false);
+        }
         FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
         timer.reset();
         ServoUtil.closeClaw(HardwareConfig.claw1);
@@ -98,12 +100,12 @@ public class autoHardware extends HardwareConfig {
         }
         myOpMode.waitForStart(); // wait for the start button to be pressed
         visionPortal.setProcessorEnabled(objProcessor, false);
-        visionPortal.setProcessorEnabled(aprilTagProcessor, true);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
     }
 
     public static void doAprilTagPoseCorrection(AprilTagProcessor processor, Telemetry telemetry, MecanumDrive drive) {
+
         List<AprilTagDetection> currentDetections = processor.getDetections();
         telemetry.addData("# AprilTags Detected", currentDetections.size());
         Pose2d pose = new Pose2d(0, 0, drive.getPoseEstimate().getHeading());
@@ -116,7 +118,15 @@ public class autoHardware extends HardwareConfig {
                     telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
                     telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
                     telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
-                    pose = new Pose2d(detection.ftcPose.x, detection.ftcPose.y, drive.getPoseEstimate().getHeading());
+                    Pose2d aprilT = new Pose2d(15, -72, Math.toRadians(0));
+                    Pose2d aprilS = new Pose2d(-15, -72, Math.toRadians(0));
+                    Pose2d detectablePose;
+                    if (detection.id == 7) {
+                        detectablePose = aprilS;
+                    } else {
+                        detectablePose = aprilT;
+                    }
+                    pose = new Pose2d(detectablePose.getX() - detection.ftcPose.y, detectablePose.getY() - detection.ftcPose.x, drive.getPoseEstimate().getHeading());
                 }
             } else {
                 telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
@@ -133,6 +143,7 @@ public class autoHardware extends HardwareConfig {
         if (endPose != EndPose.NONE) {
             goToEndPose(endPose, drive);
         }
+        visionPortal.close();
         updatePose(drive);
     }
 

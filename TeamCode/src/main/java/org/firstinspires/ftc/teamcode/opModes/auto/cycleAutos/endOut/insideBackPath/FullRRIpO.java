@@ -28,7 +28,7 @@ public class FullRRIpO extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT)); // set the starting pose
-        robot.initAuto(hardwareMap, this); // initialize the robot
+        robot.initAuto(hardwareMap, this, true); // initialize the robot
         if (opModeIsActive()) {
             cycleAuto(drive, PathLong.INSIDE);
         }

@@ -27,7 +27,7 @@ public class FullBRIpI extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
-        robot.initAuto(hardwareMap, this);
+        robot.initAuto(hardwareMap, this, true);
         if (opModeIsActive()) {
             cycleAuto(drive, PathLong.INSIDE);
         }

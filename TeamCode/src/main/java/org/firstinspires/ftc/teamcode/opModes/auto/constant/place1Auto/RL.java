@@ -27,7 +27,7 @@ public class RL extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
-        robot.initAuto(hardwareMap, this);
+        robot.initAuto(hardwareMap, this, false);
         if (opModeIsActive()) {
             place1Pixel(drive, NONE);
         }

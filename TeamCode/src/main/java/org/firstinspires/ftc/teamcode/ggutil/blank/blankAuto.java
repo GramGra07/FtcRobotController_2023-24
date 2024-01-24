@@ -22,7 +22,7 @@ public class blankAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(startPose);
-        robot.initAuto(hardwareMap, this);
+        robot.initAuto(hardwareMap, this, false);
         if (opModeIsActive()) {
             PoseStorage.currentPose = drive.getPoseEstimate();
         }

@@ -33,10 +33,11 @@
 
 package org.firstinspires.ftc.teamcode.opModes.camera;
 
-import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam1_N;
+import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
 
 import android.util.Size;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -46,10 +47,10 @@ import org.firstinspires.ftc.vision.VisionPortal;
 import java.util.Locale;
 
 @TeleOp(name = "Utility: Camera Frame Capture", group = "aaa")
-//@Disabled
+@Disabled
 public class UtilityCameraFrameCapture extends LinearOpMode {
-    final int RESOLUTION_WIDTH = 640;
-    final int RESOLUTION_HEIGHT = 480;
+    final int RESOLUTION_WIDTH = 1280;
+    final int RESOLUTION_HEIGHT = 720;
 
     // Internal state
     boolean lastX;
@@ -60,12 +61,12 @@ public class UtilityCameraFrameCapture extends LinearOpMode {
     public void runOpMode() {
         VisionPortal portal;
         portal = new VisionPortal.Builder()
-                .setCamera(hardwareMap.get(WebcamName.class, cam1_N))
+                .setCamera(hardwareMap.get(WebcamName.class, cam2_N))
                 .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
                 .build();
 
         while (!isStopRequested()) {
-            boolean x = gamepad1.x;
+            boolean x = gamepad1.cross;
 
             if (x && !lastX) {
                 portal.saveNextFrameRaw(String.format(Locale.US, "CameraFrameCapture-%06d", frameCount++));
