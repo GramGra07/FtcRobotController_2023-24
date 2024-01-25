@@ -18,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
+import org.firstinspires.ftc.teamcode.Enums.PresetPose;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
@@ -187,15 +188,19 @@ public class autoHardware extends HardwareConfig {
     }
 
     // method to raise the arm with the potentiometer
-    public static void raiseArm() {
-        int potentBackTarget = 31;
-        Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
+    public static void raiseArm(int pose, PresetPose presetPose) {
+        if (presetPose == PresetPose.HIGH) {
+            pose = 41;
+        } else if (presetPose == PresetPose.RISE_UP) {
+            pose = 31;
+        }
+        Sensors.driveByPotentVal(pose, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
     }
 
-    public static void raiseArmHigh() {
-        int potentBackTarget = 41;
-        Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
-    }
+//    public static void raiseArmHigh() {
+//        int potentBackTarget = 41;
+//        Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
+//    }
 
     // method to update the pose
     public static void updatePose(MecanumDrive drive) {

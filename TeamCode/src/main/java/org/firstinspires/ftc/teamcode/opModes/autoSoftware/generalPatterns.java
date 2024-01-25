@@ -6,7 +6,6 @@ import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.midPiNav;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.startDist;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.raiseArm;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.shiftAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
@@ -26,9 +25,6 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 public class generalPatterns {
     // method to go to the backdrop
     public static void navToBackdrop_Place(MecanumDrive drive, boolean isCycling, PathLong pathLong) {
-        if (!isCycling) {
-            raiseArm();
-        }
         switch (StartPose.alliance) {
             case RED:
                 switch (StartPose.side) {
