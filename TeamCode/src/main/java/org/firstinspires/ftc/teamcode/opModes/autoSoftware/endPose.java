@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.encoderDrive;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
@@ -52,5 +54,6 @@ public class endPose {
 //                        visionPortal.close())
                         .build()
         );
+        encoderDrive(motorExtension, 0, 1);
     }
 }

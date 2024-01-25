@@ -5,6 +5,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.u
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
+import org.firstinspires.ftc.teamcode.Enums.PresetPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
@@ -23,7 +24,7 @@ public class CycleTrajectories {
                 .lineToLinearHeading(new Pose2d(36, spot.getY(), Math.toRadians(-90)))
                 .lineToLinearHeading(startPose)
                 .addDisplacementMarker(() -> {
-                    raiseArm();
+                    raiseArm(0, PresetPose.NONE);
                 })
                 .build();
     }

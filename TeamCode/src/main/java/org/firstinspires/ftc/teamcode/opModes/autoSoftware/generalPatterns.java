@@ -5,7 +5,9 @@ import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdTRight
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.midPiNav;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.startDist;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.encoderDrive;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.shiftAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
@@ -16,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.Placement;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
+import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
@@ -47,12 +50,15 @@ public class generalPatterns {
                 }
                 break;
         }
+        if (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.RIGHT) {
+            encoderDrive(motorExtension, 1260, 0.7);
+        }
+        if (StartPose.alliance == Alliance.RED && StartPose.side == StartSide.LEFT) {
+            encoderDrive(motorExtension, 1260, 0.7);
+        }
         shiftAuto(drive);
         ServoUtil.calculateFlipPose(25, flipServo);
         ServoUtil.openClaw(claw1);
-        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .back(8)
-                .build());
         ServoUtil.calculateFlipPose(60, flipServo);
     }
 

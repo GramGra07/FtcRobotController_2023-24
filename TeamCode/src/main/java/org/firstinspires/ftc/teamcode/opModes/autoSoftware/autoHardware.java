@@ -190,7 +190,7 @@ public class autoHardware extends HardwareConfig {
     // method to raise the arm with the potentiometer
     public static void raiseArm(int pose, PresetPose presetPose) {
         if (presetPose == PresetPose.HIGH) {
-            pose = 41;
+            pose = 46;
         } else if (presetPose == PresetPose.RISE_UP) {
             pose = 31;
         }
@@ -208,10 +208,10 @@ public class autoHardware extends HardwareConfig {
     }
 
     // method to use encoders to go to a point with encoder
-    public static void encoderDrive(DcMotor motor, int position, int countsPerInch, double speed) {
+    public static void encoderDrive(DcMotor motor, int position, double speed) {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor.setTargetPosition(motor.getCurrentPosition() + (position * countsPerInch));
+        motor.setTargetPosition(motor.getCurrentPosition() + (position));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));
         while (motor.isBusy()) {

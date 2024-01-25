@@ -42,7 +42,7 @@ public class BackdropTrajectories {
                 switch (autoRandomReliable) {
                     case mid:
                     case right:
-                        int strafeRightOffset = 4;
+                        int strafeRightOffset = 4; //
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
                                 .lineToLinearHeading(new Pose2d(-52, -10, Math.toRadians(endAngle)))
@@ -53,8 +53,7 @@ public class BackdropTrajectories {
                                     ServoUtil.calculateFlipPose(30, flipServo);
                                 })
                                 .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY() - strafeRightOffset, backRed.getHeading()), Math.toRadians(endAngle))
-                                .forward(backdropOffset)
-//                                .strafeRight(7)
+                                .forward(backdropOffset + 4)
                                 .build();
                     case left:
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -68,7 +67,7 @@ public class BackdropTrajectories {
                                     ServoUtil.calculateFlipPose(30, flipServo);
                                 })
                                 .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY(), backRed.getHeading()), Math.toRadians(endAngle))
-                                .forward(backdropOffset)
+                                .forward(backdropOffset + 4)
                                 .build();
                 }
             case OUTSIDE:
@@ -82,8 +81,7 @@ public class BackdropTrajectories {
                             ServoUtil.calculateFlipPose(30, flipServo);
                         })
                         .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY() - strafeOffset, backRed.getHeading()), Math.toRadians(endAngle))
-                        .forward(backdropOffset)
-//                        .strafeLeft(7)
+                        .forward(backdropOffset + 4)
                         .build();
             default:
                 return null;
@@ -116,8 +114,7 @@ public class BackdropTrajectories {
                                     ServoUtil.calculateFlipPose(30, flipServo);
                                 })
                                 .splineToLinearHeading(new Pose2d(backBlue.getX() - backdropOffset, backBlue.getY() + strafeOffset, backBlue.getHeading()), Math.toRadians(endAngle))
-                                .forward(backdropOffset)
-//                                .strafeLeft(9)
+                                .forward(backdropOffset + 4)
                                 .build();
                     case right:
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -146,7 +143,7 @@ public class BackdropTrajectories {
                             ServoUtil.calculateFlipPose(30, flipServo);
                         })
                         .splineToLinearHeading(new Pose2d(backBlue.getX() - backdropOffset, backBlue.getY() - strafeOffset, backBlue.getHeading()), Math.toRadians(endAngle))
-                        .forward(backdropOffset)
+                        .forward(backdropOffset + 4)
                         .build();
             default:
                 return null;
