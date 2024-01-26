@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import static org.firstinspires.ftc.teamcode.Limits.flipperMax;
 import static org.firstinspires.ftc.teamcode.Limits.flipperMin;
+import static org.firstinspires.ftc.teamcode.Limits.maxExtensionTicks;
+import static org.firstinspires.ftc.teamcode.Limits.minExtensionTicks;
 import static org.firstinspires.ftc.teamcode.Limits.slideMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMin;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
@@ -15,6 +17,8 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.pidfExtension;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPower;
 
@@ -60,8 +64,14 @@ public class Operator extends Drivers {
             if (myOpMode.gamepad2.left_trigger > 0) {
                 openClaw(claw2);
             }
-
-            extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
+            if (myOpMode.gamepad2.left_stick_y > 0) {
+                extensionPower = pidfExtension.calculate(motorExtension.getCurrentPosition(), maxExtensionTicks);
+            } else if (myOpMode.gamepad2.left_stick_y < 0) {
+                extensionPower = pidfExtension.calculate(motorExtension.getCurrentPosition(), minExtensionTicks);
+            } else {
+                extensionPower = 0;
+            }
+//            extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
             if (myOpMode.gamepad2.dpad_left) {
                 calculateFlipPose(30, flipServo);
             } else if (myOpMode.gamepad2.dpad_up) {
@@ -78,7 +88,14 @@ public class Operator extends Drivers {
                 ServoUtil.calculateFlipPose(downClawRigging, flipServo);
                 liftHeld = true;
             }
-            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            if (myOpMode.gamepad2.right_stick_y > 0) {
+                rotationPower = pidfExtension.calculate(motorExtension.getCurrentPosition(), maxExtensionTicks);
+            } else if (myOpMode.gamepad2.right_stick_y < 0) {
+                rotationPower = pidfExtension.calculate(motorExtension.getCurrentPosition(), minExtensionTicks);
+            } else {
+                rotationPower = 0;
+            }
+//            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }
         if (currOther == otherControls[3]) {//Grady
             if (myOpMode.gamepad2.right_bumper) {

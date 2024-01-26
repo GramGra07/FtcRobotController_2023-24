@@ -40,10 +40,10 @@ import java.util.List;
  *
  * Recommended tuning process:
  *
- * 1. Increase kP until any phase lag is eliminated. Concurrently increase kD as necessary to
+ * 1. Increase extensionP until any phase lag is eliminated. Concurrently increase extensionD as necessary to
  *    mitigate oscillations.
- * 2. Add kI (or adjust kF) until the steady state/constant velocity plateaus are reached.
- * 3. Back off kP and kD a little until the response is less oscillatory (but without lag).
+ * 2. Add extensionI (or adjust extensionF) until the steady state/constant velocity plateaus are reached.
+ * 3. Back off extensionP and extensionD a little until the response is less oscillatory (but without lag).
  *
  * Pressing Y/Δ (Xbox/PS4) will pause the tuning process and enter driver override, allowing the
  * user to reset the position of the bot in the event that it drifts off the path.

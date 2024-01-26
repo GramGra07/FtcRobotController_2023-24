@@ -19,11 +19,11 @@ import java.util.Objects;
 
 /**
  * This routine is designed to calculate the maximum velocity your bot can achieve under load. It
- * will also calculate the effective kF value for your velocity PID.
+ * will also calculate the effective extensionF value for your velocity PID.
  * <p>
  * Upon pressing start, your bot will run at max power for RUNTIME seconds.
  * <p>
- * Further fine tuning of kF may be desired.
+ * Further fine tuning of extensionF may be desired.
  */
 @Config
 @Disabled
@@ -74,7 +74,7 @@ public class MaxVelocityTuner extends LinearOpMode {
 
         telemetry.addData("Max Velocity", maxVelocity);
         telemetry.addData("Max Recommended Velocity", maxVelocity * 0.8);
-        telemetry.addData("Voltage Compensated kF", effectiveKf * batteryVoltageSensor.getVoltage() / 12);
+        telemetry.addData("Voltage Compensated extensionF", effectiveKf * batteryVoltageSensor.getVoltage() / 12);
         telemetry.update();
 
         while (!isStopRequested() && opModeIsActive()) idle();

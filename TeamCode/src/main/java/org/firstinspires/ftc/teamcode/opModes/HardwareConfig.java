@@ -22,13 +22,17 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.loopInterval;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.useLoopTime;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionD;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionF;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionI;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionP;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -48,6 +52,7 @@ import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
@@ -105,11 +110,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public static boolean once = false;
-    public static PIDController pidRotation = new PIDController(
-            0.1, // Proportional gain
-            0.1, // Integral gain
-            0.1 // Derivative gain
-    );
+
+    public static PIDFController pidfExtension = new PIDFController(extensionP, extensionI, extensionD, extensionF);
+    public static PIDFController pidfRotation = new PIDFController(PIDVals.rotationP, PIDVals.rotationI, PIDVals.rotationD, PIDVals.rotationF);
 
 //    public static GamepadEx gamepad1 = new GamepadEx(myOpMode.gamepad1);
 //    public static GamepadEx gamepad2 = new GamepadEx(myOpMode.gamepad2);
@@ -187,7 +190,9 @@ public class HardwareConfig {//this is an external opMode that can have public v
         PastPotent.pastPotentVal = Sensors.getPotentVal(potentiometer);
 
         motorExtension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorExtension.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motorExtension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorRotation.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motorRotation.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 //        cRE = new Gamepad.RumbleEffect.Builder()
 //                .addStep(1.0, 1.0, 250)
@@ -393,6 +398,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
             telemetry.addData("autoClose", "");
         }
         telemetry.addData("Extension", motorExtension.getCurrentPosition());
+        telemetry.addData("Rotation", motorRotation.getCurrentPosition());
         teleSpace();
 //        telemetry.addData("x", "%.1f", drive.getPoseEstimate().getX());
 //        telemetry.addData("y", "%.1f", drive.getPoseEstimate().getY());
