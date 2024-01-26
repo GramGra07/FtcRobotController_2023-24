@@ -92,11 +92,5 @@ public class ServoUtil {
         servo.setPosition(setServo(raiseAirplaneVal));
     }
 
-    public static int liftOpen = openClaw1 + 75;
-
-    public static void setupLift(Servo servo) {
-        servo.setPosition(setServo(openClaw1));
-    }
-
     public static int downClawRigging = -20;
 }
