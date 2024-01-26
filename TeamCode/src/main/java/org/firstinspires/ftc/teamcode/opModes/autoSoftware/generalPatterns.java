@@ -3,10 +3,8 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdTLeft;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdTRight;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.midPiNav;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.startDist;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.shiftAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -29,20 +27,20 @@ public class generalPatterns {
             case RED:
                 switch (StartPose.side) {
                     case LEFT:
-                        drive.followTrajectorySequence(BackdropTrajectories.redLong(drive, pathLong, isCycling));
+                        drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong, isCycling));
                         break;
                     case RIGHT:
-                        drive.followTrajectorySequence(BackdropTrajectories.redShort(drive));
+                        drive.followTrajectorySequenceAsync(BackdropTrajectories.redShort(drive));
                         break;
                 }
                 break;
             case BLUE:
                 switch (StartPose.side) {
                     case LEFT:
-                        drive.followTrajectorySequence(BackdropTrajectories.blueShort(drive));
+                        drive.followTrajectorySequenceAsync(BackdropTrajectories.blueShort(drive));
                         break;
                     case RIGHT:
-                        drive.followTrajectorySequence(BackdropTrajectories.blueLong(drive, pathLong, isCycling));
+                        drive.followTrajectorySequenceAsync(BackdropTrajectories.blueLong(drive, pathLong, isCycling));
                         break;
                 }
                 break;
@@ -54,9 +52,7 @@ public class generalPatterns {
 //            encoderDrive(motorExtension, autoExtension, 0.7);
 //        }
         ServoUtil.calculateFlipPose(20, flipServo);
-        shiftAuto(drive);
-        ServoUtil.openClaw(claw1);
-        ServoUtil.calculateFlipPose(60, flipServo);
+//        shiftAuto(drive);
     }
 
     // drive and place first pixel
@@ -78,10 +74,10 @@ public class generalPatterns {
                 switch (placement) {
                     case BLUE_RIGHT:
                     case RED_RIGHT:
-                        drive.followTrajectorySequence(fwdTLeft(drive));
+                        drive.followTrajectorySequenceAsync(fwdTLeft(drive));
                         break;
                     case BLUE_LEFT:
-                        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .strafeLeft(12)
                                 .forward(20)
                                 .addDisplacementMarker(() ->
@@ -96,7 +92,7 @@ public class generalPatterns {
                             case NONE:
                             case OUTSIDE:
                             case INSIDE:
-                                drive.followTrajectorySequence(fwdTLeft(drive));
+                                drive.followTrajectorySequenceAsync(fwdTLeft(drive));
                                 break;
                         }
                 }
@@ -107,16 +103,16 @@ public class generalPatterns {
                 switch (placement) {
                     case RED_RIGHT:
                     case BLUE_LEFT:
-                        drive.followTrajectorySequence(midPiNav(drive));
+                        drive.followTrajectorySequenceAsync(midPiNav(drive));
                         break;
                     case BLUE_RIGHT:
                         switch (pathLong) {
                             case NONE:
                             case OUTSIDE:
-                                drive.followTrajectorySequence(midPiNav(drive));
+                                drive.followTrajectorySequenceAsync(midPiNav(drive));
                                 break;
                             case INSIDE:
-                                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                         .splineToLinearHeading(farSwingPoseBLUE, farSwingPoseBLUE.getHeading())
                                         .addDisplacementMarker(() -> {
                                             ServoUtil.openClaw(HardwareConfig.claw2);
@@ -132,10 +128,10 @@ public class generalPatterns {
                         switch (pathLong) {
                             case NONE:
                             case OUTSIDE:
-                                drive.followTrajectorySequence(midPiNav(drive));
+                                drive.followTrajectorySequenceAsync(midPiNav(drive));
                                 break;
                             case INSIDE:
-                                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                         .splineToLinearHeading(farSwingPoseRED, farSwingPoseRED.getHeading())
                                         .addDisplacementMarker(() -> {
                                             ServoUtil.openClaw(HardwareConfig.claw2);
@@ -154,10 +150,10 @@ public class generalPatterns {
                 switch (placement) {
                     case RED_LEFT:
                     case BLUE_LEFT:
-                        drive.followTrajectorySequence(fwdTRight(drive));
+                        drive.followTrajectorySequenceAsync(fwdTRight(drive));
                         break;
                     case RED_RIGHT:
-                        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .strafeRight(14)
                                 .forward(20)
                                 .addDisplacementMarker(() -> {
@@ -173,8 +169,8 @@ public class generalPatterns {
                             case NONE:
                             case INSIDE:
                             case OUTSIDE:
-                                drive.followTrajectorySequence(fwdTRight(drive));
-                                drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                drive.followTrajectorySequenceAsync(fwdTRight(drive));
+                                drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                         .turn(Math.toRadians(60))
                                         .build()
                                 );

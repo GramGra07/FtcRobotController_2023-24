@@ -4,7 +4,6 @@ import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
 import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.autoPotent;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.potentiometerBase;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
 
 import android.util.Size;
 
@@ -20,7 +19,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
-import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PresetPose;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
@@ -64,6 +62,21 @@ public class autoHardware extends HardwareConfig {
         super(opmode);
     } // constructor
 
+    public enum STATES {
+        INIT,
+        SPIKE_NAV,
+        BACKDROP,
+        CYCLE,
+        SHIFT,
+        END_POSE,
+        STOP
+    }
+
+    public static STATES previousState = STATES.INIT;
+    public static STATES currentState = STATES.INIT;
+    public static int targetPositionSlides = 0;
+    public static int targetPositionPotent = 0;
+
     public void initAuto(HardwareMap ahwMap, LinearOpMode myOpMode, boolean cycling) {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
         hardwareMap = ahwMap; // hardware map initialization
@@ -103,6 +116,7 @@ public class autoHardware extends HardwareConfig {
 //        visionPortal.setProcessorEnabled(objProcessor, false);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
+        currentState = STATES.SPIKE_NAV;
     }
 
     public static void doAprilTagPoseCorrection(AprilTagProcessor processor, Telemetry telemetry, MecanumDrive drive) {
@@ -140,24 +154,26 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
-    public static void endAuto(EndPose endPose, MecanumDrive drive) {
-        if (endPose != EndPose.NONE) {
-            goToEndPose(endPose, drive);
-        }
-//        visionPortal.close();
-        updatePose(drive);
-    }
+//    public static void endAuto(EndPose endPose, MecanumDrive drive) {
+//        if (endPose != EndPose.NONE) {
+//            goToEndPose(endPose, drive);
+//        }
+////        visionPortal.close();
+//        updatePose(drive);
+//    }
 
     // shifts left or right depending on the random
     public static void shiftAuto(MecanumDrive drive) {
         switch (autoRandomReliable) {
             case left:
-                drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
+                drive.followTrajectorySequenceAsync(ShiftTrajectories.shiftLeft(drive));
                 break;
             case right:
-                drive.followTrajectorySequence(ShiftTrajectories.shiftRight(drive));
+                drive.followTrajectorySequenceAsync(ShiftTrajectories.shiftRight(drive));
                 break;
         }
+        ServoUtil.openClaw(claw1);
+        ServoUtil.calculateFlipPose(60, flipServo);
     }
 
     // method to get the start pose

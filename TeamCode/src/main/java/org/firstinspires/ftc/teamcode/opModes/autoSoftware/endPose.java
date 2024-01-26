@@ -45,7 +45,7 @@ public class endPose {
                 }
                 break;
         }
-        drive.followTrajectorySequence(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                         .lineToLinearHeading(pose)
 //                .addDisplacementMarker(() ->
 //                        visionPortal.close())
