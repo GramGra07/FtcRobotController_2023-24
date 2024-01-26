@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endIn.shortSide;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelPark;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkShort;
@@ -28,9 +27,8 @@ public class PiParkBLI extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap, this, false);
-        if (opModeIsActive()) {
-            pixelPark(drive, PathLong.NONE);
+        while (opModeIsActive()) {
+            pixelPark(drive, PathLong.NONE, EndPose.RIGHT);
         }
-        endAuto(EndPose.RIGHT, drive);
     }
 }

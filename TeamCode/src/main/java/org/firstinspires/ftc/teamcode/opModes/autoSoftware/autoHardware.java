@@ -154,14 +154,6 @@ public class autoHardware extends HardwareConfig {
         }
     }
 
-//    public static void endAuto(EndPose endPose, MecanumDrive drive) {
-//        if (endPose != EndPose.NONE) {
-//            goToEndPose(endPose, drive);
-//        }
-////        visionPortal.close();
-//        updatePose(drive);
-//    }
-
     // shifts left or right depending on the random
     public static void shiftAuto(MecanumDrive drive) {
         switch (autoRandomReliable) {
@@ -232,7 +224,7 @@ public class autoHardware extends HardwareConfig {
 
     public static void extendAndRaise() {
         raiseArm(0, PresetPose.HIGH);
-        encoderDrive(motorExtension, autoExtension, 0.7);
+        targetPositionSlides = autoExtension;
         ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
     }
 }

@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import static org.firstinspires.ftc.teamcode.Limits.flipperMax;
 import static org.firstinspires.ftc.teamcode.Limits.flipperMin;
 import static org.firstinspires.ftc.teamcode.Limits.maxExtensionTicks;
+import static org.firstinspires.ftc.teamcode.Limits.maxRotationTicks;
 import static org.firstinspires.ftc.teamcode.Limits.minExtensionTicks;
+import static org.firstinspires.ftc.teamcode.Limits.minRotationTicks;
 import static org.firstinspires.ftc.teamcode.Limits.slideMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMin;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
@@ -18,7 +20,9 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.pidfExtension;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.pidfRotation;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPower;
 
@@ -89,9 +93,9 @@ public class Operator extends Drivers {
                 liftHeld = true;
             }
             if (myOpMode.gamepad2.right_stick_y > 0) {
-                rotationPower = pidfExtension.calculate(motorExtension.getCurrentPosition(), maxExtensionTicks);
+                rotationPower = pidfRotation.calculate(motorRotation.getCurrentPosition(), maxRotationTicks);
             } else if (myOpMode.gamepad2.right_stick_y < 0) {
-                rotationPower = pidfExtension.calculate(motorExtension.getCurrentPosition(), minExtensionTicks);
+                rotationPower = pidfRotation.calculate(motorRotation.getCurrentPosition(), minRotationTicks);
             } else {
                 rotationPower = 0;
             }

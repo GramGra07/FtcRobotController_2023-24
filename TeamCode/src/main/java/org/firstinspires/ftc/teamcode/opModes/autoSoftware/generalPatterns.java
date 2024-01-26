@@ -45,12 +45,6 @@ public class generalPatterns {
                 }
                 break;
         }
-//        if (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.RIGHT) {
-//            encoderDrive(motorExtension, autoExtension, 0.7);
-//        }
-//        if (StartPose.alliance == Alliance.RED && StartPose.side == StartSide.LEFT) {
-//            encoderDrive(motorExtension, autoExtension, 0.7);
-//        }
         ServoUtil.calculateFlipPose(20, flipServo);
 //        shiftAuto(drive);
     }

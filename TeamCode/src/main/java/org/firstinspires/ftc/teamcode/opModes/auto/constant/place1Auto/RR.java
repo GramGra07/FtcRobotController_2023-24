@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.constant.place1Auto;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.place1Pixel;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.place1Sort;
@@ -28,9 +27,8 @@ public class RR extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
         robot.initAuto(hardwareMap, this, false);
-        if (opModeIsActive()) {
-            place1Pixel(drive, PathLong.NONE);
+        while (opModeIsActive()) {
+            place1Pixel(drive, PathLong.NONE, EndPose.StartingPosition);
         }
-        endAuto(EndPose.StartingPosition, drive);
     }
 }
