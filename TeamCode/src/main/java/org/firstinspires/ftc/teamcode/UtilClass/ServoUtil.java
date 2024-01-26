@@ -62,10 +62,11 @@ public class ServoUtil {
     }
 
     public static int servoFlipVal = 62;
-    public static double hcalc = 78;
+    public static double hcalc = 88;
+    public static double flipOffset = 10;
 
     public static void calculateFlipPose(int pose, Servo servo) {
-        double theta = Sensors.getPotentVal(potentiometer);
+        double theta = Sensors.getPotentVal(potentiometer) + flipOffset;
         PastPotent.pastPotentVal = theta;
         double sig = Math.ceil((-0.26 * theta) + hcalc) + (pose / 2);
         servo.setPosition(setServo(sig));
@@ -96,4 +97,6 @@ public class ServoUtil {
     public static void setupLift(Servo servo) {
         servo.setPosition(setServo(openClaw1));
     }
+
+    public static int downClawRigging = -20;
 }

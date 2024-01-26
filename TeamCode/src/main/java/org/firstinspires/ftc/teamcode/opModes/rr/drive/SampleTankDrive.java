@@ -14,6 +14,7 @@ import static org.firstinspires.ftc.teamcode.opModes.rr.drive.DriveConstants.kV;
 
 import androidx.annotation.NonNull;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.control.PIDCoefficients;
 import com.acmerobotics.roadrunner.drive.DriveSignal;
 import com.acmerobotics.roadrunner.drive.TankDrive;
@@ -51,7 +52,7 @@ import java.util.List;
 /*
  * Simple tank drive hardware implementation for REV hardware.
  */
-//@Config
+@Config
 public class SampleTankDrive extends TankDrive {
     public static PIDCoefficients AXIAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients CROSS_TRACK_PID = new PIDCoefficients(0, 0, 0);

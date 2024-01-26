@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.Trajectories.backdrop;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autoRandomReliable;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.raiseArm;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -11,8 +10,9 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
-import org.firstinspires.ftc.teamcode.Enums.PresetPose;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.AutoServoPositions;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StrafeOffsets;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
@@ -30,7 +30,7 @@ public class BackdropTrajectories {
     public static TrajectorySequence redShort(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
+                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo))
                 .lineToLinearHeading(backRed)
                 .build();
     }
@@ -42,46 +42,43 @@ public class BackdropTrajectories {
                 switch (autoRandomReliable) {
                     case mid:
                     case right:
-                        int strafeRightOffset = 4; //
+                        int strafeRightOffset = StrafeOffsets.RLI_mr; //
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
+                                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipUp, flipServo))
                                 .lineToLinearHeading(new Pose2d(-52, -10, Math.toRadians(endAngle)))
                                 .lineTo(new Vector2d(36, -12))
                                 .lineTo(new Vector2d(36, -30))
                                 .addDisplacementMarker(() -> {
-                                    raiseArm(0, PresetPose.HIGH);
-                                    ServoUtil.calculateFlipPose(30, flipServo);
+                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                                 })
-                                .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY() - strafeRightOffset, backRed.getHeading()), Math.toRadians(endAngle))
+                                .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset * 2), backRed.getY() - strafeRightOffset, backRed.getHeading()), Math.toRadians(endAngle))
                                 .forward(backdropOffset + 4)
                                 .build();
                     case left:
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
+                                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipUp, flipServo))
                                 .lineTo(new Vector2d(drive.getPoseEstimate().getX() + 4, -10))
                                 .turn(Math.toRadians(-90))
                                 .lineTo(new Vector2d(36, -12))
                                 .lineTo(new Vector2d(36, -30))
                                 .addDisplacementMarker(() -> {
-                                    raiseArm(0, PresetPose.HIGH);
-                                    ServoUtil.calculateFlipPose(30, flipServo);
+                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                                 })
-                                .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY(), backRed.getHeading()), Math.toRadians(endAngle))
+                                .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset * 2), backRed.getY() - StrafeOffsets.RLI_l, backRed.getHeading()), Math.toRadians(endAngle))
                                 .forward(backdropOffset + 4)
                                 .build();
                 }
             case OUTSIDE:
-                int strafeOffset = 0; // - goes right, + goes left
+                int strafeOffset = StrafeOffsets.RLO; // - goes right, + goes left
                 return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                        .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
+                        .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipUp, flipServo))
                         .lineToLinearHeading(new Pose2d(START_POSE.getX() - xOffset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                         .addDisplacementMarker(() -> {
-                            raiseArm(0, PresetPose.HIGH);
-                            ServoUtil.calculateFlipPose(30, flipServo);
+                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                         })
-                        .splineToLinearHeading(new Pose2d(backRed.getX() - backdropOffset, backRed.getY() - strafeOffset, backRed.getHeading()), Math.toRadians(endAngle))
-                        .forward(backdropOffset + 4)
+                        .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset * 2), backRed.getY() - strafeOffset, backRed.getHeading()), Math.toRadians(endAngle))
+                        .forward(backdropOffset)
                         .build();
             default:
                 return null;
@@ -91,7 +88,7 @@ public class BackdropTrajectories {
     public static TrajectorySequence blueShort(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(30, flipServo))
+                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo))
                 .lineToLinearHeading(backBlue)
                 .build();
     }
@@ -103,46 +100,43 @@ public class BackdropTrajectories {
                 switch (autoRandomReliable) {
                     case left:
                     case mid:
-                        int strafeOffset = 5; // - goes right, + goes left
+                        int strafeOffset = StrafeOffsets.BRI_ml; // - goes right, + goes left
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
+                                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipUp, flipServo))
                                 .lineToLinearHeading(new Pose2d(-50, 12, Math.toRadians(endAngle)))
                                 .lineTo(new Vector2d(36, 10))
                                 .lineTo(new Vector2d(36, 30))
                                 .addDisplacementMarker(() -> {
-                                    raiseArm(0, PresetPose.HIGH);
-                                    ServoUtil.calculateFlipPose(30, flipServo);
+                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                                 })
-                                .splineToLinearHeading(new Pose2d(backBlue.getX() - backdropOffset, backBlue.getY() + strafeOffset, backBlue.getHeading()), Math.toRadians(endAngle))
+                                .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset * 2), backBlue.getY() + strafeOffset, backBlue.getHeading()), Math.toRadians(endAngle))
                                 .forward(backdropOffset + 4)
                                 .build();
                     case right:
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
+                                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipUp, flipServo))
                                 .lineTo(new Vector2d(drive.getPoseEstimate().getX() - 4, 12))
                                 .turn(Math.toRadians(90))
                                 .lineTo(new Vector2d(36, 12))
                                 .lineTo(new Vector2d(36, 30))
                                 .addDisplacementMarker(() -> {
-                                    raiseArm(0, PresetPose.HIGH);
-                                    ServoUtil.calculateFlipPose(30, flipServo);
+                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                                 })
-                                .splineToLinearHeading(new Pose2d(backBlue.getX() - backdropOffset, backBlue.getY(), backBlue.getHeading()), Math.toRadians(endAngle))
+                                .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset * 2), backBlue.getY() - StrafeOffsets.BRI_r, backBlue.getHeading()), Math.toRadians(endAngle))
                                 .forward(backdropOffset + 8)
                                 .build();
                 }
             case OUTSIDE:
-                int strafeOffset = -4; // - goes right, + goes left
+                int strafeOffset = StrafeOffsets.BRO; // - goes right, + goes left
                 return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                        .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(60, flipServo))
+                        .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipUp, flipServo))
                         .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
                         .lineTo(new Vector2d(36, 30))
                         .addDisplacementMarker(() -> {
-                            raiseArm(0, PresetPose.HIGH);
-                            ServoUtil.calculateFlipPose(30, flipServo);
+                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                         })
-                        .splineToLinearHeading(new Pose2d(backBlue.getX() - backdropOffset, backBlue.getY() - strafeOffset, backBlue.getHeading()), Math.toRadians(endAngle))
+                        .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset * 2), backBlue.getY() - strafeOffset, backBlue.getHeading()), Math.toRadians(endAngle))
                         .forward(backdropOffset + 4)
                         .build();
             default:

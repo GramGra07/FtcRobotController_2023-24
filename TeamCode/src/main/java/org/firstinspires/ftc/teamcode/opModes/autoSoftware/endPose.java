@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.EndPoseVals.inside;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.EndPoseVals.outside;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.encoderDrive;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
@@ -12,9 +12,6 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class endPose {
 
-    // contains positions for the robot to go to at the end of the auto
-    public static int outside = 60;
-    public static int inside = 12;
     public static Pose2d endPoseRightRed = new Pose2d(50, -outside, Math.toRadians(0));
     public static Pose2d endPoseLeftRed = new Pose2d(50, -inside, Math.toRadians(0));
     public static Pose2d endPoseRightBlue = new Pose2d(50, inside, Math.toRadians(0));
@@ -54,6 +51,6 @@ public class endPose {
 //                        visionPortal.close())
                         .build()
         );
-        encoderDrive(motorExtension, 0, 1);
+//        encoderDrive(motorExtension, -autoExtension, 1);
     }
 }

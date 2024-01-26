@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opModes.camera;
+package org.firstinspires.ftc.teamcode.opModes.camera.openCV;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 

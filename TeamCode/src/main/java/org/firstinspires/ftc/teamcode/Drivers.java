@@ -9,7 +9,6 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.resetAirplane;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
 
@@ -61,11 +60,6 @@ public class Drivers {
                 } else {
                     liftPower = 0;
                 }
-            }
-            if (myOpMode.gamepad1.square) {
-                ServoUtil.calculateFlipPose(-20, flipServo);
-                ServoUtil.setupLift(claw1);
-                liftHeld = true;
             }
             doDriverAid(drive, myOpMode.gamepad1.right_bumper, myOpMode.gamepad1.dpad_up, myOpMode.gamepad1.dpad_right, myOpMode.gamepad1.cross);
         }

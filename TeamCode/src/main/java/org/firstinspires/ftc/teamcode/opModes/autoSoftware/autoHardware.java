@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.autoPotent;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.potentiometerBase;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
 
 import android.util.Size;
@@ -190,9 +192,9 @@ public class autoHardware extends HardwareConfig {
     // method to raise the arm with the potentiometer
     public static void raiseArm(int pose, PresetPose presetPose) {
         if (presetPose == PresetPose.HIGH) {
-            pose = 46;
+            pose = potentiometerBase + autoPotent;
         } else if (presetPose == PresetPose.RISE_UP) {
-            pose = 31;
+            pose = potentiometerBase;
         }
         Sensors.driveByPotentVal(pose, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
     }
@@ -211,7 +213,7 @@ public class autoHardware extends HardwareConfig {
     public static void encoderDrive(DcMotor motor, int position, double speed) {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor.setTargetPosition(motor.getCurrentPosition() + (position));
+        motor.setTargetPosition(motor.getCurrentPosition() + position);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));
         while (motor.isBusy()) {

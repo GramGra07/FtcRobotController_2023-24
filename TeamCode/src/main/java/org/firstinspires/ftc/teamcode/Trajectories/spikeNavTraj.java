@@ -12,7 +12,7 @@ public class spikeNavTraj {
     public static TrajectorySequence midPiNav(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(26)
+                .forward(25)
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                     ServoUtil.calculateFlipPose(30, flipServo);

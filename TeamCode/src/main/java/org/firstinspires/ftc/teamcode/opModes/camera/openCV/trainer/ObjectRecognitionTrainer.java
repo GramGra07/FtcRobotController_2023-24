@@ -6,7 +6,6 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ScalarUtil.fetchScalar;
 import static org.firstinspires.ftc.teamcode.UtilClass.ScalarUtil.scalarVals;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -33,7 +32,7 @@ import java.util.List;
 
 @TeleOp
 @Disabled
-@Config
+//@Config
 public class ObjectRecognitionTrainer extends LinearOpMode {
     OpenCvWebcam webcam;
 

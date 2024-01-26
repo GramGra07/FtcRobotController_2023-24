@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
+import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdTLeft;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdTRight;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.midPiNav;
@@ -51,13 +52,13 @@ public class generalPatterns {
                 break;
         }
         if (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.RIGHT) {
-            encoderDrive(motorExtension, 1260, 0.7);
+            encoderDrive(motorExtension, autoExtension, 0.7);
         }
         if (StartPose.alliance == Alliance.RED && StartPose.side == StartSide.LEFT) {
-            encoderDrive(motorExtension, 1260, 0.7);
+            encoderDrive(motorExtension, autoExtension, 0.7);
         }
+        ServoUtil.calculateFlipPose(20, flipServo);
         shiftAuto(drive);
-        ServoUtil.calculateFlipPose(25, flipServo);
         ServoUtil.openClaw(claw1);
         ServoUtil.calculateFlipPose(60, flipServo);
     }

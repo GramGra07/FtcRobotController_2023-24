@@ -76,8 +76,13 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
                     autonomousRandom = AutoRandom.right;
                     Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
                     Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-                    Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
-                    Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
+                    if (alliance == Alliance.BLUE) {
+                        Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
+                        Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, false);
+                    } else {
+                        Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
+                        Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, true);
+                    }
                     current = 1;
                 }
             }
@@ -103,8 +108,13 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
             autonomousRandom = AutoRandom.left;
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-            Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-            Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, true);
+            if (alliance == Alliance.BLUE) {
+                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
+                Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, true);
+            } else {
+                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
+                Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, false);
+            }
         }
         current = 0;
         ycrcbMat.release();

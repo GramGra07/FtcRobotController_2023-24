@@ -6,6 +6,7 @@ import static org.firstinspires.ftc.teamcode.Limits.slideMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMin;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.downClawRigging;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.lastSetVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
@@ -20,6 +21,7 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPowe
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
@@ -79,7 +81,13 @@ public class Operator extends Drivers {
                 calculateFlipPose(0, flipServo);
             }
             if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
-                calculateFlipPose(lastSetVal, flipServo);
+                if (!liftHeld) {
+                    calculateFlipPose(lastSetVal, flipServo);
+                }
+            }
+            if (myOpMode.gamepad1.square) {
+                ServoUtil.calculateFlipPose(downClawRigging, flipServo);
+                liftHeld = true;
             }
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
         }

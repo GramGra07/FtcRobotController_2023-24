@@ -31,7 +31,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.opModes.camera;
+package org.firstinspires.ftc.teamcode.ggutil;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
 
