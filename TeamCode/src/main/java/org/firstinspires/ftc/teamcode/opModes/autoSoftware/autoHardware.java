@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
+import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.autoPotent;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.potentiometerBase;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
@@ -26,6 +27,7 @@ import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.AutoServoPositions;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.camera.VPObjectDetect;
@@ -199,11 +201,6 @@ public class autoHardware extends HardwareConfig {
         Sensors.driveByPotentVal(pose, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
     }
 
-//    public static void raiseArmHigh() {
-//        int potentBackTarget = 41;
-//        Sensors.driveByPotentVal(potentBackTarget, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
-//    }
-
     // method to update the pose
     public static void updatePose(MecanumDrive drive) {
         PoseStorage.currentPose = drive.getPoseEstimate();
@@ -211,14 +208,15 @@ public class autoHardware extends HardwareConfig {
 
     // method to use encoders to go to a point with encoder
     public static void encoderDrive(DcMotor motor, int position, double speed) {
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor.setTargetPosition(motor.getCurrentPosition() + position);
+        motor.setTargetPosition(motor.getCurrentPosition() + (position));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));
-        while (motor.isBusy()) {
-        }
-        motor.setPower(0);
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public static void extendAndRaise() {
+        raiseArm(0, PresetPose.HIGH);
+        encoderDrive(motorExtension, autoExtension, 0.7);
+        ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
     }
 }

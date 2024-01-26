@@ -36,12 +36,14 @@ public class Drivers {
         if (currDriver == driverControls[0]) {//Chase
             fieldCentric = false;
             //slowmode
+//            gamepad1.wasJustReleased(GamepadKeys.Button.B);
             if (myOpMode.gamepad1.circle && !slowModeButtonDown && !slowModeIsOn) {
                 slowModeIsOn = true;
             } else if (myOpMode.gamepad1.circle && !slowModeButtonDown && slowModeIsOn) {
                 slowModeIsOn = false;
             }
             slowModeButtonDown = myOpMode.gamepad1.circle;
+//            gamepad1.wasJustReleased(GamepadKeys.Button.Y);
             if (myOpMode.gamepad1.triangle && !planeButtonDown && !planeReleased) {
                 ServoUtil.releaseAirplane(airplaneServo);
                 planeReleased = true;
@@ -50,6 +52,8 @@ public class Drivers {
                 planeReleased = false;
             }
             planeButtonDown = myOpMode.gamepad1.triangle;
+//            gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+            // gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
             if (myOpMode.gamepad1.right_trigger > 0) {
                 liftPower = -liftMax;
             } else if (myOpMode.gamepad1.left_trigger > 0) {
@@ -61,6 +65,11 @@ public class Drivers {
                     liftPower = 0;
                 }
             }
+            // using ftc lib
+//            gamepad1.getButton(GamepadKeys.Button.RIGHT_BUMPER);
+//            gamepad1.getButton(GamepadKeys.Button.DPAD_UP);
+//            gamepad1.getButton(GamepadKeys.Button.DPAD_RIGHT);
+//            gamepad1.getButton(GamepadKeys.Button.A);
             doDriverAid(drive, myOpMode.gamepad1.right_bumper, myOpMode.gamepad1.dpad_up, myOpMode.gamepad1.dpad_right, myOpMode.gamepad1.cross);
         }
         if (currDriver == driverControls[3]) {//Grady

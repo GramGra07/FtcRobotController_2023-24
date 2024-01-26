@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Trajectories.backdrop;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autoRandomReliable;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.extendAndRaise;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.dashboard.config.Config;
@@ -49,7 +50,7 @@ public class BackdropTrajectories {
                                 .lineTo(new Vector2d(36, -12))
                                 .lineTo(new Vector2d(36, -30))
                                 .addDisplacementMarker(() -> {
-                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                                    extendAndRaise();
                                 })
                                 .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset * 2), backRed.getY() - strafeRightOffset, backRed.getHeading()), Math.toRadians(endAngle))
                                 .forward(backdropOffset + 4)
@@ -62,7 +63,7 @@ public class BackdropTrajectories {
                                 .lineTo(new Vector2d(36, -12))
                                 .lineTo(new Vector2d(36, -30))
                                 .addDisplacementMarker(() -> {
-                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                                    extendAndRaise();
                                 })
                                 .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset * 2), backRed.getY() - StrafeOffsets.RLI_l, backRed.getHeading()), Math.toRadians(endAngle))
                                 .forward(backdropOffset + 4)
@@ -75,7 +76,7 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(START_POSE.getX() - xOffset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                         .addDisplacementMarker(() -> {
-                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                            extendAndRaise();
                         })
                         .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset * 2), backRed.getY() - strafeOffset, backRed.getHeading()), Math.toRadians(endAngle))
                         .forward(backdropOffset)
@@ -107,7 +108,7 @@ public class BackdropTrajectories {
                                 .lineTo(new Vector2d(36, 10))
                                 .lineTo(new Vector2d(36, 30))
                                 .addDisplacementMarker(() -> {
-                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                                    extendAndRaise();
                                 })
                                 .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset * 2), backBlue.getY() + strafeOffset, backBlue.getHeading()), Math.toRadians(endAngle))
                                 .forward(backdropOffset + 4)
@@ -120,7 +121,7 @@ public class BackdropTrajectories {
                                 .lineTo(new Vector2d(36, 12))
                                 .lineTo(new Vector2d(36, 30))
                                 .addDisplacementMarker(() -> {
-                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                                    extendAndRaise();
                                 })
                                 .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset * 2), backBlue.getY() - StrafeOffsets.BRI_r, backBlue.getHeading()), Math.toRadians(endAngle))
                                 .forward(backdropOffset + 8)
@@ -134,7 +135,7 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
                         .lineTo(new Vector2d(36, 30))
                         .addDisplacementMarker(() -> {
-                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                            extendAndRaise();
                         })
                         .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset * 2), backBlue.getY() - strafeOffset, backBlue.getHeading()), Math.toRadians(endAngle))
                         .forward(backdropOffset + 4)

@@ -110,6 +110,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
             0.1, // Integral gain
             0.1 // Derivative gain
     );
+
+//    public static GamepadEx gamepad1 = new GamepadEx(myOpMode.gamepad1);
+//    public static GamepadEx gamepad2 = new GamepadEx(myOpMode.gamepad2);
+
     public static DistanceSensor distanceSensor1;
     public static DistanceSensor distanceSensor2;
     public static StartDist startDist;

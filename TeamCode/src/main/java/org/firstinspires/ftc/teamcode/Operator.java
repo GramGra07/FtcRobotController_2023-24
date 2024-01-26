@@ -44,7 +44,10 @@ public class Operator extends Drivers {
                 useLoopTime = true;
             }
             touchPressed = myOpMode.gamepad2.touchpad;
-//            if (drive.getPoseEstimate().getHeading()>-90 && drive.getPoseEstimate().getHeading()<90) {
+//            gamepad2.getButton(GamepadKeys.Button.RIGHT_BUMPER);
+//            gamepad2.getButton(GamepadKeys.Button.LEFT_BUMPER);
+//            gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+//            gamepad2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
             if (myOpMode.gamepad2.right_bumper) {
                 closeClaw(claw1);
             }
@@ -57,20 +60,6 @@ public class Operator extends Drivers {
             if (myOpMode.gamepad2.left_trigger > 0) {
                 openClaw(claw2);
             }
-//            }else{
-//                if (myOpMode.gamepad2.right_bumper) {
-//                    closeClaw(claw2);
-//                }
-//                if (myOpMode.gamepad2.left_bumper) {
-//                    closeClaw(claw1);
-//                }
-//                if (myOpMode.gamepad2.right_trigger > 0) {
-//                    openClaw(claw2);
-//                }
-//                if (myOpMode.gamepad2.left_trigger > 0) {
-//                    openClaw(claw1);
-//                }
-//            }
 
             extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
             if (myOpMode.gamepad2.dpad_left) {
