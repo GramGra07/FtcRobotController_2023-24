@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.UtilClass.state_machine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -15,6 +16,9 @@ public class StateMachine<T extends Enum<T>> {
     List<T> stateHistory;
     Map<T, Supplier<Boolean>> stopConditions;
     private boolean isRunning = true;
+
+    public <T extends Enum<T>> StateMachine(T initialState, java.util.Map onEnterCommands, java.util.Map onExitCommands, java.util.Map transitions, java.util.Map stopConditions) {
+    }
 
     public boolean isRunning() {
         return isRunning;
@@ -55,6 +59,9 @@ public class StateMachine<T extends Enum<T>> {
         }
 
         public Builder<T> state(T state) {
+            if (states.contains(state)) {
+                throw new IllegalArgumentException("State already exists");
+            }
             states.add(state);
             return this;
         }
@@ -67,28 +74,66 @@ public class StateMachine<T extends Enum<T>> {
         }
 
         public Builder<T> onEnter(T state, StateChangeCallback command) {
+            if (!states.contains(state)) {
+                throw new IllegalArgumentException("State does not exist");
+            }
             onEnterCommands.put(state, command);
             return this;
         }
 
         public Builder<T> onExit(T state, StateChangeCallback command) {
+            if (!states.contains(state)) {
+                throw new IllegalArgumentException("State does not exist");
+            }
             onExitCommands.put(state, command);
             return this;
         }
 
         public Builder<T> transition(T state, Supplier<Boolean> condition) {
+            if (!states.contains(state)) {
+                throw new IllegalArgumentException("State does not exist");
+            }
             transitions.put(state, condition);
             return this;
         }
 
         public Builder<T> stopRunning() {
-            if (this.machine != null) {
-                this.machine.stopRunning();
+            if (this.machine == null) {
+                throw new IllegalStateException("StateMachine has not been built yet");
             }
+            this.machine.stopRunning();
             return this;
         }
 
         public StateMachine<T> build() {
+            if (states == null || states.isEmpty() || transitions == null || transitions.isEmpty()) {
+                throw new IllegalArgumentException("States and transitions cannot be null or empty");
+            }
+
+            if (new HashSet<>(states).size() != states.size()) {
+                throw new IllegalArgumentException("States cannot have duplicates");
+            }
+
+            if (states.size() != transitions.size()) {
+                throw new IllegalArgumentException("Mismatched states and transitions");
+            }
+
+            for (T state : states) {
+                if (!transitions.containsKey(state)) {
+                    throw new IllegalArgumentException("All states must have a corresponding transition");
+                }
+                if (onEnterCommands.get(state) == null || onExitCommands.get(state) == null) {
+                    throw new IllegalArgumentException("All states must have a corresponding onEnter and onExit command");
+                }
+                if (stopConditions.get(state) == null) {
+                    throw new IllegalArgumentException("All states must have a corresponding stop condition");
+                }
+            }
+
+            if (onEnterCommands.get(states.get(0)) == null) {
+                throw new IllegalArgumentException("Initial state must have a corresponding onEnter command");
+            }
+
             this.machine = new StateMachine<>(this);
             return this.machine;
         }
@@ -104,7 +149,7 @@ public class StateMachine<T extends Enum<T>> {
         }
     }
 
-    public boolean update() throws SMExceptions {
+    public boolean update() {
         if (!states.isEmpty()) {
             currentState = states.get(0);
             Supplier<Boolean> transitionCondition = transitions.get(currentState);
@@ -113,7 +158,7 @@ public class StateMachine<T extends Enum<T>> {
                 T nextState = states.get(1); // assuming states has at least 2 elements
                 // Check if the transition is valid
                 if (!isValidTransition(currentState, nextState)) {
-                    throw (new SMExceptions("Invalid transition"));
+                    throw new IllegalStateException("Invalid transition");
                 }
                 StateChangeCallback onExitAction = onExitCommands.get(currentState);
                 if (onExitAction != null) {
