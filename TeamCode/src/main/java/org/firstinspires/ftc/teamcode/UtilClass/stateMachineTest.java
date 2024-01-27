@@ -58,7 +58,8 @@ public class stateMachineTest extends LinearOpMode {
                     drive.update();
                 })
                 .transition(state.END_POSE, () -> !drive.isBusy())
-//                .stopRunning()
+                .state(state.STOP)
+                .stopRunning(state.STOP)
                 .build();
         waitForStart();
         machine.start();
