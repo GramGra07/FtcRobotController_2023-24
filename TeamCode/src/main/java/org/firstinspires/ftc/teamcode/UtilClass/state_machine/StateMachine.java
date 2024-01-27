@@ -14,7 +14,7 @@ public class StateMachine<T extends Enum<T>> {
     T currentState;
     List<T> stateHistory;
     Map<T, Supplier<Boolean>> stopConditions;
-    private boolean isRunning = false;
+    private boolean isRunning = true;
 
     public boolean isRunning() {
         return isRunning;
@@ -30,6 +30,10 @@ public class StateMachine<T extends Enum<T>> {
         this.stopConditions = builder.stopConditions;
     }
 
+    public void stopRunning() {
+        this.isRunning = false;
+    }
+
     public T getCurrentState() {
         return currentState;
     }
@@ -40,6 +44,7 @@ public class StateMachine<T extends Enum<T>> {
         Map<T, StateChangeCallback> onExitCommands;
         Map<T, Supplier<Boolean>> transitions;
         Map<T, Supplier<Boolean>> stopConditions;
+        private StateMachine<T> machine;
 
         public Builder() {
             states = new ArrayList<>();
@@ -76,13 +81,16 @@ public class StateMachine<T extends Enum<T>> {
             return this;
         }
 
-        public Builder<T> stopRunning(T state, Supplier<Boolean> condition) {
-            stopConditions.put(state, condition);
+        public Builder<T> stopRunning() {
+            if (this.machine != null) {
+                this.machine.stopRunning();
+            }
             return this;
         }
 
         public StateMachine<T> build() {
-            return new StateMachine<>(this);
+            this.machine = new StateMachine<>(this);
+            return this.machine;
         }
     }
 
@@ -121,12 +129,6 @@ public class StateMachine<T extends Enum<T>> {
                         onEnterAction.onStateChange();
                     }
                 }
-            }
-        }
-        if (states.isEmpty()) {
-            Supplier<Boolean> stopCondition = stopConditions.get(currentState);
-            if (stopCondition != null && stopCondition.get()) {
-                isRunning = false;
             }
         }
         return isRunning;
