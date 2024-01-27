@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.UtilClass;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1Possessed;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2Possessed;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.lastTimeOpen;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.timer;
 
@@ -10,7 +11,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Sensors;
-import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastAngle;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 @Config
@@ -67,7 +68,7 @@ public class ServoUtil {
 
     public static void calculateFlipPose(int pose, Servo servo) {
         double theta = Sensors.getPotentVal(potentiometer) + flipOffset;
-        PastPotent.pastPotentVal = theta;
+        PastAngle.pastAngleVal = theta;
         double sig = Math.ceil((-0.26 * theta) + hcalc) + (pose / 2);
         servo.setPosition(setServo(sig));
         servoFlipVal = (int) sig;

@@ -201,16 +201,6 @@ public class autoHardware extends HardwareConfig {
         return new Pose2d(0, 0, 0);
     }
 
-    // method to raise the arm with the potentiometer
-    public static void raiseArm(int pose, PresetPose presetPose) {
-        if (presetPose == PresetPose.HIGH) {
-            pose = potentiometerBase + autoPotent;
-        } else if (presetPose == PresetPose.RISE_UP) {
-            pose = potentiometerBase;
-        }
-        Sensors.driveByPotentVal(pose, HardwareConfig.potentiometer, HardwareConfig.motorRotation);
-    }
-
     // method to update the pose
     public static void updatePose(MecanumDrive drive) {
         PoseStorage.currentPose = drive.getPoseEstimate();

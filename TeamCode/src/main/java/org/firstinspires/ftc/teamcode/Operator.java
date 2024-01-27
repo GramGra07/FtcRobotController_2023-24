@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
-import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastAngle;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class Operator extends Drivers {
@@ -76,7 +76,7 @@ public class Operator extends Drivers {
             } else if (myOpMode.gamepad2.dpad_down) {
                 calculateFlipPose(0, flipServo);
             }
-            if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
+            if (PastAngle.pastAngleVal != Sensors.getPotentVal(potentiometer)) {
                 if (!liftHeld) {
                     calculateFlipPose(lastSetVal, flipServo);
                 }
@@ -101,10 +101,10 @@ public class Operator extends Drivers {
             }
             if (myOpMode.gamepad2.left_stick_y > deadZone && usePIDF) {
                 extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f); // allows to use dashboard
-                extensionPower = Range.clip(extensionPIDF.calculate(motorExtension.getCurrentPosition(), maxExtensionTicks), -1, 1);
+                extensionPower = Range.clip(extensionPIDF.calculate(motorExtension.getCurrentPosition(), minExtensionTicks), -1, 1);
             } else if (myOpMode.gamepad2.left_stick_y < -deadZone && usePIDF) {
                 extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f); // allows to use dashboard
-                extensionPower = Range.clip(extensionPIDF.calculate(motorExtension.getCurrentPosition(), minExtensionTicks), -1, 1);
+                extensionPower = Range.clip(extensionPIDF.calculate(motorExtension.getCurrentPosition(), maxExtensionTicks), -1, 1);
             } else {
                 extensionPower = 0;
             }
@@ -133,7 +133,7 @@ public class Operator extends Drivers {
             } else if (myOpMode.gamepad2.dpad_left) {
                 calculateFlipPose(30, flipServo);
             }
-            if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
+            if (PastAngle.pastAngleVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);
             }
             rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
@@ -180,7 +180,7 @@ public class Operator extends Drivers {
             }
 
             rotationPower = Range.clip(myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
-            if (PastPotent.pastPotentVal != Sensors.getPotentVal(potentiometer)) {
+            if (PastAngle.pastAngleVal != Sensors.getPotentVal(potentiometer)) {
                 calculateFlipPose(lastSetVal, flipServo);
             }
         }

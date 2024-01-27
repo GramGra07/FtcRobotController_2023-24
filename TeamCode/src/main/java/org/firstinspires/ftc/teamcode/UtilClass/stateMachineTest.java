@@ -39,7 +39,6 @@ public class stateMachineTest extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap, this, false);
-        waitForStart();
         StateMachine<state> machine = new StateMachine.Builder<state>()
                 .state(state.SPIKE_NAV)
                 .onEnter(state.SPIKE_NAV, () -> {
@@ -59,10 +58,11 @@ public class stateMachineTest extends LinearOpMode {
                     drive.update();
                 })
                 .transition(state.END_POSE, () -> !drive.isBusy())
-                .stopRunning()
+//                .stopRunning()
                 .build();
+        waitForStart();
         machine.start();
-        while (opModeIsActive() && machine.isRunning()) {
+        while (machine.mainLoop(this)) {
             machine.update();
             drive.update();
         }

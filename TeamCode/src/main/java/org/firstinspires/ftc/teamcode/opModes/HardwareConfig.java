@@ -48,7 +48,7 @@ import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
-import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastAngle;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.DistanceStorage;
@@ -178,7 +178,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
         zeroPowerBrake(motorLift);
         closeClaw(claw1);
         closeClaw(claw2);
-        PastPotent.pastPotentVal = Sensors.getPotentVal(potentiometer);
+        PastAngle.pastAngleVal = Sensors.getPotentVal(potentiometer);
 
         motorExtension.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorExtension.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
