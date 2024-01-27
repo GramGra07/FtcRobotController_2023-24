@@ -113,10 +113,10 @@ public class autoHardware extends HardwareConfig {
         Sensors.ledIND(green3, red3, false);
         Sensors.ledIND(green4, red4, false);
         myOpMode.waitForStart(); // wait for the start button to be pressed
+        currentState = STATES.SPIKE_NAV;
 //        visionPortal.setProcessorEnabled(objProcessor, false);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
-        currentState = STATES.SPIKE_NAV;
     }
 
     public static void doAprilTagPoseCorrection(AprilTagProcessor processor, Telemetry telemetry, MecanumDrive drive) {

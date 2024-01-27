@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.EndPoseVals.inside;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.EndPoseVals.outside;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
@@ -23,6 +24,10 @@ public class endPose {
         switch (endPose) {
             case StartingPosition:
                 pose = START_POSE;
+                drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .lineToLinearHeading(pose)
+                        .build()
+                );
                 break;
             case LEFT:
                 switch (StartPose.alliance) {
@@ -33,6 +38,10 @@ public class endPose {
                         pose = endPoseLeftBlue;
                         break;
                 }
+                drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .lineToLinearHeading(pose)
+                        .build()
+                );
                 break;
             case RIGHT:
                 switch (StartPose.alliance) {
@@ -43,14 +52,14 @@ public class endPose {
                         pose = endPoseRightBlue;
                         break;
                 }
+                drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                        .lineToLinearHeading(pose)
+                        .build()
+                );
                 break;
         }
-        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                        .lineToLinearHeading(pose)
-//                .addDisplacementMarker(() ->
-//                        visionPortal.close())
-                        .build()
-        );
+        drive.update();
+        updatePose(drive);
 //        encoderDrive(motorExtension, -autoExtension, 1);
     }
 }

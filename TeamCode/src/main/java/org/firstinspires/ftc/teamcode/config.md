@@ -38,9 +38,9 @@ USB -
 Expansion Hub
 Motor
 0 - slideMotor
-1 - flipperMotor
+1 - parallelEnc
 2 - lift
-3 -
+3 - flipperMotor
 Servo
 0 - claw1
 1 - claw2

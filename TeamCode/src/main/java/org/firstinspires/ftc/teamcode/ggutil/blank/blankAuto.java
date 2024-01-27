@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.ggutil.blank;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -26,6 +26,6 @@ public class blankAuto extends LinearOpMode {
         if (opModeIsActive()) {
             PoseStorage.currentPose = drive.getPoseEstimate();
         }
-        endAuto(EndPose.NONE, drive);
+        goToEndPose(EndPose.NONE, drive);
     }
 }

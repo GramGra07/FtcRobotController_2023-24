@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.constant.parkAuto;
 
 import static org.firstinspires.ftc.teamcode.opModes.auto.constant.parkAuto.parkUtil.parkUtil.parkAuto;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.parkSort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -31,6 +31,6 @@ public class parkAutoRR extends LinearOpMode {
         if (opModeIsActive()) {
             parkAuto(drive);
         }
-        endAuto(EndPose.NONE, drive);
+        goToEndPose(EndPose.NONE, drive);
     }
 }

@@ -14,16 +14,20 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.downClawRigging
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.lastSetVal;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.DeadZones.deadZone;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.useLoopTime;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionPIDFCo;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.rotationPIDFCo;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig.usePIDF;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPIDF;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.pidfExtension;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.pidfRotation;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPIDF;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPower;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -52,10 +56,6 @@ public class Operator extends Drivers {
                 useLoopTime = true;
             }
             touchPressed = myOpMode.gamepad2.touchpad;
-//            gamepad2.getButton(GamepadKeys.Button.RIGHT_BUMPER);
-//            gamepad2.getButton(GamepadKeys.Button.LEFT_BUMPER);
-//            gamepad2.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
-//            gamepad2.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
             if (myOpMode.gamepad2.right_bumper) {
                 closeClaw(claw1);
             }
@@ -68,14 +68,7 @@ public class Operator extends Drivers {
             if (myOpMode.gamepad2.left_trigger > 0) {
                 openClaw(claw2);
             }
-            if (myOpMode.gamepad2.left_stick_y > 0) {
-                extensionPower = pidfExtension.calculate(motorExtension.getCurrentPosition(), maxExtensionTicks);
-            } else if (myOpMode.gamepad2.left_stick_y < 0) {
-                extensionPower = pidfExtension.calculate(motorExtension.getCurrentPosition(), minExtensionTicks);
-            } else {
-                extensionPower = 0;
-            }
-//            extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
+            //
             if (myOpMode.gamepad2.dpad_left) {
                 calculateFlipPose(30, flipServo);
             } else if (myOpMode.gamepad2.dpad_up) {
@@ -92,14 +85,33 @@ public class Operator extends Drivers {
                 ServoUtil.calculateFlipPose(downClawRigging, flipServo);
                 liftHeld = true;
             }
-            if (myOpMode.gamepad2.right_stick_y > 0) {
-                rotationPower = pidfRotation.calculate(motorRotation.getCurrentPosition(), maxRotationTicks);
-            } else if (myOpMode.gamepad2.right_stick_y < 0) {
-                rotationPower = pidfRotation.calculate(motorRotation.getCurrentPosition(), minRotationTicks);
+            //
+            if (myOpMode.gamepad2.right_stick_y < -deadZone && usePIDF) {
+                rotationPIDF.setPIDF(rotationPIDFCo.p, rotationPIDFCo.i, rotationPIDFCo.d, rotationPIDFCo.f);
+                rotationPower = Range.clip(rotationPIDF.calculate(motorRotation.getCurrentPosition(), maxRotationTicks), -1, 1);
+            } else if (myOpMode.gamepad2.right_stick_y > deadZone && usePIDF) {
+                rotationPIDF.setPIDF(rotationPIDFCo.p, rotationPIDFCo.i, rotationPIDFCo.d, rotationPIDFCo.f);
+                rotationPower = Range.clip(rotationPIDF.calculate(motorRotation.getCurrentPosition(), minRotationTicks), -1, 1);
             } else {
                 rotationPower = 0;
             }
 //            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            if (myOpMode.gamepad2.cross) {
+                usePIDF = false;
+            }
+            if (myOpMode.gamepad2.left_stick_y > deadZone && usePIDF) {
+                extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f); // allows to use dashboard
+                extensionPower = Range.clip(extensionPIDF.calculate(motorExtension.getCurrentPosition(), maxExtensionTicks), -1, 1);
+            } else if (myOpMode.gamepad2.left_stick_y < -deadZone && usePIDF) {
+                extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f); // allows to use dashboard
+                extensionPower = Range.clip(extensionPIDF.calculate(motorExtension.getCurrentPosition(), minExtensionTicks), -1, 1);
+            } else {
+                extensionPower = 0;
+            }
+            if (!usePIDF) {
+                extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);
+                rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
+            }
         }
         if (currOther == otherControls[3]) {//Grady
             if (myOpMode.gamepad2.right_bumper) {

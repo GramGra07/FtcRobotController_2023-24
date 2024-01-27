@@ -1,3 +1,6 @@
+5.5.0 January 26th, 2024
+Added PIDF modes and changed auto to a Finite State Machine
+
 5.1.0 January 18th, 2024
 Added LoopTime class to calculate loops per second and the refresh rate of the robot systems,
 specifically distance sensors

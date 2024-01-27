@@ -22,10 +22,6 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.setServo;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.useAutoClose;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.loopInterval;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.LoopTime.useLoopTime;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionD;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionF;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionI;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionP;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.aprilTagProcessor;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 
@@ -52,7 +48,6 @@ import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.Blink;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.IsBusy;
-import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.PastPotent;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.varConfig;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
@@ -110,10 +105,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
     }
 
     public static boolean once = false;
-
-    public static PIDFController pidfExtension = new PIDFController(extensionP, extensionI, extensionD, extensionF);
-    public static PIDFController pidfRotation = new PIDFController(PIDVals.rotationP, PIDVals.rotationI, PIDVals.rotationD, PIDVals.rotationF);
-
+    public static PIDFController extensionPIDF = new PIDFController(0, 0, 0, 0);
+    public static PIDFController rotationPIDF = new PIDFController(0, 0, 0, 0);
 //    public static GamepadEx gamepad1 = new GamepadEx(myOpMode.gamepad1);
 //    public static GamepadEx gamepad2 = new GamepadEx(myOpMode.gamepad2);
 
@@ -121,7 +114,7 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static DistanceSensor distanceSensor2;
     public static StartDist startDist;
 
-    public static final String currentVersion = "5.1.0";
+    public static final String currentVersion = "5.5.0";
 
     //init
     public static void init(HardwareMap ahwMap, boolean auto) {
@@ -386,8 +379,8 @@ public class HardwareConfig {//this is an external opMode that can have public v
             telemetry.addData("", "We have a low battery");
         }
         telemetry.addData("potentiometer", "%.1f", Sensors.getPotentVal(potentiometer));
-        telemetry.addData("Distance 1", distance1);
-        telemetry.addData("Distance 2", distance2);
+        telemetry.addData("power", extensionPower);
+        telemetry.addData("power R", rotationPower);
         if (reversed) {
             telemetry.addData("reversed", "");
         }

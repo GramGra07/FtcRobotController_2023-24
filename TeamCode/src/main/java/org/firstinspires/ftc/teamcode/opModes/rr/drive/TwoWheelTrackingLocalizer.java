@@ -55,13 +55,13 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
     public TwoWheelTrackingLocalizer(HardwareMap hardwareMap, MecanumDrive drive) {
         super(Arrays.asList(
-            new Pose2d(PARALLEL_X, PARALLEL_Y, 0),
-            new Pose2d(PERPENDICULAR_X, PERPENDICULAR_Y, Math.toRadians(90))
+                new Pose2d(PARALLEL_X, PARALLEL_Y, 0),
+                new Pose2d(PERPENDICULAR_X, PERPENDICULAR_Y, Math.toRadians(90))
         ));
 
         this.drive = drive;
 
-        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "flipperMotor"));
+        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "parallelEnc"));
         perpendicularEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "lift"));
         //reverse parallel
 //        parallelEncoder.setDirection(Encoder.Direction.REVERSE);
@@ -86,8 +86,8 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
-                encoderTicksToInches(parallelEncoder.getCurrentPosition()*X_MULTIPLIER),
-                encoderTicksToInches(perpendicularEncoder.getCurrentPosition()*Y_MULTIPLIER)
+                encoderTicksToInches(parallelEncoder.getCurrentPosition() * X_MULTIPLIER),
+                encoderTicksToInches(perpendicularEncoder.getCurrentPosition() * Y_MULTIPLIER)
         );
     }
 
@@ -96,8 +96,8 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     public List<Double> getWheelVelocities() {
 
         return Arrays.asList(
-                encoderTicksToInches(parallelEncoder.getRawVelocity()*X_MULTIPLIER),
-                encoderTicksToInches(perpendicularEncoder.getRawVelocity()*Y_MULTIPLIER)
+                encoderTicksToInches(parallelEncoder.getRawVelocity() * X_MULTIPLIER),
+                encoderTicksToInches(perpendicularEncoder.getRawVelocity() * Y_MULTIPLIER)
         );
     }
 }

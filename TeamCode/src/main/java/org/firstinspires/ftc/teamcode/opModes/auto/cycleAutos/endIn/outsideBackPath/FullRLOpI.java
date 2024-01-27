@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endIn.outsideBackPath;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.endAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycleAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.fullAutoI_OP_Sort;
@@ -30,8 +29,7 @@ public class FullRLOpI extends LinearOpMode {
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
         robot.initAuto(hardwareMap, this, true);
         if (opModeIsActive()) {
-            cycleAuto(drive, PathLong.OUTSIDE);
+            cycleAuto(drive, PathLong.OUTSIDE, EndPose.LEFT);
         }
-        endAuto(EndPose.LEFT, drive);
     }
 }
