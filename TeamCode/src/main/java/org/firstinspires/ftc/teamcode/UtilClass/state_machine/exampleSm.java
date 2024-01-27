@@ -8,12 +8,11 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPattern
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
-import org.firstinspires.ftc.teamcode.UtilClass.state_machine.exceptions.MismatchedStatesAndTransitionsException;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class exampleSm {
 
-    public static StateMachine<StateMachineTest.state> machine(MecanumDrive drive) throws MismatchedStatesAndTransitionsException {
+    public static StateMachine<StateMachineTest.state> machine(MecanumDrive drive) {
         StateMachine.Builder<StateMachineTest.state> builder = new StateMachine.Builder<>();
         return builder
                 .state(StateMachineTest.state.SPIKE_NAV)
