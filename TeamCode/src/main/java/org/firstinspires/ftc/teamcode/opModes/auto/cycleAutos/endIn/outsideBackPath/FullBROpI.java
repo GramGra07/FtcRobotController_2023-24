@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endIn.outsideBackPath;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycleAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.fullAutoI_OP_Sort;
@@ -28,8 +29,11 @@ public class FullBROpI extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.RIGHT));
         robot.initAuto(hardwareMap, this, true);
-        if (opModeIsActive()) {
+        while (opModeIsActive()) {
             cycleAuto(drive, PathLong.OUTSIDE, EndPose.RIGHT);
+            if (currentState == autoHardware.STATES.STOP) {
+                break;
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.constant.place1Auto;
 
 import static org.firstinspires.ftc.teamcode.Enums.PathLong.NONE;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.place1Pixel;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.place1Sort;
@@ -29,6 +30,9 @@ public class RL extends LinearOpMode {
         robot.initAuto(hardwareMap, this, false);
         while (opModeIsActive()) {
             place1Pixel(drive, NONE, EndPose.StartingPosition);
+            if (currentState == autoHardware.STATES.STOP) {
+                break;
+            }
         }
     }
 }

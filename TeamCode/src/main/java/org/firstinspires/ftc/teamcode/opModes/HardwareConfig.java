@@ -107,8 +107,6 @@ public class HardwareConfig {//this is an external opMode that can have public v
     public static boolean once = false;
     public static PIDFController extensionPIDF = new PIDFController(0, 0, 0, 0);
     public static PIDFController rotationPIDF = new PIDFController(0, 0, 0, 0);
-//    public static GamepadEx gamepad1 = new GamepadEx(myOpMode.gamepad1);
-//    public static GamepadEx gamepad2 = new GamepadEx(myOpMode.gamepad2);
 
     public static DistanceSensor distanceSensor1;
     public static DistanceSensor distanceSensor2;

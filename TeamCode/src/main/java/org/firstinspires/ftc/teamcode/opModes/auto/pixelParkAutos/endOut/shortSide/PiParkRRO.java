@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endOut.shortSide;
 
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelPark;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkShort;
@@ -29,6 +30,9 @@ public class PiParkRRO extends LinearOpMode {
         robot.initAuto(hardwareMap, this, false);
         while (opModeIsActive()) {
             pixelPark(drive, PathLong.NONE, EndPose.RIGHT);
+            if (currentState == autoHardware.STATES.STOP) {
+                break;
+            }
         }
     }
 }
