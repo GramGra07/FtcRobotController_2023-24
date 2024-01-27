@@ -13,6 +13,12 @@ public class StateMachine<T extends Enum<T>> {
     Map<T, Supplier<Boolean>> transitions;
     T currentState;
     List<T> stateHistory;
+    Map<T, Supplier<Boolean>> stopConditions;
+    private boolean isRunning = false;
+
+    public boolean isRunning() {
+        return isRunning;
+    }
 
     StateMachine(Builder<T> builder) {
         this.states = builder.states;
@@ -21,6 +27,7 @@ public class StateMachine<T extends Enum<T>> {
         this.transitions = builder.transitions;
         this.currentState = null;
         this.stateHistory = new ArrayList<>();
+        this.stopConditions = builder.stopConditions;
     }
 
     public T getCurrentState() {
@@ -32,16 +39,25 @@ public class StateMachine<T extends Enum<T>> {
         Map<T, StateChangeCallback> onEnterCommands;
         Map<T, StateChangeCallback> onExitCommands;
         Map<T, Supplier<Boolean>> transitions;
+        Map<T, Supplier<Boolean>> stopConditions;
 
         public Builder() {
             states = new ArrayList<>();
             onEnterCommands = new HashMap<>();
             onExitCommands = new HashMap<>();
             transitions = new HashMap<>();
+            stopConditions = new HashMap<>();
         }
 
         public Builder<T> state(T state) {
             states.add(state);
+            return this;
+        }
+
+        public Builder<T> whileState(T state, Supplier<Boolean> escapeCondition) {
+            while (!escapeCondition.get()) {
+                onEnterCommands.get(state).onStateChange();
+            }
             return this;
         }
 
@@ -57,6 +73,11 @@ public class StateMachine<T extends Enum<T>> {
 
         public Builder<T> transition(T state, Supplier<Boolean> condition) {
             transitions.put(state, condition);
+            return this;
+        }
+
+        public Builder<T> stopRunning(T state, Supplier<Boolean> condition) {
+            stopConditions.put(state, condition);
             return this;
         }
 
@@ -102,7 +123,13 @@ public class StateMachine<T extends Enum<T>> {
                 }
             }
         }
-        return true;
+        if (states.isEmpty()) {
+            Supplier<Boolean> stopCondition = stopConditions.get(currentState);
+            if (stopCondition != null && stopCondition.get()) {
+                isRunning = false;
+            }
+        }
+        return isRunning;
     }
 
     public boolean isValidTransition(T fromState, T toState) {

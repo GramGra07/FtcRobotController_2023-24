@@ -1,7 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
-import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionPIDFCo;
+import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.rotationPIDFCo;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.autoPotent;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.potentiometerBase;
 
@@ -25,7 +26,6 @@ import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
-import org.firstinspires.ftc.teamcode.UtilClass.varStorage.AutoServoPositions;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.teamcode.opModes.camera.VPObjectDetect;
@@ -114,6 +114,8 @@ public class autoHardware extends HardwareConfig {
         Sensors.ledIND(green4, red4, false);
         myOpMode.waitForStart(); // wait for the start button to be pressed
         currentState = STATES.SPIKE_NAV;
+        rotationPIDF.setPIDF(rotationPIDFCo.p, rotationPIDFCo.i, rotationPIDFCo.d, rotationPIDFCo.f);
+        extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f);
 //        visionPortal.setProcessorEnabled(objProcessor, false);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.HOT_PINK); // set the lights to the blink pattern
         LEDcolor = "HOT_PINK";
@@ -220,11 +222,5 @@ public class autoHardware extends HardwareConfig {
         motor.setTargetPosition(motor.getCurrentPosition() + (position));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));
-    }
-
-    public static void extendAndRaise() {
-        raiseArm(0, PresetPose.HIGH);
-        targetPositionSlides = autoExtension;
-        ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
     }
 }

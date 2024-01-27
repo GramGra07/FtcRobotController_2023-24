@@ -58,7 +58,6 @@ public class endPose {
                 );
                 break;
         }
-        drive.update();
         updatePose(drive);
 //        encoderDrive(motorExtension, -autoExtension, 1);
     }

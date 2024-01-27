@@ -4,7 +4,6 @@ import static org.firstinspires.ftc.teamcode.UtilClass.state_machine.testStatema
 import static org.firstinspires.ftc.teamcode.UtilClass.state_machine.testStatemachine.STATE.STOP;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -12,7 +11,7 @@ import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 
 @TeleOp
-@Disabled
+//@Disabled
 public class testStatemachine extends LinearOpMode {
     HardwareConfig robot = new HardwareConfig(this);
 
@@ -39,7 +38,6 @@ public class testStatemachine extends LinearOpMode {
         robot.init(hardwareMap, false);
 //        visionPortal.setProcessorEnabled(aprilTagProcessor, true);
         waitForStart();
-        HardwareConfig.timer.reset();
         machine.start();
         while (opModeIsActive()) {
             try {

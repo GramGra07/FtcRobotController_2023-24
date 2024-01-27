@@ -3,9 +3,12 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPIDF;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPIDF;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.previousState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.shiftAuto;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.targetPositionPotent;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.targetPositionSlides;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
@@ -44,44 +47,47 @@ public class autoPatterns {
             case STOP:
                 break;
         }
+        motorExtension.setPower(extensionPIDF.calculate(motorExtension.getCurrentPosition(), targetPositionSlides));
+        motorRotation.setPower(rotationPIDF.calculate(motorRotation.getCurrentPosition(), targetPositionPotent));
         drive.update();
     }
 
     // does two pixel and then goes to the end pose
     public static void pixelPark(MecanumDrive drive, PathLong pathLong, EndPose endPose) {
+        motorExtension.setPower(extensionPIDF.calculate(motorExtension.getCurrentPosition(), targetPositionSlides));
+        motorRotation.setPower(rotationPIDF.calculate(motorRotation.getCurrentPosition(), targetPositionPotent));
         switch (currentState) {
             case SPIKE_NAV:
                 if (previousState != currentState) {
-                    previousState = currentState;
                     ServoUtil.calculateFlipPose(0, flipServo);
                     SpikeNav(drive, pathLong);
+                    previousState = currentState;
                 } else if (!drive.isBusy()) {
                     currentState = autoHardware.STATES.BACKDROP;
                 }
                 break;
             case BACKDROP:
                 if (previousState != currentState) {
-                    previousState = currentState;
                     navToBackdrop_Place(drive, false, pathLong);
+                    previousState = currentState;
                 } else if (!drive.isBusy()) {
                     currentState = autoHardware.STATES.SHIFT;
                 }
                 break;
             case SHIFT:
                 if (previousState != currentState) {
-                    previousState = currentState;
                     shiftAuto(drive);
+                    previousState = currentState;
                 } else if (!drive.isBusy()) {
                     currentState = autoHardware.STATES.END_POSE;
                 }
                 break;
             case END_POSE:
                 if (previousState != currentState) {
-                    previousState = currentState;
                     if (endPose != EndPose.NONE) {
                         goToEndPose(endPose, drive);
                     }
-                    updatePose(drive);
+                    previousState = currentState;
                 } else if (!drive.isBusy()) {
                     currentState = autoHardware.STATES.STOP;
                 }
@@ -90,7 +96,6 @@ public class autoPatterns {
             case STOP:
                 break;
         }
-        motorExtension.setPower(extensionPIDF.calculate(motorExtension.getCurrentPosition(), targetPositionSlides));
         drive.update();
     }
 
