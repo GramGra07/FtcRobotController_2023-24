@@ -1,0 +1,3 @@
+[submodule "TeamCode/src/main/java/StateMachine"]
+	path = TeamCode/src/main/java/StateMachine
+	url = https://github.com/GramGra07/StateMachineFTC/
