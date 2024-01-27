@@ -7,8 +7,6 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.pr
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import StateMachine.StateMachine;
-
 @Autonomous(group = place1Sort, preselectTeleOp = preselect)
 //@Disabled
 public class StateMachineTest extends LinearOpMode {
