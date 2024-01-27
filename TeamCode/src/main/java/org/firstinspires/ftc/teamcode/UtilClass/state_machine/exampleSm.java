@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.UtilClass.state_machine;
 
-import static org.firstinspires.ftc.teamcode.UtilClass.state_machine.StateMachineTest.state.END_POSE;
+import static org.firstinspires.ftc.teamcode.UtilClass.StateMachineTest.state.END_POSE;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.SpikeNav;
@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPattern
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
+import org.firstinspires.ftc.teamcode.UtilClass.StateMachineTest;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class exampleSm {

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.UtilClass.state_machine;
+package org.firstinspires.ftc.teamcode.UtilClass;
 
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.place1Sort;
@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
+import org.firstinspires.ftc.teamcode.UtilClass.state_machine.StateMachine;
+import org.firstinspires.ftc.teamcode.UtilClass.state_machine.exampleSm;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
