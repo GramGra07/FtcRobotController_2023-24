@@ -1,3 +1,3 @@
-[submodule "TeamCode/src/main/java/StateMachine"]
-	path = TeamCode/src/main/java/StateMachine
+[submodule "TeamCode/src/main/java/StateMachineFTC"]
+	path = TeamCode/src/main/java/StateMachineFTC
 	url = https://github.com/GramGra07/StateMachineFTC/
