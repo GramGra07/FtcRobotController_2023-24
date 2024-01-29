@@ -3,6 +3,7 @@ repositories {
     google() // Needed for androidx
     jcenter()
     maven { url = 'https://maven.brott.dev/' }
+//    maven { url = 'https://maven.pkg.github.com/GramGra07/StateMachine'}
 }
 
 dependencies {
