@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
-import StateMachine.StateMachine;
+import StateMachineFTC.StateMachine;
 
 
 @Autonomous(group = place1Sort, preselectTeleOp = preselect)
