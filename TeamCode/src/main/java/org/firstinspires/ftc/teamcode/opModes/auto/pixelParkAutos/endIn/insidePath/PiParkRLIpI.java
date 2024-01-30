@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endIn.insidePath;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelPark;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelParkMachine;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkISort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
@@ -30,7 +28,7 @@ public class PiParkRLIpI extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
-        StateMachine<autoPatterns.pixelParkStates> machine = pixelParkMachine(drive,PathLong.INSIDE,EndPose.LEFT);
+        StateMachine<autoPatterns.pixelParkStates> machine = pixelParkMachine(drive, PathLong.INSIDE, EndPose.LEFT);
         robot.initAuto(hardwareMap, this, false);
         machine.start();
         while (machine.mainLoop(this)) {
