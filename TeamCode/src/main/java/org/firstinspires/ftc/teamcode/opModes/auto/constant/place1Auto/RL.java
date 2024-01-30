@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto.constant.place1Auto;
 import static org.firstinspires.ftc.teamcode.Enums.PathLong.NONE;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.place1Pixel;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.place1Machine;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.place1Sort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
 
@@ -15,7 +15,9 @@ import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
+import org.gentrifiedApps.statemachineftc.StateMachine;
 
 @Autonomous(group = place1Sort, preselectTeleOp = preselect)
 //@Disabled
@@ -27,12 +29,11 @@ public class RL extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
+        StateMachine<autoPatterns.place1States> machine = place1Machine(drive);
         robot.initAuto(hardwareMap, this, false);
-        while (opModeIsActive()) {
-            place1Pixel(drive, NONE, EndPose.StartingPosition);
-            if (currentState == autoHardware.STATES.STOP) {
-                break;
-            }
+        machine.start();
+        while (machine.mainLoop(this)) {
+            machine.update();
         }
     }
 }

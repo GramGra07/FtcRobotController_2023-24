@@ -100,8 +100,8 @@ public class BackdropTrajectories {
     public static TrajectorySequence blueShort(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo))
                 .lineToLinearHeading(backBlue)
+                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo))
                 .build();
     }
 

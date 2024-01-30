@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPattern
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
@@ -22,7 +23,7 @@ import org.gentrifiedApps.statemachineftc.StateMachine;
 
 
 @Autonomous(group = place1Sort, preselectTeleOp = preselect)
-//@Disabled
+@Disabled
 public class stateMachineTest extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
@@ -43,29 +44,27 @@ public class stateMachineTest extends LinearOpMode {
                 .state(state.SPIKE_NAV)
                 .onEnter(state.SPIKE_NAV, () -> {
                     ServoUtil.calculateFlipPose(0, flipServo);
+                    SpikeNav(drive, PathLong.NONE);
                 })
                 .whileState(state.SPIKE_NAV, () -> !drive.isBusy(), () -> {
-                    SpikeNav(drive, PathLong.NONE);
                     drive.update();
                 })
                 .transition(state.SPIKE_NAV, () -> !drive.isBusy())
                 .state(state.END_POSE)
                 .onEnter(state.END_POSE, () -> {
                     ServoUtil.calculateFlipPose(30, flipServo);
+                    goToEndPose(EndPose.StartingPosition, drive);
                 })
                 .whileState(state.END_POSE, () -> !drive.isBusy(), () -> {
-                    goToEndPose(EndPose.StartingPosition, drive);
                     drive.update();
                 })
                 .transition(state.END_POSE, () -> !drive.isBusy())
-                .state(state.STOP)
                 .stopRunning(state.STOP)
                 .build();
         waitForStart();
         machine.start();
         while (machine.mainLoop(this)) {
             machine.update();
-            drive.update();
         }
     }
 }

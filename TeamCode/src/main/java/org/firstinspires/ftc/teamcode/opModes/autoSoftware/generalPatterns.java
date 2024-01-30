@@ -45,8 +45,7 @@ public class generalPatterns {
                 }
                 break;
         }
-        ServoUtil.calculateFlipPose(20, flipServo);
-//        shiftAuto(drive);
+//        ServoUtil.calculateFlipPose(20, flipServo);
     }
 
     // drive and place first pixel
@@ -142,6 +141,7 @@ public class generalPatterns {
                 break;
             case right:
                 switch (placement) {
+                    case BLUE_RIGHT:
                     case RED_LEFT:
                     case BLUE_LEFT:
                         drive.followTrajectorySequenceAsync(fwdTRight(drive));
@@ -157,19 +157,6 @@ public class generalPatterns {
                                 .strafeRight(5)
                                 .build()
                         );
-                        break;
-                    case BLUE_RIGHT:
-                        switch (pathLong) {
-                            case NONE:
-                            case INSIDE:
-                            case OUTSIDE:
-                                drive.followTrajectorySequenceAsync(fwdTRight(drive));
-                                drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                        .turn(Math.toRadians(60))
-                                        .build()
-                                );
-                                break;
-                        }
                         break;
                 }
                 updatePose(drive);

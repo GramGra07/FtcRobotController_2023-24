@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.EndPoseVals.inside;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.EndPoseVals.outside;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
+import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
@@ -21,6 +23,7 @@ public class endPose {
     // returns a trajectory sequence to go to the end pose
     public static void goToEndPose(EndPose endPose, MecanumDrive drive) {
         Pose2d pose = drive.getPoseEstimate();
+        ServoUtil.calculateFlipPose(60, flipServo);
         switch (endPose) {
             case StartingPosition:
                 pose = START_POSE;

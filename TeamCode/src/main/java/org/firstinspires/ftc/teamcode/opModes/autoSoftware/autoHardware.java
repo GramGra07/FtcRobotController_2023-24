@@ -165,9 +165,10 @@ public class autoHardware extends HardwareConfig {
             case right:
                 drive.followTrajectorySequenceAsync(ShiftTrajectories.shiftRight(drive));
                 break;
+            case mid:
+                ServoUtil.openClaw(claw1);
+                break;
         }
-        ServoUtil.openClaw(claw1);
-        ServoUtil.calculateFlipPose(60, flipServo);
     }
 
     // method to get the start pose

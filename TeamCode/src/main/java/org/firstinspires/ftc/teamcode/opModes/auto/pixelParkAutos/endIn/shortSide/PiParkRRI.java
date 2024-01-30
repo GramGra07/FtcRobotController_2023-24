@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endIn.shortSi
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelPark;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelParkMachine;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkShort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
 
@@ -15,7 +16,9 @@ import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
+import org.gentrifiedApps.statemachineftc.StateMachine;
 
 @Autonomous(group = piParkShort, preselectTeleOp = preselect)
 //@Disabled
@@ -27,12 +30,11 @@ public class PiParkRRI extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
+        StateMachine<autoPatterns.pixelParkStates> machine = pixelParkMachine(drive,PathLong.NONE,EndPose.LEFT);
         robot.initAuto(hardwareMap, this, false);
-        while (opModeIsActive()) {
-            pixelPark(drive, PathLong.NONE, EndPose.LEFT);
-            if (currentState == autoHardware.STATES.STOP) {
-                break;
-            }
+        machine.start();
+        while (machine.mainLoop(this)) {
+            machine.update();
         }
     }
 }

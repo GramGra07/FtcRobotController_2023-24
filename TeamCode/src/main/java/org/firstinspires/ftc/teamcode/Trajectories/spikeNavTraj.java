@@ -22,25 +22,26 @@ public class spikeNavTraj {
     public static TrajectorySequence fwdTLeft(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .forward(22)
-                .turn(Math.toRadians(60))
+                .turn(Math.toRadians(50))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                     ServoUtil.calculateFlipPose(30, flipServo);
                 })
                 .back(1)
-                .turn(Math.toRadians(-60))
+                .turn(Math.toRadians(-50))
                 .build();
     }
 
     public static TrajectorySequence fwdTRight(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .forward(22)
-                .turn(Math.toRadians(-60))
+                .turn(Math.toRadians(-55))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                     ServoUtil.calculateFlipPose(30, flipServo);
                 })
                 .back(1)
+                .turn(Math.toRadians(55))
                 .build();
     }
 }
