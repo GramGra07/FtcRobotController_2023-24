@@ -3,8 +3,7 @@ repositories {
     google() // Needed for androidx
     jcenter()
     maven { url = 'https://maven.brott.dev/' }
-    maven { url 'https://jitpack.io' }
-//    maven { url = 'https://maven.pkg.github.com/GramGra07/StateMachine'}
+    maven {url = 'https://jitpack.io'}
 }
 
 dependencies {
@@ -23,6 +22,4 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.13'
-
-    implementation 'com.github.GramGra07:StateMachine:1.0.0'
 }
