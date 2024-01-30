@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Trajectories.backdrop;
 
 import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
+import static org.firstinspires.ftc.teamcode.Limits.autoRotation;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.autoPotent;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.potentiometerBase;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
@@ -54,7 +55,7 @@ public class BackdropTrajectories {
                                 .lineTo(new Vector2d(36, -12))
                                 .lineTo(new Vector2d(36, -30))
                                 .addDisplacementMarker(() -> {
-                                    targetPositionPotent = potentiometerBase + autoPotent;
+                                    targetPositionPotent = autoRotation;
                                     targetPositionSlides = autoExtension;
                                     ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                                 })
@@ -69,7 +70,7 @@ public class BackdropTrajectories {
                                 .lineTo(new Vector2d(36, -12))
                                 .lineTo(new Vector2d(36, -30))
                                 .addDisplacementMarker(() -> {
-                                    targetPositionPotent = potentiometerBase + autoPotent;
+                                    targetPositionPotent = autoRotation;
                                     targetPositionSlides = autoExtension;
                                     ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                                 })
@@ -84,7 +85,7 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(START_POSE.getX() - xOffset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                         .addDisplacementMarker(() -> {
-                            targetPositionPotent = potentiometerBase + autoPotent;
+                            targetPositionPotent = autoRotation;
                             targetPositionSlides = autoExtension;
                             ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                         })
@@ -118,7 +119,7 @@ public class BackdropTrajectories {
                                 .lineTo(new Vector2d(36, 10))
                                 .lineTo(new Vector2d(36, 30))
                                 .addDisplacementMarker(() -> {
-                                    targetPositionPotent = potentiometerBase + autoPotent;
+                                    targetPositionPotent = autoRotation;
                                     targetPositionSlides = autoExtension;
                                     ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                                 })
@@ -133,7 +134,7 @@ public class BackdropTrajectories {
                                 .lineTo(new Vector2d(36, 12))
                                 .lineTo(new Vector2d(36, 30))
                                 .addDisplacementMarker(() -> {
-                                    targetPositionPotent = potentiometerBase + autoPotent;
+                                    targetPositionPotent = autoRotation;
                                     targetPositionSlides = autoExtension;
                                     ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                                 })
@@ -149,7 +150,7 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
                         .lineTo(new Vector2d(36, 30))
                         .addDisplacementMarker(() -> {
-                            targetPositionPotent = potentiometerBase + autoPotent;
+                            targetPositionPotent = autoRotation;
                             targetPositionSlides = autoExtension;
                             ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                         })

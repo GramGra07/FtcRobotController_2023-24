@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.UtilClass;
+package org.firstinspires.ftc.teamcode.ggutil;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
+import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
@@ -38,33 +39,33 @@ public class stateMachineTest extends LinearOpMode {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
         robot.initAuto(hardwareMap, this, false);
-//        StateMachine<state> machine = new StateMachine.Builder<state>()
-//                .state(state.SPIKE_NAV)
-//                .onEnter(state.SPIKE_NAV, () -> {
-//                    ServoUtil.calculateFlipPose(0, flipServo);
-//                })
-//                .whileState(state.SPIKE_NAV, () -> !drive.isBusy(), () -> {
-//                    SpikeNav(drive, PathLong.NONE);
-//                    drive.update();
-//                })
-//                .transition(state.SPIKE_NAV, () -> !drive.isBusy())
-//                .state(state.END_POSE)
-//                .onEnter(state.END_POSE, () -> {
-//                    ServoUtil.calculateFlipPose(30, flipServo);
-//                })
-//                .whileState(state.END_POSE, () -> !drive.isBusy(), () -> {
-//                    goToEndPose(EndPose.StartingPosition, drive);
-//                    drive.update();
-//                })
-//                .transition(state.END_POSE, () -> !drive.isBusy())
-//                .state(state.STOP)
-//                .stopRunning(state.STOP)
-//                .build();
-//        waitForStart();
-//        machine.start();
-//        while (machine.mainLoop(this)) {
-//            machine.update();
-//            drive.update();
-//        }
+        StateMachine<state> machine = new StateMachine.Builder<state>()
+                .state(state.SPIKE_NAV)
+                .onEnter(state.SPIKE_NAV, () -> {
+                    ServoUtil.calculateFlipPose(0, flipServo);
+                })
+                .whileState(state.SPIKE_NAV, () -> !drive.isBusy(), () -> {
+                    SpikeNav(drive, PathLong.NONE);
+                    drive.update();
+                })
+                .transition(state.SPIKE_NAV, () -> !drive.isBusy())
+                .state(state.END_POSE)
+                .onEnter(state.END_POSE, () -> {
+                    ServoUtil.calculateFlipPose(30, flipServo);
+                })
+                .whileState(state.END_POSE, () -> !drive.isBusy(), () -> {
+                    goToEndPose(EndPose.StartingPosition, drive);
+                    drive.update();
+                })
+                .transition(state.END_POSE, () -> !drive.isBusy())
+                .state(state.STOP)
+                .stopRunning(state.STOP)
+                .build();
+        waitForStart();
+        machine.start();
+        while (machine.mainLoop(this)) {
+            machine.update();
+            drive.update();
+        }
     }
 }
