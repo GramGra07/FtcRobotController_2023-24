@@ -39,7 +39,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
 
     int current = 0;
 
-    public static int[] pointsX = new int[]{560, 560 + 120, 100, 250};
+    public static int[] pointsX = new int[]{560, 680, 100, 250};
     public static int[] pointsY = new int[]{70, 200, 40, 190};
 
     public Scalar scalarLow, scalarHigh;
