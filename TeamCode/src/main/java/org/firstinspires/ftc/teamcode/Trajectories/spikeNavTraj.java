@@ -13,9 +13,9 @@ public class spikeNavTraj {
                 .forward(25)
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
-                    ServoUtil.calculateFlipPose(30, flipServo);
+//                    ServoUtil.calculateFlipPose(30, flipServo);
                 })
-                .back(1)
+                .back(4)
                 .build();
     }
 
@@ -25,7 +25,7 @@ public class spikeNavTraj {
                 .turn(Math.toRadians(50))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
-                    ServoUtil.calculateFlipPose(30, flipServo);
+//                    ServoUtil.calculateFlipPose(30, flipServo);
                 })
                 .back(1)
                 .turn(Math.toRadians(-50))
@@ -38,7 +38,7 @@ public class spikeNavTraj {
                 .turn(Math.toRadians(-55))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
-                    ServoUtil.calculateFlipPose(30, flipServo);
+//                    ServoUtil.calculateFlipPose(30, flipServo);
                 })
                 .back(1)
                 .turn(Math.toRadians(55))

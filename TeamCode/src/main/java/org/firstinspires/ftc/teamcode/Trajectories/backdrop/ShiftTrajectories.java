@@ -17,10 +17,10 @@ public class ShiftTrajectories {
                     ServoUtil.closeClaw(claw2);
                 })
                 .strafeLeft(12)
-                .addDisplacementMarker(()->{
-                    ServoUtil.openClaw(claw1);
-                })
-                .back(1)
+//                .addDisplacementMarker(()->{
+//                    ServoUtil.openClaw(claw1);
+//                })
+//                .back(1)
                 .build();
     }
 
@@ -31,10 +31,10 @@ public class ShiftTrajectories {
                     ServoUtil.closeClaw(claw2);
                 })
                 .strafeRight(12)
-                .addDisplacementMarker(()->{
-                    ServoUtil.openClaw(claw1);
-                })
-                .back(1)
+//                .addDisplacementMarker(()->{
+//                    ServoUtil.openClaw(claw1);
+//                })
+//                .back(1)
                 .build();
     }
 }

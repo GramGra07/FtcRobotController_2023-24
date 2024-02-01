@@ -11,6 +11,6 @@ public class Limits {
     public static int autoRotation = 100;
     public static int maxExtensionTicks = 3280;
     public static int minExtensionTicks = 0;
-    public static int maxRotationTicks = 800;
+    public static int maxRotationTicks = 1424,maxPotent = 65;
     public static int minRotationTicks = 0;
 }

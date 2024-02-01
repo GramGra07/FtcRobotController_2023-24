@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
+import static org.firstinspires.ftc.teamcode.UtilClass.DriverAid.operateClawByDist;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionPIDFCo;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.rotationPIDFCo;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.autoPotent;
@@ -13,16 +15,19 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.PresetPose;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
+import org.firstinspires.ftc.teamcode.Limits;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
@@ -48,7 +53,6 @@ public class autoHardware extends HardwareConfig {
     //default start position for RoadRunner
     public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
     public static int targetTag = 0; // april tag target
-    public static int extensionBackdrop = 100; // how far the arm should extend to place on backdrop
     public static Pose2d spot; // cycle position to be updated
     HardwareMap hardwareMap = null; // first initialization of the hardware map
 
@@ -99,9 +103,9 @@ public class autoHardware extends HardwareConfig {
                 .build();
         FtcDashboard.getInstance().startCameraStream(objProcessor, 0); // start the camera stream on FTC Dash
         timer.reset();
-        ServoUtil.closeClaw(HardwareConfig.claw1);
-        ServoUtil.closeClaw(HardwareConfig.claw2);
-        ServoUtil.calculateFlipPose(80, flipServo);
+//        ServoUtil.closeClaw(HardwareConfig.claw1);
+//        ServoUtil.closeClaw(HardwareConfig.claw2);
+        ServoUtil.calculateFlipPose(70, flipServo);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
         LEDcolor = "GREEN";
         telemetry.update();
@@ -112,6 +116,25 @@ public class autoHardware extends HardwareConfig {
         Sensors.ledIND(green2, red2, false);
         Sensors.ledIND(green3, red3, false);
         Sensors.ledIND(green4, red4, false);
+        int loop = 0;
+        while (myOpMode.opModeInInit()){
+            loop++;
+            telemetry.addData("D1",distanceSensor1.getDistance(DistanceUnit.CM));
+            telemetry.addData("D2",distanceSensor2.getDistance(DistanceUnit.CM));
+            telemetry.update();
+            distanceSensor1.getDistance(DistanceUnit.CM);
+            distanceSensor2.getDistance(DistanceUnit.CM);
+            if (myOpMode.isStopRequested()) {
+                return;
+            }
+                if (distanceSensor1.getDistance(DistanceUnit.CM) < 5 && loop>200) {
+                    closeClaw(HardwareConfig.claw1);
+                }
+                if (distanceSensor2.getDistance(DistanceUnit.CM) < 5 && loop>200) {
+                    closeClaw(HardwareConfig.claw2);
+                }
+
+        }
         myOpMode.waitForStart(); // wait for the start button to be pressed
         currentState = STATES.SPIKE_NAV;
         rotationPIDF.setPIDF(rotationPIDFCo.p, rotationPIDFCo.i, rotationPIDFCo.d, rotationPIDFCo.f);
@@ -165,9 +188,6 @@ public class autoHardware extends HardwareConfig {
             case right:
                 drive.followTrajectorySequenceAsync(ShiftTrajectories.shiftRight(drive));
                 break;
-            case mid:
-                ServoUtil.openClaw(claw1);
-                break;
         }
     }
 
@@ -209,9 +229,12 @@ public class autoHardware extends HardwareConfig {
 
     // method to use encoders to go to a point with encoder
     public static void encoderDrive(DcMotor motor, int position, double speed) {
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setTargetPosition(motor.getCurrentPosition() + (position));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));
+        while (motor.isBusy()){
+
+        }
+        motor.setPower(0);
     }
 }

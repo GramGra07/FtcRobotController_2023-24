@@ -29,9 +29,9 @@ public class DriverAid {
                 }
             }
         } else {
-            if (HardwareConfig.distance1 < 5 && !HardwareConfig.claw1Possessed) {
+            if (HardwareConfig.distance1 < 5) {
                 closeClaw(HardwareConfig.claw1);
-            } else if (HardwareConfig.distance2 < 5 && !HardwareConfig.claw2Possessed) {
+            } else if (HardwareConfig.distance2 < 5) {
                 closeClaw(HardwareConfig.claw2);
             }
         }

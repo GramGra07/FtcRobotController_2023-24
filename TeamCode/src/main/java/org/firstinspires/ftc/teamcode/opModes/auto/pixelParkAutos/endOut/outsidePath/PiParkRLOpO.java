@@ -28,7 +28,7 @@ public class PiParkRLOpO extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.LEFT));
-        StateMachine<autoPatterns.pixelParkStates> machine = pixelParkMachine(drive, PathLong.OUTSIDE, EndPose.RIGHT);
+        StateMachine<autoPatterns.pixelParkStates> machine = pixelParkMachine(drive, PathLong.OUTSIDE, EndPose.RIGHT,this);
         robot.initAuto(hardwareMap, this, false);
         machine.start();
         while (machine.mainLoop(this)) {

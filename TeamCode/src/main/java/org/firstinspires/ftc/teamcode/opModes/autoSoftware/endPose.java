@@ -23,7 +23,6 @@ public class endPose {
     // returns a trajectory sequence to go to the end pose
     public static void goToEndPose(EndPose endPose, MecanumDrive drive) {
         Pose2d pose = drive.getPoseEstimate();
-        ServoUtil.calculateFlipPose(60, flipServo);
         switch (endPose) {
             case StartingPosition:
                 pose = START_POSE;

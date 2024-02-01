@@ -109,7 +109,6 @@ public class generalPatterns {
                                         .splineToLinearHeading(farSwingPoseBLUE, farSwingPoseBLUE.getHeading())
                                         .addDisplacementMarker(() -> {
                                             ServoUtil.openClaw(HardwareConfig.claw2);
-                                            ServoUtil.calculateFlipPose(30, flipServo);
                                         })
                                         .back(1)
                                         .build()
@@ -128,7 +127,7 @@ public class generalPatterns {
                                         .splineToLinearHeading(farSwingPoseRED, farSwingPoseRED.getHeading())
                                         .addDisplacementMarker(() -> {
                                             ServoUtil.openClaw(HardwareConfig.claw2);
-                                            ServoUtil.calculateFlipPose(30, flipServo);
+//                                            ServoUtil.calculateFlipPose(30, flipServo);
                                         })
                                         .back(1)
                                         .build()
@@ -152,7 +151,7 @@ public class generalPatterns {
                                 .forward(20)
                                 .addDisplacementMarker(() -> {
                                     ServoUtil.openClaw(HardwareConfig.claw2);
-                                    ServoUtil.calculateFlipPose(30, flipServo);
+//                                    ServoUtil.calculateFlipPose(30, flipServo);
                                 })
                                 .strafeRight(5)
                                 .build()
