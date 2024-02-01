@@ -376,9 +376,10 @@ public class HardwareConfig {//this is an external opMode that can have public v
         if (lowVoltage) {
             telemetry.addData("", "We have a low battery");
         }
+//        telemetry.addData("Speed",drive.getWheelVelocities()[0])
         telemetry.addData("potentiometer", "%.1f", Sensors.getPotentVal(potentiometer));
-        telemetry.addData("power", extensionPower);
-        telemetry.addData("power R", rotationPower);
+//        telemetry.addData("power", extensionPower);
+//        telemetry.addData("power R", rotationPower);
         if (reversed) {
             telemetry.addData("reversed", "");
         }

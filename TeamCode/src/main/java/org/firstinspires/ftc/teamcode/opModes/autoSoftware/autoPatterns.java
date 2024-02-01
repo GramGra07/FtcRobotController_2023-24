@@ -74,6 +74,9 @@ public class autoPatterns {
                 .whileState(pixelParkStates.SPIKE_NAV, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
+                .onExit(pixelParkStates.SPIKE_NAV, () -> {
+                    ServoUtil.calculateFlipPose(30, flipServo);
+                })
                 .transition(pixelParkStates.SPIKE_NAV, () -> !drive.isBusy())
                 .state(pixelParkStates.BACKDROP)
                 .onEnter(pixelParkStates.BACKDROP,()->{

@@ -36,8 +36,9 @@ public class BackdropTrajectories {
     public static TrajectorySequence redShort(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo))
                 .lineToLinearHeading(backRed)
+                .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo))
+                .back(1)
                 .build();
     }
 
