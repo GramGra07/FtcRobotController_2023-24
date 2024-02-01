@@ -1,12 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.pixelParkAutos.endIn.shortSide;
 
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPIDF;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.rotationPIDF;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.targetPositionPotent;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.targetPositionSlides;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelParkMachine;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.piParkShort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
@@ -34,7 +28,7 @@ public class PiParkRRI extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.RED, StartSide.RIGHT));
-        StateMachine<autoPatterns.pixelParkStates> machine = pixelParkMachine(drive, PathLong.NONE, EndPose.LEFT,this);
+        StateMachine<autoPatterns.pixelParkStates> machine = pixelParkMachine(drive, PathLong.NONE, EndPose.LEFT);
         robot.initAuto(hardwareMap, this, false);
         machine.start();
         while (machine.mainLoop(this)) {

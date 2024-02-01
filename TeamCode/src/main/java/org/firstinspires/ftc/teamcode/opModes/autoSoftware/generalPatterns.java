@@ -67,6 +67,7 @@ public class generalPatterns {
                 switch (placement) {
                     case BLUE_RIGHT:
                     case RED_RIGHT:
+                    case RED_LEFT:
                         drive.followTrajectorySequenceAsync(fwdTLeft(drive));
                         break;
                     case BLUE_LEFT:
@@ -80,14 +81,6 @@ public class generalPatterns {
                                 .build()
                         );
                         break;
-                    case RED_LEFT: //long
-                        switch (pathLong) {
-                            case NONE:
-                            case OUTSIDE:
-                            case INSIDE:
-                                drive.followTrajectorySequenceAsync(fwdTLeft(drive));
-                                break;
-                        }
                 }
                 updatePose(drive);
                 autoHardware.autoRandomReliable = AutoRandom.left;
@@ -147,7 +140,7 @@ public class generalPatterns {
                         break;
                     case RED_RIGHT:
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .strafeRight(14)
+                                .strafeRight(12)
                                 .forward(20)
                                 .addDisplacementMarker(() -> {
                                     ServoUtil.openClaw(HardwareConfig.claw2);
