@@ -105,7 +105,7 @@ public class autoHardware extends HardwareConfig {
         timer.reset();
 //        ServoUtil.closeClaw(HardwareConfig.claw1);
 //        ServoUtil.closeClaw(HardwareConfig.claw2);
-        ServoUtil.calculateFlipPose(70, flipServo);
+        ServoUtil.calculateFlipPose(80, flipServo);
         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
         LEDcolor = "GREEN";
         telemetry.update();
@@ -117,22 +117,22 @@ public class autoHardware extends HardwareConfig {
         Sensors.ledIND(green3, red3, false);
         Sensors.ledIND(green4, red4, false);
         int loop = 0;
-        while (myOpMode.opModeInInit()){
+        while (myOpMode.opModeInInit()) {
             loop++;
-            telemetry.addData("D1",distanceSensor1.getDistance(DistanceUnit.CM));
-            telemetry.addData("D2",distanceSensor2.getDistance(DistanceUnit.CM));
+            telemetry.addData("D1", distanceSensor1.getDistance(DistanceUnit.CM));
+            telemetry.addData("D2", distanceSensor2.getDistance(DistanceUnit.CM));
             telemetry.update();
             distanceSensor1.getDistance(DistanceUnit.CM);
             distanceSensor2.getDistance(DistanceUnit.CM);
             if (myOpMode.isStopRequested()) {
                 return;
             }
-                if (distanceSensor1.getDistance(DistanceUnit.CM) < 5 && loop>200) {
-                    closeClaw(HardwareConfig.claw1);
-                }
-                if (distanceSensor2.getDistance(DistanceUnit.CM) < 5 && loop>200) {
-                    closeClaw(HardwareConfig.claw2);
-                }
+            if (distanceSensor1.getDistance(DistanceUnit.CM) < 5 && loop > 200) {
+                closeClaw(HardwareConfig.claw1);
+            }
+            if (distanceSensor2.getDistance(DistanceUnit.CM) < 5 && loop > 200) {
+                closeClaw(HardwareConfig.claw2);
+            }
 
         }
         myOpMode.waitForStart(); // wait for the start button to be pressed
@@ -232,7 +232,7 @@ public class autoHardware extends HardwareConfig {
         motor.setTargetPosition(motor.getCurrentPosition() + (position));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));
-        while (motor.isBusy()){
+        while (motor.isBusy()) {
 
         }
         motor.setPower(0);

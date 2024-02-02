@@ -16,7 +16,7 @@ public class ShiftTrajectories {
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(claw2);
                 })
-                .strafeLeft(12)
+                .strafeLeft(8)
 //                .addDisplacementMarker(()->{
 //                    ServoUtil.openClaw(claw1);
 //                })
@@ -30,7 +30,7 @@ public class ShiftTrajectories {
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(claw2);
                 })
-                .strafeRight(12)
+                .strafeRight(8)
 //                .addDisplacementMarker(()->{
 //                    ServoUtil.openClaw(claw1);
 //                })
