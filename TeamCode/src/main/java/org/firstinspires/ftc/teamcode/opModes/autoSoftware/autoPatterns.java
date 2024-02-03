@@ -21,6 +21,7 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPattern
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
+import org.firstinspires.ftc.teamcode.Limits;
 import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.AutoServoPositions;
@@ -78,12 +79,13 @@ public class autoPatterns {
                 .state(pixelParkStates.SPIKE_NAV)
                 .onEnter(pixelParkStates.SPIKE_NAV, () -> {
                     ServoUtil.calculateFlipPose(0, flipServo);
-                    SpikeNav(drive, PathLong.NONE);
+                    SpikeNav(drive, pathLong);
                 })
                 .whileState(pixelParkStates.SPIKE_NAV, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
                 .onExit(pixelParkStates.SPIKE_NAV, () -> {
+                    targetPositionSlides = Limits.autoExtension;
                     if (startDist == StartDist.SHORT_SIDE) {
                         Sensors.driveByPotentVal(autoPotent, potentiometer, motorRotation);
                         encoderDrive(motorExtension, targetPositionSlides, 0.5);
@@ -100,9 +102,9 @@ public class autoPatterns {
                 })
                 .onExit(pixelParkStates.BACKDROP, () -> {
                     if (startDist == StartDist.LONG_SIDE) {
+                        ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                         Sensors.driveByPotentVal(autoPotent, potentiometer, motorRotation);
                         encoderDrive(motorExtension, targetPositionSlides, 0.5);
-                        ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                     }
                 })
                 .transition(pixelParkStates.BACKDROP, () -> !drive.isBusy())
@@ -130,7 +132,7 @@ public class autoPatterns {
                 })
                 .onExit(pixelParkStates.END_POSE, () -> {
                     ServoUtil.calculateFlipPose(60, flipServo);
-                    encoderDrive(motorExtension, targetPositionSlides, 0.5);
+                    encoderDrive(motorExtension, -targetPositionSlides, 0.5);
                     Sensors.driveByPotentVal(potentiometerBase, potentiometer, motorRotation);
                 })
                 .transition(pixelParkStates.END_POSE, () -> !drive.isBusy())

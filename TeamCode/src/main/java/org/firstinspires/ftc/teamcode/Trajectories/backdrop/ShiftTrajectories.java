@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Trajectories.backdrop;
 
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.fwd;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
@@ -16,11 +17,8 @@ public class ShiftTrajectories {
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(claw2);
                 })
+                .forward(fwd)
                 .strafeLeft(8)
-//                .addDisplacementMarker(()->{
-//                    ServoUtil.openClaw(claw1);
-//                })
-//                .back(1)
                 .build();
     }
 
@@ -30,6 +28,7 @@ public class ShiftTrajectories {
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(claw2);
                 })
+                .forward(fwd)
                 .strafeRight(8)
 //                .addDisplacementMarker(()->{
 //                    ServoUtil.openClaw(claw1);

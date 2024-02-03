@@ -27,7 +27,7 @@ public class generalPatterns {
             case RED:
                 switch (StartPose.side) {
                     case LEFT:
-                        drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong, isCycling));
+                        drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong));
                         break;
                     case RIGHT:
                         drive.followTrajectorySequenceAsync(BackdropTrajectories.redShort(drive));

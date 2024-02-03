@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.backdropOffset;
 import static org.firstinspires.ftc.teamcode.UtilClass.DriverAid.operateClawByDist;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionPIDFCo;
@@ -116,25 +117,8 @@ public class autoHardware extends HardwareConfig {
         Sensors.ledIND(green2, red2, false);
         Sensors.ledIND(green3, red3, false);
         Sensors.ledIND(green4, red4, false);
-        int loop = 0;
-        while (myOpMode.opModeInInit()) {
-            loop++;
-            telemetry.addData("D1", distanceSensor1.getDistance(DistanceUnit.CM));
-            telemetry.addData("D2", distanceSensor2.getDistance(DistanceUnit.CM));
-            telemetry.update();
-            distanceSensor1.getDistance(DistanceUnit.CM);
-            distanceSensor2.getDistance(DistanceUnit.CM);
-            if (myOpMode.isStopRequested()) {
-                return;
-            }
-            if (distanceSensor1.getDistance(DistanceUnit.CM) < 5 && loop > 200) {
-                closeClaw(HardwareConfig.claw1);
-            }
-            if (distanceSensor2.getDistance(DistanceUnit.CM) < 5 && loop > 200) {
-                closeClaw(HardwareConfig.claw2);
-            }
-
-        }
+        closeClaw(HardwareConfig.claw1);
+        closeClaw(HardwareConfig.claw2);
         myOpMode.waitForStart(); // wait for the start button to be pressed
         currentState = STATES.SPIKE_NAV;
         rotationPIDF.setPIDF(rotationPIDFCo.p, rotationPIDFCo.i, rotationPIDFCo.d, rotationPIDFCo.f);
@@ -180,6 +164,8 @@ public class autoHardware extends HardwareConfig {
     }
 
     // shifts left or right depending on the random
+    public static int fwd = 0;
+
     public static void shiftAuto(MecanumDrive drive) {
         switch (autoRandomReliable) {
             case left:
@@ -229,6 +215,7 @@ public class autoHardware extends HardwareConfig {
 
     // method to use encoders to go to a point with encoder
     public static void encoderDrive(DcMotor motor, int position, double speed) {
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setTargetPosition(motor.getCurrentPosition() + (position));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));

@@ -81,10 +81,6 @@ public class Operator extends Drivers {
                     calculateFlipPose(lastSetVal, flipServo);
                 }
             }
-            if (myOpMode.gamepad1.square) {
-                ServoUtil.calculateFlipPose(downClawRigging, flipServo);
-                liftHeld = true;
-            }
             //
             if (myOpMode.gamepad2.right_stick_y < -deadZone && usePIDF) {
                 rotationPIDF.setPIDF(rotationPIDFCo.p, rotationPIDFCo.i, rotationPIDFCo.d, rotationPIDFCo.f);
@@ -98,6 +94,11 @@ public class Operator extends Drivers {
 //            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
             if (myOpMode.gamepad2.cross) {
                 usePIDF = false;
+            }
+            if (myOpMode.gamepad2.square) {
+                calculateFlipPose(70, flipServo);
+                closeClaw(claw1);
+                closeClaw(claw2);
             }
             if (myOpMode.gamepad2.left_stick_y > deadZone && usePIDF) {
                 extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f); // allows to use dashboard

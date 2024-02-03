@@ -59,11 +59,7 @@ public class Drivers {
             } else if (myOpMode.gamepad1.left_trigger > 0) {
                 liftPower = liftMax;
             } else {
-                if (liftHeld) {
-                    liftPower = Range.clip(myOpMode.gamepad2.left_stick_y, liftMin, liftMax);
-                } else {
-                    liftPower = 0;
-                }
+                liftPower = 0;
             }
             // using ftc lib
 //            gamepad1.getButton(GamepadKeys.Button.RIGHT_BUMPER);

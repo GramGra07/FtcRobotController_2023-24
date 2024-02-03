@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.opModes.camera;
 
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.lights;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 
 import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
@@ -39,8 +42,8 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
 
     int current = 0;
 
-    public static int[] pointsX = new int[]{560, 680, 100, 250};
-    public static int[] pointsY = new int[]{70, 200, 40, 190};
+    public static int[] pointsX = new int[]{560, 680, 100, 230};
+    public static int[] pointsY = new int[]{70, 200, 50, 180};
 
     public Scalar scalarLow, scalarHigh;
 
@@ -52,7 +55,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         if (alliance == Alliance.RED) {
-            scalarLow = new Scalar(0, 147, 0);
+            scalarLow = new Scalar(0, 180, 0);
             scalarHigh = new Scalar(255, 255, 255);
         } else if (alliance == Alliance.BLUE) {
             scalarLow = new Scalar(0, 0, 130);
@@ -74,6 +77,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
                     Imgproc.rectangle(frame, new Point(pointsX[2], pointsY[2]), new Point(pointsX[3], pointsY[3]), new Scalar(0, 255, 0), 1);
                     Imgproc.putText(frame, "right", new Point(frame.width() / 2, frame.height() / 2), 0, 5, new Scalar(0, 255, 0));
                     autonomousRandom = AutoRandom.right;
+                    lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
                     Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
                     Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
                     if (alliance == Alliance.BLUE) {
@@ -94,6 +98,8 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
                         Imgproc.rectangle(frame, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
                         Imgproc.putText(frame, "middle", new Point(frame.width() / 2, frame.height() / 2), 0, 5, new Scalar(0, 255, 0));
                         autonomousRandom = AutoRandom.mid;
+
+                        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
                         Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
                         Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
                         Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
@@ -106,6 +112,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
         if (current == 0) {
             Imgproc.putText(frame, "left", new Point(frame.width() / 2, frame.height() / 2), 0, 5, new Scalar(0, 255, 0));
             autonomousRandom = AutoRandom.left;
+            lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.CONFETTI);
             Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
             Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
             if (alliance == Alliance.BLUE) {
