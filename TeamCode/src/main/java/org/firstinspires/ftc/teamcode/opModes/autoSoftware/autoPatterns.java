@@ -116,7 +116,6 @@ public class autoPatterns {
                     drive.update();
                 })
                 .onExit(pixelParkStates.SHIFT, () -> {
-                    ServoUtil.calculateFlipPose(10, flipServo);
                     ServoUtil.openClaw(HardwareConfig.claw1);
                 })
                 .transition(pixelParkStates.SHIFT, () -> !drive.isBusy())

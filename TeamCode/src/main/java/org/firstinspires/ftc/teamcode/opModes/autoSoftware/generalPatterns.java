@@ -75,10 +75,9 @@ public class generalPatterns {
                                 .strafeLeft(12)
                                 .forward(20)
                                 .addDisplacementMarker(() -> {
-                                            ServoUtil.openClaw(HardwareConfig.claw2);
-                                            ServoUtil.calculateFlipPose(30, flipServo);
-                                        }
-                                )
+                                    ServoUtil.openClaw(HardwareConfig.claw2);
+                                    ServoUtil.calculateFlipPose(30, flipServo);
+                                })
                                 .back(1)
                                 .build()
                         );

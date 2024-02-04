@@ -8,6 +8,7 @@ import static org.firstinspires.ftc.teamcode.Limits.minExtensionTicks;
 import static org.firstinspires.ftc.teamcode.Limits.minRotationTicks;
 import static org.firstinspires.ftc.teamcode.Limits.slideMax;
 import static org.firstinspires.ftc.teamcode.Limits.slideMin;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.backClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.downClawRigging;
@@ -70,7 +71,7 @@ public class Operator extends Drivers {
             }
             //
             if (myOpMode.gamepad2.dpad_left) {
-                calculateFlipPose(30, flipServo);
+                calculateFlipPose(backClaw, flipServo);
             } else if (myOpMode.gamepad2.dpad_up) {
                 calculateFlipPose(70, flipServo);
             } else if (myOpMode.gamepad2.dpad_down) {

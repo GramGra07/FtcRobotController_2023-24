@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 @Config
 
 public class ServoUtil {
+    public static int backClaw = 30;
     public static boolean useAutoClose = false;
     public static double autoCloseDist = 6;
     public static double position = 0;
