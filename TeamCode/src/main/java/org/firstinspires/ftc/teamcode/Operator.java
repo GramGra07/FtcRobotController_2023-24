@@ -40,6 +40,8 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class Operator extends Drivers {
     public static boolean touchPressed = false;
+    public static boolean xPressed = false;
+    public static boolean squarePressed = false;
 
     public static void bindOtherButtons(OpMode myOpMode, MecanumDrive drive) {
         //"Chase", "Camden", "Kian", "Grady", "Michael","Graden"
@@ -78,9 +80,7 @@ public class Operator extends Drivers {
                 calculateFlipPose(0, flipServo);
             }
             if (PastAngle.pastAngleVal != Sensors.getPotentVal(potentiometer)) {
-                if (!liftHeld) {
-                    calculateFlipPose(lastSetVal, flipServo);
-                }
+                calculateFlipPose(lastSetVal, flipServo);
             }
             //
             if (myOpMode.gamepad2.right_stick_y < -deadZone && usePIDF) {
@@ -93,14 +93,24 @@ public class Operator extends Drivers {
                 rotationPower = 0;
             }
 //            rotationPower = Range.clip(-myOpMode.gamepad2.right_stick_y, flipperMin, flipperMax);
-            if (myOpMode.gamepad2.cross) {
+            if (myOpMode.gamepad2.cross && !xPressed && usePIDF) {
                 usePIDF = false;
+            } else if (myOpMode.gamepad2.cross && !xPressed && !usePIDF) {
+                usePIDF = true;
             }
-            if (myOpMode.gamepad2.square) {
+            xPressed = myOpMode.gamepad2.cross;
+            if (myOpMode.gamepad2.square && !squarePressed && !liftConnected) {
+                liftConnected = true;
                 calculateFlipPose(70, flipServo);
                 closeClaw(claw1);
                 closeClaw(claw2);
+            } else if (myOpMode.gamepad2.square && !squarePressed && liftConnected) {
+                liftConnected = false;
+                calculateFlipPose(70, flipServo);
+                openClaw(claw1);
+                openClaw(claw2);
             }
+            squarePressed = myOpMode.gamepad2.square;
             if (myOpMode.gamepad2.left_stick_y > deadZone && usePIDF) {
                 extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f); // allows to use dashboard
                 extensionPower = Range.clip(extensionPIDF.calculate(motorExtension.getCurrentPosition(), minExtensionTicks), -1, 1);

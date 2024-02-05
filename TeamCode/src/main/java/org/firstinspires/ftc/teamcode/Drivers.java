@@ -9,6 +9,7 @@ import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.resetAirplane;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.airplaneServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.liftPower;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.slowModeIsOn;
 
@@ -27,7 +28,7 @@ public class Drivers {
     public static final int baseDriver = 0, baseOther = 1;//list integer of base driver and other controls
     public static String currDriver = driverControls[dIndex], currOther = otherControls[oIndex];//list string of driver and other controls
     public static boolean fieldCentric;
-    public static boolean liftHeld = false;
+    public static boolean liftConnected = false;
     public static boolean optionsHigh1 = false, shareHigh1 = false, optionsHigh2 = false, shareHigh2 = false;
     public static boolean slowModeButtonDown = false, planeButtonDown = false, planeReleased = true;
 
@@ -60,6 +61,9 @@ public class Drivers {
                 liftPower = liftMax;
             } else {
                 liftPower = 0;
+            }
+            if (liftConnected) {
+                extensionPower = Range.clip(liftPower, liftMin, liftMax);
             }
             // using ftc lib
 //            gamepad1.getButton(GamepadKeys.Button.RIGHT_BUMPER);
