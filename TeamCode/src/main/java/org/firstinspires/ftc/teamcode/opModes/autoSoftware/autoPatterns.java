@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.autoPotent;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.potentiometerBase;
+import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
+import static org.firstinspires.ftc.teamcode.Limits.autoRotation;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPIDF;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.potentiometer;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.startDist;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.timer;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autoRandomReliable;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.encoderDrive;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.previousState;
@@ -18,11 +20,10 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEn
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.navToBackdrop_Place;
 
+import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
-import org.firstinspires.ftc.teamcode.Limits;
-import org.firstinspires.ftc.teamcode.Sensors;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.AutoServoPositions;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
@@ -43,7 +44,7 @@ public class autoPatterns {
         return builder
                 .state(place1States.SPIKE_NAV)
                 .onEnter(place1States.SPIKE_NAV, () -> {
-                    ServoUtil.calculateFlipPose(0, flipServo);
+                    calculateFlipPose(0, flipServo);
                     SpikeNav(drive, PathLong.NONE);
                 })
                 .whileState(place1States.SPIKE_NAV, () -> !drive.isBusy(), () -> {
@@ -52,7 +53,7 @@ public class autoPatterns {
                 .transition(place1States.SPIKE_NAV, () -> !drive.isBusy())
                 .state(place1States.END_POSE)
                 .onEnter(place1States.END_POSE, () -> {
-                    ServoUtil.calculateFlipPose(30, flipServo);
+                    calculateFlipPose(30, flipServo);
                     goToEndPose(EndPose.StartingPosition, drive);
                 })
                 .whileState(place1States.END_POSE, () -> !drive.isBusy(), () -> {
@@ -70,29 +71,29 @@ public class autoPatterns {
         BACKDROP,
         SHIFT,
         END_POSE,
+        RETRACT,
         STOP,
     }
+
+    public static int rotate = 0;
 
     public static StateMachine<pixelParkStates> pixelParkMachine(MecanumDrive drive, PathLong pathLong, EndPose endPose) {
         StateMachine.Builder<pixelParkStates> builder = new StateMachine.Builder<>();
         return builder
                 .state(pixelParkStates.SPIKE_NAV)
                 .onEnter(pixelParkStates.SPIKE_NAV, () -> {
-                    ServoUtil.calculateFlipPose(0, flipServo);
+                    calculateFlipPose(0, flipServo);
                     SpikeNav(drive, pathLong);
                 })
                 .whileState(pixelParkStates.SPIKE_NAV, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
-                .onExit(pixelParkStates.SPIKE_NAV, () -> {
-                    targetPositionSlides = Limits.autoExtension;
-                    if (startDist == StartDist.SHORT_SIDE) {
-                        Sensors.driveByPotentVal(autoPotent, potentiometer, motorRotation);
-                        encoderDrive(motorExtension, targetPositionSlides, 0.5);
-                        ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
-                    }
-                })
-                .transition(pixelParkStates.SPIKE_NAV, () -> !drive.isBusy())
+//                .onExit(pixelParkStates.SPIKE_NAV, () -> {
+//                    if (startDist == StartDist.SHORT_SIDE) {
+//                        encoderDrive(motorExtension, autoExtension, 1, drive);
+//                    }
+//                })
+                .transition(pixelParkStates.SPIKE_NAV, () -> (!drive.isBusy()))
                 .state(pixelParkStates.BACKDROP)
                 .onEnter(pixelParkStates.BACKDROP, () -> {
                     navToBackdrop_Place(drive, false, pathLong);
@@ -102,9 +103,13 @@ public class autoPatterns {
                 })
                 .onExit(pixelParkStates.BACKDROP, () -> {
                     if (startDist == StartDist.LONG_SIDE) {
+                        rotate = autoRotation;
+                        if (autoRandomReliable == AutoRandom.right) {
+                            rotate -= 100;
+                        }
                         ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
-                        Sensors.driveByPotentVal(autoPotent, potentiometer, motorRotation);
-                        encoderDrive(motorExtension, targetPositionSlides, 0.5);
+                        encoderDrive(motorRotation, rotate, 1, drive);
+                        encoderDrive(motorExtension, autoExtension, 1, drive);
                     }
                 })
                 .transition(pixelParkStates.BACKDROP, () -> !drive.isBusy())
@@ -116,25 +121,34 @@ public class autoPatterns {
                     drive.update();
                 })
                 .onExit(pixelParkStates.SHIFT, () -> {
+                    calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                     ServoUtil.openClaw(HardwareConfig.claw1);
                 })
                 .transition(pixelParkStates.SHIFT, () -> !drive.isBusy())
                 .state(pixelParkStates.END_POSE)
                 .onEnter(pixelParkStates.END_POSE, () -> {
+                    if (startDist == StartDist.LONG_SIDE) {
+                        encoderDrive(motorExtension, -autoExtension, 0.5, drive);
+                    }
+                    calculateFlipPose(60, flipServo);
                     if (endPose != EndPose.NONE) {
                         goToEndPose(endPose, drive);
                     }
-                    targetPositionSlides = 0;
                 })
                 .whileState(pixelParkStates.END_POSE, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
-                .onExit(pixelParkStates.END_POSE, () -> {
-                    ServoUtil.calculateFlipPose(60, flipServo);
-                    encoderDrive(motorExtension, -targetPositionSlides, 0.5);
-                    Sensors.driveByPotentVal(potentiometerBase, potentiometer, motorRotation);
-                })
                 .transition(pixelParkStates.END_POSE, () -> !drive.isBusy())
+                .state(pixelParkStates.RETRACT)
+                .onEnter(pixelParkStates.RETRACT, () -> {
+                    if (startDist == StartDist.LONG_SIDE) {
+                        timer.reset();
+                        encoderDrive(motorRotation, -rotate, 1, drive);
+                    }
+                })
+                .onExit(pixelParkStates.RETRACT, () -> {
+                })
+                .transition(pixelParkStates.RETRACT, () -> !drive.isBusy())
                 .stopRunning(pixelParkStates.STOP)
                 .build();
     }
@@ -155,7 +169,7 @@ public class autoPatterns {
             case SPIKE_NAV:
                 if (previousState != currentState) {
                     previousState = currentState;
-                    ServoUtil.calculateFlipPose(0, flipServo);
+                    calculateFlipPose(0, flipServo);
                     SpikeNav(drive, pathLong);
                 } else if (!drive.isBusy()) {
                     currentState = autoHardware.STATES.BACKDROP;

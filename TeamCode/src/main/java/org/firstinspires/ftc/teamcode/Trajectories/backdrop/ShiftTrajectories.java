@@ -12,15 +12,16 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
 public class ShiftTrajectories {
+    public static int leftOffset = 1;
+
     public static TrajectorySequence shiftLeft(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(claw2);
-                    ServoUtil.calculateFlipPose(10, flipServo);
                 })
-                .forward(fwd)
-                .strafeLeft(8)
+                .forward(fwd - leftOffset)
+                .strafeLeft(12)
                 .build();
     }
 
@@ -29,10 +30,9 @@ public class ShiftTrajectories {
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(claw2);
-                    ServoUtil.calculateFlipPose(10, flipServo);
                 })
                 .forward(fwd)
-                .strafeRight(8)
+                .strafeRight(12)
                 .build();
     }
 }

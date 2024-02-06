@@ -63,7 +63,7 @@ public class Drivers {
                 liftPower = 0;
             }
             if (liftConnected) {
-                extensionPower = Range.clip(liftPower, liftMin, liftMax);
+                extensionPower = liftPower;
             }
             // using ftc lib
 //            gamepad1.getButton(GamepadKeys.Button.RIGHT_BUMPER);

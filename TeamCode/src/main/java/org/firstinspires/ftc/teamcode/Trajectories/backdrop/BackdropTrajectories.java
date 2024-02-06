@@ -29,10 +29,6 @@ public class BackdropTrajectories {
     public static TrajectorySequence redShort(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-//                .addDisplacementMarker(() -> {
-//                    targetPositionSlides = autoExtension;
-//                    targetPositionPotent = autoRotation;
-//                })
                 .lineToLinearHeading(backRed)
                 .build();
     }
@@ -49,7 +45,7 @@ public class BackdropTrajectories {
                                 .lineToLinearHeading(new Pose2d(-52, -10, Math.toRadians(endAngle)))
                                 .lineTo(new Vector2d(36, -12))
                                 .lineTo(new Vector2d(36, -30))
-                                .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset), backRed.getY(), backRed.getHeading()), Math.toRadians(endAngle))
+                                .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset), backRed.getY() + 1, backRed.getHeading()), Math.toRadians(endAngle))
                                 .build();
                     case left:
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
@@ -66,7 +62,7 @@ public class BackdropTrajectories {
                         .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipUp, flipServo))
                         .lineToLinearHeading(new Pose2d(START_POSE.getX() - xOffset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
-                        .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset), backRed.getY(), backRed.getHeading()), Math.toRadians(endAngle))
+                        .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset), backRed.getY() + 5, backRed.getHeading()), Math.toRadians(endAngle))
                         .build();
             default:
                 return null;
@@ -92,9 +88,6 @@ public class BackdropTrajectories {
                                 .lineToLinearHeading(new Pose2d(-50, 12, Math.toRadians(endAngle)))
                                 .lineTo(new Vector2d(36, 10))
                                 .lineTo(new Vector2d(36, 30))
-                                .addDisplacementMarker(() -> {
-//                                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
-                                })
                                 .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset), backBlue.getY(), backBlue.getHeading()), Math.toRadians(endAngle))
                                 .build();
                     case right:
@@ -104,8 +97,6 @@ public class BackdropTrajectories {
                                 .turn(Math.toRadians(90))
                                 .lineTo(new Vector2d(36, 12))
                                 .lineTo(new Vector2d(36, 30))
-                                .addDisplacementMarker(() -> {
-                                })
                                 .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset), backBlue.getY(), backBlue.getHeading()), Math.toRadians(endAngle))
                                 .build();
                 }
@@ -115,14 +106,7 @@ public class BackdropTrajectories {
                         .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
                         .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
                         .lineTo(new Vector2d(36, 30))
-                        .addDisplacementMarker(() -> {
-//                            targetPositionPotent = autoRotation;
-//                            targetPositionSlides = autoExtension;
-//                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
-                        })
                         .splineToLinearHeading(new Pose2d(backBlue.getX() - (backdropOffset), backBlue.getY(), backBlue.getHeading()), Math.toRadians(endAngle))
-//                        .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo))
-//                        .forward(backdropOffset + 4)
                         .build();
             default:
                 return null;

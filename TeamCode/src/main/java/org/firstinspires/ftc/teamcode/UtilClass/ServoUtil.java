@@ -65,7 +65,7 @@ public class ServoUtil {
 
     public static int servoFlipVal = 62;
     public static double hcalc = 88;
-    public static double flipOffset = -25;
+    public static double flipOffset = -40;
 
     public static void calculateFlipPose(int pose, Servo servo) {
         double theta = Sensors.getPotentVal(potentiometer) + flipOffset;

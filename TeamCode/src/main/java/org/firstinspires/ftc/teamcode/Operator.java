@@ -107,8 +107,8 @@ public class Operator extends Drivers {
             } else if (myOpMode.gamepad2.square && !squarePressed && liftConnected) {
                 liftConnected = false;
                 calculateFlipPose(70, flipServo);
-                openClaw(claw1);
-                openClaw(claw2);
+                closeClaw(claw1);
+                closeClaw(claw2);
             }
             squarePressed = myOpMode.gamepad2.square;
             if (myOpMode.gamepad2.left_stick_y > deadZone && usePIDF) {
@@ -118,7 +118,9 @@ public class Operator extends Drivers {
                 extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f); // allows to use dashboard
                 extensionPower = Range.clip(extensionPIDF.calculate(motorExtension.getCurrentPosition(), maxExtensionTicks), -1, 1);
             } else {
-                extensionPower = 0;
+                if (!liftConnected) {
+                    extensionPower = 0;
+                }
             }
             if (!usePIDF) {
                 extensionPower = Range.clip(-myOpMode.gamepad2.left_stick_y, slideMin, slideMax);

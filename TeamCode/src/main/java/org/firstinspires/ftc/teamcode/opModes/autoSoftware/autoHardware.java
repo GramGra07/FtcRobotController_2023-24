@@ -164,15 +164,21 @@ public class autoHardware extends HardwareConfig {
     }
 
     // shifts left or right depending on the random
-    public static int fwd = 0;
+    public static int fwd = 1;
 
     public static void shiftAuto(MecanumDrive drive) {
+        if (startDist == StartDist.LONG_SIDE) {
+            fwd = 5;
+        }
+        if (autoRandomReliable == AutoRandom.left) {
+            ShiftTrajectories.leftOffset = 4;
+        }
         switch (autoRandomReliable) {
             case left:
-                drive.followTrajectorySequenceAsync(ShiftTrajectories.shiftLeft(drive));
+                drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
                 break;
             case right:
-                drive.followTrajectorySequenceAsync(ShiftTrajectories.shiftRight(drive));
+                drive.followTrajectorySequence(ShiftTrajectories.shiftRight(drive));
                 break;
         }
     }
@@ -214,14 +220,16 @@ public class autoHardware extends HardwareConfig {
     }
 
     // method to use encoders to go to a point with encoder
-    public static void encoderDrive(DcMotor motor, int position, double speed) {
+    public static void encoderDrive(DcMotor motor, int position, double speed, MecanumDrive drive) {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setTargetPosition(motor.getCurrentPosition() + (position));
+        drive.update();
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setPower(Math.abs(speed));
         while (motor.isBusy()) {
-
+            drive.update();
         }
         motor.setPower(0);
+//        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

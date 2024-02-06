@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import static org.firstinspires.ftc.teamcode.Limits.maxRotationTicks;
-
 import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -25,11 +23,14 @@ public class Sensors {
     public static double getPotentVal(AnalogInput potentiometer) {
         return Range.clip(POTENTIOMETER_MAX / 3.3 * potentiometer.getVoltage(), POTENTIOMETER_MIN, POTENTIOMETER_MAX);
     }
-//    public static double getCorrectedRotationVal(DcMotor motor){
+
+    //    public static double getCorrectedRotationVal(DcMotor motor){
 //        return motor.getCurrentPosition() / (maxRotationTicks /65);
 //    }
+    public static boolean finishedPotent = false;
 
     public static void driveByPotentVal(int target, AnalogInput potent, DcMotor motor) {
+        finishedPotent = false;
         double dif = target - Sensors.getPotentVal(potent);
         double range = 1;
         // turn motor until dif > 1 or close
@@ -38,6 +39,7 @@ public class Sensors {
             dif = target - Sensors.getPotentVal(potent);
             motor.setPower(sign * 0.5);
         }
+        finishedPotent = true;
         motor.setPower(0);
     }
 
