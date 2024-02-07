@@ -2,8 +2,8 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
 import static org.firstinspires.ftc.teamcode.Limits.autoRotation;
+import static org.firstinspires.ftc.teamcode.MathFunctions.threeFourths;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPIDF;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
@@ -14,8 +14,8 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.c
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.encoderDrive;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.previousState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.shiftAuto;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.targetPositionSlides;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.cyclePatterns.pickFromSpot;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.navToBackdrop_Place;
@@ -76,6 +76,7 @@ public class autoPatterns {
     }
 
     public static int rotate = 0;
+    public static int extend = 0;
 
     public static StateMachine<pixelParkStates> pixelParkMachine(MecanumDrive drive, PathLong pathLong, EndPose endPose) {
         StateMachine.Builder<pixelParkStates> builder = new StateMachine.Builder<>();
@@ -88,11 +89,13 @@ public class autoPatterns {
                 .whileState(pixelParkStates.SPIKE_NAV, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
-//                .onExit(pixelParkStates.SPIKE_NAV, () -> {
-//                    if (startDist == StartDist.SHORT_SIDE) {
-//                        encoderDrive(motorExtension, autoExtension, 1, drive);
-//                    }
-//                })
+                .onExit(pixelParkStates.SPIKE_NAV, () -> {
+                    if (startDist == StartDist.SHORT_SIDE) {
+                        rotate = (autoRotation / 4) * 3;
+                        encoderDrive(motorRotation, rotate, 1, drive);
+                        ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                    }
+                })
                 .transition(pixelParkStates.SPIKE_NAV, () -> (!drive.isBusy()))
                 .state(pixelParkStates.BACKDROP)
                 .onEnter(pixelParkStates.BACKDROP, () -> {
@@ -103,14 +106,15 @@ public class autoPatterns {
                 })
                 .onExit(pixelParkStates.BACKDROP, () -> {
                     if (startDist == StartDist.LONG_SIDE) {
-                        rotate = autoRotation;
-                        if (autoRandomReliable == AutoRandom.right) {
-                            rotate -= 100;
-                        }
+                        rotate = autoRotation - 200;
+                        extend = autoExtension;
                         ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                         encoderDrive(motorRotation, rotate, 1, drive);
-                        encoderDrive(motorExtension, autoExtension, 1, drive);
                     }
+                    if (startDist == StartDist.SHORT_SIDE) {
+                        extend = threeFourths(autoExtension);
+                    }
+                    encoderDrive(motorExtension, autoExtension, 1, drive);
                 })
                 .transition(pixelParkStates.BACKDROP, () -> !drive.isBusy())
                 .state(pixelParkStates.SHIFT)
@@ -158,10 +162,124 @@ public class autoPatterns {
         SPIKE_NAV,
         BACKDROP,
         SHIFT,
+        RETRACT,
         PICK1,
         PLACE1,
         END_POSE,
         STOP,
+    }
+
+    public static StateMachine<cycleStates> cycleMachine(MecanumDrive drive, PathLong pathLong, EndPose endPose) {
+        StateMachine.Builder<cycleStates> builder = new StateMachine.Builder<>();
+        return builder
+                .state(cycleStates.SPIKE_NAV)
+                .onEnter(cycleStates.SPIKE_NAV, () -> {
+                    calculateFlipPose(0, flipServo);
+                    SpikeNav(drive, pathLong);
+                })
+                .whileState(cycleStates.SPIKE_NAV, () -> !drive.isBusy(), () -> {
+                    drive.update();
+                })
+//                .onExit(pixelParkStates.SPIKE_NAV, () -> {
+//                    if (startDist == StartDist.SHORT_SIDE) {
+//                        encoderDrive(motorExtension, autoExtension, 1, drive);
+//                    }
+//                })
+                .transition(cycleStates.SPIKE_NAV, () -> (!drive.isBusy()))
+                .state(cycleStates.BACKDROP)
+                .onEnter(cycleStates.BACKDROP, () -> {
+                    navToBackdrop_Place(drive, false, pathLong);
+                })
+                .whileState(cycleStates.BACKDROP, () -> !drive.isBusy(), () -> {
+                    drive.update();
+                })
+                .onExit(cycleStates.BACKDROP, () -> {
+                    if (startDist == StartDist.LONG_SIDE) {
+                        rotate = autoRotation;
+                        if (autoRandomReliable == AutoRandom.right) {
+                            rotate -= 100;
+                        }
+                        ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                        encoderDrive(motorRotation, rotate, 1, drive);
+                        encoderDrive(motorExtension, autoExtension, 1, drive);
+                    }
+                })
+                .transition(cycleStates.BACKDROP, () -> !drive.isBusy())
+                .state(cycleStates.SHIFT)
+                .onEnter(cycleStates.SHIFT, () -> {
+                    shiftAuto(drive);
+                })
+                .whileState(cycleStates.SHIFT, () -> !drive.isBusy(), () -> {
+                    drive.update();
+                })
+                .onExit(cycleStates.SHIFT, () -> {
+                    calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                    ServoUtil.openClaw(HardwareConfig.claw1);
+                })
+                .transition(cycleStates.SHIFT, () -> !drive.isBusy())
+                .state(cycleStates.RETRACT)
+//                .onEnter(cycleStates.RETRACT, () -> {
+//                    if (startDist == StartDist.LONG_SIDE) {
+//                        timer.reset();
+//                        encoderDrive(motorRotation, -rotate, 1, drive);
+//                    }
+//                })
+//                .onExit(cycleStates.RETRACT, () -> {
+//                    if (startDist == StartDist.LONG_SIDE) {
+//                        encoderDrive(motorExtension, -autoExtension, 0.5, drive);
+//                    }
+//                })
+//                .transition(cycleStates.RETRACT, () -> !drive.isBusy())
+                .state(cycleStates.PICK1)
+                .onEnter(cycleStates.PICK1, () -> {
+                    //retract both
+                    encoderDrive(motorExtension, -autoExtension, 1, drive);
+                    encoderDrive(motorRotation, -rotate, 1, drive);
+                    pickFromSpot(drive, pathLong);
+                })
+                .whileState(cycleStates.PICK1, () -> !drive.isBusy(), () -> {
+                    drive.update();
+                })
+//                .onExit(cycleStates.PICK1, () -> {
+//                    encoderDrive(motorExtension, autoExtension, 1, drive);
+//                })
+                .transition(cycleStates.PICK1, () -> !drive.isBusy())
+                .state(cycleStates.PLACE1)
+                .onEnter(cycleStates.PLACE1, () -> {
+                    encoderDrive(motorExtension, autoExtension, 0.5, drive);
+                    encoderDrive(motorRotation, rotate, 1, drive);
+                    navToBackdrop_Place(drive, true, pathLong);
+                })
+                .whileState(cycleStates.PLACE1, () -> !drive.isBusy(), () -> {
+                    drive.update();
+                })
+                .onExit(cycleStates.PLACE1, () -> {
+                    encoderDrive(motorExtension, -autoExtension, 1, drive);
+                })
+                .transition(cycleStates.PLACE1, () -> !drive.isBusy())
+                .state(cycleStates.END_POSE)
+                .onEnter(cycleStates.END_POSE, () -> {
+                    calculateFlipPose(60, flipServo);
+                    if (endPose != EndPose.NONE) {
+                        goToEndPose(endPose, drive);
+                    }
+                })
+                .whileState(cycleStates.END_POSE, () -> !drive.isBusy(), () -> {
+                    drive.update();
+                })
+                .transition(cycleStates.END_POSE, () -> !drive.isBusy())
+                .state(cycleStates.RETRACT)
+                .onEnter(cycleStates.RETRACT, () -> {
+                    if (startDist == StartDist.LONG_SIDE) {
+                        timer.reset();
+                        encoderDrive(motorRotation, -rotate, 1, drive);
+                    }
+                })
+                .onExit(cycleStates.RETRACT, () -> {
+                })
+                .transition(cycleStates.RETRACT, () -> !drive.isBusy())
+                .stopRunning(cycleStates.STOP)
+                .build();
     }
 
     public static void cycleAuto(MecanumDrive drive, PathLong pathLong, EndPose endPose) {
@@ -206,8 +324,8 @@ public class autoPatterns {
             case STOP:
                 break;
         }
-        motorExtension.setPower(extensionPIDF.calculate(motorExtension.getCurrentPosition(), targetPositionSlides));
-        drive.update();
+//    motorExtension.setPower(extensionPIDF.calculate(motorExtension.getCurrentPosition(), targetPositionSlides));
+//    drive.update();
 //        place1Pixel(drive, pathLong);
 //        navToBackdrop_Place(drive, true, pathLong);
 //        for (int i = 0; i < 1; i++) {

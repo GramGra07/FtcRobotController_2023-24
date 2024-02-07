@@ -107,8 +107,8 @@ public class autoHardware extends HardwareConfig {
 //        ServoUtil.closeClaw(HardwareConfig.claw1);
 //        ServoUtil.closeClaw(HardwareConfig.claw2);
         ServoUtil.calculateFlipPose(80, flipServo);
-        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GREEN); // set the lights to green
-        LEDcolor = "GREEN";
+        lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.RED); // set the lights to green
+        LEDcolor = "RED";
         telemetry.update();
         if (myOpMode.isStopRequested()) {
             return;

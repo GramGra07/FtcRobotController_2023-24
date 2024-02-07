@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 @Config
 
 public class ServoUtil {
-    public static int backClaw = 30;
+    public static int backClaw = 20;
     public static boolean useAutoClose = false;
     public static double autoCloseDist = 6;
     public static double position = 0;
@@ -65,7 +65,7 @@ public class ServoUtil {
 
     public static int servoFlipVal = 62;
     public static double hcalc = 88;
-    public static double flipOffset = -40;
+    public static double flipOffset = -30;
 
     public static void calculateFlipPose(int pose, Servo servo) {
         double theta = Sensors.getPotentVal(potentiometer) + flipOffset;

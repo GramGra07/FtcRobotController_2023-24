@@ -78,15 +78,6 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
                     Imgproc.putText(frame, "right", new Point(frame.width() / 2, frame.height() / 2), 0, 5, new Scalar(0, 255, 0));
                     autonomousRandom = AutoRandom.right;
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
-                    Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
-                    Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-                    if (alliance == Alliance.BLUE) {
-                        Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
-                        Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, false);
-                    } else {
-                        Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                        Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, true);
-                    }
                     current = 1;
                 }
             }
@@ -98,12 +89,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
                         Imgproc.rectangle(frame, new Point(pointsX[0], pointsY[0]), new Point(pointsX[1], pointsY[1]), new Scalar(0, 255, 0), 1);
                         Imgproc.putText(frame, "middle", new Point(frame.width() / 2, frame.height() / 2), 0, 5, new Scalar(0, 255, 0));
                         autonomousRandom = AutoRandom.mid;
-
                         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
-                        Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, true);
-                        Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, true);
-                        Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                        Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, false);
                         current = 1;
                     }
                 }
@@ -113,15 +99,6 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
             Imgproc.putText(frame, "left", new Point(frame.width() / 2, frame.height() / 2), 0, 5, new Scalar(0, 255, 0));
             autonomousRandom = AutoRandom.left;
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.CONFETTI);
-            Sensors.ledIND(HardwareConfig.green1, HardwareConfig.red1, false);
-            Sensors.ledIND(HardwareConfig.green2, HardwareConfig.red2, false);
-            if (alliance == Alliance.BLUE) {
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, false);
-                Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, true);
-            } else {
-                Sensors.ledIND(HardwareConfig.green3, HardwareConfig.red3, true);
-                Sensors.ledIND(HardwareConfig.green4, HardwareConfig.red4, false);
-            }
         }
         current = 0;
         ycrcbMat.release();
