@@ -51,7 +51,7 @@ public class generalPatterns {
     // drive and place first pixel
     public static void SpikeNav(MecanumDrive drive, PathLong pathLong) {
         Pose2d farSwingPoseRED = new Pose2d(-54, -22, Math.toRadians(0));
-        Pose2d farSwingPoseBLUE = new Pose2d(farSwingPoseRED.getX() - 4, -farSwingPoseRED.getY(), farSwingPoseRED.getHeading());
+        Pose2d farSwingPoseBLUE = new Pose2d(farSwingPoseRED.getX() + 2, -farSwingPoseRED.getY(), farSwingPoseRED.getHeading());
         Placement placement;
         boolean RedRight = (startDist == StartDist.SHORT_SIDE && StartPose.alliance == Alliance.RED);
         boolean BlueLeft = (startDist == StartDist.SHORT_SIDE && StartPose.alliance == Alliance.BLUE);

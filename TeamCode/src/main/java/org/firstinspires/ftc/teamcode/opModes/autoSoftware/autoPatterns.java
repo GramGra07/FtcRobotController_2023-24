@@ -106,7 +106,7 @@ public class autoPatterns {
                 })
                 .onExit(pixelParkStates.BACKDROP, () -> {
                     if (startDist == StartDist.LONG_SIDE) {
-                        rotate = autoRotation - 200;
+                        rotate = autoRotation - 400;
                         extend = autoExtension;
                         ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                         encoderDrive(motorRotation, rotate, 1, drive);

@@ -21,7 +21,7 @@ public class ShiftTrajectories {
                     ServoUtil.closeClaw(claw2);
                 })
                 .forward(fwd - leftOffset)
-                .strafeLeft(12)
+                .strafeLeft(10)
                 .build();
     }
 
