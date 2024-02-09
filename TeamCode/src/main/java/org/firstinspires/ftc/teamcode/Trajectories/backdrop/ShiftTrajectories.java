@@ -18,6 +18,13 @@ public class ShiftTrajectories {
     public static int leftOffset = 1;
     public static int strafe = 10;
 
+    public static TrajectorySequence shiftForward(MecanumDrive drive) {
+        updatePose(drive);
+        return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
+                .forward(8)
+                .build();
+    }
+
     public static TrajectorySequence shiftLeft(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)

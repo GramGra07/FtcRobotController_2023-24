@@ -23,30 +23,38 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
 public class generalPatterns {
     // method to go to the backdrop
-    public static void navToBackdrop_Place(MecanumDrive drive, boolean isCycling, PathLong pathLong) {
-        switch (StartPose.alliance) {
-            case RED:
-                switch (StartPose.side) {
-                    case LEFT:
-                        drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong));
-                        break;
-                    case RIGHT:
-                        drive.followTrajectorySequenceAsync(BackdropTrajectories.redShort(drive));
-                        break;
-                }
-                break;
-            case BLUE:
-                switch (StartPose.side) {
-                    case LEFT:
-                        drive.followTrajectorySequenceAsync(BackdropTrajectories.blueShort(drive));
-                        break;
-                    case RIGHT:
-                        drive.followTrajectorySequenceAsync(BackdropTrajectories.blueLong(drive, pathLong, isCycling));
-                        break;
-                }
-                break;
+    public static void navToBackdrop_Place(MecanumDrive drive, PathLong pathLong, boolean isCycling) {
+        if (!isCycling) {
+            switch (StartPose.alliance) {
+                case RED:
+                    switch (StartPose.side) {
+                        case LEFT:
+                            drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong));
+                            break;
+                        case RIGHT:
+                            drive.followTrajectorySequenceAsync(BackdropTrajectories.redShort(drive));
+                            break;
+                    }
+                    break;
+                case BLUE:
+                    switch (StartPose.side) {
+                        case LEFT:
+                            drive.followTrajectorySequenceAsync(BackdropTrajectories.blueShort(drive));
+                            break;
+                        case RIGHT:
+                            drive.followTrajectorySequenceAsync(BackdropTrajectories.blueLong(drive, pathLong));
+                            break;
+                    }
+                    break;
+            }
+        } else {
+            switch (StartPose.alliance) {
+                case RED:
+                    drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong));
+                case BLUE:
+                    drive.followTrajectorySequenceAsync(BackdropTrajectories.blueLong(drive, pathLong));
+            }
         }
-//        ServoUtil.calculateFlipPose(20, flipServo);
     }
 
     // drive and place first pixel

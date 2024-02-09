@@ -77,7 +77,7 @@ public class BackdropTrajectories {
                 .build();
     }
 
-    public static TrajectorySequence blueLong(MecanumDrive drive, PathLong pathLong, boolean isCycling) {
+    public static TrajectorySequence blueLong(MecanumDrive drive, PathLong pathLong) {
         updatePose(drive);
         switch (pathLong) {
             case INSIDE:

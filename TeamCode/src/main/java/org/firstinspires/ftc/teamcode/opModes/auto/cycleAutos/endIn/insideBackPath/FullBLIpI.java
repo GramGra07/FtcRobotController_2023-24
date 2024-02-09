@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endIn.insideBackP
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycleAuto;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycleMachine;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.pixelParkMachine;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.fullAutoI_IP_Sort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;
 
@@ -16,10 +18,12 @@ import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware;
+import org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
+import org.gentrifiedApps.statemachineftc.StateMachine;
 
 @Autonomous(group = fullAutoI_IP_Sort, preselectTeleOp = preselect)
-@Disabled
+//@Disabled
 public class FullBLIpI extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
@@ -28,12 +32,11 @@ public class FullBLIpI extends LinearOpMode {
     public void runOpMode() {
         MecanumDrive drive = new MecanumDrive(hardwareMap);
         drive.setPoseEstimate(getStartPose(Alliance.BLUE, StartSide.LEFT));
+        StateMachine<autoPatterns.cycleStates> machine = cycleMachine(drive, PathLong.INSIDE, EndPose.RIGHT);
         robot.initAuto(hardwareMap, this, true);
-        while (opModeIsActive()) {
-            cycleAuto(drive, PathLong.INSIDE, EndPose.RIGHT);
-            if (currentState == autoHardware.STATES.STOP) {
-                break;
-            }
+        machine.start();
+        while (machine.mainLoop(this)) {
+            machine.update();
         }
     }
 }

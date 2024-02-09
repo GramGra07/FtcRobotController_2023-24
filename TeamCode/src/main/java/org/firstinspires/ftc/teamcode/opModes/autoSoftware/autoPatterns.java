@@ -3,13 +3,15 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
 import static org.firstinspires.ftc.teamcode.Limits.autoRotation;
 import static org.firstinspires.ftc.teamcode.MathFunctions.threeFourths;
-import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.blueOff;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.openClaw;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw1;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.claw2;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorRotation;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.startDist;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.timer;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autoRandomReliable;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.encoderDrive;
@@ -21,13 +23,15 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEn
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.SpikeNav;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.navToBackdrop_Place;
 
+import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 import org.firstinspires.ftc.teamcode.Enums.EndPose;
 import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
+import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.AutoServoPositions;
-import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.gentrifiedApps.statemachineftc.StateMachine;
 
@@ -94,14 +98,15 @@ public class autoPatterns {
                     if (startDist == StartDist.SHORT_SIDE) {
 //                        rotate = (autoRotation / 4) * 3;
 //                        encoderDrive(motorRotation, rotate, 1, drive);
-                        ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
-                        blueOff = 6;
+                        if (!(autoRandomReliable == AutoRandom.left && StartPose.alliance == Alliance.BLUE)) {
+                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                        }
                     }
                 })
                 .transition(pixelParkStates.SPIKE_NAV, () -> (!drive.isBusy()))
                 .state(pixelParkStates.BACKDROP)
                 .onEnter(pixelParkStates.BACKDROP, () -> {
-                    navToBackdrop_Place(drive, false, pathLong);
+                    navToBackdrop_Place(drive, pathLong, false);
                 })
                 .whileState(pixelParkStates.BACKDROP, () -> !drive.isBusy(), () -> {
                     drive.update();
@@ -114,6 +119,9 @@ public class autoPatterns {
                         encoderDrive(motorRotation, rotate, 1, drive);
                     }
                     if (startDist == StartDist.SHORT_SIDE) {
+                        if (autoRandomReliable == AutoRandom.left && StartPose.alliance == Alliance.BLUE) {
+                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                        }
                         extend = threeFourths(autoExtension);
                     }
                     encoderDrive(motorExtension, extend, 1, drive);
@@ -128,14 +136,12 @@ public class autoPatterns {
                 })
                 .onExit(pixelParkStates.SHIFT, () -> {
                     calculateFlipPose(AutoServoPositions.flipDown, flipServo);
-                    ServoUtil.openClaw(HardwareConfig.claw1);
+                    ServoUtil.openClaw(claw1);
                 })
                 .transition(pixelParkStates.SHIFT, () -> !drive.isBusy())
                 .state(pixelParkStates.END_POSE)
                 .onEnter(pixelParkStates.END_POSE, () -> {
-                    if (startDist == StartDist.LONG_SIDE) {
-                        encoderDrive(motorExtension, -autoExtension, 0.5, drive);
-                    }
+                    encoderDrive(motorExtension, -extend, 0.5, drive);
                     calculateFlipPose(60, flipServo);
                     if (endPose != EndPose.NONE) {
                         goToEndPose(endPose, drive);
@@ -148,7 +154,6 @@ public class autoPatterns {
                 .state(pixelParkStates.RETRACT)
                 .onEnter(pixelParkStates.RETRACT, () -> {
                     if (startDist == StartDist.LONG_SIDE) {
-                        timer.reset();
                         encoderDrive(motorRotation, -rotate, 1, drive);
                     }
                 })
@@ -167,7 +172,9 @@ public class autoPatterns {
         RETRACT,
         PICK1,
         PLACE1,
+        SHIFT2,
         END_POSE,
+        RETRACT2,
         STOP,
     }
 
@@ -182,29 +189,37 @@ public class autoPatterns {
                 .whileState(cycleStates.SPIKE_NAV, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
-//                .onExit(pixelParkStates.SPIKE_NAV, () -> {
-//                    if (startDist == StartDist.SHORT_SIDE) {
-//                        encoderDrive(motorExtension, autoExtension, 1, drive);
-//                    }
-//                })
+                .onExit(cycleStates.SPIKE_NAV, () -> {
+                    if (startDist == StartDist.SHORT_SIDE) {
+//                        rotate = (autoRotation / 4) * 3;
+//                        encoderDrive(motorRotation, rotate, 1, drive);
+                        if (!(autoRandomReliable == AutoRandom.left && StartPose.alliance == Alliance.BLUE)) {
+                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                        }
+                    }
+                })
                 .transition(cycleStates.SPIKE_NAV, () -> (!drive.isBusy()))
                 .state(cycleStates.BACKDROP)
                 .onEnter(cycleStates.BACKDROP, () -> {
-                    navToBackdrop_Place(drive, false, pathLong);
+                    navToBackdrop_Place(drive, pathLong, false);
                 })
                 .whileState(cycleStates.BACKDROP, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
                 .onExit(cycleStates.BACKDROP, () -> {
                     if (startDist == StartDist.LONG_SIDE) {
-                        rotate = autoRotation;
-                        if (autoRandomReliable == AutoRandom.right) {
-                            rotate -= 100;
-                        }
+                        rotate = autoRotation - 400;
+                        extend = autoExtension;
                         ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                         encoderDrive(motorRotation, rotate, 1, drive);
-                        encoderDrive(motorExtension, autoExtension, 1, drive);
                     }
+                    if (startDist == StartDist.SHORT_SIDE) {
+                        if (autoRandomReliable == AutoRandom.left && StartPose.alliance == Alliance.BLUE) {
+                            ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                        }
+//                        extend = threeFourths(autoExtension);
+                    }
+                    encoderDrive(motorExtension, extend, 1, drive);
                 })
                 .transition(cycleStates.BACKDROP, () -> !drive.isBusy())
                 .state(cycleStates.SHIFT)
@@ -216,51 +231,61 @@ public class autoPatterns {
                 })
                 .onExit(cycleStates.SHIFT, () -> {
                     calculateFlipPose(AutoServoPositions.flipDown, flipServo);
-                    ServoUtil.openClaw(HardwareConfig.claw1);
+                    ServoUtil.openClaw(claw1);
                 })
                 .transition(cycleStates.SHIFT, () -> !drive.isBusy())
                 .state(cycleStates.RETRACT)
-//                .onEnter(cycleStates.RETRACT, () -> {
-//                    if (startDist == StartDist.LONG_SIDE) {
-//                        timer.reset();
-//                        encoderDrive(motorRotation, -rotate, 1, drive);
-//                    }
-//                })
-//                .onExit(cycleStates.RETRACT, () -> {
-//                    if (startDist == StartDist.LONG_SIDE) {
-//                        encoderDrive(motorExtension, -autoExtension, 0.5, drive);
-//                    }
-//                })
-//                .transition(cycleStates.RETRACT, () -> !drive.isBusy())
+                .onEnter(cycleStates.RETRACT, () -> {
+                    encoderDrive(motorExtension, -extend, 0.5, drive);
+                    calculateFlipPose(60, flipServo);
+                    if (startDist == StartDist.LONG_SIDE) {
+                        encoderDrive(motorRotation, -rotate, 1, drive);
+                    }
+                })
+                .onExit(cycleStates.RETRACT, () -> {
+                })
+                .transition(cycleStates.RETRACT, () -> !drive.isBusy())
                 .state(cycleStates.PICK1)
                 .onEnter(cycleStates.PICK1, () -> {
-                    //retract both
-                    encoderDrive(motorExtension, -autoExtension, 1, drive);
-                    encoderDrive(motorRotation, -rotate, 1, drive);
                     pickFromSpot(drive, pathLong);
                 })
                 .whileState(cycleStates.PICK1, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
-//                .onExit(cycleStates.PICK1, () -> {
-//                    encoderDrive(motorExtension, autoExtension, 1, drive);
-//                })
+                .onExit(cycleStates.PICK1, () -> {
+//                    closeClaw(claw2);
+//                    closeClaw(claw1);
+                })
                 .transition(cycleStates.PICK1, () -> !drive.isBusy())
                 .state(cycleStates.PLACE1)
                 .onEnter(cycleStates.PLACE1, () -> {
-                    encoderDrive(motorExtension, autoExtension, 0.5, drive);
-                    encoderDrive(motorRotation, rotate, 1, drive);
-                    navToBackdrop_Place(drive, true, pathLong);
+                    AutoServoPositions.flipUp = 45;
+                    navToBackdrop_Place(drive, pathLong, true);
                 })
                 .whileState(cycleStates.PLACE1, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
-                .onExit(cycleStates.PLACE1, () -> {
-                    encoderDrive(motorExtension, -autoExtension, 1, drive);
-                })
                 .transition(cycleStates.PLACE1, () -> !drive.isBusy())
+                .state(cycleStates.SHIFT2)
+                .onEnter(cycleStates.SHIFT2, () -> {
+                    drive.followTrajectorySequenceAsync(ShiftTrajectories.shiftForward(drive));
+                })
+                .whileState(cycleStates.SHIFT2, () -> !drive.isBusy(), () -> {
+                    drive.update();
+                })
+                .onExit(cycleStates.SHIFT2, () -> {
+                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                    rotate = autoRotation - 300;
+                    extend = autoExtension;
+                    encoderDrive(motorRotation, rotate, 1, drive);
+                    encoderDrive(motorExtension, extend, 1, drive);
+                    openClaw(claw1);
+                    openClaw(claw2);
+                })
+                .transition(cycleStates.SHIFT2, () -> !drive.isBusy())
                 .state(cycleStates.END_POSE)
                 .onEnter(cycleStates.END_POSE, () -> {
+                    encoderDrive(motorExtension, -extend, 0.5, drive);
                     calculateFlipPose(60, flipServo);
                     if (endPose != EndPose.NONE) {
                         goToEndPose(endPose, drive);
@@ -270,16 +295,13 @@ public class autoPatterns {
                     drive.update();
                 })
                 .transition(cycleStates.END_POSE, () -> !drive.isBusy())
-                .state(cycleStates.RETRACT)
-                .onEnter(cycleStates.RETRACT, () -> {
-                    if (startDist == StartDist.LONG_SIDE) {
-                        timer.reset();
-                        encoderDrive(motorRotation, -rotate, 1, drive);
-                    }
+                .state(cycleStates.RETRACT2)
+                .onEnter(cycleStates.RETRACT2, () -> {
+                    encoderDrive(motorRotation, -rotate, 1, drive);
                 })
-                .onExit(cycleStates.RETRACT, () -> {
+                .onExit(cycleStates.RETRACT2, () -> {
                 })
-                .transition(cycleStates.RETRACT, () -> !drive.isBusy())
+                .transition(cycleStates.RETRACT2, () -> !drive.isBusy())
                 .stopRunning(cycleStates.STOP)
                 .build();
     }
@@ -298,7 +320,7 @@ public class autoPatterns {
             case BACKDROP:
                 if (previousState != currentState) {
                     previousState = currentState;
-                    navToBackdrop_Place(drive, true, pathLong);
+                    navToBackdrop_Place(drive, pathLong, true);
                 } else if (!drive.isBusy()) {
                     currentState = autoHardware.STATES.SHIFT;
                 }
