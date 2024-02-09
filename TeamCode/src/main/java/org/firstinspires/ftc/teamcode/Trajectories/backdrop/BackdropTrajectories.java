@@ -23,8 +23,9 @@ public class BackdropTrajectories {
     public static int startOffsetBlue = 2;
     public static int xOffset = 4;
     public static int backdropOffset = 6;
+    public static int blueOff = 0;
     public static Pose2d backRed = new Pose2d(58, -32, Math.toRadians(endAngle));
-    public static Pose2d backBlue = new Pose2d(58, 44, Math.toRadians(endAngle));
+    public static Pose2d backBlue = new Pose2d(58, 38 + blueOff, Math.toRadians(endAngle));
 
     public static TrajectorySequence redShort(MecanumDrive drive) {
         updatePose(drive);

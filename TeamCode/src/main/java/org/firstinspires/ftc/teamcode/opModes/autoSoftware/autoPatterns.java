@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 import static org.firstinspires.ftc.teamcode.Limits.autoExtension;
 import static org.firstinspires.ftc.teamcode.Limits.autoRotation;
 import static org.firstinspires.ftc.teamcode.MathFunctions.threeFourths;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.blueOff;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
@@ -91,9 +92,10 @@ public class autoPatterns {
                 })
                 .onExit(pixelParkStates.SPIKE_NAV, () -> {
                     if (startDist == StartDist.SHORT_SIDE) {
-                        rotate = (autoRotation / 4) * 3;
-                        encoderDrive(motorRotation, rotate, 1, drive);
+//                        rotate = (autoRotation / 4) * 3;
+//                        encoderDrive(motorRotation, rotate, 1, drive);
                         ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
+                        blueOff = 6;
                     }
                 })
                 .transition(pixelParkStates.SPIKE_NAV, () -> (!drive.isBusy()))
@@ -114,7 +116,7 @@ public class autoPatterns {
                     if (startDist == StartDist.SHORT_SIDE) {
                         extend = threeFourths(autoExtension);
                     }
-                    encoderDrive(motorExtension, autoExtension, 1, drive);
+                    encoderDrive(motorExtension, extend, 1, drive);
                 })
                 .transition(pixelParkStates.BACKDROP, () -> !drive.isBusy())
                 .state(pixelParkStates.SHIFT)
