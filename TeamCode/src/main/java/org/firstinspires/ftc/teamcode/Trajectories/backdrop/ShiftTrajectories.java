@@ -6,22 +6,29 @@ import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.fwd;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
+import org.firstinspires.ftc.teamcode.Enums.Alliance;
+import org.firstinspires.ftc.teamcode.Enums.StartSide;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.advanced.PoseStorage;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
 public class ShiftTrajectories {
     public static int leftOffset = 1;
+    public static int strafe = 10;
 
     public static TrajectorySequence shiftLeft(MecanumDrive drive) {
         updatePose(drive);
         return drive.trajectorySequenceBuilder(PoseStorage.currentPose)
                 .addDisplacementMarker(() -> {
                     ServoUtil.closeClaw(claw2);
+                    if (StartPose.alliance == Alliance.BLUE && StartPose.side == StartSide.LEFT) {
+                        strafe = 1;
+                    }
                 })
                 .forward(fwd - leftOffset)
-                .strafeLeft(10)
+                .strafeLeft(strafe)
                 .build();
     }
 

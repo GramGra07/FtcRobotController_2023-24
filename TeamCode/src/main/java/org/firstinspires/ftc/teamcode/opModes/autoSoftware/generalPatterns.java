@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdTLeft;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdTRight;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.midPiNav;
+import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.rightAngle;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.startDist;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
@@ -138,6 +139,9 @@ public class generalPatterns {
                     case BLUE_RIGHT:
                     case RED_LEFT:
                     case BLUE_LEFT:
+                        if (placement == Placement.BLUE_RIGHT) {
+                            rightAngle = 60;
+                        }
                         drive.followTrajectorySequenceAsync(fwdTRight(drive));
                         break;
                     case RED_RIGHT:

@@ -23,7 +23,7 @@ public class BackdropTrajectories {
     public static int startOffsetBlue = 2;
     public static int xOffset = 4;
     public static int backdropOffset = 6;
-    public static int blueOff = 0;
+    public static int blueOff = 4;
     public static Pose2d backRed = new Pose2d(58, -32, Math.toRadians(endAngle));
     public static Pose2d backBlue = new Pose2d(58, 38 + blueOff, Math.toRadians(endAngle));
 
@@ -94,7 +94,7 @@ public class BackdropTrajectories {
                     case right:
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .addDisplacementMarker(() -> ServoUtil.calculateFlipPose(AutoServoPositions.flipUp, flipServo))
-                                .lineTo(new Vector2d(drive.getPoseEstimate().getX() - 4, 12))
+                                .lineToLinearHeading(new Pose2d(drive.getPoseEstimate().getX(), 12, Math.toRadians(-90)))
                                 .turn(Math.toRadians(90))
                                 .lineTo(new Vector2d(36, 12))
                                 .lineTo(new Vector2d(36, 30))

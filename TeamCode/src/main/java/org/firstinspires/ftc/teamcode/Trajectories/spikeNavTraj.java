@@ -32,16 +32,18 @@ public class spikeNavTraj {
                 .build();
     }
 
+    public static int rightAngle = 55;
+
     public static TrajectorySequence fwdTRight(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                 .forward(22)
-                .turn(Math.toRadians(-55))
+                .turn(Math.toRadians(-rightAngle))
                 .addDisplacementMarker(() -> {
                     ServoUtil.openClaw(HardwareConfig.claw2);
                     ServoUtil.calculateFlipPose(30, flipServo);
                 })
                 .back(1)
-                .turn(Math.toRadians(55))
+                .turn(Math.toRadians(rightAngle))
                 .build();
     }
 }
