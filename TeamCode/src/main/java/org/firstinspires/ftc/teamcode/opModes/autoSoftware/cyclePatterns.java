@@ -29,7 +29,12 @@ public class cyclePatterns {
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineTo(new Vector2d(36, -12))
                                 .lineToLinearHeading(spot)
-                                .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
+                                .addSpatialMarker(new Vector2d(-36, -10), () ->
+                                        calculateFlipPose(15, flipServo))
+                                .addDisplacementMarker(() -> {
+                                    closeClaw(claw1);
+                                    closeClaw(claw2);
+                                })
                                 .back(1)
                                 .build()
                         );
@@ -59,7 +64,12 @@ public class cyclePatterns {
                                 .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(spot)
-                                .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
+                                .addSpatialMarker(new Vector2d(-36, -58), () ->
+                                        calculateFlipPose(15, flipServo))
+                                .addDisplacementMarker(() -> {
+                                    closeClaw(claw1);
+                                    closeClaw(claw2);
+                                })
                                 .back(1)
                                 .build()
                         ));
@@ -70,7 +80,12 @@ public class cyclePatterns {
                                 .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(spot)
-                                .addDisplacementMarker(() -> calculateFlipPose(45, flipServo))
+                                .addSpatialMarker(new Vector2d(-36, 58), () ->
+                                        calculateFlipPose(15, flipServo))
+                                .addDisplacementMarker(() -> {
+                                    closeClaw(claw1);
+                                    closeClaw(claw2);
+                                })
                                 .back(1)
                                 .build()
                         ));
