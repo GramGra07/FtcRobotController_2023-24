@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode.opModes.auto.cycleAutos.endIn.insideBackPath;
 
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.getStartPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycleAuto;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoPatterns.cycleMachine;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.fullAutoI_IP_Sort;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoSorting.preselect;

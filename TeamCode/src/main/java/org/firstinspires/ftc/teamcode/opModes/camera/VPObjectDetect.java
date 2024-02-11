@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.opModes.camera;
 
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories.leftShift;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories.rightShift;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories.shiftOffset;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.lights;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 
@@ -55,7 +58,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
     @Override
     public Object processFrame(Mat frame, long captureTimeNanos) {
         if (alliance == Alliance.RED) {
-            scalarLow = new Scalar(0, 180, 0);
+            scalarLow = new Scalar(0, 140, 0);
             scalarHigh = new Scalar(255, 255, 255);
         } else if (alliance == Alliance.BLUE) {
             scalarLow = new Scalar(0, 0, 130);
@@ -79,6 +82,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
                     autonomousRandom = AutoRandom.right;
                     lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.WHITE);
                     current = 1;
+//                    shiftOffset = rightShift;
                 }
             }
         }
@@ -91,6 +95,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
                         autonomousRandom = AutoRandom.mid;
                         lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.GOLD);
                         current = 1;
+//                        shiftOffset = 0;
                     }
                 }
             }
@@ -99,6 +104,7 @@ public class VPObjectDetect implements VisionProcessor, CameraStreamSource {
             Imgproc.putText(frame, "left", new Point(frame.width() / 2, frame.height() / 2), 0, 5, new Scalar(0, 255, 0));
             autonomousRandom = AutoRandom.left;
             lights.setPattern(RevBlinkinLedDriver.BlinkinPattern.CONFETTI);
+//            shiftOffset = -leftShift;
         }
         current = 0;
         ycrcbMat.release();

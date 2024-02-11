@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Trajectories.backdrop;
 
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories.shiftOffset;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autoRandomReliable;
@@ -23,9 +24,10 @@ public class BackdropTrajectories {
     public static int startOffsetBlue = 2;
     public static int xOffset = 4;
     public static int backdropOffset = 6;
-    public static int blueOff = 4;
-    public static Pose2d backRed = new Pose2d(58, -32, Math.toRadians(endAngle));
-    public static Pose2d backBlue = new Pose2d(58, 38 + blueOff, Math.toRadians(endAngle));
+    public static int blueMidOff = 0;
+    public static int redMidOff = 0;
+    public static Pose2d backRed = new Pose2d(58, -32 - redMidOff - shiftOffset, Math.toRadians(endAngle));
+    public static Pose2d backBlue = new Pose2d(58, 38 + blueMidOff - shiftOffset, Math.toRadians(endAngle));
 
     public static TrajectorySequence redShort(MecanumDrive drive) {
         updatePose(drive);
