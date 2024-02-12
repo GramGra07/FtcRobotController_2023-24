@@ -1,22 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
-import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.extensionPIDF;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.motorExtension;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.currentState;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.previousState;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.shiftAuto;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.targetPositionSlides;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.endPose.goToEndPose;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.SpikeNav;
-import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.generalPatterns.navToBackdrop_Place;
-
-import org.firstinspires.ftc.teamcode.Enums.EndPose;
-import org.firstinspires.ftc.teamcode.Enums.PathLong;
-import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
-
 public class oldAutoPatternsSM {
 
 //    public static void pixelPark(MecanumDrive drive, PathLong pathLong, EndPose endPose) {

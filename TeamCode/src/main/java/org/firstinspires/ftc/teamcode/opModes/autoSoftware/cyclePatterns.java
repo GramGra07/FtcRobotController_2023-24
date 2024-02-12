@@ -25,7 +25,7 @@ public class cyclePatterns {
             case INSIDE:
                 switch (StartPose.alliance) {
                     case RED:
-                        spot = new Pose2d(-54, -10, Math.toRadians(180));
+                        spot = new Pose2d(-55.7, -10.3, Math.toRadians(180));
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineTo(new Vector2d(36, -12))
                                 .lineToLinearHeading(spot)
@@ -59,7 +59,7 @@ public class cyclePatterns {
             case OUTSIDE:
                 switch (StartPose.alliance) {
                     case RED:
-                        spot = new Pose2d(-60, -36, Math.toRadians(180));
+                        spot = new Pose2d(-55.7, -36, Math.toRadians(180));
                         drive.followTrajectorySequenceAsync((drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
@@ -75,7 +75,7 @@ public class cyclePatterns {
                         ));
                         break;
                     case BLUE:
-                        spot = new Pose2d(-60, 36, Math.toRadians(180));
+                        spot = new Pose2d(-55.7, 36, Math.toRadians(180));
                         drive.followTrajectorySequenceAsync((drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineToLinearHeading(new Pose2d(-START_POSE.getX() - offset, START_POSE.getY() - startOffsetRed, Math.toRadians(endAngle)))
                                 .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetRed, Math.toRadians(endAngle)))

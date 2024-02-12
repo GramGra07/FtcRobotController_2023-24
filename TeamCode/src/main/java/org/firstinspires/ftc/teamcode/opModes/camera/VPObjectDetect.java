@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.opModes.camera;
 
-import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories.leftShift;
-import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories.rightShift;
-import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories.shiftOffset;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.lights;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.autonomousRandom;
 
@@ -17,8 +14,6 @@ import org.firstinspires.ftc.robotcore.external.stream.CameraStreamSource;
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
-import org.firstinspires.ftc.teamcode.Sensors;
-import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;

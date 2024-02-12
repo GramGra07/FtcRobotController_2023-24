@@ -1,49 +1,52 @@
 package org.firstinspires.ftc.teamcode.Trajectories;
 
-import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
+import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
 
-import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
-import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+
+import org.firstinspires.ftc.teamcode.Enums.Alliance;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.opModes.rr.trajectorysequence.TrajectorySequence;
 
 public class spikeNavTraj {
+    public static int mult = 1;
+
     public static TrajectorySequence midPiNav(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(25)
                 .addDisplacementMarker(() -> {
-                    ServoUtil.openClaw(HardwareConfig.claw2);
-                    ServoUtil.calculateFlipPose(30, flipServo);
+                    if (StartPose.alliance == Alliance.RED) {
+                        mult = -1;
+                    }
                 })
-                .back(4)
+                .splineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - (25 * mult), START_POSE.getHeading()), START_POSE.getHeading())
                 .build();
     }
 
-    public static TrajectorySequence fwdTLeft(MecanumDrive drive) {
+    public static int rotate = -50;
+
+    public static TrajectorySequence fwdLeft(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(22)
-                .turn(Math.toRadians(50))
                 .addDisplacementMarker(() -> {
-                    ServoUtil.openClaw(HardwareConfig.claw2);
-                    ServoUtil.calculateFlipPose(30, flipServo);
+                    if (StartPose.alliance == Alliance.RED) {
+                        mult = -1;
+                        rotate = -rotate;
+                    }
                 })
-                .back(1)
-                .turn(Math.toRadians(-50))
+                .splineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - (22 * mult), START_POSE.getHeading() - rotate), START_POSE.getHeading() - rotate)
                 .build();
     }
 
-    public static int rightAngle = 55;
-
-    public static TrajectorySequence fwdTRight(MecanumDrive drive) {
+    public static TrajectorySequence fwdRight(MecanumDrive drive) {
         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                .forward(22)
-                .turn(Math.toRadians(-rightAngle))
                 .addDisplacementMarker(() -> {
-                    ServoUtil.openClaw(HardwareConfig.claw2);
-                    ServoUtil.calculateFlipPose(30, flipServo);
+                    rotate = 50;
+                    if (StartPose.alliance == Alliance.RED) {
+                        mult = -1;
+                        rotate = -rotate;
+                    }
                 })
-                .back(1)
-                .turn(Math.toRadians(rightAngle))
+                .splineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - (22 * mult), START_POSE.getHeading() - rotate), START_POSE.getHeading() - rotate)
                 .build();
     }
 }

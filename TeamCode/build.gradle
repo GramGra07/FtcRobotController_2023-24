@@ -34,5 +34,5 @@ dependencies {
     implementation 'org.ftclib.ftclib:core:2.1.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
 
-    implementation 'com.github.GramGra07:StateMachineFTC:1.0.2'
+    implementation 'com.github.GramGra07:StateMachineFTC:1.1.1'
 }

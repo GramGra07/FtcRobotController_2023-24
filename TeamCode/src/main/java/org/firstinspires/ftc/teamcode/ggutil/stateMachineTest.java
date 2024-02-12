@@ -49,7 +49,7 @@ public class stateMachineTest extends LinearOpMode {
                 .whileState(state.SPIKE_NAV, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
-                .transition(state.SPIKE_NAV, () -> !drive.isBusy())
+                .transition(state.SPIKE_NAV, () -> !drive.isBusy(), 0)
                 .state(state.END_POSE)
                 .onEnter(state.END_POSE, () -> {
                     ServoUtil.calculateFlipPose(30, flipServo);
@@ -58,7 +58,7 @@ public class stateMachineTest extends LinearOpMode {
                 .whileState(state.END_POSE, () -> !drive.isBusy(), () -> {
                     drive.update();
                 })
-                .transition(state.END_POSE, () -> !drive.isBusy())
+                .transition(state.END_POSE, () -> !drive.isBusy(), 0)
                 .stopRunning(state.STOP)
                 .build();
         waitForStart();

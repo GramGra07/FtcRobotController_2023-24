@@ -26,8 +26,9 @@ public class BackdropTrajectories {
     public static int backdropOffset = 6;
     public static int blueMidOff = 0;
     public static int redMidOff = 0;
-    public static Pose2d backRed = new Pose2d(58, -32 - redMidOff - shiftOffset, Math.toRadians(endAngle));
-    public static Pose2d backBlue = new Pose2d(58, 38 + blueMidOff - shiftOffset, Math.toRadians(endAngle));
+    public static int forwardOffset = 0;
+    public static Pose2d backRed = new Pose2d(58 + forwardOffset, -32 - redMidOff - shiftOffset, Math.toRadians(endAngle));
+    public static Pose2d backBlue = new Pose2d(58 + forwardOffset, 38 + blueMidOff - shiftOffset, Math.toRadians(endAngle));
 
     public static TrajectorySequence redShort(MecanumDrive drive) {
         updatePose(drive);
@@ -48,7 +49,7 @@ public class BackdropTrajectories {
                                 .lineToLinearHeading(new Pose2d(-52, -10, Math.toRadians(endAngle)))
                                 .lineTo(new Vector2d(36, -12))
                                 .lineTo(new Vector2d(36, -30))
-                                .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset), backRed.getY() + 1, backRed.getHeading()), Math.toRadians(endAngle))
+                                .splineToLinearHeading(new Pose2d(backRed.getX() - (backdropOffset), backRed.getY(), backRed.getHeading()), Math.toRadians(endAngle))
                                 .build();
                     case left:
                         return drive.trajectorySequenceBuilder(drive.getPoseEstimate())

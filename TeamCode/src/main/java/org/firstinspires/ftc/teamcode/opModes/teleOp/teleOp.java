@@ -13,7 +13,7 @@ public class teleOp extends LinearOpMode {//declaring the class
 
     @Override
     public void runOpMode() {//if opmode is started
-        robot.init(hardwareMap, false);
+        HardwareConfig.init(hardwareMap, false);
 //        visionPortal.setProcessorEnabled(aprilTagProcessor, true);
         waitForStart();
         HardwareConfig.timer.reset();

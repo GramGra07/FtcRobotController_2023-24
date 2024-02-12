@@ -1,13 +1,9 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
 import static org.firstinspires.ftc.teamcode.EOCVWebcam.cam2_N;
-import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.backdropOffset;
-import static org.firstinspires.ftc.teamcode.UtilClass.DriverAid.operateClawByDist;
 import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.closeClaw;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.extensionPIDFCo;
 import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PIDVals.rotationPIDFCo;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.autoPotent;
-import static org.firstinspires.ftc.teamcode.UtilClass.varStorage.PotentPositions.potentiometerBase;
 
 import android.util.Size;
 
@@ -16,21 +12,16 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
-import org.firstinspires.ftc.teamcode.Enums.PresetPose;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Enums.StartSide;
-import org.firstinspires.ftc.teamcode.Limits;
 import org.firstinspires.ftc.teamcode.Sensors;
-import org.firstinspires.ftc.teamcode.Trajectories.backdrop.ShiftTrajectories;
 import org.firstinspires.ftc.teamcode.UtilClass.ServoUtil;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.HardwareConfig;
@@ -164,24 +155,39 @@ public class autoHardware extends HardwareConfig {
     }
 
     // shifts left or right depending on the random
-    public static int fwd = 1;
+//    public static int fwd = 1;
 
-    public static void shiftAuto(MecanumDrive drive) {
-        if (startDist == StartDist.LONG_SIDE) {
-            fwd = 5;
-        }
-        if (autoRandomReliable == AutoRandom.left) {
-            ShiftTrajectories.leftOffset = 4;
-        }
-        switch (autoRandomReliable) {
-            case left:
-                drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
-                break;
-            case right:
-                drive.followTrajectorySequence(ShiftTrajectories.shiftRight(drive));
-                break;
-        }
-    }
+//    public static void shiftAuto(MecanumDrive drive) {
+//        if (startDist == StartDist.LONG_SIDE) {
+//            fwd = 5;d shiftAuto(MecanumDrive drive) {
+//        if (startDist == StartDist.LONG_SIDE) {
+//            fwd = 5;
+//        }
+//        if (autoRandomReliable == AutoRandom.left) {
+//            ShiftTrajectories.leftOffset = 4;
+//        }
+//        switch (autoRandomReliable) {
+//            case left:
+//                drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
+//                break;
+//            case right:
+//                drive.followTrajectorySequence(ShiftTrajectories.shiftRight(drive));
+//                break;
+//        }
+//    }
+//        }
+//        if (autoRandomReliable == AutoRandom.left) {
+//            ShiftTrajectories.leftOffset = 4;
+//        }
+//        switch (autoRandomReliable) {
+//            case left:
+//                drive.followTrajectorySequence(ShiftTrajectories.shiftLeft(drive));
+//                break;
+//            case right:
+//                drive.followTrajectorySequence(ShiftTrajectories.shiftRight(drive));
+//                break;
+//        }
+//    }
 
     // method to get the start pose
     public static Pose2d getStartPose(Alliance alliance, StartSide side) {
