@@ -32,7 +32,7 @@ public class BackdropTrajectories {
 //    public static Pose2d backBlue = new Pose2d(58 + forwardOffset, 38 + blueMidOff - shiftOffset, Math.toRadians(endAngle));
 
     public static TrajectorySequence redShort(MecanumDrive drive) {
-        int baseX = 58 + forwardOffset;
+        int baseX = 54 + forwardOffset; //!
         int baseY = -32 - redMidOff;
         switch (autoRandomReliable) {
             case mid:

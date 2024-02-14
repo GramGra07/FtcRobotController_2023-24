@@ -29,19 +29,12 @@ public class spikeNavTraj {
     public static TrajectorySequence fwdLeft(MecanumDrive drive) {
         if (StartPose.alliance == Alliance.BLUE) {
             return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                    .splineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - (23), START_POSE.getHeading() + rotate), START_POSE.getHeading() + rotate)
+                    .splineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - (23), START_POSE.getHeading() + rotate - Math.toRadians(10)), START_POSE.getHeading() + rotate - Math.toRadians(10))
                     .build();
         } else {
-            if (StartPose.side == StartSide.LEFT) {
-                return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                        .splineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + (22), START_POSE.getHeading() + rotate - Math.toRadians(10)), START_POSE.getHeading() + rotate - Math.toRadians(10))
-                        .build();
-            } else {
-
-                return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                        .splineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + (22), START_POSE.getHeading() + rotate), START_POSE.getHeading() + rotate)
-                        .build();
-            }
+            return drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                    .splineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + (22), START_POSE.getHeading() + rotate - Math.toRadians(10)), START_POSE.getHeading() + rotate - Math.toRadians(10))
+                    .build();
         }
     }
 

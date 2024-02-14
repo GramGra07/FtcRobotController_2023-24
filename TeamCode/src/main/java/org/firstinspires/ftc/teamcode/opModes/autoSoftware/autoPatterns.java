@@ -112,14 +112,13 @@ public class autoPatterns {
                     drive.update();
                 })
                 .onExit(pixelParkStates.BACKDROP, () -> {
-                    int clawOffset = 10;
+                    int clawOffset = 15;
                     if (startDist == StartDist.LONG_SIDE) {
                         rotate = autoRotation - 400;
                         extend = autoExtension;
 //                        calculateFlipPose(AutoServoPositions.flipDown - clawOffset, flipServo);
                         encoderDrive(motorRotation, rotate, 1, drive);
-                    }
-                    if (startDist == StartDist.SHORT_SIDE) {
+                    } else {
                         extend = (autoExtension / 3);
                     }
                     calculateFlipPose(AutoServoPositions.flipDown - clawOffset, flipServo);
@@ -204,8 +203,7 @@ public class autoPatterns {
                         extend = autoExtension;
 //                        calculateFlipPose(AutoServoPositions.flipDown - clawOffset, flipServo);
                         encoderDrive(motorRotation, rotate, 1, drive);
-                    }
-                    if (startDist == StartDist.SHORT_SIDE) {
+                    } else {
                         extend = (autoExtension / 3);
                     }
                     calculateFlipPose(AutoServoPositions.flipDown - clawOffset, flipServo);

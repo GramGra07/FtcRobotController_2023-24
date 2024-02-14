@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 import org.gentrifiedApps.statemachineftc.StateMachine;
 
 @Autonomous(group = fullAutoI_OP_Sort, preselectTeleOp = preselect)
-@Disabled
+//@Disabled
 public class FullBLOpI extends LinearOpMode {
     public Pose2d startPose = autoHardware.startPose;
     autoHardware robot = new autoHardware(this);
