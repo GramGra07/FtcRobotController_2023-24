@@ -44,7 +44,6 @@ public class autoHardware extends HardwareConfig {
 
     //default start position for RoadRunner
     public static Pose2d startPose = new Pose2d(12, -63, Math.toRadians(90));
-    public static int targetTag = 0; // april tag target
     public static Pose2d spot; // cycle position to be updated
     HardwareMap hardwareMap = null; // first initialization of the hardware map
 
@@ -57,21 +56,6 @@ public class autoHardware extends HardwareConfig {
     public autoHardware(LinearOpMode opmode) {
         super(opmode);
     } // constructor
-
-    public enum STATES {
-        INIT,
-        SPIKE_NAV,
-        BACKDROP,
-        CYCLE,
-        SHIFT,
-        END_POSE,
-        STOP
-    }
-
-    public static STATES previousState = STATES.INIT;
-    public static STATES currentState = STATES.INIT;
-    public static int targetPositionSlides = 0;
-    public static int targetPositionPotent = 0;
 
     public void initAuto(HardwareMap ahwMap, LinearOpMode myOpMode, boolean cycling) {
         Telemetry telemetry = new MultipleTelemetry(myOpMode.telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -111,7 +95,6 @@ public class autoHardware extends HardwareConfig {
         closeClaw(HardwareConfig.claw1);
         closeClaw(HardwareConfig.claw2);
         myOpMode.waitForStart(); // wait for the start button to be pressed
-        currentState = STATES.SPIKE_NAV;
         rotationPIDF.setPIDF(rotationPIDFCo.p, rotationPIDFCo.i, rotationPIDFCo.d, rotationPIDFCo.f);
         extensionPIDF.setPIDF(extensionPIDFCo.p, extensionPIDFCo.i, extensionPIDFCo.d, extensionPIDFCo.f);
 //        visionPortal.setProcessorEnabled(objProcessor, false);

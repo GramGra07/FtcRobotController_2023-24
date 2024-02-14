@@ -48,8 +48,10 @@ public class generalPatterns {
             switch (StartPose.alliance) {
                 case RED:
                     drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong));
+                    break;
                 case BLUE:
                     drive.followTrajectorySequenceAsync(BackdropTrajectories.blueLong(drive, pathLong));
+                    break;
             }
         }
     }
@@ -78,7 +80,7 @@ public class generalPatterns {
                         break;
                     case BLUE_LEFT:
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToLinearHeading(new Pose2d(START_POSE.getX() + 12, START_POSE.getY() - 20, START_POSE.getHeading()), START_POSE.getHeading())
+                                .splineToLinearHeading(new Pose2d(START_POSE.getX() + 13, START_POSE.getY() - 20, START_POSE.getHeading()), START_POSE.getHeading())
                                 .build()
                         );
                         break;
@@ -132,7 +134,7 @@ public class generalPatterns {
                         break;
                     case RED_RIGHT:
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToLinearHeading(new Pose2d(START_POSE.getX() + 12, START_POSE.getY() + 20, START_POSE.getHeading()), START_POSE.getHeading())
+                                .splineToLinearHeading(new Pose2d(START_POSE.getX() + 16, START_POSE.getY() + 18, START_POSE.getHeading()), START_POSE.getHeading())
                                 .build()
                         );
                         break;

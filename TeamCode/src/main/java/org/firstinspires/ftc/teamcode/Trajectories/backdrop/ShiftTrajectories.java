@@ -5,21 +5,8 @@ import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.a
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
 
 public class ShiftTrajectories {
-    public static int leftOffset = 1;
-    public static int strafe = 12;
-    public static int shiftOffset = 0;
     public static int leftShift = 8;
-    public static int rightShift = 8;
-
-    public static void getShift() {
-        if (autoRandomReliable == AutoRandom.left) {
-            shiftOffset = -leftShift;
-        } else if (autoRandomReliable == AutoRandom.right) {
-            shiftOffset = rightShift;
-        } else {
-            shiftOffset = 0;
-        }
-    }
+    public static int rightShift = -8;
 
 //    public static TrajectorySequence shiftLeft(MecanumDrive drive) {
 //        updatePose(drive);
