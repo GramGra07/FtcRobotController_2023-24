@@ -1,5 +1,11 @@
 package org.firstinspires.ftc.teamcode.opModes.autoSoftware;
 
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.backdropOffset;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.blueMidOff;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.endAngle;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.forwardOffset;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.startOffsetBlue;
+import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories.startOffsetRed;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdLeft;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdRight;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.midPiNav;
@@ -45,13 +51,38 @@ public class generalPatterns {
                     break;
             }
         } else {
-            switch (StartPose.alliance) {
-                case RED:
-                    drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong));
-                    break;
-                case BLUE:
-                    drive.followTrajectorySequenceAsync(BackdropTrajectories.blueLong(drive, pathLong));
-                    break;
+            if (pathLong == PathLong.INSIDE) {
+                switch (StartPose.alliance) {
+                    case RED:
+                        drive.followTrajectorySequenceAsync(BackdropTrajectories.redLong(drive, pathLong));
+                        break;
+                    case BLUE:
+                        drive.followTrajectorySequenceAsync(BackdropTrajectories.blueLong(drive, pathLong));
+                        break;
+                }
+            } else {
+                int baseX = 0;
+                int baseY = 0;
+                switch (StartPose.alliance) {
+                    case RED:
+                        baseX = 58 + forwardOffset - backdropOffset;
+                        baseY = -32 - 2;
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .lineToLinearHeading(new Pose2d(-36, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
+                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
+                                .splineToLinearHeading(new Pose2d(baseX, baseY, Math.toRadians(endAngle)), Math.toRadians(endAngle))
+                                .build());
+                        break;
+                    case BLUE:
+                        baseX = 58 + forwardOffset - backdropOffset;
+                        baseY = 38 + blueMidOff;
+                        drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
+                                .lineToLinearHeading(new Pose2d(-36, START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
+                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
+                                .splineToLinearHeading(new Pose2d(baseX, baseY, Math.toRadians(endAngle)), Math.toRadians(endAngle))
+                                .build());
+                        break;
+                }
             }
         }
     }
