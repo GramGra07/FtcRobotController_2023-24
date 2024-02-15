@@ -112,14 +112,14 @@ public class autoPatterns {
                     drive.update();
                 })
                 .onExit(pixelParkStates.BACKDROP, () -> {
-                    int clawOffset = 15;
+                    int clawOffset = 10;
                     if (startDist == StartDist.LONG_SIDE) {
                         rotate = autoRotation - 400;
                         extend = autoExtension;
 //                        calculateFlipPose(AutoServoPositions.flipDown - clawOffset, flipServo);
                         encoderDrive(motorRotation, rotate, 1, drive);
                     } else {
-                        extend = (autoExtension / 3);
+                        extend = (autoExtension / 2);
                     }
                     calculateFlipPose(AutoServoPositions.flipDown - clawOffset, flipServo);
                     encoderDrive(motorExtension, extend, 1, drive);
@@ -204,7 +204,7 @@ public class autoPatterns {
 //                        calculateFlipPose(AutoServoPositions.flipDown - clawOffset, flipServo);
                         encoderDrive(motorRotation, rotate, 1, drive);
                     } else {
-                        extend = (autoExtension / 3);
+                        extend = (autoExtension / 2);
                     }
                     calculateFlipPose(AutoServoPositions.flipDown - clawOffset, flipServo);
                     encoderDrive(motorExtension, extend, 1, drive);
@@ -247,8 +247,8 @@ public class autoPatterns {
                 .onExit(cycleStates.PLACE1, () -> {
                     forwardOffset = 0;
                     ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
-                    rotate = autoRotation - 400;
-                    extend = autoExtension;
+                    rotate = autoRotation - 200;
+                    extend = autoExtension + 400;
                     encoderDrive(motorRotation, rotate, 1, drive);
                     encoderDrive(motorExtension, extend, 1, drive);
                     openClaw(claw1);

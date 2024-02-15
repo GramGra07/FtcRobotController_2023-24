@@ -22,14 +22,14 @@ import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 public class cyclePatterns {
     // method to pick up from the stack of pixels
     public static void pickFromSpot(MecanumDrive drive, PathLong pathLong) {
-        int clawAngle = 5;
+        int clawAngle = 17;
         switch (pathLong) {
             case INSIDE:
                 switch (StartPose.alliance) {
                     case RED:
-                        spot = new Pose2d(-55.7, -10, Math.toRadians(180));
+                        spot = new Pose2d(-53.6, -10.4, Math.toRadians(180));
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToLinearHeading(new Pose2d(36, -12, Math.toRadians(180)), Math.toRadians(180))
+                                .lineToSplineHeading(new Pose2d(36, -12, spot.getHeading()))
                                 .splineToLinearHeading(spot, spot.getHeading())
                                 .addSpatialMarker(new Vector2d(-36, -10), () ->
                                         calculateFlipPose(clawAngle, flipServo))
@@ -42,9 +42,9 @@ public class cyclePatterns {
                         );
                         break;
                     case BLUE:
-                        spot = new Pose2d(-55.7, 10, Math.toRadians(180));
+                        spot = new Pose2d(-54.7, 10, Math.toRadians(180));
                         drive.followTrajectorySequenceAsync((drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToLinearHeading(new Pose2d(36, 12, Math.toRadians(180)), Math.toRadians(180))
+                                .lineToLinearHeading(new Pose2d(36, 12, spot.getHeading()))
                                 .splineToLinearHeading(spot, spot.getHeading())
                                 .addSpatialMarker(new Vector2d(-36, 10), () ->
                                         calculateFlipPose(clawAngle, flipServo))
@@ -61,11 +61,11 @@ public class cyclePatterns {
             case OUTSIDE:
                 switch (StartPose.alliance) {
                     case RED:
-                        spot = new Pose2d(-55.7, -36, Math.toRadians(180));
+                        spot = new Pose2d(-57, -30, Math.toRadians(180));
                         drive.followTrajectorySequenceAsync((drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed, Math.toRadians(spot.getHeading())))
-                                .lineToLinearHeading(new Pose2d(-36, START_POSE.getY() + startOffsetRed, Math.toRadians(spot.getHeading())))
-                                .lineToLinearHeading(spot)
+                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed, spot.getHeading()))
+                                .splineToLinearHeading(new Pose2d(-36, START_POSE.getY() + startOffsetRed, spot.getHeading()), spot.getHeading())
+                                .splineToLinearHeading(spot, spot.getHeading())
                                 .addSpatialMarker(new Vector2d(-36, -58), () ->
                                         calculateFlipPose(clawAngle, flipServo))
                                 .addDisplacementMarker(() -> {
@@ -77,11 +77,11 @@ public class cyclePatterns {
                         ));
                         break;
                     case BLUE:
-                        spot = new Pose2d(-55.7, 36, Math.toRadians(180));
+                        spot = new Pose2d(-55, 31, Math.toRadians(180));
                         drive.followTrajectorySequenceAsync((drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetBlue, Math.toRadians(spot.getHeading())))
-                                .lineToLinearHeading(new Pose2d(-36, START_POSE.getY() - startOffsetBlue, Math.toRadians(spot.getHeading())))
-                                .lineToLinearHeading(spot)
+                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetBlue, spot.getHeading()))
+                                .splineToLinearHeading(new Pose2d(-36, START_POSE.getY() - startOffsetBlue - 1, spot.getHeading()), spot.getHeading())
+                                .splineToLinearHeading(spot, spot.getHeading())
                                 .addSpatialMarker(new Vector2d(-36, 58), () ->
                                         calculateFlipPose(clawAngle, flipServo))
                                 .addDisplacementMarker(() -> {

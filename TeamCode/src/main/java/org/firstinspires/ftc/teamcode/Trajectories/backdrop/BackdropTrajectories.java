@@ -33,7 +33,7 @@ public class BackdropTrajectories {
 
     public static TrajectorySequence redShort(MecanumDrive drive) {
         int baseX = 54 + forwardOffset; //!
-        int baseY = -32 - redMidOff;
+        int baseY = -32 - redMidOff - 1;
         switch (autoRandomReliable) {
             case mid:
                 return drive.trajectorySequenceBuilder(drive.getPoseEstimate())

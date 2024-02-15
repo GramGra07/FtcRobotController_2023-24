@@ -9,11 +9,14 @@ import static org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTraje
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdLeft;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.fwdRight;
 import static org.firstinspires.ftc.teamcode.Trajectories.spikeNavTraj.midPiNav;
+import static org.firstinspires.ftc.teamcode.UtilClass.ServoUtil.calculateFlipPose;
+import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.flipServo;
 import static org.firstinspires.ftc.teamcode.opModes.HardwareConfig.startDist;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.START_POSE;
 import static org.firstinspires.ftc.teamcode.opModes.autoSoftware.autoHardware.updatePose;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 
 import org.firstinspires.ftc.teamcode.Enums.Alliance;
 import org.firstinspires.ftc.teamcode.Enums.AutoRandom;
@@ -21,6 +24,7 @@ import org.firstinspires.ftc.teamcode.Enums.PathLong;
 import org.firstinspires.ftc.teamcode.Enums.Placement;
 import org.firstinspires.ftc.teamcode.Enums.StartDist;
 import org.firstinspires.ftc.teamcode.Trajectories.backdrop.BackdropTrajectories;
+import org.firstinspires.ftc.teamcode.UtilClass.varStorage.AutoServoPositions;
 import org.firstinspires.ftc.teamcode.UtilClass.varStorage.StartPose;
 import org.firstinspires.ftc.teamcode.opModes.rr.drive.MecanumDrive;
 
@@ -61,15 +65,17 @@ public class generalPatterns {
                         break;
                 }
             } else {
-                int baseX = 0;
-                int baseY = 0;
+                int baseX;
+                int baseY;
                 switch (StartPose.alliance) {
                     case RED:
                         baseX = 58 + forwardOffset - backdropOffset;
                         baseY = -32 - 2;
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineToLinearHeading(new Pose2d(-36, START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
-                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed, Math.toRadians(endAngle)))
+                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() + startOffsetRed + 1, Math.toRadians(endAngle)))
+                                .addSpatialMarker(new Vector2d(-24, -36), () ->
+                                        calculateFlipPose(30, flipServo))
                                 .splineToLinearHeading(new Pose2d(baseX, baseY, Math.toRadians(endAngle)), Math.toRadians(endAngle))
                                 .build());
                         break;
@@ -78,7 +84,9 @@ public class generalPatterns {
                         baseY = 38 + blueMidOff;
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
                                 .lineToLinearHeading(new Pose2d(-36, START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
-                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetBlue, Math.toRadians(endAngle)))
+                                .lineToLinearHeading(new Pose2d(START_POSE.getX(), START_POSE.getY() - startOffsetBlue - 1, Math.toRadians(endAngle)))
+                                .addSpatialMarker(new Vector2d(-24, -36), () ->
+                                        calculateFlipPose(30, flipServo))
                                 .splineToLinearHeading(new Pose2d(baseX, baseY, Math.toRadians(endAngle)), Math.toRadians(endAngle))
                                 .build());
                         break;
@@ -165,7 +173,7 @@ public class generalPatterns {
                         break;
                     case RED_RIGHT:
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToLinearHeading(new Pose2d(START_POSE.getX() + 16, START_POSE.getY() + 18, START_POSE.getHeading()), START_POSE.getHeading())
+                                .splineToLinearHeading(new Pose2d(START_POSE.getX() + 18, START_POSE.getY() + 18, START_POSE.getHeading()), START_POSE.getHeading())
                                 .build()
                         );
                         break;
