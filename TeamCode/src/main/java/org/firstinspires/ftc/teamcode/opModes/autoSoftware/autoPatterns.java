@@ -246,10 +246,10 @@ public class autoPatterns {
                 })
                 .onExit(cycleStates.PLACE1, () -> {
                     forwardOffset = 0;
-                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                     rotate = autoRotation - 200;
                     extend = autoExtension + 400;
                     encoderDrive(motorRotation, rotate, 1, drive);
+                    ServoUtil.calculateFlipPose(AutoServoPositions.flipDown, flipServo);
                     encoderDrive(motorExtension, extend, 1, drive);
                     openClaw(claw1);
                     openClaw(claw2);
