@@ -173,7 +173,7 @@ public class generalPatterns {
                         break;
                     case RED_RIGHT:
                         drive.followTrajectorySequenceAsync(drive.trajectorySequenceBuilder(drive.getPoseEstimate())
-                                .splineToLinearHeading(new Pose2d(START_POSE.getX() + 17, START_POSE.getY() + 17, START_POSE.getHeading()), START_POSE.getHeading())
+                                .splineToLinearHeading(new Pose2d(START_POSE.getX() + 16, START_POSE.getY() + 17, START_POSE.getHeading()), START_POSE.getHeading())
                                 .build()
                         );
                         break;

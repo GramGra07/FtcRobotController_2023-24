@@ -64,7 +64,7 @@ public class ServoUtil {
     }
 
     public static int servoFlipVal = 62;
-    public static double hcalc = 88;
+    public static double hcalc = 96;
     public static double flipOffset = -30;
 
     public static void calculateFlipPose(int pose, Servo servo) {
